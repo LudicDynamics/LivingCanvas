@@ -1,0 +1,370 @@
+{
+  "id": "whitechapel-jp",
+  "audio": {
+    "theme": "canvas-whitechapel"
+  },
+  "name": "ホームズ：四つ目の事件 · 日本語",
+  "version": "1.2.0",
+  "schema": 1,
+  "description": "あなたはホームズ。小説どおりに起きる事件。誰が物語を犯罪に変えているのかを調べ、今日の四件目を止める。",
+  "intro": {
+    "status": "playable",
+    "category": "trpg",
+    "recommended": true,
+    "rank": 2,
+    "hook": "あなたはシャーロック・ホームズ。連載小説の挿絵どおりに、誰かが事件を一つずつ現実にしている——正午までに四枚目の絵を止めろ。",
+    "genres": [
+      "mystery",
+      "historical"
+    ],
+    "loop": [
+      "ロンドンの地図から印刷所、編集部、証人の家を訪ねる",
+      "現場を捜索し、ダイスで手がかりを探し、全員に話を聞く",
+      "手がかりが揃ったら、小説を犯罪に変えたのは誰かを暴く"
+    ],
+    "minutes": [
+      40,
+      60
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "dice",
+      "endings",
+      "clock",
+      "voice",
+      "live-image"
+    ],
+    "endings": 3,
+    "characters": [
+      {
+        "id": "watson",
+        "line": "古い友人。イーディスを守ると約束した"
+      },
+      {
+        "id": "edith",
+        "line": "第四章の住所を自ら直した小説家。怯えながらも自分の言葉で話したい"
+      },
+      {
+        "id": "tom",
+        "line": "印刷所の植字工。当番簿どおりに日付と時刻を答える"
+      }
+    ],
+    "for": [
+      "はじめての人",
+      "推理好き",
+      "ホームズ好き"
+    ]
+  },
+  "author": "Worldlines Canvas / AIRP",
+  "genre": "物語体験",
+  "tags": [
+    "短い物語",
+    "生成する世界"
+  ],
+  "material": "kraft",
+  "cover": "assets/scenes/intro.webp",
+  "extensions": [
+    {
+      "id": "airp:letter",
+      "version": ">=1.0.0",
+      "optional": false
+    },
+    {
+      "id": "airp:note",
+      "version": ">=1.0.0",
+      "optional": false
+    }
+  ],
+  "characters": [
+    {
+      "id": "watson",
+      "home": "map",
+      "role": "companion",
+      "avatar": "assets/motion/seedance/characters/watson-transparent.webp",
+      "description": "医師でありホームズの友人。イーディスを守る約束をしている。今朝の第三事件と挿絵の一致を確かめ、今日の四件目を止めてほしいと頼んだ。医学的観察と人間的な懸念を伝え、最終推論を横取りしない。",
+      "avatarVideo": "assets/motion/seedance/characters/watson-transparent.webm",
+      "name": "ワトソン"
+    },
+    {
+      "id": "edith",
+      "home": "world/london-map/edith-room",
+      "role": "npc",
+      "description": "ワトソンの患者で小説家。第四章の住所を訂正した本人。怖がっているが、自分の言葉で説明したい。",
+      "avatar": "assets/characters/edith.webp",
+      "name": "イーディス・ヴェイル"
+    },
+    {
+      "id": "tom",
+      "home": "world/london-map/print-shop",
+      "role": "npc",
+      "description": "印刷所の植字工。黒い指と当直帳。気取らず、記録にある日時をそのまま話す。",
+      "avatar": "assets/characters/tom.webp",
+      "name": "トム・ヘイル"
+    },
+    {
+      "id": "blackburn",
+      "home": "world/london-map/print-shop/editor-office",
+      "role": "npc",
+      "description": "原稿と校正刷りを管理する編集者。新聞の信用を気にするが、日時の説明は正確だ。",
+      "avatar": "assets/characters/blackburn.webp",
+      "name": "ブラックバーン編集長"
+    },
+    {
+      "id": "wayne",
+      "home": "world/london-map/print-shop/illustration-room",
+      "role": "npc",
+      "description": "連載小説の挿絵画家。袖に群青が残り、右手首をかばっている。作品への批評には敏感だ。",
+      "avatar": "assets/characters/wayne.webp",
+      "name": "アーサー・ウェイン"
+    }
+  ],
+  "opening": {
+    "greeter": "watson"
+  },
+  "createdAt": "2026-09-12T00:00:00Z",
+  "updatedAt": "2026-09-12T00:00:00Z",
+  "player": {
+    "id": "player",
+    "name": "シャーロック・ホームズ",
+    "avatar": "assets/characters/sherlock-holmes.webp"
+  },
+  "locale": "ja",
+  "entry": "map",
+  "rules": {
+    "system": "coc",
+    "characterChecks": true
+  },
+  "mode": "semi",
+  "clock": {
+    "path": "world/london-map/03-before-noon.md",
+    "key": "left",
+    "start": 10,
+    "label": "正午まで",
+    "time": {
+      "start": "10:00",
+      "end": "12:00"
+    }
+  },
+  "endings": [
+    {
+      "id": "caught",
+      "title": "第四の絵にいない人",
+      "path": "endings/caught/README.md"
+    },
+    {
+      "id": "half-truth",
+      "title": "守れたもの、取り逃がしたもの",
+      "path": "endings/half-truth/README.md"
+    },
+    {
+      "id": "fourth-picture",
+      "title": "第四の絵",
+      "path": "endings/fourth-picture/README.md",
+      "when": "clock <= 0"
+    }
+  ],
+  "mysteries": [
+    {
+      "id": "culprit",
+      "question": "イーディスの小説を、一件ずつ本当の事件に変えたのは誰か？",
+      "hint": "あの絵に最初に触れたのは誰の手か？",
+      "options": [
+        {
+          "id": "edith",
+          "label": "イーディス本人――小説を有名にするため",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "wayne",
+          "label": "挿絵画家アーサー・ウェイン",
+          "tier": "surface",
+          "clues": [
+            "world/london-map/print-shop/illustration-room/visible-details.md",
+            "world/london-map/third-crime-scene/pigment-record.md",
+            "world/london-map/print-shop/illustration-room/visible-details-half.md",
+            "world/london-map/third-crime-scene/pigment-record-half.md"
+          ],
+          "epilogue": "ウェインの名は連載の署名欄から消された。印刷所の人々が覚えているのは、彼の袖口から落ちなかった群青の一筋だけだ。"
+        },
+        {
+          "id": "unseen",
+          "label": "ウェイン――新聞社に挿絵を外されかけ、ロンドン中に自分の絵を先に見せたかった",
+          "tier": "hidden",
+          "clues": [
+            "world/london-map/print-shop/illustration-room/returned-proofs.md"
+          ],
+          "title": "突き返された校正刷り",
+          "epilogue": "突き返された校正刷りの束は、スコットランド・ヤードの証拠袋に収められた。そこに書かれた自分の赤鉛筆の書き込みを見て、ブラックバーン編集長は初めて考えを改めた。これからの連載は挿絵を載せ、画家の名も添える、と。"
+        },
+        {
+          "id": "blackburn",
+          "label": "ブラックバーン編集長――新聞の売上のため",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "order",
+      "question": "三つの事件は、何をなぞって仕組まれたのか？",
+      "hint": "受領票の時刻と、事件の時刻を比べてみよう。",
+      "options": [
+        {
+          "id": "reader",
+          "label": "小説の文章――犯人は取り憑かれた読者",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "picture",
+          "label": "挿絵――絵は事件より先に印刷所へ届いていた",
+          "tier": "surface",
+          "clues": [
+            "world/london-map/print-shop/receipt.md",
+            "world/london-map/morgue/time-record.md",
+            "world/london-map/print-shop/receipt-half.md",
+            "world/london-map/morgue/time-record-half.md"
+          ],
+          "epilogue": "『朝刊』に訂正の告知が載った。連載の挿絵は、今後は掲載当日に納めること。植字工のトムは、こんなに遅い規則の変更は初めて見たが、いちばん正しいとも言った。"
+        },
+        {
+          "id": "hat",
+          "label": "ウェイン自身の絵――現場には小説に一度も書かれていない物があった",
+          "tier": "hidden",
+          "clues": [
+            "world/london-map/edith-room/margin-note.md"
+          ],
+          "title": "小説に帽子はない",
+          "epilogue": "イーディスは三つの事件の原稿と挿絵を並べ、絵にだけある物を赤で囲んだ。あの帽子、あの椅子。これでようやく、あれは自分の書いた物語ではないと言い切れる、と彼女は言った。"
+        },
+        {
+          "id": "chance",
+          "label": "ただの偶然",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "address",
+      "question": "イーディスはなぜ、第四章の住所を存在しない通りに書き換えたのか？",
+      "hint": "地図でその通りを探してみよう。",
+      "options": [
+        {
+          "id": "ambush",
+          "label": "犯人をその通りへおびき出し、待ち伏せるため",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "test",
+          "label": "新しい住所を誰が読み、通りが見つからずにぼろを出すかを確かめるため",
+          "tier": "surface",
+          "clues": [
+            "world/london-map/edith-room/address-correction.md",
+            "world/london-map/unnamed-street/revision-scrap.md",
+            "world/london-map/edith-room/address-correction-half.md",
+            "world/london-map/unnamed-street/revision-scrap-half.md"
+          ],
+          "epilogue": "イーディスは存在しない通りを、第四章の決定稿にそのまま残した。読者は小説家の空想だと思っている。あれが彼女が自分の戸口にかけた閂だと知っているのは、ワトソンだけだ。"
+        },
+        {
+          "id": "typo",
+          "label": "ただの書き損じ",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "leak",
+      "question": "住所を書き換えた原稿は、どうやって犯人の手に渡ったのか？",
+      "hint": "編集室の回覧記録に、誰の名前が署名されている？",
+      "options": [
+        {
+          "id": "tom",
+          "label": "トムが植字の途中で盗み見た",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "forwarded",
+          "label": "ブラックバーン編集長がいつものとおり8時15分にウェインへ回した",
+          "tier": "surface",
+          "clues": [
+            "world/london-map/print-shop/editor-office/correction-log.md",
+            "world/london-map/print-shop/editor-office/correction-log-half.md"
+          ],
+          "epilogue": "ブラックバーンは編集室の決まりを改めた。訂正稿は作者と編集者のあいだだけで回し、見たい者は彼の机の前で読むこと。"
+        },
+        {
+          "id": "asked",
+          "label": "ウェインは受け取るとすぐその通りを尋ね回った――偽の住所がその朝のうちに彼を釣り上げた",
+          "tier": "hidden",
+          "clues": [
+            "world/london-map/unnamed-street/asked-the-way.md"
+          ],
+          "title": "道を尋ねた男",
+          "epilogue": "角の地図売りの老人は、写真の男に見覚えがあった。「こいつだよ。袖口が青くて、その通りはどこだと三度も訊いた」イーディスの試しは、誰が思ったよりも早く効いていた。"
+        },
+        {
+          "id": "edith-gave",
+          "label": "イーディスが自分で彼に渡した",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    }
+  ],
+  "reckoning": {
+    "epilogues": {
+      "all": "四つの秘密がすべて明らかになった。あの正午のことがベーカー街で語られるとき、決まって小説にはなかった帽子の話が出る――そして、自分の住所で第四章を書き上げたイーディスの話も。",
+      "most": "あなたは大半を見抜いた。残りの一点を知っているのはウェインだけだ。それでも、もう誰もイーディスの小説を犯罪の台本とは呼ばない。",
+      "few": "正午は過ぎたが、三つの事件の裏にはまだ語られていないことが多すぎる。次の連載が載るころ、あなたはもう一度印刷所を覗きに行くのかもしれない。"
+    }
+  },
+  "triggers": [
+    {
+      "id": "wayne-turns-up",
+      "label": "証拠が揃った：ウェインが現れる",
+      "kind": "state",
+      "when": "clues.held >= 3",
+      "clues": [
+        "world/london-map/third-crime-scene/pigment-record.md",
+        "world/london-map/print-shop/receipt.md",
+        "world/london-map/morgue/time-record.md",
+        "world/london-map/print-shop/editor-office/correction-log.md",
+        "world/london-map/print-shop/illustration-room/visible-details.md",
+        "world/london-map/edith-room/address-correction.md",
+        "world/london-map/unnamed-street/revision-scrap.md"
+      ],
+      "do": "wayne-turns-up",
+      "fallback": "角で誰かに呼び止められた。赤い封筒を抱えたアーサー・ウェインが霧の中に立っている。「ホームズさん、ちょうどウェアさんのところへ行くところでした」"
+    },
+    {
+      "id": "wayne-turns-up-anyway",
+      "label": "すべて調べたが決め手が足りない：それでもウェインは現れる",
+      "kind": "state",
+      "when": "clues.held >= 5",
+      "clues": [
+        "world/london-map/third-crime-scene/pigment-record-half.md",
+        "world/london-map/print-shop/receipt-half.md",
+        "world/london-map/morgue/time-record-half.md",
+        "world/london-map/print-shop/editor-office/correction-log-half.md",
+        "world/london-map/print-shop/illustration-room/visible-details-half.md",
+        "world/london-map/edith-room/address-correction-half.md",
+        "world/london-map/unnamed-street/revision-scrap-half.md"
+      ],
+      "do": "wayne-turns-up",
+      "fallback": "角で誰かに呼び止められた。赤い封筒を抱えたアーサー・ウェインが霧の中に立っている。「ホームズさん、ちょうどウェアさんのところへ行くところでした」"
+    },
+    {
+      "id": "too-hurt",
+      "label": "傷が重すぎる：ホームズが倒れる",
+      "kind": "state",
+      "when": "player.hp <= 0",
+      "do": "hurt-out"
+    }
+  ]
+}

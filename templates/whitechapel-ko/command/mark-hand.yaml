@@ -1,0 +1,8 @@
+name: "한 줄을 못 박는다: 그의 손이 현장에 있었다"
+desc: "세 번째 현장 또는 작업실 수색: 현장의 군청색과 멍 자국이 삽화가의 소맷단과 손목과 일치한다"
+do:
+  - action: set_status
+    with:
+      path: world/london-map/03-before-noon.md
+      values:
+        hand: yes

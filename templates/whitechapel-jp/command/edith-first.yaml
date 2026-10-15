@@ -1,0 +1,6 @@
+name: 'まずイーディスを'
+desc: 'ワトソンがイーディスを裏口から連れ出す。彼女は守れたが、ウェインも気配を察した'
+do:
+  - action: end
+    with:
+      ending: half-truth

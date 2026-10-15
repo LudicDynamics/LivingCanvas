@@ -1,0 +1,12 @@
+name: Accuse on the Chart
+desc: Expose only when evidence for all four threads is in the bag; when the threads aren't all pinned, don't end it, just leave a note on the card saying which thread is still missing
+do:
+  - action: end
+    when: has("player/decoy-ship.md") && has("player/customs-tunnel.md") && has("player/ledger-page.md") && has("player/second-wake.md")
+    with:
+      ending: exposed
+  - action: edit
+    when: status.decoy != "yes" || status.tunnel != "yes" || status.ledger != "yes" || status.wake != "yes"
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: "Checked it against the chart: there are still threads unpinned. Look for the spot without a checkmark and roll an investigation die there. The tide won't wait."

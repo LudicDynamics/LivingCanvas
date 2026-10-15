@@ -1,0 +1,6 @@
+name: Someone Was Alarmed
+desc: The Check lands on 96–100; to avoid the person who was alarmed you take another detour, and the time limit drops by one more
+do:
+  - action: tick
+    with:
+      by: "-1"

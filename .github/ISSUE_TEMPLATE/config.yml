@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security report
+    url: https://github.com/LudicDynamics/LivingCanvas/blob/main/SECURITY.md
+    about: Please report security problems privately by email, not as an issue.
+  - name: Hosted service (canvas.worldlines.gg) account or billing
+    url: mailto:info@worldlines.gg
+    about: Questions about Worldlines accounts, credits or billing.

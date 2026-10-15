@@ -1,0 +1,11 @@
+name: 밭 돌보기
+desc: 흙을 갈고 물 주고 잡초를 뽑는다. 작물이 조금 자란다
+do:
+  - action: add_state
+    with:
+      target: world
+      state: farm_growth
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "90"

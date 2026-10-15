@@ -1,0 +1,16 @@
+name: 유목을 주워 조선소로
+desc: 유목을 한 번 나를 때마다 낡은 배가 진수에 한 걸음 가까워진다
+do:
+  - action: add_state
+    with:
+      target: world
+      state: boat_progress
+      by: "1"
+  - action: add_state
+    with:
+      target: characters/kenta
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "90"

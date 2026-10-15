@@ -1,0 +1,270 @@
+/* ChoiceRail — the left column of the companion layout.
+
+   Two things it must not be: an opaque slab, and always in
+   the way. The canvas is the thing being looked at; a 260px paper panel parked
+   over its left quarter competes with it. So the rail is glass — the same
+   frosted treatment as the launcher tiles and the dock input — and it PARKS as
+   a thin strip at the very edge, sliding in on hover or keyboard focus.
+
+   Colours and radii come from the canonical `--ux-*` tokens; nothing here
+   invents a second palette. */
+
+.choice-rail {
+  position: absolute;
+  top: 150px;
+  left: 0;
+  width: 272px;
+  max-height: calc(100dvh - 220px);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  box-sizing: border-box;
+  border-radius: 0 var(--ux-radius-panel) var(--ux-radius-panel) 0;
+  /* Glass: the scene stays readable through it — but glass, not a window
+     
+     At 34% the rail vanished into whatever the scene happened to be
+     behind it; this is still see-through and no longer a guess. */
+  background: color-mix(in srgb, var(--ux-color-ink) 52%, transparent);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid color-mix(in srgb, var(--ux-color-cream) 22%, transparent);
+  border-left: none;
+  color: var(--ux-color-cream);
+  z-index: var(--depth-chrome-carried-reader);
+  /* Parked, the body is NOT a hit target: a canvas drag that starts at the left
+     edge must stay a canvas drag. Only the grip takes the pointer, and hovering
+     a child still matches `:hover` on this ancestor, which is what opens it. */
+  pointer-events: none;
+  /* `transform` (not `width`) so the slide is one compositor property and the
+     text never reflows. */
+  transform: translateX(calc(-100% + var(--choice-rail-peek)));
+  transition: transform var(--ux-motion-panel) var(--ux-motion-ink);
+  --choice-rail-peek: 14px;
+}
+
+/* Hover the strip, Tab into the rail, or tap the grip (touch has no hover) and
+   it comes in — and only then does the body take the pointer. */
+.choice-rail:hover,
+.choice-rail:focus-within,
+.choice-rail[data-rail-state='open'] {
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+/* The parked strip: a hairline of glass plus three dots, enough to say
+   "something lives here" without drawing a button. */
+.choice-rail__grip {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--choice-rail-peek);
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.choice-rail__grip::after {
+  content: '';
+  width: 3px;
+  height: 26px;
+  border-radius: var(--ux-radius-pill);
+  background: color-mix(in srgb, var(--ux-color-cream) 45%, transparent);
+}
+
+.choice-rail:hover .choice-rail__grip::after,
+.choice-rail:focus-within .choice-rail__grip::after {
+  background: color-mix(in srgb, var(--ux-color-cream) 70%, transparent);
+}
+
+.choice-rail__scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.choice-rail__group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.choice-rail__heading {
+  margin: 0;
+  font-family: var(--ux-font-machine);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--ux-color-cream) 62%, transparent);
+  text-shadow: var(--ux-shadow-chalk-glow-dark);
+  /* One line: a wrapped heading pushes the options it labels out of view. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* An option is text on glass — but it has to read as something you can PRESS.
+   Fully transparent with a transparent border, each row was words floating on
+   the scene. It
+   now carries a thin dark plate and a hairline, which is enough to say "button"
+   against both a bright window and a dark room; hover still adds brightness
+   rather than switching to a solid fill, so the column never becomes a slab. */
+.choice-rail__option {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 9px;
+  text-align: left;
+  border-radius: var(--ux-radius-touch);
+  border: 1px solid color-mix(in srgb, var(--ux-color-cream) 16%, transparent);
+  background: color-mix(in srgb, var(--ux-color-ink) 34%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--ux-color-cream) 10%, transparent);
+  color: color-mix(in srgb, var(--ux-color-cream) 92%, transparent);
+  font-family: var(--ux-font-human);
+  font-size: 14px;
+  line-height: 1.45;
+  text-shadow: var(--ux-shadow-chalk-glow-dark);
+  cursor: pointer;
+  transition: border-color var(--ux-motion-fast) var(--ux-motion-ink),
+    color var(--ux-motion-fast) var(--ux-motion-ink),
+    background var(--ux-motion-fast) var(--ux-motion-ink);
+}
+
+.choice-rail__option:hover:not(:disabled),
+.choice-rail__option:focus-visible {
+  border-color: color-mix(in srgb, var(--ux-color-cream) 55%, transparent);
+  background: color-mix(in srgb, var(--ux-color-ink) 20%, transparent);
+  color: var(--ux-color-cream);
+  outline: none;
+}
+
+.choice-rail__option:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.choice-rail__glyph {
+  flex: none;
+  width: 1.2em;
+  text-align: center;
+}
+
+.choice-rail__label {
+  flex: 1;
+  min-width: 0;
+}
+
+.choice-rail__hint {
+  display: block;
+  opacity: 0.6;
+}
+
+.choice-rail__empty {
+  margin: 0;
+  font-family: var(--ux-font-human);
+  font-size: 13px;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--ux-color-cream) 70%, transparent);
+  text-shadow: var(--ux-shadow-chalk-glow-dark);
+}
+
+.choice-rail__note {
+  font-family: var(--ux-font-ui);
+  font-size: 12px;
+  color: color-mix(in srgb, var(--ux-color-cream) 80%, transparent);
+  text-shadow: var(--ux-shadow-chalk-glow-dark);
+}
+
+.choice-rail__note--error {
+  color: var(--ux-color-rust);
+}
+
+/* Reduced motion: no slide. The rail still parks and still opens — it just
+   swaps state instead of travelling. */
+@media (prefers-reduced-motion: reduce) {
+  .choice-rail {
+    transition: none;
+  }
+}
+
+
+/* The places list is the same row as an option — same plate, same hairline —
+   with a rule above it, because it answers a different question: not "what can
+   I do here" but "where else is there". */
+.choice-rail__places {
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px solid color-mix(in srgb, var(--ux-color-cream) 18%, transparent);
+}
+
+/* Where you are: listed, so the column says your position, but never a button. */
+.choice-rail__place[data-place='here'] {
+  opacity: 1;
+  background: color-mix(in srgb, var(--ux-color-cream) 12%, transparent);
+  border-color: color-mix(in srgb, var(--ux-color-cream) 34%, transparent);
+  cursor: default;
+}
+
+/* The way out reads a shade stronger than the rooms further off. */
+.choice-rail__place[data-place='elsewhere'] .choice-rail__label {
+  opacity: 0.82;
+}
+:root[data-airp-blur="reduced"] .choice-rail { backdrop-filter: blur(8px) saturate(1.2); -webkit-backdrop-filter: blur(8px) saturate(1.2); }
+:root[data-airp-blur="off"] .choice-rail {
+  background: rgba(41, 40, 32, .96);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Narrow screens keep the same left-side vertical rail, parked by a reachable
+   touch grip. Only the grip is a hit target while closed, preserving canvas
+   drags and taps everywhere else. */
+@media (max-width: 1100px) {
+  .choice-rail {
+    top: 150px;
+    left: 0;
+    right: auto;
+    width: min(288px, calc(100vw - 56px));
+    max-height: calc(100dvh - 180px);
+    padding: 12px 52px 12px 12px;
+    --choice-rail-peek: 44px;
+  }
+
+  .choice-rail__grip {
+    top: 8px;
+    right: 0;
+    width: 44px;
+    height: 56px;
+    border-radius: var(--ux-radius-touch);
+    background: color-mix(in srgb, var(--ux-color-ink) 62%, transparent);
+    border: 1px solid color-mix(in srgb, var(--ux-color-cream) 22%, transparent);
+    border-right: none;
+  }
+
+  .choice-rail:not(:hover):not(:focus-within):not([data-rail-state='open']) .choice-rail__scroll {
+    visibility: hidden;
+  }
+
+  .choice-rail__scroll {
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .choice-rail__option {
+    min-height: 44px;
+  }
+
+  .choice-rail__hint {
+    display: block;
+  }
+}

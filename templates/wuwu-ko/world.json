@@ -1,0 +1,295 @@
+{
+  "id": "wuwu-ko",
+  "audio": {
+    "theme": "canvas-wuwu"
+  },
+  "name": "안개부두 마을: 밀물 전 · 한국어",
+  "version": "2.0.0",
+  "schema": 1,
+  "description": "조수가 밀려오기 전에 미끼 배, 옛 세관 터널, 영주가의 장부를 하나의 선으로 이어라. 조수는 여덟 걸음만 기다린다—지목, 놓침, 혹은 안개에 삼켜짐.",
+  "intro": {
+    "status": "playable",
+    "category": "trpg",
+    "recommended": true,
+    "rank": 1,
+    "hook": "안개 낀 밤 항구에 아무도 타지 않은 ‘유령선’이 떠내려온다. 물이 다시 차오르기까지 여덟 걸음 — 안개를 틈타 누가 무엇을 옮겼는지 밝혀내라.",
+    "genres": [
+      "mystery",
+      "adventure"
+    ],
+    "loop": [
+      "항구 해도에서 장소를 골라 수색하고, 주사위로 단서를 찾는다",
+      "수색할 때마다 물이 한 칸 차오른다. 실패해도 단서 절반은 얻는다",
+      "증거를 모아 항무소에서 범인을 지목한다"
+    ],
+    "minutes": [
+      30,
+      45
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "dice",
+      "clock",
+      "endings",
+      "voice"
+    ],
+    "endings": 3,
+    "characters": [
+      {
+        "id": "vera",
+        "line": "보랏빛 의수를 단 기술자. 입담이 센 당신의 파트너"
+      },
+      {
+        "id": "silver-kite",
+        "line": "빈 배의 현문을 지키는 엘프 기사. 증거로만 움직인다"
+      },
+      {
+        "id": "old-mo",
+        "line": "등대지기. 12분 동안 불을 끈 게 자신이라고 인정한다"
+      }
+    ],
+    "for": [
+      "처음 하는 사람",
+      "추리 좋아하는 사람",
+      "한 번에 끝내고 싶은 사람"
+    ]
+  },
+  "author": "Worldlines Canvas / AIRP",
+  "genre": "이야기 체험",
+  "tags": [
+    "단편 이야기",
+    "닫힌 결말",
+    "시간 제한 조사"
+  ],
+  "material": "parchment",
+  "cover": "assets/scenes/intro.webp",
+  "locale": "ko",
+  "mode": "closed",
+  "clock": {
+    "path": "world/tide.md",
+    "key": "left",
+    "start": 8,
+    "label": "조수가 다시 밀려오기 전",
+    "time": {
+      "start": "23:00",
+      "end": "01:00"
+    }
+  },
+  "endings": [
+    {
+      "id": "exposed",
+      "title": "폭로",
+      "path": "endings/exposed/README.md"
+    },
+    {
+      "id": "lost",
+      "title": "놓침",
+      "path": "endings/lost/README.md",
+      "when": "clock <= 0"
+    },
+    {
+      "id": "swallowed",
+      "title": "안개에 삼켜짐",
+      "path": "endings/swallowed/README.md"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "too-hurt",
+      "label": "다쳐서 움직일 수 없다",
+      "kind": "state",
+      "when": "player.hp <= 0",
+      "do": "hurt-out"
+    }
+  ],
+  "extensions": [
+    {
+      "id": "airp:letter",
+      "version": ">=1.0.0",
+      "optional": false
+    },
+    {
+      "id": "airp:note",
+      "version": ">=1.0.0",
+      "optional": false
+    }
+  ],
+  "characters": [
+    {
+      "id": "vera",
+      "home": "map",
+      "role": "companion",
+      "avatar": "assets/motion/seedance/characters/viola-transparent.webp",
+      "description": "의수에서 보랏빛이 도는 기술자. 키 고정쇠에 사적인 관심이 있다. 농담을 좋아하지만 자신이 보지 못한 범죄에 대해서는 말하지 않는다.",
+      "avatarVideo": "assets/motion/seedance/characters/viola-transparent.webm",
+      "name": "베라"
+    },
+    {
+      "id": "silver-kite",
+      "home": "world/harbor-chart/seventh-berth",
+      "role": "npc",
+      "avatar": "assets/motion/seedance/characters/silverkite-transparent.webp",
+      "description": "빈 상자와 현문을 지키는 정령 기사. 증거에 따라 말을 고른다.",
+      "avatarVideo": "assets/motion/seedance/characters/silverkite-transparent.webm",
+      "name": "은솔개"
+    },
+    {
+      "id": "old-mo",
+      "home": "world/harbor-chart/old-lighthouse",
+      "role": "npc",
+      "avatar": "assets/characters/old-mo.webp",
+      "description": "흉터를 지닌 등대지기. 그 십이 분의 소등이 자신의 짓임을 인정하지만, 자신이 모르는 추적선에 대해서는 말하지 못한다.",
+      "name": "모 영감"
+    }
+  ],
+  "opening": {
+    "greeter": "vera"
+  },
+  "player": {
+    "id": "player",
+    "name": "항구 조사원",
+    "avatar": "assets/characters/investigator.webp"
+  },
+  "entry": "map",
+  "rules": {
+    "system": "coc",
+    "characterChecks": true
+  },
+  "createdAt": "2026-09-26T00:00:00Z",
+  "updatedAt": "2026-09-26T00:00:00Z",
+  "mysteries": [
+    {
+      "id": "decoy",
+      "question": "7번 부두의 그 무인선은 대체 어떻게 된 일인가?",
+      "hint": "화물칸에 무엇이 실려 있었는지 생각해 봐라.",
+      "options": [
+        {
+          "id": "storm",
+          "label": "풍랑을 만나 선원들이 배를 버리고 탈출했고, 배는 스스로 항구로 떠내려왔다",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "decoy",
+          "label": "모두가 7번 부두만 바라보게 하려고 일부러 비워 내보낸 미끼다",
+          "tier": "surface",
+          "clues": [
+            "player/decoy-ship.md"
+          ],
+          "epilogue": "항무소가 7번 부두의 봉인을 거뒀다. 그 빈 배는 부두로 끌려 들어갔고, 다시는 아무도 그것을 유령선이라 부르지 않았다."
+        },
+        {
+          "id": "one-wake",
+          "label": "미끼와 터널은 같은 계획이다. 두 번째 항적이 터널 입구에서 나와 미끼 배를 스치듯 지나간다",
+          "tier": "hidden",
+          "clues": [
+            "player/second-wake.md"
+          ],
+          "title": "같은 항적",
+          "epilogue": "두 항적이 나란히 항무소 해도에 그려졌다. 그 뒤로 안개부두 항구는 안개가 낄 때마다 옛 세관 터널 입구에 사람을 세워 지켰다—미끼는 다시는 모든 이의 눈을 속이지 못했다."
+        },
+        {
+          "id": "smugglers",
+          "label": "밀수꾼들이 꺼진 등대 때문에 좌초해 밤을 틈타 상륙했다",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "ledger",
+      "question": "안개 속 그 배의 값을 누가 치렀는가?",
+      "hint": "그 키 고정쇠 밑에 무엇이 눌려 있는가?",
+      "options": [
+        {
+          "id": "vera",
+          "label": "베라—그 고정쇠는 그녀 자신의 수집품이다",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "lord",
+          "label": "영주가—선박 명부에 없는 그 배는 영주가의 장부에 기록돼 있다",
+          "tier": "surface",
+          "clues": [
+            "player/ledger-page.md"
+          ],
+          "epilogue": "영주가의 회계가 항무소로 불려가 심문을 받았다. 그들은 그것이 그저 “평범한 주문”이라고 했지만, 그 뒤로 마을 사람 중 누구도 “평범”이라는 두 글자를 믿지 않았다."
+        },
+        {
+          "id": "harbor-office",
+          "label": "항무소—그들은 보험금 한몫을 가로채려 했다",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "tunnel",
+      "question": "그 배는 언제, 어디서 항구를 빠져나갔는가?",
+      "hint": "등대의 일지와 터널 입구의 뻘.",
+      "options": [
+        {
+          "id": "daylight",
+          "label": "대낮에 7번 부두에서 당당히 빠져나갔다",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "tunnel",
+          "label": "등대가 꺼진 십이 분을 틈타 옛 세관 터널 입구로 출항했다",
+          "tier": "surface",
+          "clues": [
+            "player/customs-tunnel.md"
+          ],
+          "epilogue": "옛 세관 터널 입구에 나무 울타리가 박혔다. 모 영감은 앞으로 등대가 꺼질 때마다 먼저 터널 입구를 살펴보겠다고 했다."
+        },
+        {
+          "id": "drift",
+          "label": "배에는 아무도 없었고, 밀려오는 조수를 따라 떠내려갔다",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "old-mo",
+      "question": "모 영감은 그날 밤 왜 불을 껐는가?",
+      "hint": "그에게 직접 물어보고, 그가 모르는 일도 살펴봐라.",
+      "options": [
+        {
+          "id": "bribed",
+          "label": "그는 영주가의 돈을 받고 그 배를 위해 일부러 불을 껐다",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "his-own",
+          "label": "불을 끈 것은 그 자신의 사정이었고, 그 어둠을 틈타 배가 출항한 줄은 몰랐다",
+          "tier": "surface",
+          "clues": [
+            "player/customs-tunnel.md",
+            "player/customs-tunnel-half.md"
+          ],
+          "epilogue": "모 영감은 그 십이 분이 이용당했다는 말을 듣고 밤새 눈을 붙이지 못했다. 이튿날 그는 일지에 한 줄을 덧붙였다. “등이 꺼질 때, 터널 입구를 살필 것.”"
+        },
+        {
+          "id": "no-oil",
+          "label": "등유가 다 타 버려서 미처 채울 겨를이 없었다",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    }
+  ],
+  "reckoning": {
+    "epilogues": {
+      "all": "네 가지 비밀이 모두 드러났다. 조수가 다시 밀려올 무렵, 안개부두 마을은 그 밤에 무슨 일이 있었는지 이미 알고 있었다—그리고 베라도, 마침내 그 고정쇠의 내력을 말해 주었다.",
+      "most": "당신은 대부분을 꿰뚫어 보았다. 남은 한 조각은 안개부두 마을 사람들마다 말이 달랐지만, 적어도 다시는 아무도 그 무인선을 유령선이라 부르지 않았다.",
+      "few": "조수가 다시 밀려왔지만, 그 밤의 일은 아직도 너무 많이 설명되지 않았다. 어쩌면 다음번 안개가 낄 때, 당신은 다시 7번 부두로 돌아오게 될 것이다."
+    }
+  },
+  "view": {
+    "default": "map"
+  }
+}

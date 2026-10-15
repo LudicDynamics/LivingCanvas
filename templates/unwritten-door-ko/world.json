@@ -1,0 +1,81 @@
+{
+  "id": "unwritten-door-ko",
+  "audio": {
+    "theme": "firstsnow"
+  },
+  "name": "쓰이지 않은 문 · 한국어",
+  "version": "1.2.0",
+  "schema": 1,
+  "description": "열지 않은 편지와 전화기가 바깥에 기다리는 장소를 빚어낸다. 하나의 문, 하나의 살아 있는 새로운 장면.",
+  "intro": {
+    "status": "in-development",
+    "category": "trpg",
+    "rank": 7,
+    "hook": "비 오는 밤, 기억을 잃은 채 오두막에서 깨어난다. 뜯지 않은 편지와 꺼진 휴대폰 — 그 둘이 문밖의 세계를 정한다.",
+    "genres": [
+      "fantasy",
+      "adventure"
+    ],
+    "loop": [
+      "편지와 휴대폰을 살펴보고, 열지 말지 정한다",
+      "문을 열면 AI가 당신의 선택대로 새 장소와 그림을 즉석에서 만든다",
+      "아이리스와 밖으로: 정해진 각본 없이 주사위로 길을 연다"
+    ],
+    "minutes": [
+      15,
+      30
+    ],
+    "difficulty": "hardcore",
+    "mechanics": [
+      "dice",
+      "live-image",
+      "free-explore",
+      "voice"
+    ],
+    "endings": 0,
+    "characters": [
+      {
+        "id": "iris",
+        "line": "당신보다 먼저 이곳에 온 사람. 제 눈으로 본 것만 말한다"
+      }
+    ],
+    "for": [
+      "하드코어 샌드박스 TRPG 팬",
+      "AI의 즉흥 생성을 보고 싶은 사람"
+    ],
+    "unfinished": "개발 중: 쓰여 있는 건 첫 오두막뿐이고 문밖은 전부 생성됩니다. 아직 목표와 결말이 없습니다."
+  },
+  "author": "AIRP",
+  "genre": "서사 경험",
+  "tags": [
+    "단편 소설",
+    "생성형 세계"
+  ],
+  "material": "parchment",
+  "player": {
+    "id": "you",
+    "name": "당신"
+  },
+  "characters": [
+    {
+      "id": "iris",
+      "name": "아이리스",
+      "home": "map",
+      "role": "companion",
+      "description": "아이리스는 다른 유일한 문에서 들어왔다. 등불이 켜지는 것을 보았기 때문이다. 그녀는 너보다 이곳에 오래 있었지만 바깥이 무엇인지는 여전히 말할 수 없다. 그녀는 자신이 본 것을 보고하고 나머지는 건드리지 않는 법을 배웠다."
+    }
+  ],
+  "opening": {
+    "greeter": "iris"
+  },
+  "extensions": [],
+  "createdAt": "2026-09-12T00:00:00Z",
+  "updatedAt": "2026-09-12T00:00:00Z",
+  "locale": "ko",
+  "entry": "map",
+  "rules": {
+    "system": "dnd",
+    "proficiency": 2,
+    "characterChecks": true
+  }
+}

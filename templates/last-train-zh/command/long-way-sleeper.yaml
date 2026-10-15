@@ -1,0 +1,20 @@
+name: 绕远路：3号包厢
+desc: 包厢没搜成之后，夏澄叫钟怀礼出来查票，你从枕头底下拿走药板。多耗一步时间
+do:
+  - action: give
+    with:
+      path: player/pill-strip.md
+      title: 少了两粒的安眠药板
+      frontmatter:
+        type: note
+        image: assets/items/pill-strip.webp
+        portable: true
+      body: 钟怀礼枕头下的安眠药板，处方上印着他的名字。十粒装，少了两粒，锡纸是新撕开的。他说自己十一点半吃了药就睡了——可一个吃了两粒安眠药的人，睡得不该这么浅。
+  - action: set_status
+    with:
+      path: world/sleeper/05-long-way.md
+      values:
+        done: yes
+  - action: tick
+    with:
+      by: "-1"

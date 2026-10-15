@@ -1,0 +1,6 @@
+name: 睡到天亮
+desc: 回小屋睡一觉，醒来是第二天清晨
+do:
+  - action: pass_time
+    with:
+      until: dawn

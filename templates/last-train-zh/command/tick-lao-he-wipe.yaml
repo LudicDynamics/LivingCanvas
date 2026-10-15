@@ -1,0 +1,8 @@
+name: "角色回合：老贺擦了擦4号桌"
+desc: "老贺在4号桌边擦了两下：杯子不收、不动。"
+do:
+- action: set_status
+  with:
+    path: world/dining-car/lao-he.md
+    values:
+      wiped_table: 'yes'

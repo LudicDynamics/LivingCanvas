@@ -1,0 +1,3 @@
+[submodule "vendor/pi-rp"]
+	path = vendor/pi-rp
+	url = https://github.com/2722550596/pi-rp.git

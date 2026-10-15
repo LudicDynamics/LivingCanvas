@@ -1,0 +1,32 @@
+name: 17番席のノート
+desc: 最初のターンのあと、蘇禾が残したノートが2号車のキャンバスに置かれる（トリガー notebook）。
+do:
+- action: give
+  with:
+    path: world/seated-car/su-he-notebook.md
+    title: 蘇禾が残したノート
+    frontmatter:
+      type: note
+      image: assets/items/su-he-notebook.webp
+      portable: true
+      choice:
+        options:
+        - id: take
+          label: ノートを拾う
+      choice_actions:
+        take:
+          kind: take
+          paths:
+          - world/seated-car/su-he-notebook.md
+    body: '開いたページには、紙がへこむほど強い字で書かれている。
+
+
+      「今夜、この列車にあの人がいる。十二年、父の日誌をずっと持ち歩いてきた。嶺口に着いたら、みんなの前で認めさせる」
+
+
+      「あの人」が誰なのかは書いていない。'
+- action: event
+  with:
+    target: characters/xia-cheng
+    title: 17番席のノート
+    text: 夏澄が懐中電灯を17番席に向けた。帆布のバッグの下に、開いたままのノートが挟まっている。「これ、あの人の……見てみて。何て書いてある？」

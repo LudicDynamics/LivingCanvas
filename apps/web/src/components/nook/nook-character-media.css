@@ -1,0 +1,112 @@
+.nook-character-media {
+  /* One component plus a nameplate, never a second stage. */
+  --nook-portrait-w: min(24vw, 12.5rem);
+  --nook-portrait-h: min(42vh, 16.75rem);
+  position: absolute;
+  left: calc(var(--nook-portrait-x, 0.84) * 100%);
+  top: calc(var(--nook-portrait-y, 0.5) * 100%);
+  z-index: var(--depth-entity-base);
+  /* One component wide, slightly taller: the portrait is a movable prop in the
+     room, not a second stage backdrop. */
+  width: var(--nook-portrait-w);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+  cursor: grab;
+  transform: translate(-50%, -50%);
+}
+
+.nook-character-media__stage {
+  display: flex;
+  width: 100%;
+  height: var(--nook-portrait-h);
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.nook-character-media[data-nook-portrait-dragging='true'] {
+  cursor: grabbing;
+}
+
+.nook-character-media:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 0.35rem;
+}
+
+.nook-character-media__asset {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 1rem 1.75rem rgb(45 38 28 / 18%));
+  pointer-events: none;
+}
+
+/* Paper-chip nameplate, tucked under the figure like a caption card:
+   one line reading "Nanami, mid-thought." — name solid, status lighter. */
+.nook-character-media__nameplate {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  max-width: 100%;
+  padding: 0.28rem 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
+  border-radius: 0.4rem;
+  background: var(--paper);
+  box-shadow: 0 0.3rem 0.75rem rgb(45 38 28 / 12%);
+  pointer-events: none;
+}
+
+.nook-character-media__name,
+.nook-character-media__status {
+  overflow: hidden;
+  font-family: var(--ux-font-machine);
+  font-size: 0.75rem;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nook-character-media__name {
+  flex: 0 1 auto;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.nook-character-media__status {
+  flex: 0 1 auto;
+  color: var(--muted);
+}
+
+.nook-character-media__fallback {
+  display: grid;
+  width: min(9rem, 30vw);
+  height: min(12rem, 40vh);
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--ux-radius-panel);
+  background: color-mix(in srgb, var(--paper) 84%, transparent);
+  color: var(--muted);
+  font-family: var(--ux-font-human);
+  font-size: clamp(2rem, 6vw, 4rem);
+  box-shadow: var(--ux-shadow-soft);
+  pointer-events: none;
+}
+
+@media (max-width: 700px) {
+  .nook-character-media {
+    --nook-portrait-w: min(46vw, 11rem);
+    --nook-portrait-h: min(34vh, 14.75rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nook-character-media__asset {
+    filter: none;
+  }
+}

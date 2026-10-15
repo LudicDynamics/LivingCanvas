@@ -1,0 +1,10 @@
+name: Report the Truth by Radio
+desc: If you have found Su He and can produce evidence, report Zhong Huaili to the Lingkou Dispatcher. If the evidence is insufficient, this call wastes a step for nothing
+do:
+  - action: end
+    when: has("player/su-he-testimony.md") && has("player/logbook-page.md") || has("player/su-he-testimony.md") && has("player/pill-strip.md") && has("player/tea-bill.md")
+    with:
+      ending: found
+  - action: tick
+    with:
+      by: "-1"

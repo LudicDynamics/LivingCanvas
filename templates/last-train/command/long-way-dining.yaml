@@ -1,0 +1,20 @@
+name: "Long Way Around: Dining Car"
+desc: After the dining car search falls short, tip out the coal scuttle with Old He and find the Car 5 key. Costs one more step of time
+do:
+  - action: give
+    with:
+      path: player/freight-key.md
+      title: Red-tagged Car 5 key
+      frontmatter:
+        type: note
+        image: assets/items/freight-key.webp
+        portable: true
+      body: A key found in the coal scuttle beside the dining car's water boiler; the red tag reads "Car 5 Baggage Car." Someone did not dare hang it back in the cab, so they threw it here. With it, you can open the baggage car at the rear.
+  - action: set_status
+    with:
+      path: world/dining-car/05-long-way.md
+      values:
+        done: yes
+  - action: tick
+    with:
+      by: "-1"

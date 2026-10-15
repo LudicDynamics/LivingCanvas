@@ -1,0 +1,121 @@
+/* 「状态」「技能」 beside every avatar, and the one-level panel they open. Tokens only. */
+
+.avatar-quick {
+  display: flex;
+  gap: 4px;
+  pointer-events: auto;
+}
+
+.avatar-quick__button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  min-height: 24px;
+  padding: 0 8px 0 6px;
+  border-radius: var(--ux-radius-pill);
+  border: 1px solid var(--ux-glass-line);
+  background: var(--ux-glass-fill);
+  backdrop-filter: var(--ux-glass-blur);
+  -webkit-backdrop-filter: var(--ux-glass-blur);
+  color: var(--ux-glass-ink);
+  font: 600 11px/1 var(--ux-font-ui);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: var(--ux-glass-highlight);
+}
+
+/* A finger needs 40px: the visible pill stays small, the hit area does not. */
+.avatar-quick__button::before {
+  content: '';
+  position: absolute;
+  inset: -8px -2px;
+}
+
+.avatar-quick__button:hover,
+.avatar-quick__button:focus-visible { background: var(--ux-glass-panel); }
+
+.avatar-quick__button[aria-expanded='true'] {
+  background: var(--ux-glass-pressed);
+  color: var(--ux-glass-pressed-ink);
+  border-color: transparent;
+}
+
+.avatar-quick__icon { display: inline-grid; place-items: center; color: var(--ux-color-rust); }
+.avatar-quick__button[aria-expanded='true'] .avatar-quick__icon { color: inherit; }
+
+/* The player's own avatar: just above it, bottom left. */
+.avatar-quick--player {
+  position: absolute;
+  z-index: var(--depth-writer);
+  left: 22px;
+  bottom: 88px;
+}
+
+/* A companion in the rail: under the name and status. */
+.character-rail__item:has(.avatar-quick) {
+  block-size: auto;
+  min-block-size: var(--character-rail-row-height);
+  flex-basis: auto;
+}
+
+.character-rail__item .avatar-quick { margin-top: 2px; }
+
+/* The panel. */
+.avatar-sheet {
+  position: fixed;
+  z-index: var(--depth-chrome-world-panel);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: var(--ux-radius-panel);
+  border: 1px solid var(--ux-color-line);
+  background: var(--ux-color-cream);
+  color: var(--ux-color-ink);
+  box-shadow: var(--ux-shadow-halo);
+}
+
+.avatar-sheet__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 10px 8px 14px;
+  border-bottom: 1px solid var(--ux-color-line);
+  font-family: var(--ux-font-human);
+  font-size: 15px;
+}
+
+.avatar-sheet__head b { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.avatar-sheet__close {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--ux-radius-avatar);
+  border: 1px solid var(--ux-color-line);
+  background: transparent;
+  color: var(--ux-color-ink);
+  cursor: pointer;
+}
+
+.avatar-sheet__body {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 10px 14px 14px;
+}
+
+.avatar-sheet__empty { margin: 0; color: var(--ux-color-muted); font-size: 13px; }
+
+/* Narrow: a finger-sized pill; the player's pair sits above the drawer's line, and steps aside while a bottom
+   panel (the drawer, a dialogue stage) is up — that panel holds the bottom. */
+@media (max-width: 1100px) {
+  .avatar-quick__button { min-height: 32px; padding: 0 10px 0 8px; font-size: 12px; }
+  .avatar-quick__button::before { inset: -4px -2px; }
+  .avatar-quick--player { left: 12px; bottom: 132px; }
+  .airp-prototype[data-stage-on='true'] .avatar-quick--player { display: none; }
+}
+
+/* The drawer holds the bottom left while it is up: the player's pair waits under it. */
+.airp-prototype[data-stream-open='true'] .avatar-quick--player { display: none; }

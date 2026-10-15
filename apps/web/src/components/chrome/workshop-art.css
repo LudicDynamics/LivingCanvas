@@ -1,0 +1,272 @@
+/* The 素材 panel: creation mode only, docked right. */
+
+.workshop-art,
+.workshop-art__tab-handle {
+  position: fixed;
+  right: 12px;
+  z-index: var(--depth-chrome-art-panel);
+  color: var(--ux-glass-ink);
+  font-family: var(--ux-font-human);
+}
+
+.workshop-art__tab-handle {
+  top: 50%;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+  padding: 12px 6px;
+  border: 1px solid var(--ux-glass-line);
+  border-radius: var(--ux-radius-touch);
+  background: var(--ux-glass-panel);
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+}
+.workshop-art__tab-handle:hover { background: var(--ux-glass-hover); }
+
+.workshop-art {
+  top: 72px;
+  bottom: 72px;
+  width: min(360px, calc(100vw - 32px));
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--ux-glass-line);
+  border-radius: var(--ux-radius-panel);
+  background: var(--ux-glass-panel);
+  box-shadow: var(--ux-shadow-deep);
+  overflow: hidden;
+}
+
+.workshop-art__header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 8px 8px 10px;
+  border-bottom: 1px solid var(--ux-glass-line-soft);
+}
+.workshop-art__tabs { display: flex; flex: 1; gap: 4px; overflow-x: auto; }
+.workshop-art__tabs button,
+.workshop-art__switch button,
+.workshop-art__actions button,
+.workshop-art__go,
+.workshop-art__close {
+  border: 1px solid var(--ux-glass-line-soft);
+  border-radius: var(--ux-radius-pill);
+  padding: 4px 10px;
+  background: var(--ux-glass-well);
+  color: inherit;
+  font: 12px var(--ux-font-human);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.workshop-art__tabs button[aria-selected='true'],
+.workshop-art__switch button[aria-checked='true'] { background: var(--ux-glass-hover); border-color: var(--ux-glass-line); }
+.workshop-art button:disabled { opacity: 0.45; cursor: default; }
+.workshop-art button:focus-visible { outline: 2px solid var(--ux-color-rust); outline-offset: 2px; }
+
+.workshop-art__body { flex: 1; overflow-y: auto; padding: 10px 12px 16px; }
+.workshop-art__soon { margin: 16px 12px; color: var(--ux-glass-muted); font-size: 13px; }
+
+.workshop-art__section { margin-bottom: 14px; }
+.workshop-art__section h3 {
+  margin: 0 0 8px;
+  font: 11px/1.6 var(--ux-font-machine);
+  letter-spacing: 0.12em;
+  color: var(--ux-glass-muted);
+}
+.workshop-art__section ul { margin: 0; padding: 0; list-style: none; }
+.workshop-art__switch { display: flex; gap: 6px; margin-bottom: 8px; }
+
+.workshop-art__row { border-top: 1px solid var(--ux-glass-line-soft); padding: 6px 0; }
+.workshop-art__row-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  border: 0;
+  padding: 2px 0;
+  background: transparent;
+  color: inherit;
+  font: 13px var(--ux-font-human);
+  text-align: left;
+  cursor: pointer;
+}
+.workshop-art__row-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.workshop-art__row-kind { color: var(--ux-glass-faint); font-size: 11px; }
+.workshop-art__dot { width: 8px; height: 8px; border-radius: var(--ux-radius-avatar); border: 1px solid var(--ux-glass-line); }
+.workshop-art__row[data-exists='true'] .workshop-art__dot { background: var(--ux-glass-ink); }
+.workshop-art__go { margin: 4px 0 0 16px; }
+
+.workshop-art__editor { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+.workshop-art__prompt { display: flex; flex-direction: column; gap: 4px; font-size: 11px; color: var(--ux-glass-muted); }
+.workshop-art__prompt textarea {
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+  border: 1px solid var(--ux-glass-line-soft);
+  border-radius: var(--ux-radius-touch);
+  padding: 8px;
+  background: var(--ux-glass-well);
+  color: var(--ux-glass-ink);
+  font: 12.5px/1.5 var(--ux-font-human);
+}
+
+.workshop-art__preview {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  border-radius: var(--ux-radius-touch);
+  overflow: hidden;
+  background: var(--ux-glass-well);
+  border: 1px solid var(--ux-glass-line-soft);
+}
+.workshop-art__editor[data-kind='portrait'] .workshop-art__preview { aspect-ratio: 3 / 4; max-height: 320px; }
+.workshop-art__preview img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.workshop-art__preview[data-state='in-use'] img { opacity: 0.55; }
+.workshop-art__placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  overflow-y: auto;
+  border: 1px dashed var(--ux-glass-line);
+  border-radius: var(--ux-radius-touch);
+  font-size: 12px;
+  color: var(--ux-glass-muted);
+}
+.workshop-art__placeholder strong { color: var(--ux-glass-ink); font-weight: 600; }
+.workshop-art__badge {
+  position: absolute;
+  left: 6px;
+  bottom: 6px;
+  right: 6px;
+  padding: 3px 8px;
+  border-radius: var(--ux-radius-pill);
+  background: var(--ux-glass-panel);
+  font-size: 11px;
+}
+.workshop-art__path { font: 11px var(--ux-font-machine); color: var(--ux-glass-faint); overflow-wrap: anywhere; }
+.workshop-art__when { margin: 0; font-size: 12px; color: var(--ux-glass-muted); }
+.workshop-art__cutout { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+.workshop-art__actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.workshop-art__message { margin: 0; font-size: 12px; color: var(--ux-glass-muted); }
+
+/* The in-world map view's note when this place's map is not painted yet. */
+.workshop-map-note {
+  position: fixed;
+  left: 50%;
+  bottom: 88px;
+  transform: translateX(-50%);
+  z-index: var(--depth-chrome-art-panel);
+  max-width: min(520px, calc(100vw - 32px));
+  box-sizing: border-box;
+  padding: 10px 14px;
+  border: 1px dashed var(--ux-glass-line);
+  border-radius: var(--ux-radius-touch);
+  background: var(--ux-glass-panel);
+  color: var(--ux-glass-ink);
+  font: 12.5px/1.5 var(--ux-font-human);
+}
+.workshop-map-note p { margin: 4px 0 8px; color: var(--ux-glass-muted); max-height: 5.5em; overflow-y: auto; }
+.workshop-map-note button {
+  border: 1px solid var(--ux-glass-line-soft);
+  border-radius: var(--ux-radius-pill);
+  padding: 3px 10px;
+  background: var(--ux-glass-well);
+  color: inherit;
+  font: 12px var(--ux-font-human);
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .workshop-art { top: auto; bottom: 0; right: 0; left: 0; width: 100%; max-height: 70vh; border-radius: var(--ux-radius-panel) var(--ux-radius-panel) 0 0; }
+  .workshop-art__tab-handle { top: auto; bottom: 96px; transform: none; right: 0; border-radius: var(--ux-radius-touch) 0 0 var(--ux-radius-touch); }
+  .workshop-map-note { bottom: 72px; }
+  /* 24px-tall tabs and switches were a desktop mouse size; a thumb needs ~36. The
+     tab strip scrolls on its own, so it snaps tab by tab and keeps its height. */
+  .workshop-art__tabs { scroll-snap-type: x proximity; scrollbar-width: none; }
+  .workshop-art__tabs::-webkit-scrollbar { display: none; }
+  .workshop-art__tabs button { scroll-snap-align: start; }
+  .workshop-art__tabs button,
+  .workshop-art__switch button,
+  .workshop-art__actions button,
+  .workshop-art__go,
+  .workshop-art__close { min-height: 36px; padding: 6px 12px; font-size: 13px; }
+  .workshop-art__switch { flex-wrap: wrap; }
+}
+
+/* 设定: the create form's picker (create-world.css) on the panel's glass. */
+.workshop-art__setup {
+  --glass-line: var(--ux-glass-line-soft);
+  --glass-fill: var(--ux-glass-well);
+  --accent: var(--ux-glass-accent);
+}
+.workshop-art__setup button { font: inherit; color: inherit; cursor: pointer; }
+.workshop-art__setup button:disabled { cursor: default; opacity: .5; }
+.workshop-art__setup .create-world__types { grid-template-columns: 1fr 1fr; }
+.workshop-art__setup .create-world__langs { flex-wrap: wrap; border-radius: var(--ux-radius-touch); }
+
+/* 试玩: the one action an author takes between
+   every two edits, so it reads as the panel's primary button and stays on
+   screen when the panel is collapsed. */
+.workshop-art__trial {
+  border: 1px solid var(--ux-color-rust);
+  border-radius: var(--ux-radius-pill);
+  padding: 5px 14px;
+  background: var(--ux-color-rust);
+  color: var(--ux-color-cream);
+  font: 600 12px var(--ux-font-human);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.workshop-art__trial:hover { filter: brightness(1.08); }
+.workshop-art__trial:focus-visible { outline: 2px solid var(--ux-glass-ink); outline-offset: 2px; }
+.workshop-art__trial-float {
+  position: fixed;
+  right: 12px;
+  top: calc(50% + 72px);
+  z-index: var(--depth-chrome-art-panel);
+}
+.workshop-art__clear-play { margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--ux-glass-line-soft); }
+
+/* 设定 → 角色卡. */
+.sheet-editor { margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--ux-glass-line-soft); }
+.sheet-editor h3 { margin: 0 0 4px; font-size: 13px; }
+.sheet-editor__entry { margin-top: 8px; }
+.sheet-editor__entry summary { cursor: pointer; font-size: 12.5px; }
+.sheet-editor__abilities { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; margin: 6px 0; }
+.sheet-editor__abilities label { display: flex; align-items: center; gap: 4px; font-size: 11.5px; }
+.sheet-editor__abilities input { width: 100%; min-width: 0; }
+.sheet-editor__skills { margin: 6px 0 0; padding: 0; list-style: none; }
+.sheet-editor__skills li { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+.sheet-editor__label { flex: 1; min-width: 0; }
+.sheet-editor__skills input[type='number'] { width: 56px; }
+.sheet-editor__prof { display: flex; align-items: center; gap: 3px; font-size: 11.5px; white-space: nowrap; }
+.sheet-editor__add { display: flex; gap: 6px; margin-top: 6px; }
+.sheet-editor__add select { flex: 1; min-width: 0; }
+
+/* Ask before a rule-system switch replaces the sheets: a glass card at the top of 设定. */
+.workshop-ask {
+  margin: 0 0 10px;
+  border-radius: var(--ux-radius-panel);
+  background: color-mix(in srgb, var(--ux-glass-panel) 60%, transparent);
+  backdrop-filter: blur(6px);
+}
+.workshop-ask__card {
+  width: min(320px, 100%);
+  padding: 14px 16px;
+  border: 1px solid var(--ux-glass-line);
+  border-radius: var(--ux-radius-panel);
+  background: var(--ux-glass-panel);
+  color: var(--ux-glass-ink);
+  box-shadow: var(--ux-shadow-halo);
+}
+.workshop-ask__title { margin: 0 0 6px; font-weight: 600; }
+.workshop-ask__list { margin: 6px 0 10px; padding-left: 18px; font-size: 12px; overflow-wrap: anywhere; }
+.workshop-ask__go { border-color: var(--ux-color-rust); color: var(--ux-color-rust); }
+
+/* 设定 → 音乐 (MusicPicker.tsx): one row per slot — a select and its preview button. */
+.workshop-music__row { display: flex; align-items: flex-end; gap: 8px; margin: 6px 0; }
+.workshop-music__row label { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; font-size: 12px; }
+.workshop-music__row select { width: 100%; min-width: 0; }
+.workshop-music__play { flex: none; }

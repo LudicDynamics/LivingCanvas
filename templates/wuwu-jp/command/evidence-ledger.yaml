@@ -1,0 +1,23 @@
+name: 三本目の線を留める：領主家の帳簿
+desc: 工房の判定成功（60以下）または遠回りの後、「留め金が領主家の帳簿と一致」を証拠として鞄に入れ、海図に✓を付ける
+do:
+  - action: give
+    with:
+      path: player/ledger-page.md
+      title: 証拠 · 領主家の帳簿の一頁
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        ヴェラはこの舵の留め金に見覚えがある。注文は領主家の帳簿に記されているが、支払いの欄には港の船名簿にない船が書かれている。
+
+        留め金の新しい擦り傷の高さは、7番埠頭の無人船の舷側の擦り傷と一致する。帳簿のあの「存在しない船」は、あの夜、港にいたのだ。
+  - action: set_status
+    with:
+      path: world/harbor-chart/05-accuse.md
+      values:
+        ledger: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: ✓ 工房の線を留めた：留め金は領主家の帳簿に記されている。

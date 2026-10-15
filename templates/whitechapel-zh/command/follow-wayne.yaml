@@ -1,0 +1,11 @@
+name: '放他走，悄悄跟上'
+desc: '他在雾里等着你：你挨了重重一下，第四幅画成了真'
+do:
+  - action: add_state
+    with:
+      target: player
+      state: hp
+      by: "-5"
+  - action: end
+    with:
+      ending: fourth-picture

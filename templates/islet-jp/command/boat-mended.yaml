@@ -1,0 +1,22 @@
+name: 直した船が海へ
+desc: 流木がそろい、健太が漁船を仕上げて海に出し、舵柄をあなたに渡す
+do:
+  - action: set_state
+    with:
+      target: world
+      state: boat_fixed
+      value: "true"
+  - action: give
+    with:
+      path: player/boat-tiller.md
+      title: 直した船の舵柄
+      body: 健太が自分で削った新しい舵柄。握りにはまだ削りくずの匂いが残っている。これがあれば海藻島と鳥岩へ船を出せる。嵐の日は海に出ないこと。
+  - action: event
+    with:
+      target: world/dock
+      title: 直した船が海へ
+      text: 健太は最後の板を打ちつけ、一歩下がって長いこと眺めた。みんなで船を滑り台から押し出すと、船は二度揺れて、しっかりと浮かんだ。健太は削りたての舵柄をあなたの手に押しつけ、ひと言だけ言った。「天気のいい日に、外れ島を見てこい」
+  - action: show_cg
+    with:
+      path: assets/cg/boat-launch.webp
+      caption: 直した船が、海へ滑り出す。

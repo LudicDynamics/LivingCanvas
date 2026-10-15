@@ -1,0 +1,245 @@
+{
+  "world": "magic-academy",
+  "names": {
+    "en": "Magic Academy",
+    "ja": "魔法学院",
+    "zh": "魔法学院",
+    "ko": "마법 학원"
+  },
+  "koReview": "ko names seeded by hand 2026-10-03 (Korean editions) — TO REVIEW; the rest are filled by `localize-from-zh.mjs glossary --to ko`",
+  "terms": [
+    {
+      "en": "Magic Academy",
+      "ja": "魔法学院",
+      "zh": "魔法学院",
+      "ko": "마법 학원",
+      "note": "world title"
+    },
+    {
+      "en": "Seraphina",
+      "ja": "セラフィナ",
+      "zh": "塞拉菲娜",
+      "ko": "세라피나",
+      "note": "character"
+    },
+    {
+      "en": "Librarian",
+      "ja": "司書",
+      "zh": "图书管理员",
+      "ko": "사서",
+      "note": "character"
+    },
+    {
+      "en": "Night Library",
+      "ja": "夜の図書館",
+      "zh": "夜间图书馆",
+      "ko": "밤의 도서관",
+      "note": "location"
+    },
+    {
+      "en": "Chalk",
+      "ko": "초크",
+      "note": "현재 선택지와 생성 의도 (ko: model)"
+    },
+    {
+      "en": "README",
+      "ko": "리드미",
+      "note": "장소와 출구 정보 (ko: model)"
+    },
+    {
+      "en": "spell-atlas",
+      "ko": "주문 도감",
+      "note": "ko: model"
+    },
+    {
+      "en": "Magic Materials",
+      "ko": "마법 재료",
+      "note": "ko: model"
+    },
+    {
+      "en": "New Student Name Tag",
+      "ko": "신입생 명찰",
+      "note": "ko: model"
+    },
+    {
+      "en": "freshman badge",
+      "ko": "신입생 배지",
+      "note": "ko: model"
+    },
+    {
+      "en": "star fragment",
+      "ko": "별의 조각",
+      "note": "ko: model"
+    },
+    {
+      "en": "Still Warm Star Fragment",
+      "ko": "아직 따뜻한 별의 조각",
+      "note": "ko: model"
+    },
+    {
+      "en": "Small Hand Mirror",
+      "ko": "작은 손거울",
+      "note": "ko: model"
+    },
+    {
+      "en": "hand mirror",
+      "ko": "손거울",
+      "note": "ko: model"
+    },
+    {
+      "en": "Verb · Open",
+      "ko": "동사 · 열다",
+      "note": "ko: model"
+    },
+    {
+      "en": "Verb · Reflect",
+      "ko": "동사 · 비추다",
+      "note": "ko: model"
+    },
+    {
+      "en": "Open",
+      "ko": "열다",
+      "note": "ko: model"
+    },
+    {
+      "en": "Reflect",
+      "ko": "비추다",
+      "note": "ko: model"
+    },
+    {
+      "en": "star-chart-room",
+      "ko": "별지도 방",
+      "note": "ko: model"
+    },
+    {
+      "en": "changed-space",
+      "ko": "변화한 공간",
+      "note": "ko: model"
+    },
+    {
+      "en": "cost-trace",
+      "ko": "대가의 흔적",
+      "note": "ko: model"
+    },
+    {
+      "en": "my-spell",
+      "ko": "나의 주문",
+      "note": "ko: model"
+    },
+    {
+      "en": "return-gate",
+      "ko": "귀환의 문",
+      "note": "ko: model"
+    },
+    {
+      "en": "palm-stars",
+      "ko": "손바닥의 별들",
+      "note": "ko: model"
+    },
+    {
+      "en": "named-star-chart",
+      "ko": "이름 붙인 별지도",
+      "note": "ko: model"
+    },
+    {
+      "en": "observatory",
+      "ko": "천문대",
+      "note": "ko: model"
+    },
+    {
+      "en": "spell-draft",
+      "ko": "주문 초안",
+      "note": "ko: model"
+    },
+    {
+      "en": "casting-terms",
+      "ko": "시전 조건",
+      "note": "ko: model"
+    },
+    {
+      "en": "combination",
+      "ko": "조합",
+      "note": "ko: model"
+    },
+    {
+      "en": "cost",
+      "ko": "대가",
+      "note": "ko: model"
+    },
+    {
+      "en": "naming",
+      "ko": "이름 붙이기",
+      "note": "ko: model"
+    },
+    {
+      "en": "casting",
+      "ko": "시전",
+      "note": "ko: model"
+    },
+    {
+      "en": "roll_dice",
+      "ko": "주사위 굴리기",
+      "note": "ko: model"
+    },
+    {
+      "en": "choice_actions",
+      "ko": "선택 행동",
+      "note": "ko: model"
+    },
+    {
+      "en": "choice.options",
+      "ko": "선택지 옵션",
+      "note": "ko: model"
+    },
+    {
+      "en": "read(paths)",
+      "ko": "읽기(경로)",
+      "note": "ko: model"
+    },
+    {
+      "en": "take(paths)",
+      "ko": "줍기(경로)",
+      "note": "ko: model"
+    },
+    {
+      "en": "stage(paths)",
+      "ko": "준비(경로)",
+      "note": "ko: model"
+    },
+    {
+      "en": "enter(target)",
+      "ko": "입장(대상)",
+      "note": "ko: model"
+    },
+    {
+      "en": "character(character)",
+      "ko": "인물(캐릭터)",
+      "note": "ko: model"
+    },
+    {
+      "en": "reply(text)",
+      "ko": "응답(문장)",
+      "note": "ko: model"
+    },
+    {
+      "en": "writer(prompt)",
+      "ko": "작가(프롬프트)",
+      "note": "ko: model"
+    },
+    {
+      "en": "generate_image",
+      "ko": "이미지 생성",
+      "note": "ko: model"
+    },
+    {
+      "en": "bgVideo",
+      "ko": "배경 영상",
+      "note": "ko: model"
+    },
+    {
+      "en": "status.data",
+      "ko": "상태 데이터",
+      "note": "ko: model"
+    }
+  ]
+}

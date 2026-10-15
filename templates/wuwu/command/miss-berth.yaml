@@ -1,0 +1,30 @@
+name: Berth 7 not fully investigated
+desc: The Berth 7 Check lands on 61–100. On 61–95 you get only half a thread (paint flake); on 96–100 Silver Kite catches you (a character event). Either way, take the Long Way Around to pin it
+do:
+  - action: give
+    when: roll.rank >= 2
+    with:
+      path: player/decoy-ship-half.md
+      title: Half a Thread · Paint flake left by another ship
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        You do not get the cargo hold open in time; you only scrape a tar-black flake of paint off a scuff mark higher than the high-tide line. It does not match the unmanned ship's hull. Another ship squeezed past it.
+
+        This only proves a second ship exists, not that the unmanned ship was a decoy. To pin this thread, take the Long Way Around: ask Silver Kite face to face to open the cargo hold.
+  - action: event
+    when: roll.rank == 1
+    with:
+      target: characters/silver-kite
+      title: Caught by Silver Kite
+      text: You barely reach the top of the gangway when Silver Kite grabs you by the collar. He says nothing, only shuts the gangway on you. To learn what is in the cargo hold, you must go to him face to face and explain why you sneaked aboard.
+  - action: set_status
+    with:
+      path: world/harbor-chart/seventh-berth/05-long-way.md
+      values:
+        open: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: "✗ The Berth 7 thread is not pinned yet: the cargo hold was not opened. Take the Long Way Around and ask Silver Kite to open it face to face."

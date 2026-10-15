@@ -1,0 +1,13 @@
+@worldlines/identity-client 0.1.0
+source: the Worldlines identity service's Node client (services/identity/packages/client-node)
+commit: 0ecb320102a45139e4c6047bc3525ff1cf3fe74b (includes app login 817f33d / 58cb3b9)
+copied: 2026-10-01 (index.mjs, index.d.mts — unmodified; package.json license set to Apache-2.0 on 2026-10-08)
+previous: f609c4276fc97817317f68b125f4c27a12f1e7fb (2026-09-29)
+license: Apache-2.0, published with LivingCanvas (Copyright 2026 Ludic Dynamics)
+
+Vendored, not a dependency. To update, copy index.mjs and index.d.mts from a
+newer commit of the identity service and change the commit line above. Used by
+deploy/vps/seat-gateway.mjs (the image ships this directory: see .dockerignore),
+apps/server/src/sync/auth-provider.ts (sign-in: email code, Google / app login
+with PKCE, token refresh, deviceLogin) and apps/server/src/sync/resources.ts
+(tenancy: createResourcesClient).

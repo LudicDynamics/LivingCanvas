@@ -1,0 +1,8 @@
+name: "一拍结束"
+desc: "每拍加一（world.json 的 experience.turnEnd）：2车的出口在第四拍后出现。"
+do:
+- action: add_state
+  with:
+    target: world
+    state: turns
+    by: '1'

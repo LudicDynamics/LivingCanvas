@@ -1,0 +1,6 @@
+name: Explore the outer islet
+desc: Wander the outer islet for most of an afternoon
+do:
+  - action: pass_time
+    with:
+      minutes: "180"

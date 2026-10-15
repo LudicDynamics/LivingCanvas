@@ -1,0 +1,8 @@
+name: 'Pin a line: the picture came first'
+desc: 'Print shop or morgue search: the illustration reached the print shop before the incident'
+do:
+  - action: set_status
+    with:
+      path: world/london-map/03-before-noon.md
+      values:
+        picture: "yes"

@@ -1,0 +1,19 @@
+name: 'Wayne turns up'
+desc: 'Enough has been established: Wayne can’t sit still and stops Holmes with a red envelope'
+do:
+  - action: set_status
+    with:
+      path: world/london-map/03-before-noon.md
+      values:
+        arrived: "yes"
+  - action: edit
+    with:
+      path: world/london-map/03-before-noon.md
+      frontmatter:
+        title: 'Wayne Turns Up'
+      append_body: 'Twenty to twelve. Wayne stands in front of you with the red envelope under his arm and will not leave. Behind you, Watson says quietly, “Twenty minutes.”'
+  - action: event
+    with:
+      target: characters/wayne
+      title: 'Wayne turns up'
+      text: 'At twenty to twelve, Arthur Wayne stops you on the way to 221B. A red envelope is tucked under his arm; his right wrist is still bandaged. “The proof of the fourth illustration — I must hand it to Miss Weir myself. She changed the address, and I can’t find the street.” He is perfectly polite, but his eyes keep going toward Baker Street. Watson lowers his voice: “Holmes, twenty minutes to noon. Edith is still in the sitting room. We have to decide now.”'

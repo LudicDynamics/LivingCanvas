@@ -1,0 +1,10 @@
+name: 무전기로 진실을 보고한다
+desc: 쑤허를 찾고 증거도 내밀 수 있으면 중화이리를 링커우 관제사에게 보고한다. 증거가 부족하면 이 통화는 한 걸음을 헛되이 소모한다
+do:
+  - action: end
+    when: has("player/su-he-testimony.md") && has("player/logbook-page.md") || has("player/su-he-testimony.md") && has("player/pill-strip.md") && has("player/tea-bill.md")
+    with:
+      ending: found
+  - action: tick
+    with:
+      by: "-1"

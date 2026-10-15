@@ -1,0 +1,29 @@
+name: 車尾の扉
+desc: 乗客に尋ねたあと、八ターン目、または時間が迫ったとき、2号車の奥に5号車への扉が現れる（序章では鍵は要らない）。
+do:
+- action: give
+  with:
+    path: world/seated-car/freight-door.md
+    title: 5号車・荷物車
+    frontmatter:
+      type: gate
+      target: world/freight-car
+      choice:
+        options:
+        - id: go
+          label: 5号車へ行く
+        - id: together
+          label: 夏澄と一緒に行く
+      choice_actions:
+        go:
+          kind: enter
+          target: world/freight-car
+        together:
+          kind: enter
+          target: world/freight-car
+    body: 車両の奥、荷物車へ通じる扉は鍵がかかっておらず、引っかかっているだけだ。隙間から冷気が流れてくる。
+- action: event
+  with:
+    target: characters/xia-cheng
+    title: 車尾で物音
+    text: 夏澄がふいに顔を上げた。「聞いて——5号車のほうで物音がした。あの扉はいつも鍵がかかってるのに……少し開いてるみたい」

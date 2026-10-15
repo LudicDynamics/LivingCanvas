@@ -1,0 +1,8 @@
+name: 3号包厢没搜成
+desc: 包厢搜查落在 61–100：只看见药板一角。打开“绕远路”（05-long-way.md）
+do:
+  - action: set_status
+    with:
+      path: world/sleeper/05-long-way.md
+      values:
+        open: yes

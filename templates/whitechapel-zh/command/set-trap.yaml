@@ -1,0 +1,19 @@
+name: '将计就计'
+desc: '约他正午到印刷所中庭。他动手时推了你一把；只有手里还握着别的证据，雷斯垂德才扣得住他'
+do:
+  - action: add_state
+    with:
+      target: player
+      state: hp
+      by: "-2"
+  - action: end
+    when: 'status.picture == "yes"'
+    with:
+      ending: caught
+  - action: end
+    when: 'status.hand == "yes"'
+    with:
+      ending: caught
+  - action: end
+    with:
+      ending: half-truth

@@ -1,0 +1,8 @@
+name: "キャラクターターン：周子航が17番を見る"
+desc: "周子航がイヤホンを外して17番の座席を見る：何も動かさない。"
+do:
+- action: set_status
+  with:
+    path: world/seated-car/zhou-zihang.md
+    values:
+      looked_at_seat: 'yes'

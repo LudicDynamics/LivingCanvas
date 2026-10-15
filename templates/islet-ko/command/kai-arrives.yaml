@@ -1,0 +1,17 @@
+name: 카이가 연락선에서 내리다
+desc: 연락선 갑판에 줄곧 앉아 있던 나그네가 마침내 짐을 들고 내린다
+do:
+  - action: set_state
+    with:
+      target: world
+      state: kai_arrived
+      value: "true"
+  - action: event
+    with:
+      target: world/dock
+      title: 연락선이 새 사람을 데려오다
+      text: 연락선이 닿자, 늘 기타를 안고 갑판에 앉아 있던 남자가 작은 가방을 들고 부두로 내려왔다. 그는 도마에게 고개를 까딱하고, 섬에 잠시 머물고 싶다고 한다. 하나는 벌써 가게 위층 빈방을 빌리겠냐고 묻고 있다.
+  - action: show_cg
+    with:
+      path: assets/cg/ferry-arrival.webp
+      caption: 연락선이 새 사람을 데려왔다.

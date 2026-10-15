@@ -1,0 +1,27 @@
+name: Prologue fast-forward
+desc: "A player coming from the prologue skips Act One: the notebook and Zhou Zihang's account go in the bag, the clock moves one step (the question to the student), and the player lands on the train map"
+do:
+  - action: move
+    when: has("world/seated-car/su-he-notebook.md")
+    with:
+      from: world/seated-car/su-he-notebook.md
+      to: player/su-he-notebook.md
+  - action: give
+    with:
+      path: player/witness-account.md
+      title: Zhou Zihang's Testimony
+      frontmatter:
+        type: note
+        portable: true
+      body: "Student Zhou Zihang (Car 2 seat 20): around 12:50, a gray-haired old man in a gray wool coat helped Su He toward the rear of the train, saying she was \"carsick, taking her to the back for some air.\" Su He's steps were unsteady, as if she hadn't woken up. He didn't see the old man's face clearly."
+  - action: set_status
+    with:
+      path: world/seated-car/01-opening.md
+      values:
+        skipped: yes
+  - action: tick
+    with:
+      by: "-1"
+  - action: enter
+    with:
+      layer: map

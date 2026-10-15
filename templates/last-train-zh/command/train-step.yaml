@@ -1,0 +1,10 @@
+name: 时间往前走一步
+desc: 每做一次调查判定，离发车近一步；没查顺（判定失败）再多耗一步
+do:
+  - action: tick
+    with:
+      by: "-1"
+  - action: tick
+    when: 'roll.passed == false'
+    with:
+      by: "-1"

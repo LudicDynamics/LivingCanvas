@@ -1,0 +1,11 @@
+name: '伤得走不动了'
+desc: '隐藏生命值归零（world.json 触发器 too-hurt）：华生把你扶回221B，正午前再也赶不到了'
+do:
+  - action: event
+    with:
+      target: characters/watson
+      title: '华生把你扶了回去'
+      text: '你扶着墙，一步也迈不动了。华生赶到，把你的胳膊架上他的肩，一路扶回贝克街，嘴里只说了一句：“别说话，福尔摩斯。”正午之前的事，不会由你去拦了。'
+  - action: end
+    with:
+      ending: fourth-picture

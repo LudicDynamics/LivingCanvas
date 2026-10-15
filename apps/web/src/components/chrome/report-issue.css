@@ -1,0 +1,153 @@
+/* 「报告问题 / 卡住了」 sheet. The same glass vocabulary as the
+   contact panel (contact-panel.css): translucent sheet, hairline borders, cream
+   ink. Centered over a light scrim because it is a short form, not a dropdown;
+   portaled to <body> so the lobby's and the world's stacking never cover it. */
+
+.report-issue__trigger svg { width: 16px; height: 16px; }
+
+.report-issue__scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--depth-modal-dialogue, 51);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(16, 17, 27, .28);
+}
+
+.report-issue__sheet {
+  width: min(420px, 100%);
+  max-height: min(86vh, 680px);
+  overflow-y: auto;
+  padding: 18px;
+  border: 1px solid var(--glass-line, rgba(255, 255, 255, .22));
+  border-radius: 18px;
+  background: var(--glass-fill, rgba(16, 17, 27, .72));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), var(--ux-shadow-deep, 0 22px 50px rgba(35, 28, 20, .32));
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  color: var(--ux-color-cream, #fbf8f1);
+  text-align: left;
+  font: 400 14px/1.5 var(--ux-font-ui, system-ui, sans-serif);
+}
+
+.report-issue__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.report-issue__head h2 {
+  margin: 0;
+  font: 600 13px/1.3 var(--ux-font-ui, system-ui, sans-serif);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.report-issue__close {
+  display: inline-flex;
+  padding: 4px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  opacity: .72;
+}
+.report-issue__close:hover { opacity: 1; }
+.report-issue__close svg { width: 16px; height: 16px; }
+
+.report-issue__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.report-issue__chip {
+  padding: 6px 14px;
+  border: 1px solid var(--glass-line, rgba(255, 255, 255, .22));
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.report-issue__chip.is-on {
+  background: var(--ux-color-cream, #fbf8f1);
+  color: var(--ux-color-ink, #292820);
+}
+
+.report-issue__field {
+  position: relative;
+  display: block;
+}
+
+.report-issue__field textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 112px;
+  resize: vertical;
+  padding: 10px 12px 22px;
+  border: 1px solid var(--glass-line, rgba(255, 255, 255, .22));
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .08);
+  color: inherit;
+  font: inherit;
+}
+
+.report-issue__count {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  font-size: 11px;
+  opacity: .6;
+}
+
+.report-issue__context {
+  margin: 12px 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .06);
+  font-size: 12px;
+}
+.report-issue__context-title { margin: 0 0 6px; opacity: .72; }
+.report-issue__context dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 12px;
+  margin: 0;
+}
+.report-issue__context dt { opacity: .72; }
+.report-issue__context dd { margin: 0; overflow-wrap: anywhere; }
+.report-issue__privacy { margin: 8px 0 0; opacity: .72; }
+
+.report-issue__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.report-issue__send,
+.report-issue__cancel {
+  padding: 8px 18px;
+  border: 1px solid var(--glass-line, rgba(255, 255, 255, .22));
+  border-radius: 999px;
+  font: 600 13px/1.2 var(--ux-font-ui, system-ui, sans-serif);
+  cursor: pointer;
+}
+.report-issue__send {
+  background: var(--ux-color-cream, #fbf8f1);
+  color: var(--ux-color-ink, #292820);
+}
+.report-issue__send:disabled { opacity: .5; cursor: default; }
+.report-issue__cancel { background: transparent; color: inherit; }
+
+.report-issue__signin p,
+.report-issue__error p,
+.report-issue__done p { margin: 0 0 10px; }
+.report-issue__error { margin-bottom: 10px; }
+.report-issue__fallback { margin-top: 12px; }
+.report-issue__thanks { font-weight: 600; }

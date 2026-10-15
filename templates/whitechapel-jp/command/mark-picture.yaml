@@ -1,0 +1,8 @@
+name: '線を一本留める：絵が事件より先'
+desc: '印刷所か検死室の捜索：挿絵が事件より先に印刷所へ届いていた'
+do:
+  - action: set_status
+    with:
+      path: world/london-map/03-before-noon.md
+      values:
+        picture: "yes"

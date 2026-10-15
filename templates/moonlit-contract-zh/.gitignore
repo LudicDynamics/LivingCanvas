@@ -1,0 +1,4 @@
+# Keep the template's scene-initialization preference, never runtime databases.
+!.airpworld/
+.airpworld/*
+!.airpworld/settings.json

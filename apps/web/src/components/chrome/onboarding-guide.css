@@ -1,0 +1,141 @@
+/* OnboardingGuide — the dim, the hole, and the one sentence.
+   Tokens only; no literal colours (check:ux visual rule). */
+
+/* Nothing here is clickable. The scene keeps working underneath — including
+   the very control the sentence points at — so the guide can never trap a
+   player who decides to do something else first. */
+.onboarding-guide {
+  position: fixed;
+  inset: 0;
+  z-index: var(--depth-chrome-guide);
+  pointer-events: none;
+}
+
+/* The hole is the target's own box; the dim is this box's shadow, spread far
+   enough to reach any viewport. So the darkening is one paint, and the target
+   is the one rectangle nothing is painted over. */
+.onboarding-guide__hole {
+  position: absolute;
+  border-radius: var(--ux-radius-touch);
+  box-shadow: var(--ux-shadow-guide-scrim);
+  outline: 1px solid var(--ux-color-line);
+  transition: opacity var(--ux-motion-fast) var(--ux-motion-ink);
+}
+
+/* Chalk on glass, the same surface the rail notes and the writer sheet use. */
+.onboarding-guide__bubble {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: var(--ux-radius-panel);
+  border: 1px solid var(--ux-color-line);
+  background: var(--ux-color-cream);
+  box-shadow: var(--ux-shadow-halo);
+  pointer-events: auto;
+  /* Placement (lib/guide-placement.ts) caps the height to the room it has;
+     the sentence scrolls, the off switch below it never leaves view. */
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.onboarding-guide__scroll {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.onboarding-guide__line {
+  margin: 0;
+  font-family: var(--ux-font-hand);
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--ux-color-ink);
+}
+
+.onboarding-guide__off {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  min-height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ux-color-muted);
+  font-family: var(--ux-font-ui);
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.onboarding-guide__off:hover {
+  color: var(--ux-color-rust);
+}
+
+/* Phones (smoke test 2026-10-05): the bubble lands over the lobby's first tile row and took the tap meant for
+   「开始新游戏」 under it. There the sentence lets taps through; only the off switch stays a button. */
+@media (max-width: 520px) {
+  .onboarding-guide__bubble { pointer-events: none; }
+  .onboarding-guide__off { pointer-events: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .onboarding-guide__hole { transition: none; }
+}
+
+/* Teach-once cards (TutorialCueCard, the design notes): the guide's bubble without the dim — play goes on —
+   a quiet ring on what it is about, and one 「知道了」. */
+.tutorial-cue__ring {
+  position: absolute;
+  border-radius: var(--ux-radius-touch);
+  outline: 2px solid color-mix(in srgb, var(--ux-color-rust) 70%, transparent);
+  outline-offset: 0;
+  animation: tutorial-cue-ring var(--ux-duration-pulse) var(--ux-motion-ink) 3;
+}
+
+/* One pointer at a time: a teach-once card is short and one tap away, so the guide's step waits behind it. */
+:root[data-tutorial-cue] .onboarding-guide:not(.tutorial-cue) { display: none; }
+
+@keyframes tutorial-cue-ring {
+  50% { outline-color: color-mix(in srgb, var(--ux-color-rust) 25%, transparent); }
+}
+
+.tutorial-cue__title {
+  margin: 0 0 4px;
+  font-family: var(--ux-font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ux-color-rust);
+}
+
+.tutorial-cue__body {
+  margin: 0;
+  font-family: var(--ux-font-human);
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--ux-color-ink);
+}
+
+.tutorial-cue__ok {
+  flex: 0 0 auto;
+  align-self: flex-end;
+  padding: 4px 14px;
+  border: 0;
+  border-radius: var(--ux-radius-pill);
+  background: var(--ux-color-ink);
+  color: var(--ux-color-cream);
+  font-family: var(--ux-font-ui);
+  font-size: 13px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+@media (max-width: 520px) {
+  .tutorial-cue__ok { pointer-events: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tutorial-cue__ring { animation: none; }
+}

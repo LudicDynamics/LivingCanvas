@@ -1,0 +1,20 @@
+name: "Long Way Around: Compartment 3"
+desc: After the compartment search falls short, Xia Cheng calls Zhong Huaili out for a ticket check and you take the pill pack from under his pillow. Costs one more step of time
+do:
+  - action: give
+    with:
+      path: player/pill-strip.md
+      title: Sleeping pills, two missing
+      frontmatter:
+        type: note
+        image: assets/items/pill-strip.webp
+        portable: true
+      body: The sleeping pill pack under Zhong Huaili's pillow, with his name printed on the prescription. A ten-pill pack, two missing, the foil freshly torn. He said he took his medicine at 11:30 and went to sleep — but someone who took two sleeping pills should not sleep so lightly.
+  - action: set_status
+    with:
+      path: world/sleeper/05-long-way.md
+      values:
+        done: yes
+  - action: tick
+    with:
+      by: "-1"

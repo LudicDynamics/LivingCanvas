@@ -1,0 +1,6 @@
+name: 在外岛走走
+desc: 在外岛上慢慢走上大半个下午
+do:
+  - action: pass_time
+    with:
+      minutes: "180"

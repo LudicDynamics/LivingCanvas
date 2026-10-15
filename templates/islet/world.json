@@ -1,0 +1,1006 @@
+{
+  "id": "islet",
+  "name": "Shiomi Isle",
+  "version": "0.1.0",
+  "schema": 1,
+  "description": "A small island linked to the world by one ferry a week. You have come to take over an abandoned field; the islanders live their own days — even while you are away.",
+  "intro": {
+    "status": "in-development",
+    "category": "free",
+    "experimental": true,
+    "rank": 20,
+    "hook": "One ferry a week, seven islanders, one abandoned field. While you are away, island life goes on without you.",
+    "genres": [
+      "slice-of-life"
+    ],
+    "loop": [
+      "Fish, farm, and gather driftwood so Kenta can mend the boat",
+      "Find the islanders where their day takes them, and get to know them",
+      "Wait for the ferry, keep the festivals, and hear what happened while you were gone"
+    ],
+    "minutes": [
+      20,
+      120
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "free-explore",
+      "voice"
+    ],
+    "endings": 0,
+    "characters": [
+      {
+        "id": "toma",
+        "line": "The dock master who keeps the ferry radio. Sees everything, says little, soft at heart"
+      },
+      {
+        "id": "nagi",
+        "line": "A fisher girl, blunt and restless — likely the first to warm to you"
+      },
+      {
+        "id": "hana",
+        "line": "The shopkeeper, kind and nosy — every bit of island news passes through her"
+      },
+      {
+        "id": "kenta",
+        "line": "Carpenter and boatwright, quiet and steady; he talks with his hands"
+      }
+    ],
+    "for": [
+      "Fans of slow island days",
+      "Getting to know characters slowly"
+    ],
+    "unfinished": "Experimental: there is no ending — the milestones are the mended boat, the first harvest and the newcomer."
+  },
+  "author": "AIRP",
+  "genre": "Slice of life",
+  "tags": [
+    "living world",
+    "island",
+    "cozy"
+  ],
+  "locale": "en",
+  "material": "parchment",
+  "entry": "map",
+  "cover": "assets/scenes/cover.webp",
+  "audio": {
+    "theme": "canvas-divergence"
+  },
+  "player": {
+    "id": "player",
+    "name": "You"
+  },
+  "characters": [
+    {
+      "id": "toma",
+      "name": "Toma",
+      "home": "world/dock",
+      "role": "companion",
+      "avatar": "assets/characters/toma.webp",
+      "description": "Shiomi's dock master, sixty-eight, keeper of the ferry radio. He sees everything, says little, and is soft at heart."
+    },
+    {
+      "id": "nagi",
+      "name": "Nagi",
+      "home": "map",
+      "role": "npc",
+      "avatar": "assets/characters/nagi.webp",
+      "description": "A seventeen-year-old fisher girl, sun-browned and freckled. Blunt, restless, out at sea before daybreak. Likely the first to warm to you."
+    },
+    {
+      "id": "hana",
+      "name": "Hana",
+      "home": "world/store",
+      "role": "npc",
+      "avatar": "assets/characters/hana.webp",
+      "description": "The shopkeeper, thirty-four, round glasses, a pencil behind her ear. Kind and nosy — every bit of island news passes through her."
+    },
+    {
+      "id": "kenta",
+      "name": "Kenta",
+      "home": "world/dock",
+      "role": "npc",
+      "avatar": "assets/characters/kenta.webp",
+      "description": "The island's carpenter and boatwright, forty-two, big, shaved head wrapped in a towel. Quiet and steady; he talks with his hands. He is mending an old fishing boat and is short of wood."
+    },
+    {
+      "id": "suzu",
+      "name": "Suzu",
+      "home": "world/lighthouse",
+      "role": "npc",
+      "avatar": "assets/characters/suzu.webp",
+      "description": "The old lighthouse keeper, seventy-six, silver hair in a neat bun, binoculars around her neck. Sharp-tongued, but her weather-reading is never wrong; on Shiomi the weather is whatever she says."
+    },
+    {
+      "id": "ren",
+      "name": "Ren",
+      "home": "world/farm",
+      "role": "npc",
+      "avatar": "assets/characters/ren.webp",
+      "description": "The young farmer next door, twenty-four, tall and lanky under a frayed straw hat. So shy he blushes mid-sentence, but a fine hand at farming — your teacher, more or less."
+    },
+    {
+      "id": "mio",
+      "name": "Mio",
+      "home": "map",
+      "role": "npc",
+      "avatar": "assets/characters/mio.webp",
+      "description": "The island's only child, nine, black twin pigtails, an oversized yellow raincoat, red rubber boots, and a bug net taller than she is. Mischievous; she will show you every corner."
+    },
+    {
+      "id": "kai",
+      "name": "Kai",
+      "home": "world/ferry",
+      "role": "npc",
+      "avatar": "assets/characters/kai.webp",
+      "description": "A traveler who came on the ferry, twenty-eight, ash-gray hair tied low, linen shirt and a travel-worn long coat, an old guitar case on his back. Gentle, and always steering away from his past."
+    }
+  ],
+  "opening": {
+    "greeter": "toma"
+  },
+  "extensions": [],
+  "living": {
+    "start": {
+      "day": 1,
+      "time": "07:00"
+    },
+    "phases": [
+      {
+        "id": "dawn",
+        "from": "05:00",
+        "label": "Dawn"
+      },
+      {
+        "id": "morning",
+        "from": "07:00",
+        "label": "Morning"
+      },
+      {
+        "id": "noon",
+        "from": "11:00",
+        "label": "Midday"
+      },
+      {
+        "id": "afternoon",
+        "from": "14:00",
+        "label": "Afternoon"
+      },
+      {
+        "id": "evening",
+        "from": "18:00",
+        "label": "Evening"
+      },
+      {
+        "id": "night",
+        "from": "21:00",
+        "label": "Night"
+      }
+    ],
+    "seasons": [
+      {
+        "id": "spring",
+        "label": "Spring"
+      },
+      {
+        "id": "summer",
+        "label": "Summer"
+      },
+      {
+        "id": "autumn",
+        "label": "Autumn"
+      },
+      {
+        "id": "winter",
+        "label": "Winter"
+      }
+    ],
+    "daysPerSeason": 7,
+    "weekdays": [
+      {
+        "id": "mon",
+        "label": "Mon"
+      },
+      {
+        "id": "tue",
+        "label": "Tue"
+      },
+      {
+        "id": "wed",
+        "label": "Wed"
+      },
+      {
+        "id": "thu",
+        "label": "Thu"
+      },
+      {
+        "id": "fri",
+        "label": "Fri"
+      },
+      {
+        "id": "sat",
+        "label": "Sat"
+      },
+      {
+        "id": "sun",
+        "label": "Sun"
+      }
+    ],
+    "weather": [
+      {
+        "id": "sunny",
+        "label": "Sunny",
+        "weight": 5
+      },
+      {
+        "id": "cloudy",
+        "label": "Cloudy",
+        "weight": 3
+      },
+      {
+        "id": "rain",
+        "label": "Rain",
+        "weight": 2
+      },
+      {
+        "id": "storm",
+        "label": "Storm",
+        "weight": 1,
+        "seasons": [
+          "summer",
+          "autumn"
+        ]
+      },
+      {
+        "id": "snow",
+        "label": "Snow",
+        "weight": 3,
+        "seasons": [
+          "winter"
+        ]
+      }
+    ],
+    "pace": {
+      "perAction": 20
+    },
+    "catchUp": {
+      "ratio": 1,
+      "maxDays": 3,
+      "minMinutes": 30
+    },
+    "digest": {
+      "title": "While you were away",
+      "writer": true,
+      "minHours": 6
+    },
+    "display": {
+      "label": "Island time",
+      "text": "{season}, day {day} · {weekday} · {phase} · {weather}"
+    },
+    "residents": {
+      "toma": {
+        "schedule": [
+          {
+            "at": "world/dock",
+            "phases": [
+              "dawn",
+              "morning",
+              "noon",
+              "afternoon",
+              "evening"
+            ],
+            "weather": [
+              "storm"
+            ],
+            "text": "tying down the lines in the storm"
+          },
+          {
+            "at": "world/dock",
+            "phases": [
+              "dawn",
+              "morning",
+              "noon",
+              "afternoon"
+            ],
+            "text": "keeping the pier and listening to the ferry radio"
+          },
+          {
+            "at": "world/square",
+            "phases": [
+              "evening"
+            ],
+            "text": "smoking his pipe on a bench in the square, watching the sunset"
+          },
+          {
+            "at": "map",
+            "text": "gone home to sleep"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "calm": 5,
+              "cheerful": 2,
+              "tired": 2,
+              "grumpy": 1
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "Toma heard on the radio that weather was turning on the mainland, and re-tied every line on the pier ahead of it."
+          },
+          {
+            "text": "On the pier, Toma told Mio a story about a whale he met in his deep-sea days."
+          }
+        ]
+      },
+      "nagi": {
+        "schedule": [
+          {
+            "at": "world/dock",
+            "phases": [
+              "dawn"
+            ],
+            "weather": [
+              "sunny",
+              "cloudy"
+            ],
+            "text": "casting off for the morning's fishing"
+          },
+          {
+            "at": "world/beach",
+            "phases": [
+              "dawn",
+              "morning"
+            ],
+            "text": "mending nets and sorting fish on the sand"
+          },
+          {
+            "at": "world/store",
+            "phases": [
+              "noon"
+            ],
+            "text": "bringing the morning's catch to Hana's store"
+          },
+          {
+            "at": "world/dock",
+            "phases": [
+              "afternoon"
+            ],
+            "if": "world.boat_fixed == true",
+            "text": "taking the mended boat for a spin offshore"
+          },
+          {
+            "at": "world/beach",
+            "phases": [
+              "afternoon"
+            ],
+            "text": "sitting on the rocks, staring at the sea"
+          },
+          {
+            "at": "world/square",
+            "phases": [
+              "evening"
+            ],
+            "text": "bickering with Mio in the square"
+          },
+          {
+            "at": "map",
+            "text": "at home"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "cheerful": 5,
+              "tired": 2,
+              "grumpy": 2,
+              "calm": 1
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "Nagi landed a huge sea bass and told everyone she did it all by herself."
+          },
+          {
+            "text": "Nagi raced Mio to the buoy, lost, and refused to admit it."
+          },
+          {
+            "text": "Nagi found a glass float washed up on the rocks and hid it in her box."
+          }
+        ]
+      },
+      "hana": {
+        "schedule": [
+          {
+            "at": "world/square",
+            "phases": [
+              "evening"
+            ],
+            "weekdays": [
+              "fri",
+              "sat"
+            ],
+            "text": "selling sodas from a little stall in the square"
+          },
+          {
+            "at": "world/store",
+            "phases": [
+              "morning",
+              "noon",
+              "afternoon",
+              "evening"
+            ],
+            "text": "minding the shop, keeping the books, catching up on news"
+          },
+          {
+            "at": "world/store",
+            "text": "resting in her room behind the shop"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "cheerful": 6,
+              "calm": 2,
+              "tired": 2
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "Hana rearranged every shelf in the store and moved the seeds where nobody could miss them."
+          },
+          {
+            "text": "Hana taught Mio twenty new kanji and rewarded her with a pickled plum."
+          }
+        ]
+      },
+      "kenta": {
+        "schedule": [
+          {
+            "at": "world/store",
+            "phases": [
+              "morning",
+              "noon",
+              "afternoon"
+            ],
+            "weather": [
+              "rain",
+              "storm"
+            ],
+            "text": "whittling pegs in Hana's store out of the rain"
+          },
+          {
+            "at": "world/dock",
+            "phases": [
+              "morning",
+              "noon",
+              "afternoon"
+            ],
+            "text": "working on the old fishing boat in the boatyard"
+          },
+          {
+            "at": "world/square",
+            "phases": [
+              "evening"
+            ],
+            "text": "drinking tea in the square after work"
+          },
+          {
+            "at": "map",
+            "text": "gone home"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "calm": 6,
+              "tired": 3,
+              "cheerful": 1
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "Kenta planed a dried length of driftwood into a plank and ran his hand along it many times before setting it down."
+          },
+          {
+            "text": "Kenta fixed the wobbly leg of the bench in the square and told no one."
+          }
+        ]
+      },
+      "suzu": {
+        "schedule": [
+          {
+            "at": "world/square",
+            "phases": [
+              "morning"
+            ],
+            "weekdays": [
+              "wed"
+            ],
+            "text": "down from the lighthouse for her Wednesday shopping"
+          },
+          {
+            "at": "world/lighthouse",
+            "text": "watching the sky and polishing the lamp"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "calm": 4,
+              "grumpy": 3,
+              "cheerful": 2,
+              "tired": 1
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "Grandma Suzu said fog was coming, and the next morning it was so thick you could not see the pier."
+          },
+          {
+            "text": "Grandma Suzu noted in her notebook the first storm petrel back this year."
+          }
+        ]
+      },
+      "ren": {
+        "schedule": [
+          {
+            "at": "world/store",
+            "phases": [
+              "morning",
+              "noon",
+              "afternoon"
+            ],
+            "weather": [
+              "rain",
+              "storm"
+            ],
+            "text": "sheltering from the rain in Hana's store, leafing through a seed catalog"
+          },
+          {
+            "at": "world/farm",
+            "phases": [
+              "dawn",
+              "morning",
+              "noon",
+              "afternoon"
+            ],
+            "text": "working in his field"
+          },
+          {
+            "at": "world/square",
+            "phases": [
+              "evening"
+            ],
+            "weekdays": [
+              "sat",
+              "sun"
+            ],
+            "text": "helping carry things in the square on a weekend evening"
+          },
+          {
+            "at": "world/farm",
+            "text": "asleep early in his house by the field"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "calm": 4,
+              "cheerful": 3,
+              "tired": 3
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "Ren quietly set a row of bamboo canes along the edge of your field — for the beans to climb, he said."
+          },
+          {
+            "text": "Ren spent an afternoon carrying stock for Hana and only remembered his watering when he got back to the field."
+          }
+        ]
+      },
+      "mio": {
+        "schedule": [
+          {
+            "at": "world/lighthouse",
+            "phases": [
+              "morning",
+              "noon",
+              "afternoon"
+            ],
+            "weekdays": [
+              "sat",
+              "sun"
+            ],
+            "text": "pestering Grandma Suzu for stories, as she does every weekend"
+          },
+          {
+            "at": "world/beach",
+            "phases": [
+              "morning"
+            ],
+            "text": "hunting crabs in the rock pools"
+          },
+          {
+            "at": "world/store",
+            "phases": [
+              "noon"
+            ],
+            "text": "doing homework in Hana's store"
+          },
+          {
+            "at": "world/farm",
+            "phases": [
+              "afternoon"
+            ],
+            "text": "begging Ren for a cucumber"
+          },
+          {
+            "at": "world/square",
+            "phases": [
+              "evening"
+            ],
+            "text": "chasing the cat around the square"
+          },
+          {
+            "at": "map",
+            "text": "called home to bed by her grandma"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "cheerful": 7,
+              "tired": 2,
+              "grumpy": 1
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "Mio found a litter of newborn kittens in the grass behind the lighthouse and secretly took them milk."
+          },
+          {
+            "text": "Mio caught a rare blue swallowtail in her net and showed it to everyone before letting it go."
+          },
+          {
+            "text": "Mio spelled out an enormous WELCOME in shells on the sand; the tide took half of it."
+          }
+        ]
+      },
+      "kai": {
+        "schedule": [
+          {
+            "at": "world/ferry",
+            "if": "world.kai_arrived == false",
+            "text": "sitting on the ferry deck with his guitar"
+          },
+          {
+            "at": "world/beach",
+            "phases": [
+              "dawn",
+              "morning"
+            ],
+            "text": "writing a song alone by the sea"
+          },
+          {
+            "at": "world/square",
+            "phases": [
+              "noon",
+              "afternoon"
+            ],
+            "text": "playing guitar in the shade of the square"
+          },
+          {
+            "at": "world/store",
+            "phases": [
+              "evening"
+            ],
+            "text": "helping Hana close up the shop"
+          },
+          {
+            "at": "world/store",
+            "text": "in the room he rents above the store"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "calm": 5,
+              "cheerful": 2,
+              "tired": 2,
+              "grumpy": 1
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "At dusk a guitar tune nobody knew drifted across the bay, and stopped halfway through."
+          },
+          {
+            "text": "Toma said the traveler with the guitar nodded to him again, as if greeting the island."
+          }
+        ]
+      }
+    },
+    "events": [
+      {
+        "id": "ferry",
+        "label": "Ferry day",
+        "on": {
+          "weekdays": [
+            "mon"
+          ]
+        },
+        "phases": [
+          "morning",
+          "noon"
+        ],
+        "weather": [
+          "sunny",
+          "cloudy",
+          "rain",
+          "snow"
+        ],
+        "at": "world/dock",
+        "gather": [
+          "toma"
+        ]
+      },
+      {
+        "id": "market",
+        "label": "Sunday market",
+        "on": {
+          "weekdays": [
+            "sun"
+          ]
+        },
+        "phases": [
+          "morning",
+          "noon"
+        ],
+        "at": "world/square",
+        "gather": [
+          "hana",
+          "nagi",
+          "ren"
+        ]
+      },
+      {
+        "id": "spring-tide",
+        "label": "Spring Tide Shell Day",
+        "on": {
+          "seasons": [
+            "spring"
+          ],
+          "days": [
+            5
+          ]
+        },
+        "phases": [
+          "morning",
+          "noon",
+          "afternoon"
+        ],
+        "at": "world/beach",
+        "gather": "all"
+      },
+      {
+        "id": "lantern-festival",
+        "label": "Summer Lantern Festival",
+        "on": {
+          "seasons": [
+            "summer"
+          ],
+          "days": [
+            5
+          ]
+        },
+        "phases": [
+          "evening",
+          "night"
+        ],
+        "at": "world/square",
+        "gather": "all"
+      },
+      {
+        "id": "harvest-supper",
+        "label": "Harvest Supper",
+        "on": {
+          "seasons": [
+            "autumn"
+          ],
+          "days": [
+            5
+          ]
+        },
+        "phases": [
+          "evening"
+        ],
+        "at": "world/square",
+        "gather": "all"
+      },
+      {
+        "id": "year-end-tea",
+        "label": "Year-End Tea at the Lighthouse",
+        "on": {
+          "seasons": [
+            "winter"
+          ],
+          "days": [
+            7
+          ]
+        },
+        "phases": [
+          "evening",
+          "night"
+        ],
+        "at": "world/lighthouse",
+        "gather": "all"
+      }
+    ],
+    "variants": {
+      "world/farm": {
+        "base": "assets/scenes/farm.webp",
+        "when": [
+          {
+            "seasons": [
+              "summer"
+            ],
+            "bg": "assets/scenes/farm-summer.webp"
+          },
+          {
+            "seasons": [
+              "autumn"
+            ],
+            "bg": "assets/scenes/farm-autumn.webp"
+          },
+          {
+            "seasons": [
+              "winter"
+            ],
+            "bg": "assets/scenes/farm-winter.webp"
+          }
+        ]
+      },
+      "world/square": {
+        "base": "assets/scenes/square.webp",
+        "when": [
+          {
+            "events": [
+              "lantern-festival"
+            ],
+            "bg": "assets/scenes/square-festival.webp"
+          }
+        ]
+      },
+      "world/dock": {
+        "base": "assets/scenes/dock.webp",
+        "when": [
+          {
+            "weather": [
+              "storm"
+            ],
+            "bg": "assets/scenes/dock-storm.webp"
+          }
+        ]
+      },
+      "world/beach": {
+        "base": "assets/scenes/beach.webp",
+        "when": [
+          {
+            "phases": [
+              "evening",
+              "night"
+            ],
+            "bg": "assets/scenes/beach-dusk.webp"
+          }
+        ]
+      }
+    }
+  },
+  "triggers": [
+    {
+      "id": "first-harvest",
+      "label": "The first harvest",
+      "kind": "state",
+      "when": "world.farm_growth >= 4",
+      "do": "first-harvest"
+    },
+    {
+      "id": "harvest",
+      "label": "Harvest",
+      "kind": "state",
+      "when": "world.farm_growth >= 4",
+      "once": false,
+      "do": "harvest"
+    },
+    {
+      "id": "boat-mended",
+      "label": "The mended boat goes in the water",
+      "kind": "state",
+      "when": "world.boat_progress >= 3",
+      "do": "boat-mended"
+    },
+    {
+      "id": "kai-arrives",
+      "label": "The ferry brings a newcomer",
+      "kind": "state",
+      "when": "events.ferry == true && time.day >= 8 || time.day >= 9",
+      "do": "kai-arrives"
+    },
+    {
+      "id": "ferry-horn",
+      "label": "Ferry day",
+      "kind": "state",
+      "when": "events.ferry == true",
+      "once": false,
+      "fallback": "A horn sounds across the water — the weekly ferry noses up to the pier. Toma raises a hand to the boat."
+    },
+    {
+      "id": "storm-day",
+      "label": "Storm",
+      "kind": "state",
+      "when": "time.weather == \"storm\"",
+      "once": false,
+      "fallback": "The sky goes dark all at once and waves slap the pier. Grandma Suzu said the wind would rise today. No boat will sail in this."
+    },
+    {
+      "id": "spring-tide",
+      "label": "Spring Tide Shell Day",
+      "kind": "state",
+      "when": "events.spring_tide == true",
+      "once": false,
+      "fallback": "The spring tide has drawn far out, baring the whole flat. Everyone on the island has come to the beach with a bucket — it is Shell Day."
+    },
+    {
+      "id": "lantern-festival",
+      "label": "Summer Lantern Festival",
+      "kind": "state",
+      "when": "events.lantern_festival == true",
+      "once": false,
+      "fallback": "As dusk falls the lanterns in the square light one after another. Hana hands out sodas from her stall; Mio runs about with a lantern bigger than she is.",
+      "assets": [
+        {
+          "kind": "cg",
+          "path": "assets/cg/lantern-festival.webp",
+          "prompt": "Anime-painterly slice-of-life illustration in the style of a LivingCanvas world cover, soft cel shading with painterly light, a small island village on a calm sea, warm golden sunlight against sea-glass blues, fine film grain, no text, no lettering. The summer lantern festival in the village square at night, all the islanders in light yukata under strings of paper lanterns, Hana at a stall, Toma drumming, Mio with a candy apple, everyone looking up at small fireworks. Same characters as the references. Wide 16:9."
+        }
+      ]
+    },
+    {
+      "id": "harvest-supper",
+      "label": "Harvest Supper",
+      "kind": "state",
+      "when": "events.harvest_supper == true",
+      "once": false,
+      "fallback": "Long tables are pushed together in the square and every house brings a dish. Ren, red-faced, sets down a basket of turnips; Toma raises the first cup."
+    },
+    {
+      "id": "year-end-tea",
+      "label": "Year-End Tea at the Lighthouse",
+      "kind": "state",
+      "when": "events.year_end_tea == true",
+      "once": false,
+      "fallback": "On the last night of the year everyone squeezes into the little room at the foot of the lighthouse. Grandma Suzu brews a big pot of tea and says next year's first wind will come from the east."
+    }
+  ],
+  "createdAt": "2026-10-08T00:00:00Z",
+  "updatedAt": "2026-10-08T00:00:00Z"
+}

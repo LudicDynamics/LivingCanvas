@@ -1,0 +1,18 @@
+name: Harvest
+desc: Bring in the ripe crop and sow again
+do:
+  - action: set_state
+    with:
+      target: world
+      state: farm_growth
+      value: "1"
+  - action: add_state
+    with:
+      target: characters/ren
+      state: bond
+      by: "1"
+  - action: event
+    with:
+      target: world/farm
+      title: Harvest
+      text: Row after row of turnips come up and pile white along the edge of the field. Ren leans over the low wall, grinning, helps you fill the baskets, and helps you sow the next crop.

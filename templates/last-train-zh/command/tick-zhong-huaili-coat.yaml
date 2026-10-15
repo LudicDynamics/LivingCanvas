@@ -1,0 +1,8 @@
+name: "角色回合：钟怀礼理了理大衣"
+desc: "钟怀礼起身理了理门口大衣的领子：大衣原样挂着，什么也没少。"
+do:
+- action: set_status
+  with:
+    path: world/sleeper/grey-coat.md
+    values:
+      straightened: 'yes'

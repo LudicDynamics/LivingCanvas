@@ -1,0 +1,52 @@
+name: Bug report
+description: Something doesn't work as it should
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "Security problems: please email info@worldlines.gg instead (see SECURITY.md)."
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What did you do, what did you expect, what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: "1. Open world ...\n2. Drag ... onto ...\n3. ..."
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: How are you running it?
+      options:
+        - Local Node (pnpm dev / pnpm start)
+        - Browser mode
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: world
+    attributes:
+      label: World and language
+      placeholder: "e.g. whitechapel-jp"
+  - type: input
+    id: model
+    attributes:
+      label: Model provider and model
+      placeholder: "e.g. OpenAI gpt-4.1 / DeepSeek / a local OpenAI-compatible server"
+  - type: textarea
+    id: env
+    attributes:
+      label: Environment
+      description: OS, Node version (`node -v`), browser, and the commit (`git rev-parse --short HEAD`).
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Server console output or the browser console. Remove any keys first.
+      render: text

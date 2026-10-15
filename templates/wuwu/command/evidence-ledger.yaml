@@ -1,0 +1,23 @@
+name: "Pin the third thread: the Lord's Ledger"
+desc: After a successful Workshop Check (60 or under) or the Long Way Around, put "the clasp matches the Lord's Ledger" in your bag as evidence and tick it on the Harbor Map.
+do:
+  - action: give
+    with:
+      path: player/ledger-page.md
+      title: Evidence · A Page from the Lord's Ledger
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        Vera recognizes this kind of rudder clasp: the order is recorded in the Lord's Ledger, but the payment column names a ship that is not in the harbor's ship registry.
+
+        The height of the fresh scrape on the clasp matches the scrape along the side of the unmanned ship at Berth 7. That "nonexistent ship" in the ledger was in the harbor that night.
+  - action: set_status
+    with:
+      path: world/harbor-chart/05-accuse.md
+      values:
+        ledger: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: "✓ The Workshop thread is pinned: the clasp is recorded in the Lord's Ledger."

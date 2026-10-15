@@ -1,0 +1,31 @@
+name: 옛 등대를 다 못 살폈다
+desc: 옛 등대의 판정은 61–100에 떨어진다. 61–95은 반쪽 실마리(조석표)만 얻는다; 96–100는 모 영감의 망원경을 깨뜨린다(캐릭터에 떨어지는 사건). 둘 다 돌아가야 이 실마리를 못 박을 수 있다
+do:
+  - action: give
+    when: roll.rank >= 2
+    with:
+      path: player/customs-tunnel-half.md
+      title: 반쪽 실마리 · 오늘 밤의 조석표
+      frontmatter:
+        partial: true
+        type: note
+        portable: true
+      body: |
+        안개가 터널 입구를 덮어, 너는 모 영감 책상 위의 오늘 밤 조석표만 얻었다: 옛 세관 터널 입구가 언제 물 위로 드러나는지.
+
+        그것은 터널을 언제 쓸 수 있는지는 알려 주지만, 꺼진 십이 분이 바로 그곳을 향한다는 것은 알려 주지 못한다. 이 실마리를 못 박으려면 돌아가야 한다: 모 영감에게 일지를 가져와 조석표와 일 분씩 대조해 달라 청한다.
+  - action: event
+    when: roll.rank == 1
+    with:
+      target: characters/old-mo
+      title: 망원경이 깨졌다
+      text: 모 영감의 황동 망원경이 네 손에서 등불 회랑 난간을 넘어 돌에 부딪혀, 렌즈가 갈라졌다. 그는 그것을 보았지만, 한마디도 하지 않고 깨진 렌즈 조각을 하나하나 주워 담았다. 그날 밤의 일을 다시 그의 입에서 캐내려면, 먼저 제대로 사과해야 한다.
+  - action: set_status
+    with:
+      path: world/harbor-chart/old-lighthouse/05-long-way.md
+      values:
+        open: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: "✗ 옛 등대의 실마리는 아직 못 박지 못했다: 터널 입구를 제대로 못 봤다. 돌아가야 한다, 모 영감에게 일지를 일 분씩 대조해 달라 청해서."

@@ -1,0 +1,66 @@
+{
+  "sourceRepository": "worldlines-assets",
+  "encoding": "webp-q82",
+  "assets": [
+    {
+      "source": "wuwu-demo/backgrounds/intro.png",
+      "target": "assets/scenes/intro.webp",
+      "sourceSha256": "2b9d703a052a1aeb4906ac5521f39512ce394f62127313681d199dee0438504e",
+      "targetSha256": "75c3ad9c8c51bd4b852cca35936790ff3d9e272448b4abf8672e9c7b7bd02abf"
+    },
+    {
+      "source": "wuwu-demo/backgrounds/map.png",
+      "target": "assets/scenes/harbor-chart.webp",
+      "sourceSha256": "8e8334d195df05bb7f4af03b0b613bc27396eb7d192cec5bf33264dcbca6220a",
+      "targetSha256": "b200afbb245ec638d9425cb664fad4666866417dd0b35be0b98ee6146b5900a9"
+    },
+    {
+      "source": "wuwu-demo/backgrounds/dock.png",
+      "target": "assets/scenes/seventh-berth.webp",
+      "sourceSha256": "1662ba02d6625f3e1eb5938c90f05d3f4a2fccd8761305189f71d86f1d49b856",
+      "targetSha256": "d09c41badeeb3186996493971d7f4a720947cef6b1590e731b621a08bd005544"
+    },
+    {
+      "source": "wuwu-demo/backgrounds/workshop.png",
+      "target": "assets/scenes/workshop.webp",
+      "sourceSha256": "373fcbe936b555b08117fc34903dc51700ca541c64fcce51474c7b616b2c68de",
+      "targetSha256": "45eec55b95624324a477d8abe3c1f8be5a406732886b56d0b3cf59d355421249"
+    },
+    {
+      "source": "wuwu-demo/backgrounds/lighthouse.png",
+      "target": "assets/scenes/old-lighthouse.webp",
+      "sourceSha256": "fe5f109c3d2a597217470409c85ab62264210d8afee2ea83029617768d3f001b",
+      "targetSha256": "756af4e85df37b2c6b340de24e782948a3681bec2f151b284a30738c40a8619c"
+    },
+    {
+      "source": "wuwu-demo/backgrounds/beyond.png",
+      "target": "assets/scenes/beyond-the-fog.webp",
+      "sourceSha256": "92869cc32e390432a934b5165cdc769f9aae4c615cf1947afae7472fc1e273d7",
+      "targetSha256": "33af0f5a5e0aba869b4fbc91119da8a7a2f68afbebed1f020ff45444108840f5"
+    },
+    {
+      "source": "wuwu-demo/characters/viola/base.png",
+      "target": "assets/characters/vera.webp",
+      "sourceSha256": "6a06ccd3973ea5e45b122f1cf243a658da6fa6d258361c6f55d8d3c75180b83d",
+      "targetSha256": "d65b4f3bbb1d30090d919ae33b120858cdbc1dac8c209076ff467096f37bb84d"
+    },
+    {
+      "source": "wuwu-demo/characters/silverkite/base.png",
+      "target": "assets/characters/silver-kite.webp",
+      "sourceSha256": "9e9d62e819aae3f973cae910b20ca6a4619f051f9598b7e08054c3f77f827193",
+      "targetSha256": "a097355a6ea35083b5a2b3176cb56c935c9d6c488115d5f38cc7eb78e252633e"
+    },
+    {
+      "source": "wuwu-demo/characters/keeper/base.png",
+      "target": "assets/characters/old-mo.webp",
+      "sourceSha256": "cbda533d44614a6401cf8be908168e8957450878d2ffeea628a567f3e415a179",
+      "targetSha256": "66fad66963f0ed4cb59bed23e1adebd30d81497f5ff895c74440104629c1f317"
+    },
+    {
+      "source": "wuwu-demo/characters/detective/base.png",
+      "target": "assets/characters/investigator.webp",
+      "sourceSha256": "b5bfc33fcc9b8db425e3f0450f6d00cc69123f2232739d9d349c85ea17e7863c",
+      "targetSha256": "5b558c7c581358909117d7dbf31079f9a428a5eef0f1d172cd498e95a454fbe4"
+    }
+  ]
+}

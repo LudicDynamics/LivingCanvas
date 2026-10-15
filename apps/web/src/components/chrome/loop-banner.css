@@ -1,0 +1,32 @@
+/* 「第 N 轮」 (components/chrome/LoopBanner.tsx): one line under the top chrome, centred. */
+
+.loop-banner {
+  position: fixed;
+  top: 74px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--depth-chrome-badge);
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  width: min(420px, calc(100vw - 32px));
+  padding: 14px 18px;
+  border: 0;
+  border-radius: var(--ux-radius-panel);
+  background: var(--ux-color-cream);
+  color: var(--ux-color-ink);
+  box-shadow: var(--ux-shadow-soft);
+  cursor: pointer;
+  animation: loop-banner-in 900ms var(--ux-motion-ink) both;
+}
+.loop-banner__round { font-family: var(--ux-font-human); font-size: 22px; letter-spacing: 0.12em; }
+.loop-banner__line { font-family: var(--ux-font-human); font-size: 14px; opacity: 0.75; }
+
+@keyframes loop-banner-in {
+  from { opacity: 0; transform: translate(-50%, -6px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loop-banner { animation: none; }
+}

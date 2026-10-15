@@ -1,0 +1,371 @@
+/* Milestone presentation (components/chrome/MilestoneStage.tsx,
+   the design notes). Depth: the registered
+   --depth-milestone token (tools/ux-contract.json): above the canvas, dock and
+   dialogue, just below the CG reveal and the forced tutorial. */
+
+/* The opening (the save's first arrival, §3.2): the name, the clip full-size,
+   then it settles into the backdrop / the bag. Scenes entered later are the
+   popup further down. */
+.milestone-stage {
+  position: fixed;
+  inset: 0;
+  z-index: var(--depth-milestone);
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--ux-color-ink) 82%, transparent);
+  color: var(--ux-color-paper);
+  cursor: pointer;
+  outline: none;
+  transition: background var(--milestone-settle-ms, 900ms) ease-out;
+  animation: milestone-in 420ms var(--ux-motion-ink) both;
+}
+@keyframes milestone-in { from { opacity: 0; } to { opacity: 1; } }
+
+.milestone-stage__frame {
+  position: absolute;
+  inset: 0;
+  transform-origin: center;
+  transition:
+    transform var(--milestone-settle-ms, 900ms) var(--ux-motion-ink),
+    opacity var(--milestone-settle-ms, 900ms) ease-out;
+}
+.milestone-stage__frame .milestone-stage__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: milestone-in 600ms ease-out both;
+}
+
+/* Settle into the scene backdrop: the overlay clears and the clip dissolves
+   into the same picture living behind it. */
+/* The overlay still takes presses while it settles (under a second): a press
+   meant for Skip must not fall through to the writer button beneath it. */
+.milestone-stage[data-settle='backdrop'] { background: transparent; }
+.milestone-stage[data-settle='backdrop'] .milestone-stage__frame { opacity: 0; transform: scale(1.02); }
+/* Map view (no backdrop): the clip shrinks into the bag button (inline transform). */
+.milestone-stage[data-settle='bag'] { background: transparent; }
+.milestone-stage[data-settle='bag'] .milestone-stage__frame { border-radius: 10px; overflow: hidden; opacity: 0.9; }
+.milestone-stage[data-phase='settle'] .milestone-stage__title,
+.milestone-stage[data-phase='settle'] .milestone-stage__skip { opacity: 0; transition: opacity 240ms ease-out; }
+
+.milestone-stage__title {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  padding: 0 24px;
+  text-align: center;
+  animation: milestone-title 900ms var(--ux-motion-ink) both;
+}
+@keyframes milestone-title {
+  from { opacity: 0; transform: translateY(14px); letter-spacing: 0.02em; }
+  to { opacity: 1; transform: none; }
+}
+.milestone-stage__name {
+  max-width: min(900px, calc(100vw - 48px));
+  font: 400 clamp(30px, 5vw, 56px)/1.2 var(--ux-font-human);
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
+}
+.milestone-stage__name::after {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 2px;
+  margin: 18px auto 0;
+  background: var(--ux-color-rust);
+}
+/* While the clip plays, the title steps down to a caption in the corner. */
+.milestone-stage__title[data-small='true'] {
+  position: absolute;
+  left: max(28px, env(safe-area-inset-left));
+  bottom: max(28px, env(safe-area-inset-bottom));
+  justify-items: start;
+  text-align: left;
+  gap: 6px;
+  animation: none;
+}
+.milestone-stage__title[data-small='true'] .milestone-stage__name { font-size: 24px; }
+.milestone-stage__title[data-small='true'] .milestone-stage__name::after { display: none; }
+
+.milestone-stage__skip {
+  position: absolute;
+  right: max(24px, calc(env(safe-area-inset-right) + 16px));
+  bottom: max(22px, calc(env(safe-area-inset-bottom) + 16px));
+  min-height: 44px;
+  padding: 10px 20px;
+  border: 1px solid color-mix(in srgb, var(--ux-color-paper) 45%, transparent);
+  border-radius: var(--ux-radius-toolbar);
+  background: color-mix(in srgb, var(--ux-color-ink) 40%, transparent);
+  color: var(--ux-color-paper);
+  font: 14px var(--ux-font-ui);
+  cursor: pointer;
+}
+.milestone-stage__skip:focus-visible { outline: 2px solid var(--ux-color-paper); outline-offset: 2px; }
+
+/* ── The matched pair: an item obtained and a new place
+   opened share one frame — a dark card, a double hairline, a diamond eyebrow,
+   the name in the human face — in two accents: rust for a thing, sea-blue for
+   a place. Every movement below is a transform or an opacity on the card; the
+   scrim is a flat colour that fades once (no backdrop blur, nothing that
+   repaints the whole screen per frame). */
+.milestone-card {
+  --pop-accent: var(--ux-color-rust);
+  --pop-glow: 26px;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--pop-accent) 72%, transparent);
+  border-radius: var(--ux-radius-panel);
+  background: color-mix(in srgb, var(--ux-color-ink) 92%, transparent);
+  box-shadow:
+    inset 0 0 0 4px color-mix(in srgb, var(--ux-color-ink) 92%, transparent),
+    inset 0 0 0 5px color-mix(in srgb, var(--pop-accent) 26%, transparent),
+    0 0 var(--pop-glow) color-mix(in srgb, var(--pop-accent) 34%, transparent);
+  color: var(--ux-color-paper);
+  cursor: pointer;
+}
+.milestone-card[data-kind='scene'] { --pop-accent: color-mix(in srgb, var(--ux-color-blue) 45%, #a6e3f0); }
+:root[data-airp-shadow='reduced'] .milestone-card { --pop-glow: 12px; }
+:root[data-airp-shadow='off'] .milestone-card { --pop-glow: 0px; }
+
+.milestone-card__text { display: grid; gap: 3px; min-width: 0; }
+.milestone-card__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 600 11px/1.3 var(--ux-font-machine);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pop-accent);
+}
+.milestone-card__eyebrow::before {
+  content: '';
+  flex: none;
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+  transform: rotate(45deg);
+}
+.milestone-card__name { font: 18px/1.35 var(--ux-font-human); overflow-wrap: anywhere; }
+.milestone-card__summary {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font: 13px/1.5 var(--ux-font-human);
+  opacity: 0.8;
+}
+/* A place with no picture: a small diamond in the accent. */
+.milestone-card__glyph {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--pop-accent);
+  transform: rotate(45deg);
+}
+
+/* The quality preset's flourish: one light sweep across the card. */
+.milestone-item[data-flourish='true']::after,
+.milestone-pop[data-stage='shown'] .milestone-card[data-flourish='true']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 38%, color-mix(in srgb, var(--ux-color-paper) 22%, transparent) 50%, transparent 62%);
+  transform: translateX(-110%);
+  animation: milestone-sweep 1100ms 280ms ease-out both;
+}
+@keyframes milestone-sweep { to { transform: translateX(110%); } }
+
+/* Compact: the item card, and a new place with Effects off / reduced motion.
+   Low centre (the top centre belongs to story-event cards and the clock),
+   never modal, never focused. */
+.milestone-card--compact {
+  position: fixed;
+  bottom: max(112px, calc(env(safe-area-inset-bottom) + 100px));
+  left: 50%;
+  z-index: var(--depth-milestone);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: min(260px, calc(100vw - 40px));
+  max-width: min(460px, calc(100vw - 40px));
+  padding: 12px 20px 12px 12px;
+  transform: translateX(-50%);
+}
+.milestone-card .item-artwork {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--ux-color-paper) 92%, transparent);
+  color: var(--ux-color-ink);
+}
+.milestone-card .item-artwork img { width: 100%; height: 100%; object-fit: cover; }
+.milestone-card__thumb {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--ux-color-ink) 70%, black);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--pop-accent) 40%, transparent);
+}
+.milestone-card__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* The item: pops up, settles, fades (its own clock, ITEM_MS). */
+.milestone-item { animation: milestone-item 3200ms var(--ux-motion-ink) both; }
+@keyframes milestone-item {
+  0% { opacity: 0; transform: translateX(-50%) translateY(12px) scale(0.94); }
+  10% { opacity: 1; transform: translateX(-50%) scale(1.03); }
+  18% { transform: translateX(-50%) scale(1); }
+  86% { opacity: 1; }
+  100% { opacity: 0; }
+}
+/* A place, static: it only appears and goes (an opacity, nothing moves). */
+.milestone-card--compact[data-mode='static'] { transition: opacity var(--pop-exit-ms, 240ms) ease-out; }
+.milestone-card--compact[data-mode='static'][data-stage='loading'],
+.milestone-card--compact[data-mode='static'][data-stage='exit'] { opacity: 0; }
+.milestone-card--compact[data-mode='static'][data-stage='loading'] { transition: none; pointer-events: none; }
+
+/* A new place, with Effects on: a popup over a dim, click-to-close scrim. */
+.milestone-pop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--depth-milestone);
+  display: grid;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  pointer-events: none;
+  outline: none;
+}
+.milestone-pop__scrim {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--ux-color-ink) 44%, transparent);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: auto;
+  transition: opacity 360ms ease-out;
+}
+/* Invisible while its media decodes: takes no presses either. */
+.milestone-pop[data-stage='loading'] .milestone-pop__scrim,
+.milestone-pop[data-stage='loading'] .milestone-card { pointer-events: none; }
+.milestone-pop[data-stage='shown'] .milestone-pop__scrim { opacity: 1; }
+/* The scrim still takes presses while it goes (under a second): a press meant
+   for the popup must not fall through to the writer button beneath it. */
+.milestone-pop[data-stage='exit'] .milestone-pop__scrim { opacity: 0; transition-duration: var(--pop-exit-ms, 520ms); }
+
+.milestone-card--scene {
+  display: grid;
+  gap: 12px;
+  width: min(560px, 100%);
+  padding: 10px 10px 16px;
+  opacity: 0;
+  pointer-events: auto;
+  transform-origin: center;
+}
+.milestone-pop[data-stage='shown'] .milestone-card--scene { opacity: 1; animation: milestone-pop-in 560ms var(--ux-motion-ink) backwards; }
+@keyframes milestone-pop-in {
+  0% { opacity: 0; transform: translateY(14px) scale(0.9); }
+  60% { opacity: 1; transform: scale(1.015); }
+  100% { opacity: 1; transform: none; }
+}
+/* The exit: shrink and fade in place, or (a clip) fly into the bag — the
+   inline transform wins — and fade only as it lands. */
+.milestone-pop[data-stage='exit'] .milestone-card--scene {
+  opacity: 0;
+  transform: scale(0.96);
+  transition:
+    transform var(--pop-exit-ms, 520ms) var(--ux-motion-ink),
+    opacity var(--pop-exit-ms, 520ms) ease-in;
+}
+.milestone-pop[data-stage='exit'][data-mode='motion'] .milestone-card--scene {
+  transition:
+    transform var(--pop-exit-ms, 520ms) var(--ux-motion-ink),
+    opacity 200ms ease-in calc(var(--pop-exit-ms, 520ms) - 200ms);
+}
+
+.milestone-card__media {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--ux-color-ink) 80%, black);
+}
+.milestone-card__video,
+.milestone-card__still {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* No clip: the picture drifts (Ken Burns) for as long as the popup holds. */
+.milestone-pop[data-mode='still']:not([data-stage='loading']) .milestone-card__still {
+  animation: milestone-kenburns var(--pop-hold-ms, 4200ms) linear both;
+  will-change: transform;
+}
+@keyframes milestone-kenburns {
+  from { transform: scale(1.04) translate(0, 0); }
+  to { transform: scale(1.14) translate(-2%, -1.5%); }
+}
+.milestone-card--scene .milestone-card__text { gap: 4px; padding: 0 10px; }
+.milestone-card--scene .milestone-card__eyebrow { font-size: 12px; }
+.milestone-card--scene .milestone-card__name { font-size: clamp(21px, 3.2vw, 26px); line-height: 1.3; }
+
+.milestone-card__close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  /* No depth of its own: it comes after the media in the card, so it paints over it. */
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--ux-color-paper) 40%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ux-color-ink) 58%, transparent);
+  color: var(--ux-color-paper);
+  font: 20px/1 var(--ux-font-ui);
+  cursor: pointer;
+}
+.milestone-card__close:focus-visible { outline: 2px solid var(--ux-color-paper); outline-offset: 2px; }
+
+/* Replay from the bag: the same scene frame, larger; stays until closed. */
+.milestone-card--replay { width: min(960px, 100%); margin: 0; cursor: default; }
+.milestone-card--replay .milestone-card__video { object-fit: contain; }
+
+/* Phones (390): the popup takes the width, a little tighter. */
+@media (max-width: 480px) {
+  .milestone-card--scene { gap: 10px; padding: 8px 8px 14px; }
+  .milestone-card__close { top: 14px; right: 14px; }
+}
+/* Short landscape screens: the 16:9 window shrinks to fit the height. */
+@media (max-height: 520px) {
+  .milestone-card--scene { width: min(560px, 100%, calc((100dvh - 130px) * 16 / 9)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .milestone-stage,
+  .milestone-stage__title,
+  .milestone-stage__frame .milestone-stage__video,
+  .milestone-pop[data-stage='shown'] .milestone-card--scene,
+  .milestone-pop[data-mode='still']:not([data-stage='loading']) .milestone-card__still,
+  .milestone-pop[data-stage='shown'] .milestone-card[data-flourish='true']::after,
+  .milestone-item[data-flourish='true']::after { animation: none; }
+  .milestone-stage,
+  .milestone-stage__frame,
+  .milestone-pop__scrim,
+  .milestone-pop[data-stage='exit'] .milestone-card--scene,
+  .milestone-card--compact[data-mode='static'] { transition: none; }
+  .milestone-item { animation: none; }
+}

@@ -1,0 +1,65 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+*.tsbuildinfo
+.pnpm-store/
+.artifacts/
+
+# Keys. Your own model and voice keys live in .env.local at the repository root
+# (or in the in-app settings) and are never committed, nor any backup of them.
+.env
+.env.local
+.env.local*
+.local.env
+.local.env*
+*.env.bak
+.env.*.local
+# The build-mode file carries public values only and is tracked.
+!/config/.env.local
+
+# Your saves. New games, imported worlds and everything you play live here.
+worlds/
+# Playtest copies of a bundled world.
+templates/*-playtest/
+templates/*-playtest-*/
+
+# Platform assets: only the audio and the dice model are part of the repository.
+assets/**
+!assets/audio/
+!assets/audio/**
+assets/audio/licensed/
+!assets/models/
+!assets/models/arcane-d10/
+!assets/models/arcane-d10/*.glb
+!assets/models/arcane-d10/*.png
+!assets/models/arcane-d10/*.py
+!assets/models/arcane-d10/README.md
+!assets/models/arcane-d10/validation.json
+
+# Per-save runtime state under <world>/.airpworld/: databases, session
+# transcripts, snapshots, the TTS cache and per-save preferences. One rule per
+# kind, not the whole folder, because a template may track its own settings.
+.airpworld/*.db*
+**/.airpworld/*.db*
+**/.airpworld/prompt-presets/
+**/.airpworld/writer-settings.json
+**/.airpworld/model-preferences.json
+**/.airpworld/model-preferences.json.tmp
+**/.airpworld/settings.json
+**/.airpworld/settings.json.tmp
+**/.airpworld/tts-cache/
+**/.airpworld/sessions/
+**/.airpworld/snapshots/
+
+# Agent runtime (pi-rp). models.json and auth.json can hold real keys.
+.pi/agent/models.json
+.pi/agent/settings.json
+.pi/agent/auth.json
+.pi/agent/models-store.json
+.pi/agent/sessions/
+.pi/agent/bin/
+.pi/agent-account/
+.pi/memory.db*
+**/.pi/memory.db*
+**/.pi/*.db*

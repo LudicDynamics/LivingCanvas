@@ -1,0 +1,11 @@
+name: 照料你的田
+desc: 翻土、浇水、拔草，田里的庄稼长一截
+do:
+  - action: add_state
+    with:
+      target: world
+      state: farm_growth
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "90"

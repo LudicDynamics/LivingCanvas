@@ -1,0 +1,17 @@
+name: "Long Way Around: Chart"
+desc: After the decisive Check on the chart fails to see clearly, follow the wake alongshore. Costs one more stretch of tide; the half a thread in your hand (water trace) becomes complete evidence
+do:
+  - action: edit
+    when: has("player/second-wake-half.md")
+    with:
+      path: player/second-wake-half.md
+      frontmatter:
+        title: Half a Thread · Completed (see evidence in bag)
+  - action: set_status
+    with:
+      path: world/harbor-chart/06-long-way.md
+      values:
+        done: yes
+  - action: tick
+    with:
+      by: "-1"

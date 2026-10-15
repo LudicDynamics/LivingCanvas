@@ -1,0 +1,81 @@
+{
+  "id": "unwritten-door-zh",
+  "audio": {
+    "theme": "firstsnow"
+  },
+  "name": "未写之门 · 中文",
+  "version": "1.2.0",
+  "schema": 1,
+  "description": "一封未拆的信和一部手机，塑造着门外等待你的地方。一扇门，一个鲜活的新场景。",
+  "intro": {
+    "status": "in-development",
+    "category": "trpg",
+    "rank": 7,
+    "hook": "雨夜，你在木屋里醒来，什么都不记得。一封没拆的信、一部没电的手机——它们决定门外是什么世界。",
+    "genres": [
+      "fantasy",
+      "adventure"
+    ],
+    "loop": [
+      "查看信和手机，决定拆不拆、开不开",
+      "推开门，AI 按你的选择当场写出新的地方和画面",
+      "和艾莉丝一起往外走：没有剧本，掷骰闯出自己的路"
+    ],
+    "minutes": [
+      15,
+      30
+    ],
+    "difficulty": "hardcore",
+    "mechanics": [
+      "dice",
+      "live-image",
+      "free-explore",
+      "voice"
+    ],
+    "endings": 0,
+    "characters": [
+      {
+        "id": "iris",
+        "line": "比你先到这里的人，只说自己亲眼见过的事"
+      }
+    ],
+    "for": [
+      "喜欢硬核沙盒跑团",
+      "想看 AI 即兴生成"
+    ],
+    "unfinished": "开发中：只有开场的木屋是写好的，门外全靠生成，还没有目标和结局。"
+  },
+  "author": "AIRP",
+  "genre": "叙事体验",
+  "tags": [
+    "短篇故事",
+    "生成世界"
+  ],
+  "material": "parchment",
+  "player": {
+    "id": "you",
+    "name": "你"
+  },
+  "characters": [
+    {
+      "id": "iris",
+      "name": "艾莉丝",
+      "home": "map",
+      "role": "companion",
+      "description": "艾莉丝是从这里仅有的另一扇门走进来的，因为她看见灯亮了。她待在这地方的时间比你久，却仍说不出门外是什么；她学会了只讲自己见过的，其余的一概不碰。"
+    }
+  ],
+  "opening": {
+    "greeter": "iris"
+  },
+  "extensions": [],
+  "createdAt": "2026-09-12T00:00:00Z",
+  "updatedAt": "2026-09-12T00:00:00Z",
+  "locale": "zh-CN",
+  "entry": "map",
+  "rules": {
+    "system": "dnd",
+    "proficiency": 2,
+    "characterChecks": true
+  }
+}

@@ -1,0 +1,11 @@
+name: Keep Toma company
+desc: An hour sitting on the pier with Toma
+do:
+  - action: add_state
+    with:
+      target: characters/toma
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "60"

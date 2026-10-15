@@ -1,0 +1,6 @@
+name: 바깥섬 둘러보기
+desc: 바깥섬을 오후 내내 천천히 걷는다
+do:
+  - action: pass_time
+    with:
+      minutes: "180"

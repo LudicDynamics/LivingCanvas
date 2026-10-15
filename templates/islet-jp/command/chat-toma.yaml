@@ -1,0 +1,11 @@
+name: 灯真に付き合う
+desc: 桟橋で灯真と一時間座っている
+do:
+  - action: add_state
+    with:
+      target: characters/toma
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "60"

@@ -1,0 +1,8 @@
+name: "Character tick: Zhong Huaili straightens the coat"
+desc: "Zhong Huaili gets up and straightens the coat's collar by the door: it hangs as before, nothing missing."
+do:
+- action: set_status
+  with:
+    path: world/sleeper/grey-coat.md
+    values:
+      straightened: 'yes'

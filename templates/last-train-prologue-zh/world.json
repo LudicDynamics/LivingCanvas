@@ -1,0 +1,147 @@
+{
+  "id": "last-train-prologue-zh",
+  "audio": {
+    "theme": "canvas-mistport"
+  },
+  "name": "末班车 · 序章",
+  "version": "1.0.0",
+  "schema": 1,
+  "description": "山里的末班车停在隧道正中间，你旁边17号座的乘客不见了。五分钟的序章：说一句话、拿起一样东西、掷一次骰、推开一扇门。",
+  "intro": {
+    "status": "playable",
+    "category": "trpg",
+    "hidden": true,
+    "rank": 0,
+    "hook": "末班车停在隧道正中间，你旁边17号座的乘客不见了。五分钟，找到她。",
+    "genres": [
+      "mystery"
+    ],
+    "loop": [
+      "点一下就能回答列车员夏澄",
+      "拿起她留下的东西，掷一次骰问问醒着的人",
+      "推开车尾那扇门，找到她"
+    ],
+    "minutes": [
+      5,
+      10
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "dice",
+      "clock"
+    ],
+    "endings": 1,
+    "characters": [
+      {
+        "id": "xia-cheng",
+        "line": "二十四岁的列车员，是她发现17号座空了"
+      }
+    ],
+    "for": [
+      "第一次玩",
+      "只有五分钟"
+    ]
+  },
+  "author": "Worldlines Canvas / AIRP",
+  "genre": "故事体验",
+  "tags": [
+    "短篇故事",
+    "序章",
+    "新手"
+  ],
+  "locale": "zh-CN",
+  "material": "parchment",
+  "extensions": [
+    {
+      "id": "airp:note",
+      "version": ">=1.0.0",
+      "optional": false
+    }
+  ],
+  "mode": "closed",
+  "clock": {
+    "path": "world/departure-clock.md",
+    "key": "left",
+    "start": 4,
+    "label": "距离发车",
+    "time": {
+      "start": "01:10",
+      "end": "05:00"
+    }
+  },
+  "endings": [
+    {
+      "id": "found-her",
+      "title": "找到了她",
+      "path": "endings/found-her/README.md"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "notebook",
+      "label": "第一回合之后：17号座上的笔记本",
+      "kind": "state",
+      "when": "world.turns >= 1",
+      "do": "drop-notebook"
+    },
+    {
+      "id": "door",
+      "label": "车尾的门",
+      "kind": "state",
+      "when": "has(\"world/seated-car/witness-account.md\") || has(\"world/seated-car/witness-half.md\") || has(\"player/witness-account.md\") || has(\"player/witness-half.md\") || world.turns >= 8 || clock.left <= 1",
+      "do": "open-door"
+    },
+    {
+      "id": "found",
+      "label": "走进5车",
+      "kind": "place",
+      "when": {
+        "layer": "world/freight-car"
+      },
+      "ending": "found-her"
+    }
+  ],
+  "characters": [
+    {
+      "id": "xia-cheng",
+      "name": "夏澄",
+      "home": "world/seated-car",
+      "role": "companion",
+      "description": "这趟末班车的列车员，二十四岁。是她点人数时发现17号座空了。熟悉每一节车厢，但只说自己亲眼看到的事。",
+      "avatar": "assets/characters/xia-cheng.webp"
+    }
+  ],
+  "opening": {
+    "greeter": "xia-cheng",
+    "replies": [
+      "我睡着了，什么也没看见",
+      "她走之前说了什么吗？",
+      "别慌，我帮你找"
+    ]
+  },
+  "experience": {
+    "kind": "prologue",
+    "next": "last-train",
+    "maxTurns": 10,
+    "turnEnd": "turn-end"
+  },
+  "models": {
+    "character": [
+      { "model": "deepseek-v4-pro", "thinking": "off" },
+      { "model": "deepseek-v4-flash", "thinking": "off" }
+    ]
+  },
+  "player": {
+    "id": "player",
+    "name": "2车18号的乘客",
+    "avatar": "assets/characters/player.webp"
+  },
+  "entry": "world/seated-car",
+  "rules": {
+    "system": "coc",
+    "characterChecks": true
+  },
+  "createdAt": "2026-10-10T00:00:00Z",
+  "updatedAt": "2026-10-10T00:00:00Z",
+  "cover": "assets/scenes/tunnel-train.webp"
+}

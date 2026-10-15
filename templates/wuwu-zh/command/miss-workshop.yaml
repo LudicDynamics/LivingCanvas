@@ -1,0 +1,30 @@
+name: 工坊没查全
+desc: 工坊的判定落在 61–100。61–95 只拿到半条线（纹章拓印）；96–100 把扣件的销子弄断了（落在角色上的事件）。两种都要绕远路才能钉上这条线
+do:
+  - action: give
+    when: 'roll.rank >= 2'
+    with:
+      path: player/ledger-page-half.md
+      title: 半条线 · 纹章的拓印
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        扣件打开了，可纹章底下的订货印被锈盖住。你只拓下了领主家的纹章，和一个读不出的印。
+
+        纹章说明是哪一家，说明不了是哪艘船。要钉上这条线，得绕远路：请薇拉去翻工坊的订货簿。
+  - action: event
+    when: 'roll.rank == 1'
+    with:
+      target: characters/vera
+      title: 扣件的销子断了
+      text: 台钳一紧，扣件的销子崩断了，那道新擦痕跟着断下的一截一起没了。那是薇拉追了很久的东西。她盯着断口看了好一会儿，没开玩笑。
+  - action: set_status
+    with:
+      path: world/harbor-chart/workshop/05-long-way.md
+      values:
+        open: "yes"
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: ✗ 工坊的线还没钉上：订货印没读出来。得绕远路，请薇拉去翻订货簿。

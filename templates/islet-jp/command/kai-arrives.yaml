@@ -1,0 +1,17 @@
+name: 海が渡し船を降りる
+desc: ずっと渡し船の甲板に座っていた旅人が、ついに荷物を提げて降りてくる
+do:
+  - action: set_state
+    with:
+      target: world
+      state: kai_arrived
+      value: "true"
+  - action: event
+    with:
+      target: world/dock
+      title: 渡し船が新しい人を連れてくる
+      text: 渡し船が着くと、いつもギターを抱えて甲板に座っていた男が、小さなトランクを提げて桟橋を降りてきた。灯真に会釈して、しばらく島に住みたいと言う。花はもう、店の二階の空き部屋を借りないかと聞いている。
+  - action: show_cg
+    with:
+      path: assets/cg/ferry-arrival.webp
+      caption: 渡し船が新しい人を連れてきた。

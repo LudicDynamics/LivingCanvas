@@ -1,0 +1,23 @@
+name: 一本目の線を留める：囮船
+desc: 7番埠頭の判定成功（60以下）または遠回りの後、「無人船は囮」を証拠として鞄に入れ、海図に✓を付ける
+do:
+  - action: give
+    with:
+      path: player/decoy-ship.md
+      title: 証拠 · あの船は囮
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        無人船の船倉にはバラストと打ち付けられた空箱だけがあり、舷側の擦り傷は満潮線より高い——別の船が寄り添って通り過ぎた痕だ。
+
+        この船は事故で港に流れ着いたのではない。誰かの目を7番埠頭に集めるため、わざと放たれたのだ。
+  - action: set_status
+    with:
+      path: world/harbor-chart/05-accuse.md
+      values:
+        decoy: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: ✓ 7番埠頭の線を留めた：あの無人船はわざと放たれたものだ。

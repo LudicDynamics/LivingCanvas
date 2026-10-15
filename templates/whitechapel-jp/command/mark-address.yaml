@@ -1,0 +1,8 @@
+name: '線を一本留める：新しい住所を読んだのは誰か'
+desc: '客間、編集室、名もない通りの捜索：書き換えた住所は試しで、誰かがそれを読んだ'
+do:
+  - action: set_status
+    with:
+      path: world/london-map/03-before-noon.md
+      values:
+        address: "yes"

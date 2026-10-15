@@ -1,0 +1,1006 @@
+{
+  "id": "islet-ko",
+  "name": "시오미 섬",
+  "version": "0.1.0",
+  "schema": 1,
+  "description": "일주일에 한 번 오는 연락선으로만 바깥과 이어진 작은 섬. 당신은 버려진 밭을 물려받으러 왔다. 섬사람들은 각자의 하루를 산다 — 당신이 없는 동안에도.",
+  "intro": {
+    "status": "in-development",
+    "category": "free",
+    "experimental": true,
+    "rank": 20,
+    "hook": "일주일에 한 번 오는 연락선, 일곱 명의 섬사람, 버려진 밭 하나. 당신이 없는 동안에도 섬의 하루는 흘러간다.",
+    "genres": [
+      "slice-of-life"
+    ],
+    "loop": [
+      "낚시하고, 밭을 가꾸고, 유목을 주워 겐타의 배 수리를 돕는다",
+      "섬사람들의 하루를 따라가 만나고, 조금씩 친해진다",
+      "연락선을 기다리고, 축제를 보내고, 없는 동안 무슨 일이 있었는지 듣는다"
+    ],
+    "minutes": [
+      20,
+      120
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "free-explore",
+      "voice"
+    ],
+    "endings": 0,
+    "characters": [
+      {
+        "id": "toma",
+        "line": "연락선 무전을 맡은 부두지기. 다 보고 있지만 말수가 적고 마음이 여리다"
+      },
+      {
+        "id": "nagi",
+        "line": "어부의 딸. 입은 거칠고 가만있질 못한다. 아마 가장 먼저 친해질 사람"
+      },
+      {
+        "id": "hana",
+        "line": "잡화점 주인. 다정하고 소문을 좋아한다. 섬의 모든 소식이 그녀를 거친다"
+      },
+      {
+        "id": "kenta",
+        "line": "목수이자 배 목수. 말없고 믿음직하다. 손으로 말하는 사람"
+      }
+    ],
+    "for": [
+      "스타듀나 동물의 숲 같은 느긋한 섬 생활을 좋아하는 사람",
+      "캐릭터와 천천히 친해지고 싶은 사람"
+    ],
+    "unfinished": "실험 중: 엔딩은 없고, 이정표는 배 수리, 첫 수확, 새로 온 사람뿐이다."
+  },
+  "author": "AIRP",
+  "genre": "생활 시뮬레이션",
+  "tags": [
+    "살아 있는 세계",
+    "섬",
+    "힐링"
+  ],
+  "locale": "ko",
+  "material": "parchment",
+  "entry": "map",
+  "cover": "assets/scenes/cover.webp",
+  "audio": {
+    "theme": "canvas-divergence"
+  },
+  "player": {
+    "id": "player",
+    "name": "당신"
+  },
+  "characters": [
+    {
+      "id": "toma",
+      "name": "도마",
+      "home": "world/dock",
+      "role": "companion",
+      "avatar": "assets/characters/toma.webp",
+      "description": "시오미 섬의 부두지기, 예순여덟. 연락선 무전을 맡고 있다. 다 보고 있지만 말수가 적고 마음이 여리다."
+    },
+    {
+      "id": "nagi",
+      "name": "나기",
+      "home": "map",
+      "role": "npc",
+      "avatar": "assets/characters/nagi.webp",
+      "description": "열일곱 살 어부의 딸. 볕에 그을리고 주근깨투성이다. 입이 거칠고 가만있질 못하며, 날이 밝기 전에 바다로 나간다. 아마 가장 먼저 친해질 사람."
+    },
+    {
+      "id": "hana",
+      "name": "하나",
+      "home": "world/store",
+      "role": "npc",
+      "avatar": "assets/characters/hana.webp",
+      "description": "잡화점 주인, 서른넷. 동그란 안경에 귀에는 연필. 다정하고 소문을 좋아하며, 섬의 모든 소식이 그녀를 거친다."
+    },
+    {
+      "id": "kenta",
+      "name": "겐타",
+      "home": "world/dock",
+      "role": "npc",
+      "avatar": "assets/characters/kenta.webp",
+      "description": "섬의 목수이자 배 목수, 마흔둘. 덩치가 크고 민머리에 수건을 둘렀다. 말없고 믿음직하며 손으로 말한다. 낡은 고깃배를 고치는 중인데 목재가 모자라다."
+    },
+    {
+      "id": "suzu",
+      "name": "스즈",
+      "home": "world/lighthouse",
+      "role": "npc",
+      "avatar": "assets/characters/suzu.webp",
+      "description": "등대를 지키는 할머니, 일흔여섯. 은발을 쪽지고 목에 망원경을 걸었다. 독설가지만 날씨는 정확히 읽어, 섬의 날씨는 그녀 말대로다."
+    },
+    {
+      "id": "ren",
+      "name": "렌",
+      "home": "world/farm",
+      "role": "npc",
+      "avatar": "assets/characters/ren.webp",
+      "description": "이웃에 사는 젊은 농부, 스물넷. 키 크고 마른 몸에 해진 밀짚모자를 썼다. 말하다 얼굴이 빨개질 만큼 수줍지만 농사 솜씨는 일품이라, 말하자면 당신의 스승이다."
+    },
+    {
+      "id": "mio",
+      "name": "미오",
+      "home": "map",
+      "role": "npc",
+      "avatar": "assets/characters/mio.webp",
+      "description": "섬의 유일한 아이, 아홉 살. 까만 양 갈래 머리에 커다란 노란 우비와 빨간 장화, 자기보다 큰 잠자리채를 메고 다닌다. 장난꾸러기라 섬 구석구석을 안내해 준다."
+    },
+    {
+      "id": "kai",
+      "name": "카이",
+      "home": "world/ferry",
+      "role": "npc",
+      "avatar": "assets/characters/kai.webp",
+      "description": "연락선을 타고 온 나그네, 스물여덟. 회색 머리를 낮게 묶고, 리넨 셔츠에 낡은 긴 코트를 입고, 오래된 기타 케이스를 멨다. 온화하고, 자기 과거 얘기는 늘 피한다."
+    }
+  ],
+  "opening": {
+    "greeter": "toma"
+  },
+  "extensions": [],
+  "living": {
+    "start": {
+      "day": 1,
+      "time": "07:00"
+    },
+    "phases": [
+      {
+        "id": "dawn",
+        "from": "05:00",
+        "label": "새벽"
+      },
+      {
+        "id": "morning",
+        "from": "07:00",
+        "label": "아침"
+      },
+      {
+        "id": "noon",
+        "from": "11:00",
+        "label": "한낮"
+      },
+      {
+        "id": "afternoon",
+        "from": "14:00",
+        "label": "오후"
+      },
+      {
+        "id": "evening",
+        "from": "18:00",
+        "label": "저녁"
+      },
+      {
+        "id": "night",
+        "from": "21:00",
+        "label": "밤"
+      }
+    ],
+    "seasons": [
+      {
+        "id": "spring",
+        "label": "봄"
+      },
+      {
+        "id": "summer",
+        "label": "여름"
+      },
+      {
+        "id": "autumn",
+        "label": "가을"
+      },
+      {
+        "id": "winter",
+        "label": "겨울"
+      }
+    ],
+    "daysPerSeason": 7,
+    "weekdays": [
+      {
+        "id": "mon",
+        "label": "월요일"
+      },
+      {
+        "id": "tue",
+        "label": "화요일"
+      },
+      {
+        "id": "wed",
+        "label": "수요일"
+      },
+      {
+        "id": "thu",
+        "label": "목요일"
+      },
+      {
+        "id": "fri",
+        "label": "금요일"
+      },
+      {
+        "id": "sat",
+        "label": "토요일"
+      },
+      {
+        "id": "sun",
+        "label": "일요일"
+      }
+    ],
+    "weather": [
+      {
+        "id": "sunny",
+        "label": "맑음",
+        "weight": 5
+      },
+      {
+        "id": "cloudy",
+        "label": "흐림",
+        "weight": 3
+      },
+      {
+        "id": "rain",
+        "label": "비",
+        "weight": 2
+      },
+      {
+        "id": "storm",
+        "label": "폭풍",
+        "weight": 1,
+        "seasons": [
+          "summer",
+          "autumn"
+        ]
+      },
+      {
+        "id": "snow",
+        "label": "눈",
+        "weight": 3,
+        "seasons": [
+          "winter"
+        ]
+      }
+    ],
+    "pace": {
+      "perAction": 20
+    },
+    "catchUp": {
+      "ratio": 1,
+      "maxDays": 3,
+      "minMinutes": 30
+    },
+    "digest": {
+      "title": "당신이 없는 동안",
+      "writer": true,
+      "minHours": 6
+    },
+    "display": {
+      "label": "섬의 시간",
+      "text": "{season} · {day}일째 · {weekday} · {phase} · {weather}"
+    },
+    "residents": {
+      "toma": {
+        "schedule": [
+          {
+            "at": "world/dock",
+            "phases": [
+              "dawn",
+              "morning",
+              "noon",
+              "afternoon",
+              "evening"
+            ],
+            "weather": [
+              "storm"
+            ],
+            "text": "폭풍 속에서 밧줄을 다시 묶는 중"
+          },
+          {
+            "at": "world/dock",
+            "phases": [
+              "dawn",
+              "morning",
+              "noon",
+              "afternoon"
+            ],
+            "text": "부두를 지키며 연락선 무전을 듣는 중"
+          },
+          {
+            "at": "world/square",
+            "phases": [
+              "evening"
+            ],
+            "text": "광장 벤치에서 파이프를 피우며 노을을 보는 중"
+          },
+          {
+            "at": "map",
+            "text": "집에 가서 자는 중"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "calm": 5,
+              "cheerful": 2,
+              "tired": 2,
+              "grumpy": 1
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "도마는 무전으로 본토 날씨가 나빠진다는 걸 듣고 미리 부두의 밧줄을 전부 다시 묶었다."
+          },
+          {
+            "text": "도마는 부두에서 미오에게 원양에서 고래를 만난 이야기를 해 주었다."
+          }
+        ]
+      },
+      "nagi": {
+        "schedule": [
+          {
+            "at": "world/dock",
+            "phases": [
+              "dawn"
+            ],
+            "weather": [
+              "sunny",
+              "cloudy"
+            ],
+            "text": "밧줄을 풀고 고기잡이에 나서는 중"
+          },
+          {
+            "at": "world/beach",
+            "phases": [
+              "dawn",
+              "morning"
+            ],
+            "text": "모래밭에서 그물을 깁고 생선을 고르는 중"
+          },
+          {
+            "at": "world/store",
+            "phases": [
+              "noon"
+            ],
+            "text": "오늘 아침 잡은 생선을 하나의 가게에 가져다주는 중"
+          },
+          {
+            "at": "world/dock",
+            "phases": [
+              "afternoon"
+            ],
+            "if": "world.boat_fixed == true",
+            "text": "고친 배로 앞바다를 누비는 중"
+          },
+          {
+            "at": "world/beach",
+            "phases": [
+              "afternoon"
+            ],
+            "text": "바위에 앉아 멍하니 바다를 보는 중"
+          },
+          {
+            "at": "world/square",
+            "phases": [
+              "evening"
+            ],
+            "text": "광장에서 미오와 티격태격하는 중"
+          },
+          {
+            "at": "map",
+            "text": "집에 있는 중"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "cheerful": 5,
+              "tired": 2,
+              "grumpy": 2,
+              "calm": 1
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "나기는 커다란 농어를 낚아, 만나는 사람마다 혼자 해냈다고 자랑했다."
+          },
+          {
+            "text": "나기는 미오와 부표까지 수영 시합을 해서 졌는데, 인정하지 않았다."
+          },
+          {
+            "text": "나기는 바위에서 떠밀려 온 유리 부표를 주워 자기 상자에 숨겼다."
+          }
+        ]
+      },
+      "hana": {
+        "schedule": [
+          {
+            "at": "world/square",
+            "phases": [
+              "evening"
+            ],
+            "weekdays": [
+              "fri",
+              "sat"
+            ],
+            "text": "광장 작은 노점에서 사이다를 파는 중"
+          },
+          {
+            "at": "world/store",
+            "phases": [
+              "morning",
+              "noon",
+              "afternoon",
+              "evening"
+            ],
+            "text": "가게를 보며 장부를 쓰고 소식을 모으는 중"
+          },
+          {
+            "at": "world/store",
+            "text": "가게 뒷방에서 쉬는 중"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "cheerful": 6,
+              "calm": 2,
+              "tired": 2
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "하나는 가게 선반을 전부 다시 정리해 씨앗을 가장 눈에 띄는 곳으로 옮겼다."
+          },
+          {
+            "text": "하나는 미오에게 새 글자 스무 개를 가르치고 상으로 매실 절임 하나를 주었다."
+          }
+        ]
+      },
+      "kenta": {
+        "schedule": [
+          {
+            "at": "world/store",
+            "phases": [
+              "morning",
+              "noon",
+              "afternoon"
+            ],
+            "weather": [
+              "rain",
+              "storm"
+            ],
+            "text": "비 오는 날 하나의 가게에서 나무못을 깎는 중"
+          },
+          {
+            "at": "world/dock",
+            "phases": [
+              "morning",
+              "noon",
+              "afternoon"
+            ],
+            "text": "조선소에서 낡은 고깃배를 고치는 중"
+          },
+          {
+            "at": "world/square",
+            "phases": [
+              "evening"
+            ],
+            "text": "일을 마치고 광장에서 차를 마시는 중"
+          },
+          {
+            "at": "map",
+            "text": "집에 간 중"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "calm": 6,
+              "tired": 3,
+              "cheerful": 1
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "겐타는 마른 유목을 대패질해 널빤지로 만들고, 여러 번 쓰다듬은 뒤에야 내려놓았다."
+          },
+          {
+            "text": "겐타는 광장 벤치의 흔들리는 다리를 고쳐 놓고 아무에게도 말하지 않았다."
+          }
+        ]
+      },
+      "suzu": {
+        "schedule": [
+          {
+            "at": "world/square",
+            "phases": [
+              "morning"
+            ],
+            "weekdays": [
+              "wed"
+            ],
+            "text": "수요일 장 보러 내려와 있는 중"
+          },
+          {
+            "at": "world/lighthouse",
+            "text": "등대에서 하늘을 보고 등을 닦는 중"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "calm": 4,
+              "grumpy": 3,
+              "cheerful": 2,
+              "tired": 1
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "스즈 할머니가 안개가 낀다고 하더니, 다음 날 아침 정말 부두가 안 보일 만큼 짙은 안개가 꼈다."
+          },
+          {
+            "text": "스즈 할머니는 올해 처음 돌아온 바다제비를 공책에 적었다."
+          }
+        ]
+      },
+      "ren": {
+        "schedule": [
+          {
+            "at": "world/store",
+            "phases": [
+              "morning",
+              "noon",
+              "afternoon"
+            ],
+            "weather": [
+              "rain",
+              "storm"
+            ],
+            "text": "비 오는 날 하나의 가게에서 씨앗 목록을 뒤적이는 중"
+          },
+          {
+            "at": "world/farm",
+            "phases": [
+              "dawn",
+              "morning",
+              "noon",
+              "afternoon"
+            ],
+            "text": "밭에서 일하는 중"
+          },
+          {
+            "at": "world/square",
+            "phases": [
+              "evening"
+            ],
+            "weekdays": [
+              "sat",
+              "sun"
+            ],
+            "text": "주말 저녁 광장에서 짐 나르기를 돕는 중"
+          },
+          {
+            "at": "world/farm",
+            "text": "밭 옆 집에서 일찍 잠든 중"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "calm": 4,
+              "cheerful": 3,
+              "tired": 3
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "렌은 당신 밭 둑에 몰래 대나무 지지대를 한 줄 세웠다. 콩이 타고 오르라고 그랬단다."
+          },
+          {
+            "text": "렌은 오후 내내 하나의 짐을 나르다가 밭에 돌아와서야 물 주는 걸 잊은 걸 알았다."
+          }
+        ]
+      },
+      "mio": {
+        "schedule": [
+          {
+            "at": "world/lighthouse",
+            "phases": [
+              "morning",
+              "noon",
+              "afternoon"
+            ],
+            "weekdays": [
+              "sat",
+              "sun"
+            ],
+            "text": "주말이라 스즈 할머니에게 이야기를 조르는 중"
+          },
+          {
+            "at": "world/beach",
+            "phases": [
+              "morning"
+            ],
+            "text": "조수 웅덩이에서 게를 잡는 중"
+          },
+          {
+            "at": "world/store",
+            "phases": [
+              "noon"
+            ],
+            "text": "하나의 가게에서 숙제하는 중"
+          },
+          {
+            "at": "world/farm",
+            "phases": [
+              "afternoon"
+            ],
+            "text": "렌에게 오이를 조르는 중"
+          },
+          {
+            "at": "world/square",
+            "phases": [
+              "evening"
+            ],
+            "text": "광장에서 고양이를 쫓는 중"
+          },
+          {
+            "at": "map",
+            "text": "할머니가 불러서 집에서 자는 중"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "cheerful": 7,
+              "tired": 2,
+              "grumpy": 1
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "미오는 등대 뒤 풀숲에서 갓 태어난 새끼 고양이들을 발견하고 몰래 우유를 가져다주었다."
+          },
+          {
+            "text": "미오는 잠자리채로 귀한 파란 호랑나비를 잡아, 놓아주기 전에 모두에게 보여 주었다."
+          },
+          {
+            "text": "미오는 모래밭에 조개껍데기로 커다란 \"환영\"을 만들었는데, 밀물에 반이 쓸려 갔다."
+          }
+        ]
+      },
+      "kai": {
+        "schedule": [
+          {
+            "at": "world/ferry",
+            "if": "world.kai_arrived == false",
+            "text": "연락선 갑판에 기타를 안고 앉아 있는 중"
+          },
+          {
+            "at": "world/beach",
+            "phases": [
+              "dawn",
+              "morning"
+            ],
+            "text": "바닷가에서 혼자 노래를 쓰는 중"
+          },
+          {
+            "at": "world/square",
+            "phases": [
+              "noon",
+              "afternoon"
+            ],
+            "text": "광장 그늘에서 기타를 치는 중"
+          },
+          {
+            "at": "world/store",
+            "phases": [
+              "evening"
+            ],
+            "text": "하나의 가게에서 문 닫기를 돕는 중"
+          },
+          {
+            "at": "world/store",
+            "text": "가게 위층에 빌린 방에 있는 중"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "calm": 5,
+              "cheerful": 2,
+              "tired": 2,
+              "grumpy": 1
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "저녁 무렵, 아무도 모르는 기타 곡이 만 건너로 흘러오다 중간에 멈췄다."
+          },
+          {
+            "text": "도마 말로는 기타를 안은 나그네가 또 고개를 까딱했단다. 섬에 인사라도 하듯이."
+          }
+        ]
+      }
+    },
+    "events": [
+      {
+        "id": "ferry",
+        "label": "연락선 오는 날",
+        "on": {
+          "weekdays": [
+            "mon"
+          ]
+        },
+        "phases": [
+          "morning",
+          "noon"
+        ],
+        "weather": [
+          "sunny",
+          "cloudy",
+          "rain",
+          "snow"
+        ],
+        "at": "world/dock",
+        "gather": [
+          "toma"
+        ]
+      },
+      {
+        "id": "market",
+        "label": "일요장",
+        "on": {
+          "weekdays": [
+            "sun"
+          ]
+        },
+        "phases": [
+          "morning",
+          "noon"
+        ],
+        "at": "world/square",
+        "gather": [
+          "hana",
+          "nagi",
+          "ren"
+        ]
+      },
+      {
+        "id": "spring-tide",
+        "label": "봄 물때 조개 줍기",
+        "on": {
+          "seasons": [
+            "spring"
+          ],
+          "days": [
+            5
+          ]
+        },
+        "phases": [
+          "morning",
+          "noon",
+          "afternoon"
+        ],
+        "at": "world/beach",
+        "gather": "all"
+      },
+      {
+        "id": "lantern-festival",
+        "label": "여름 등롱 축제",
+        "on": {
+          "seasons": [
+            "summer"
+          ],
+          "days": [
+            5
+          ]
+        },
+        "phases": [
+          "evening",
+          "night"
+        ],
+        "at": "world/square",
+        "gather": "all"
+      },
+      {
+        "id": "harvest-supper",
+        "label": "가을 수확 잔치",
+        "on": {
+          "seasons": [
+            "autumn"
+          ],
+          "days": [
+            5
+          ]
+        },
+        "phases": [
+          "evening"
+        ],
+        "at": "world/square",
+        "gather": "all"
+      },
+      {
+        "id": "year-end-tea",
+        "label": "등대의 해넘이 차",
+        "on": {
+          "seasons": [
+            "winter"
+          ],
+          "days": [
+            7
+          ]
+        },
+        "phases": [
+          "evening",
+          "night"
+        ],
+        "at": "world/lighthouse",
+        "gather": "all"
+      }
+    ],
+    "variants": {
+      "world/farm": {
+        "base": "assets/scenes/farm.webp",
+        "when": [
+          {
+            "seasons": [
+              "summer"
+            ],
+            "bg": "assets/scenes/farm-summer.webp"
+          },
+          {
+            "seasons": [
+              "autumn"
+            ],
+            "bg": "assets/scenes/farm-autumn.webp"
+          },
+          {
+            "seasons": [
+              "winter"
+            ],
+            "bg": "assets/scenes/farm-winter.webp"
+          }
+        ]
+      },
+      "world/square": {
+        "base": "assets/scenes/square.webp",
+        "when": [
+          {
+            "events": [
+              "lantern-festival"
+            ],
+            "bg": "assets/scenes/square-festival.webp"
+          }
+        ]
+      },
+      "world/dock": {
+        "base": "assets/scenes/dock.webp",
+        "when": [
+          {
+            "weather": [
+              "storm"
+            ],
+            "bg": "assets/scenes/dock-storm.webp"
+          }
+        ]
+      },
+      "world/beach": {
+        "base": "assets/scenes/beach.webp",
+        "when": [
+          {
+            "phases": [
+              "evening",
+              "night"
+            ],
+            "bg": "assets/scenes/beach-dusk.webp"
+          }
+        ]
+      }
+    }
+  },
+  "triggers": [
+    {
+      "id": "first-harvest",
+      "label": "첫 수확",
+      "kind": "state",
+      "when": "world.farm_growth >= 4",
+      "do": "first-harvest"
+    },
+    {
+      "id": "harvest",
+      "label": "수확",
+      "kind": "state",
+      "when": "world.farm_growth >= 4",
+      "once": false,
+      "do": "harvest"
+    },
+    {
+      "id": "boat-mended",
+      "label": "고친 배가 물에 뜨다",
+      "kind": "state",
+      "when": "world.boat_progress >= 3",
+      "do": "boat-mended"
+    },
+    {
+      "id": "kai-arrives",
+      "label": "연락선이 새 사람을 데려오다",
+      "kind": "state",
+      "when": "events.ferry == true && time.day >= 8 || time.day >= 9",
+      "do": "kai-arrives"
+    },
+    {
+      "id": "ferry-horn",
+      "label": "연락선 오는 날",
+      "kind": "state",
+      "when": "events.ferry == true",
+      "once": false,
+      "fallback": "바다 건너에서 뱃고동이 울린다 — 일주일에 한 번 오는 연락선이 부두에 닿는다. 도마가 배를 향해 손을 든다."
+    },
+    {
+      "id": "storm-day",
+      "label": "폭풍",
+      "kind": "state",
+      "when": "time.weather == \"storm\"",
+      "once": false,
+      "fallback": "하늘이 갑자기 어두워지고 파도가 부두를 때린다. 스즈 할머니가 오늘 바람이 분다고 했었다. 이런 날엔 배가 뜨지 않는다."
+    },
+    {
+      "id": "spring-tide",
+      "label": "봄 물때 조개 줍기",
+      "kind": "state",
+      "when": "events.spring_tide == true",
+      "once": false,
+      "fallback": "큰 물때로 바닷물이 멀리 빠져 갯벌이 드러났다. 섬사람 모두가 양동이를 들고 해변에 나왔다 — 오늘은 조개 줍는 날이다."
+    },
+    {
+      "id": "lantern-festival",
+      "label": "여름 등롱 축제",
+      "kind": "state",
+      "when": "events.lantern_festival == true",
+      "once": false,
+      "fallback": "어스름이 내리자 광장의 등롱이 하나둘 켜진다. 하나는 노점에서 사이다를 나눠 주고, 미오는 자기보다 큰 등롱을 들고 뛰어다닌다.",
+      "assets": [
+        {
+          "kind": "cg",
+          "path": "assets/cg/lantern-festival.webp",
+          "prompt": "Anime-painterly slice-of-life illustration in the style of a LivingCanvas world cover, soft cel shading with painterly light, a small island village on a calm sea, warm golden sunlight against sea-glass blues, fine film grain, no text, no lettering. The summer lantern festival in the village square at night, all the islanders in light yukata under strings of paper lanterns, Hana at a stall, Toma drumming, Mio with a candy apple, everyone looking up at small fireworks. Same characters as the references. Wide 16:9."
+        }
+      ]
+    },
+    {
+      "id": "harvest-supper",
+      "label": "가을 수확 잔치",
+      "kind": "state",
+      "when": "events.harvest_supper == true",
+      "once": false,
+      "fallback": "광장 한가운데 긴 탁자가 이어지고 집집마다 음식을 하나씩 가져온다. 렌이 얼굴을 붉히며 순무 바구니를 내려놓고, 도마가 먼저 잔을 든다."
+    },
+    {
+      "id": "year-end-tea",
+      "label": "등대의 해넘이 차",
+      "kind": "state",
+      "when": "events.year_end_tea == true",
+      "once": false,
+      "fallback": "한 해의 마지막 밤, 모두가 등대 아래 작은 방에 모인다. 스즈 할머니가 큰 주전자에 차를 끓이며 내년 첫 바람은 동쪽에서 온다고 한다."
+    }
+  ],
+  "createdAt": "2026-10-08T00:00:00Z",
+  "updatedAt": "2026-10-08T00:00:00Z"
+}

@@ -1,0 +1,11 @@
+name: 钓鱼
+desc: 花上两个钟头钓鱼，鱼篓里多几条鱼
+do:
+  - action: add_state
+    with:
+      target: player
+      state: fish
+      by: "2"
+  - action: pass_time
+    with:
+      minutes: "120"

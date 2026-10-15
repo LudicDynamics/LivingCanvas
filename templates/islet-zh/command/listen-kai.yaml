@@ -1,0 +1,11 @@
+name: 在树荫下听琴
+desc: 在广场树荫下坐一会儿；海在的话，就听他弹琴
+do:
+  - action: add_state
+    with:
+      target: characters/kai
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "60"

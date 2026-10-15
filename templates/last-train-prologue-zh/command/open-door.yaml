@@ -1,0 +1,29 @@
+name: 车尾的门
+desc: 问过乘客、第八回合或时间快到时，2车尽头出现通往5车的门（序章里不用钥匙）。
+do:
+- action: give
+  with:
+    path: world/seated-car/freight-door.md
+    title: 5车 · 行李车
+    frontmatter:
+      type: gate
+      target: world/freight-car
+      choice:
+        options:
+        - id: go
+          label: 去5车
+        - id: together
+          label: 叫上夏澄一起去
+      choice_actions:
+        go:
+          kind: enter
+          target: world/freight-car
+        together:
+          kind: enter
+          target: world/freight-car
+    body: 车厢尽头那扇通往行李车的门没锁死，只是卡住了。门缝里透出一股冷气。
+- action: event
+  with:
+    target: characters/xia-cheng
+    title: 车尾有动静
+    text: 夏澄忽然抬起头：“你听——5车那边有动静。那扇门平时锁着，现在……好像开了一条缝。”

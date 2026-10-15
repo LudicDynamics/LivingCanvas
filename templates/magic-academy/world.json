@@ -1,0 +1,106 @@
+{
+  "id": "magic-academy",
+  "name": "Magic Academy · English",
+  "version": "1.2.0",
+  "schema": 1,
+  "description": "Combine words, objects, and costs. The small magic you name yourself will change a sealed space.",
+  "intro": {
+    "status": "in-development",
+    "category": "story",
+    "experimental": true,
+    "rank": 9,
+    "hook": "Combine a word, an object and a price, then name your small spell — and it will change this sealed room.",
+    "genres": [
+      "fantasy"
+    ],
+    "loop": [
+      "Collect word fragments and objects; combine them on the spell chart",
+      "Preview the price, name the spell, then cast it",
+      "Talk with your senior and the librarian about what the spell means"
+    ],
+    "minutes": [
+      15,
+      30
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "voice",
+      "live-image",
+      "free-explore"
+    ],
+    "endings": 0,
+    "characters": [
+      {
+        "id": "seraphina",
+        "line": "An upperclassman who asks how words and objects connect, and never hides the price"
+      },
+      {
+        "id": "librarian",
+        "line": "A librarian who remembers every book ever lent and returned"
+      }
+    ],
+    "for": [
+      "Fantasy settings",
+      "Making and naming things"
+    ],
+    "unfinished": "In development: there is only one room so far; the price system and the endings are not finished."
+  },
+  "author": "Mingyue",
+  "genre": "Story experience",
+  "tags": [
+    "short story",
+    "generative world"
+  ],
+  "material": "parchment",
+  "audio": {
+    "theme": "emberglass"
+  },
+  "extensions": [
+    {
+      "id": "airp:letter",
+      "version": ">=1.0.0",
+      "optional": false
+    },
+    {
+      "id": "airp:note",
+      "version": ">=1.0.0",
+      "optional": false
+    }
+  ],
+  "characters": [
+    {
+      "id": "seraphina",
+      "home": "map",
+      "role": "companion",
+      "avatarVideo": "assets/motion/seedance/characters/seraphina-transparent.webm",
+      "avatar": "assets/motion/seedance/characters/seraphina-transparent.webp",
+      "name": "Seraphina",
+      "description": "A senior at the academy who keeps asking how words and things relate. She doesn't decide answers for others, and she doesn't hide costs."
+    },
+    {
+      "id": "librarian",
+      "home": "world/spell-atlas",
+      "role": "npc",
+      "name": "Librarian",
+      "description": "A librarian who keeps track of every loan and return. Doesn't jump to conclusions about feelings no one has voiced or outcomes no one has seen.",
+      "avatar": "assets/motion/seedance/characters/librarian-transparent.webp",
+      "avatarVideo": "assets/motion/seedance/characters/librarian-transparent.webm"
+    }
+  ],
+  "opening": {
+    "greeter": "seraphina"
+  },
+  "createdAt": "2026-09-11T00:00:00Z",
+  "updatedAt": "2026-09-11T00:00:00Z",
+  "locale": "en",
+  "entry": "map",
+  "rules": {
+    "system": "dnd",
+    "proficiency": 2,
+    "characterChecks": true
+  },
+  "player": {
+    "id": "player",
+    "name": "New Student at the Academy"
+  }
+}

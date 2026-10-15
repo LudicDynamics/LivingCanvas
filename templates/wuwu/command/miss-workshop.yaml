@@ -1,0 +1,30 @@
+name: Workshop not fully investigated
+desc: The Workshop Check lands on 61–100. On 61–95 you get only half a thread (crest rubbing); on 96–100 you snap the clasp's pin (a character event). Either way, take the Long Way Around to pin it
+do:
+  - action: give
+    when: roll.rank >= 2
+    with:
+      path: player/ledger-page-half.md
+      title: Half a Thread · Rubbing of the crest
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        The clasp opens, but the order stamp under the crest is covered by rust. You only rub down the Lord's crest, and a stamp you cannot read.
+
+        The crest shows which house it is, not which ship. To pin this thread, take the Long Way Around: ask Vera to go through the Workshop's order book.
+  - action: event
+    when: roll.rank == 1
+    with:
+      target: characters/vera
+      title: The clasp's pin snapped
+      text: The vise tightens and the clasp's pin snaps off, taking the fresh scuff mark with the broken piece. That was something Vera had chased for a long time. She stares at the break for a while, not joking.
+  - action: set_status
+    with:
+      path: world/harbor-chart/workshop/05-long-way.md
+      values:
+        open: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: "✗ The Workshop thread is not pinned yet: the order stamp could not be read. Take the Long Way Around and ask Vera to go through the order book."

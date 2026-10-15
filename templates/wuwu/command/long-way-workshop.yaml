@@ -1,0 +1,17 @@
+name: "Long Way Around: Workshop"
+desc: After the investigation dice at the Workshop come up short, ask Vera to go through the order book. Costs one more stretch of tide; the half a thread in hand (crest rubbing) becomes complete evidence
+do:
+  - action: edit
+    when: has("player/ledger-page-half.md")
+    with:
+      path: player/ledger-page-half.md
+      frontmatter:
+        title: Half a Thread · Completed (see evidence in bag)
+  - action: set_status
+    with:
+      path: world/harbor-chart/workshop/05-long-way.md
+      values:
+        done: yes
+  - action: tick
+    with:
+      by: "-1"

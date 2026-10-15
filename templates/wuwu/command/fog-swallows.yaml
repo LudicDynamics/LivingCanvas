@@ -1,0 +1,6 @@
+name: Swallowed by Fog
+desc: The decisive Check lands on 96–100, and there is no lamp oil left to burn
+do:
+  - action: end
+    with:
+      ending: swallowed

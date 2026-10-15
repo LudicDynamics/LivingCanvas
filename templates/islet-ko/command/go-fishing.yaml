@@ -1,0 +1,11 @@
+name: 낚시하기
+desc: 두 시간 낚시하면 바구니에 물고기가 몇 마리 는다
+do:
+  - action: add_state
+    with:
+      target: player
+      state: fish
+      by: "2"
+  - action: pass_time
+    with:
+      minutes: "120"

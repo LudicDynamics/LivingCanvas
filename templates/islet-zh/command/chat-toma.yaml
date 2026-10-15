@@ -1,0 +1,11 @@
+name: 陪灯真守栈桥
+desc: 在栈桥上陪灯真坐一个钟头
+do:
+  - action: add_state
+    with:
+      target: characters/toma
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "60"

@@ -1,0 +1,8 @@
+name: "캐릭터 턴: 중화이리가 코트를 매만진다"
+desc: "중화이리가 일어나 문가 코트의 깃을 매만진다: 코트는 그대로 걸려 있고 없어진 것은 없다."
+do:
+- action: set_status
+  with:
+    path: world/sleeper/grey-coat.md
+    values:
+      straightened: 'yes'

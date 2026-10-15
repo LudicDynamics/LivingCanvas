@@ -1,0 +1,6 @@
+name: 안개에 삼켜지다
+desc: 결정적 판정이 96–100에 떨어졌는데, 이제 켤 등유가 손에 없다
+do:
+  - action: end
+    with:
+      ending: swallowed

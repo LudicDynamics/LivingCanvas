@@ -1,0 +1,10 @@
+name: 시간이 한 걸음 간다
+desc: 판정을 할 때마다 출발이 한 걸음 가까워진다. 잘 안 풀리면 한 걸음 더.
+do:
+- action: tick
+  with:
+    by: '-1'
+- action: tick
+  when: roll.passed == false
+  with:
+    by: '-1'

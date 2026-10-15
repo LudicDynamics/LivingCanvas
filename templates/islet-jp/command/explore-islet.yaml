@@ -1,0 +1,6 @@
+name: 外れ島を歩く
+desc: 外れ島を午後の大半かけてゆっくり歩く
+do:
+  - action: pass_time
+    with:
+      minutes: "180"

@@ -1,0 +1,8 @@
+name: "2车的出口"
+desc: "问到证词或待满四拍：2车选项最前面出现「去车尾的卧铺」「回到整列车看看」。"
+do:
+- action: set_status
+  with:
+    path: world/seated-car/README.md
+    values:
+      exits: open

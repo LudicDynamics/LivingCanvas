@@ -1,0 +1,23 @@
+name: 钉上第一条线：诱饵船
+desc: 7号码头的判定成功（60以下）或绕远路之后，把“无人船是诱饵”作为证据放进包里，并在海图上打钩
+do:
+  - action: give
+    with:
+      path: player/decoy-ship.md
+      title: 证据 · 那艘船是诱饵
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        无人船的货舱里只有压舱石和钉死的空箱，舷侧那道擦痕比满潮线还高——是另一艘船贴着它挤过去留下的。
+
+        这艘船不是出了事才漂进港的。它是被故意放出来的，好让所有人的眼睛都盯着7号码头。
+  - action: set_status
+    with:
+      path: world/harbor-chart/05-accuse.md
+      values:
+        decoy: "yes"
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: ✓ 7号码头的线钉上了：那艘无人船是被故意放出来的。

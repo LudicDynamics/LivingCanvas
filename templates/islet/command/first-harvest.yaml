@@ -1,0 +1,12 @@
+name: The first harvest
+desc: The first harvest — you keep the best turnip as a keepsake
+do:
+  - action: give
+    with:
+      path: player/first-turnip.md
+      title: The first turnip
+      body: The first turnip from your field, round and white, dew still on its leaves. Ren says you never eat the first one; you keep it.
+  - action: show_cg
+    with:
+      path: assets/cg/first-harvest.webp
+      caption: The first basket from your field.

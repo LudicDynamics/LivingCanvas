@@ -1,0 +1,8 @@
+name: "キャラクターターン：賀じいが4号卓を拭く"
+desc: "賀じいが4号卓の端を拭く：茶碗は片づけず、そのまま。"
+do:
+- action: set_status
+  with:
+    path: world/dining-car/lao-he.md
+    values:
+      wiped_table: 'yes'

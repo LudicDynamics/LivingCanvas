@@ -1,0 +1,81 @@
+/* WorldIntroDialog: the first-entry popup of a
+   workshop world, in the same dark glass as the workshop's create form. */
+.world-intro {
+  --glass-line: rgba(255, 255, 255, .22);
+  --accent: #c9f27a;
+  position: fixed;
+  inset: 0;
+  z-index: var(--depth-modal);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(4, 5, 12, .55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #f5f3ee;
+  font-family: "Helvetica Neue", Inter, var(--ux-font-ui, system-ui), sans-serif;
+}
+.world-intro__panel {
+  box-sizing: border-box;
+  width: min(540px, 100%);
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: 24px 28px 22px;
+  border: 1px solid var(--glass-line);
+  border-radius: 28px;
+  background: rgba(14, 15, 24, .86);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 40px 80px -30px rgba(0, 0, 0, .85);
+}
+.world-intro button { font: inherit; color: inherit; cursor: pointer; }
+.world-intro button:disabled { cursor: default; opacity: .5; }
+.world-intro__kicker {
+  margin: 0;
+  font: 500 11px/1.4 ui-monospace, "SFMono-Regular", monospace;
+  letter-spacing: .16em;
+  color: var(--accent);
+}
+.world-intro h2 {
+  margin: 8px 0 12px;
+  font: 700 28px/1.1 "Helvetica Neue", Inter, var(--ux-font-ui, system-ui), sans-serif;
+  letter-spacing: -.02em;
+}
+.world-intro__lines p { margin: 0 0 8px; font-size: 14px; line-height: 1.6; color: rgba(245, 243, 238, .85); }
+.world-intro__ask { margin: 16px 0 12px; font-size: 13px; line-height: 1.5; color: rgba(245, 243, 238, .6); }
+.world-intro__field { display: grid; gap: 6px; margin-bottom: 12px; }
+.world-intro__field > span:first-child {
+  font: 500 11px/1 ui-monospace, "SFMono-Regular", monospace;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(245, 243, 238, .6);
+}
+.world-intro__row { display: flex; gap: 8px; }
+.world-intro__row input {
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid var(--glass-line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .06);
+  color: inherit;
+  font: inherit;
+}
+.world-intro__row button {
+  flex: none;
+  padding: 8px 12px;
+  border: 1px solid rgba(201, 242, 122, .55);
+  border-radius: 999px;
+  background: rgba(201, 242, 122, .1);
+  color: var(--accent);
+  font-size: 12px;
+}
+.world-intro__error { margin: 8px 0 0; color: #ffb4a8; font-size: 13px; }
+.world-intro__actions { display: flex; justify-content: flex-end; margin-top: 16px; }
+.world-intro__go {
+  padding: 10px 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #10111b !important;
+  font-weight: 700;
+}

@@ -1,0 +1,32 @@
+name: Peek at Old Mo's Logbook
+desc: An optional roll. On a hit, a pencil line appears in the logbook (an item event); on a miss, Old Mo sees you (a character event) and stays guarded in conversation afterward
+do:
+  - action: edit
+    when: roll.passed == true
+    with:
+      path: world/harbor-chart/old-lighthouse/lighthouse-logbook.md
+      append_body: "In the logbook's lining there is another very faint pencil line: a moment before the light went out, Old Mo recorded a lamp signal that does not belong to Fogwharf: three short, one long."
+  - action: event
+    when: roll.passed == true
+    with:
+      target: world/harbor-chart/old-lighthouse/lighthouse-logbook.md
+      title: The pencil line in the logbook's lining
+      text: "While Old Mo turns away to add oil, you flip to the logbook's lining: a moment before the light went out, he recorded a lamp signal that does not belong to Fogwharf: three short, one long."
+  - action: event
+    when: roll.passed == false
+    with:
+      target: characters/old-mo
+      title: Old Mo saw you
+      text: When Old Mo turns back, your hand is still on his logbook. He snaps it shut, his face darkening. To get anything out of him next, you must apologize first.
+  - action: give
+    when: roll.rank == 4
+    with:
+      path: player/lamp-signal.md
+      title: The lamp signal, copied out
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        Old Mo never turned around, so you had time to copy the pencil line onto a scrap of paper: a moment before the light went out, a lamp signal that does not belong to Fogwharf: three short, one long.
+
+        It isn't evidence for the accusation; it is just what the logbook says, now in your own pocket.

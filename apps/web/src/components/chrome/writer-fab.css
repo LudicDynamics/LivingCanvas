@@ -1,0 +1,409 @@
+/* WriterFab — the writer's bottom-right entry in the companion shell
+   . Tokens only; no literal colours (check:ux visual rule). */
+
+.writer-fab {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  /* Shifted left when the companion stage is open; see the rule below. */
+  transition: margin-right var(--ux-motion-panel) var(--ux-motion-ink);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  z-index: var(--depth-chrome-writer);
+  pointer-events: auto;
+}
+
+.writer-fab[data-writer-open='true'] {
+  position: fixed;
+  right: max(12px, env(safe-area-inset-right));
+  bottom: calc(var(--writer-visual-bottom, 0px) + max(12px, env(safe-area-inset-bottom)));
+}
+
+.writer-fab__button {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--ux-radius-avatar);
+  border: 1px solid var(--ux-color-line);
+  background: var(--ux-color-cream);
+  color: var(--ux-color-ink);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--ux-shadow-soft);
+  position: relative;
+  display: grid;
+  place-items: center;
+  transition: transform var(--ux-motion-fast) var(--ux-motion-ink),
+    box-shadow var(--ux-motion-fast) var(--ux-motion-ink);
+}
+
+.writer-fab__button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--ux-shadow-halo);
+}
+
+/* Progress ring while the writer works; the sheet does not reopen itself. */
+.writer-fab__ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: var(--ux-radius-avatar);
+  border: 2px solid transparent;
+  border-top-color: var(--ux-color-rust);
+  animation: writer-fab-spin var(--ux-duration-spin) linear infinite;
+}
+
+@keyframes writer-fab-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .writer-fab__ring {
+    animation-duration: var(--ux-duration-reduced);
+    animation-iteration-count: 1;
+    border-top-color: var(--ux-color-rust);
+    opacity: 0.8;
+  }
+}
+
+.writer-fab__sheet {
+  /* Placed by lib/use-floating-panel.ts (position: fixed, left/top). */
+  z-index: var(--depth-chrome-writer);
+  /* A compact popover: at most 320×360, scrolling inside. */
+  width: min(320px, calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 24px));
+  max-height: min(360px, calc(var(--writer-visual-height, 100dvh) - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 90px));
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  box-sizing: border-box;
+  /* The head and the input stay put; only the slips scroll (below). */
+  overflow: hidden;
+  border-radius: var(--ux-radius-panel);
+  background: color-mix(in srgb, var(--ux-color-paper) 94%, transparent);
+  border: 1px solid var(--ux-color-line);
+  box-shadow: var(--ux-shadow-halo);
+  color: var(--ux-color-ink);
+}
+
+.writer-fab__sheet-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--ux-font-ui);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  /* The head is the grab handle (lib/use-floating-panel.ts). */
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.writer-fab__sheet-head:active { cursor: grabbing; }
+.writer-fab__sheet-head b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.writer-fab__grip {
+  color: var(--ux-color-muted);
+  font-size: 13px;
+  line-height: 1;
+}
+
+.writer-fab__head-actions {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+}
+
+.writer-fab__icon {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: var(--ux-radius-avatar);
+  border: 1px solid var(--ux-color-line);
+  background: var(--ux-color-cream);
+  color: var(--ux-color-ink);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* The writer's secondary tools live in the sheet, not in a second floating row. */
+.writer-fab__tools {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: 100%;
+}
+.writer-fab__tools > * { min-width: 0; max-width: 100%; }
+.writer-fab__tools > [role='group'] {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: 100%;
+}
+
+.writer-fab__status {
+  color: var(--ux-color-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+/* Small screens: one line of head, the status gives way first. */
+.writer-fab__sheet[data-compact='true'] { padding: 8px 10px; gap: 6px; }
+.writer-fab__sheet[data-compact='true'] .writer-fab__status { display: none; }
+
+.writer-fab__stop,
+.writer-fab__retry {
+  align-self: flex-start;
+  padding: 5px 10px;
+  border-radius: var(--ux-radius-pill);
+  border: 1px solid var(--ux-color-line);
+  background: var(--ux-color-cream);
+  color: var(--ux-color-ink);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.writer-fab__stop:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+@media (max-width: 1100px) {
+  .writer-fab {
+    right: 12px;
+    bottom: 12px;
+  }
+}
+
+/* The companion stage is open, so the bottom-right corner is its reply box.
+   The FAB steps left of that whole column
+   `--ux-companion-column` is the one number both files
+   read, so the clearance cannot drift from the width it is clearing.
+
+   `margin-right`, not a bigger `right`: this root is absolutely positioned in
+   the canvas shell with `right` already set, and adding to the margin moves the
+   box without touching the offset the corner is measured from. The sheet that
+   opens above the button is right-aligned to this same root, so it travels with
+   it. */
+.writer-fab[data-clear-companion='true'] {
+  margin-right: calc(var(--ux-companion-column) + 4px);
+}
+
+/* Narrow: the dock spans the width instead of holding a column, so there is
+   nothing to step around and the corner is the corner again. */
+@media (max-width: 1100px) {
+  .writer-fab[data-clear-companion='true'] {
+    margin-right: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .writer-fab { transition: none; }
+}
+
+/* ── The writer's tray ──────────────────────────────
+   At rest: the ✎ turns ink (水墨) and wears a small mark with the count — felt, never in the way.
+   Hover / keyboard focus previews at most three slips above it, one line each, ≤280px wide (§8.3);
+   nothing opens by itself — new slips make the ink pulse once. No overlay. */
+
+.writer-fab[data-has-slips='true'] .writer-fab__button {
+  background:
+    radial-gradient(circle at 36% 30%, color-mix(in srgb, var(--ux-color-ink) 62%, var(--ux-color-paper)) 0%, var(--ux-color-ink) 68%);
+  color: var(--ux-color-paper);
+  /* A paper hairline and a faint wash, so the ink reads on a dark scene as well as on paper. */
+  border: 1.5px solid color-mix(in srgb, var(--ux-color-paper) 70%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ux-color-paper) 16%, transparent), var(--ux-shadow-soft);
+}
+
+.writer-fab__count {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 5px;
+  box-sizing: border-box;
+  border-radius: var(--ux-radius-pill);
+  border: 1.5px solid var(--ux-color-ink);
+  background: var(--ux-color-paper);
+  color: var(--ux-color-ink);
+  font: 600 11px/16px var(--ux-font-machine);
+  text-align: center;
+  pointer-events: none;
+}
+
+.writer-fab__button[data-fresh='true'] {
+  animation: writer-ink-bloom var(--ux-duration-pulse) var(--ux-motion-ink) 1;
+}
+
+@keyframes writer-ink-bloom {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--ux-color-ink) 42%, transparent); }
+  100% { box-shadow: 0 0 0 16px color-mix(in srgb, var(--ux-color-ink) 0%, transparent); }
+}
+
+.writer-tray {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  /* The padding is the bridge: the pointer crosses it from the ✎ to the slips without losing the hover. */
+  padding-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  width: max-content;
+  max-width: min(280px, calc(100vw - 32px));
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: opacity var(--ux-motion-fast) var(--ux-motion-ink),
+    transform var(--ux-motion-fast) var(--ux-motion-ink),
+    visibility 0s linear var(--ux-motion-fast);
+}
+
+@media (hover: hover) {
+  .writer-fab:hover .writer-tray {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+}
+
+.writer-fab:has(:focus-visible) .writer-tray {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+.writer-slips {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  max-width: 100%;
+}
+
+.writer-slip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  min-height: 32px;
+  padding: 5px 10px 5px 8px;
+  box-sizing: border-box;
+  border: 1px solid var(--ux-color-line);
+  border-left: 3px solid var(--ux-color-ink);
+  /* A torn paper slip, square-cornered — not a chat bubble. */
+  border-radius: 2px;
+  background: var(--ux-color-paper);
+  color: var(--ux-color-ink);
+  font: 14px/1.3 var(--ux-font-human);
+  text-align: left;
+  box-shadow: var(--ux-shadow-soft);
+  cursor: pointer;
+  transition: transform var(--ux-motion-fast) var(--ux-motion-ink), background var(--ux-motion-fast) var(--ux-motion-ink);
+}
+
+.writer-slip:hover,
+.writer-slip:focus-visible {
+  background: var(--ux-color-cream);
+  transform: translateX(-3px);
+}
+
+.writer-slip__glyph {
+  flex: none;
+  width: 18px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.writer-slip__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The companion handed this one over: their face, small, on the slip's edge. */
+.writer-slip__by {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin-left: 2px;
+  border-radius: var(--ux-radius-avatar);
+  border: 1.5px solid var(--ux-color-paper);
+  outline: 1px solid var(--ux-color-line);
+  overflow: hidden;
+  background: var(--ux-color-wall);
+  font-size: 11px;
+}
+.writer-slip__by img { width: 100%; height: 100%; object-fit: cover; }
+
+.writer-slip--more {
+  border-left-style: dashed;
+  font: 12px/1.2 var(--ux-font-ui);
+  color: var(--ux-color-muted);
+  min-height: 30px;
+  box-shadow: none;
+}
+
+/* The writer's margin note (no companion here to say the hint): pencil, italic, not a character's voice. */
+.writer-tray__note {
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 4px 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-left: 2px solid var(--ux-color-muted);
+  background: color-mix(in srgb, var(--ux-color-paper) 90%, transparent);
+  color: var(--ux-color-muted);
+  font: italic 14px/1.35 var(--ux-font-hand);
+}
+.writer-tray__note-mark { margin-right: 6px; font-style: normal; }
+
+/* Inside the open sheet the slips sit above the input, full width, and are the one part that scrolls. */
+.writer-fab__sheet > * { flex: none; }
+.writer-fab__sheet .writer-slips {
+  align-items: stretch;
+  flex: 0 1 auto;
+  min-height: 48px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.writer-fab__sheet .writer-slip { box-shadow: none; }
+/* A move already made that stays on offer (a door, a talk — the design notes): the ink edge fades, it is not new. */
+.writer-slip[data-used] { border-left-color: var(--ux-color-line); }
+
+/* Separate lanes: wide, the ✎ stands left of the character
+   column (data-clear-companion above), so its preview rises over the canvas, never over the column. Narrow, the
+   column becomes the bottom band and the ✎ is the last cell of its reply row (character-dock.css reserves it) —
+   anything rising from the ✎ would land on the character's words and reply bubbles, so there is no preview there:
+   the ink count says there are moves, a press opens the sheet, which places itself clear of the band. */
+@media (max-width: 1100px) {
+  .writer-fab[data-clear-companion='true'] .writer-tray { display: none; }
+  .writer-slip { min-height: 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .writer-fab__button[data-fresh='true'] { animation: none; }
+  .writer-tray, .writer-slip { transition: none; }
+}

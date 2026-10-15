@@ -1,0 +1,20 @@
+/* Structural styles for `LiveCallTranscript`.
+ *
+ * These rules carry no sizing, no scrolling, and no outer-box layout — the host
+ * supplies those through the `className` hook, so the same file serves the nook
+ * glass card, the dialogue paper, and the character rail. Every value lands on a
+ * global token (`index.css:51-59`), which both Tailwind and the hand-written host
+ * themes already resolve to.
+ *
+ * `font-size: .95rem` on the placeholder is migrated verbatim from the dialogue's
+ * old `.call-placeholder` (`index.css:857`): dropping it would let the label
+ * inherit the host's `1.12rem` and change the existing paper's look.
+ */
+.live-call-transcript { display: block; }
+.live-call-transcript__line { margin: 0; display: block; }
+.live-call-transcript__speaker { margin-inline-end: .4rem; font-family: var(--ux-font-ui); font-size: .78rem; color: var(--rust); }
+.live-call-transcript__line--streaming { color: color-mix(in srgb, var(--ink) 70%, transparent); }
+.live-call-transcript__line--voice { color: var(--muted); }
+.live-call-transcript__line--player { font-style: italic; color: var(--muted); }
+.live-call-transcript__line--player .live-call-transcript__speaker { font-style: normal; }
+.live-call-transcript__placeholder { margin: 0; font-style: italic; font-size: .95rem; color: var(--muted); }

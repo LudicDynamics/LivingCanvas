@@ -1,0 +1,11 @@
+name: 鈴ばあちゃんと空を見る
+desc: 灯台に上って、雲と海をしばらく一緒に眺める
+do:
+  - action: add_state
+    with:
+      target: characters/suzu
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "60"

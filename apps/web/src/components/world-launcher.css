@@ -1,0 +1,764 @@
+/* World launcher: an endless wall of thick glass
+   bricks that repeats in every direction and leans with the pointer; the gaps
+   glow with a blur of the covers.
+
+   Performance: the pointer only drives the wall's transform (composited). Nothing
+   inside a brick reads the tilt, so bricks never repaint while the pointer moves;
+   bricks carry no 3D context, blend modes or animated filters.
+
+   Nothing here blurs live: the glow is a pre-blurred
+   bitmap (lib/launcher-ambient.ts) and the glass is rgba fills, no
+   backdrop-filter. Launcher-wide rules key on :root[data-airp-launcher]
+   (set by WorldLauncher), never `body:has(.world-launcher)`. */
+.world-launcher {
+  --tilt-x: 0; /* -1…1 from the pointer, set by WorldLauncher */
+  --tilt-y: 0;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --edge: clamp(16px, 2.4vw, 36px);
+  --glass-line: var(--ux-glass-line);
+  --glass-fill: var(--ux-glass-fill);
+  --accent: var(--ux-glass-accent);
+  position: fixed;
+  inset: 0;
+  z-index: var(--depth-modal);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding-block: 18px 0;
+  padding-inline: var(--edge);
+  overflow: hidden;
+  background: #04050c;
+  color: #f5f3ee;
+  font-family: "Helvetica Neue", Inter, var(--ux-font-ui, system-ui), sans-serif;
+}
+
+/* Every cover, blurred into one dim field behind the wall. The blur is NOT
+   computed live: lib/launcher-ambient.ts draws the covers
+   once into a ~128px bitmap, blurs and grades it in JS (the old
+   `blur(70px) saturate(1.25) brightness(.34)`), and this <img> only scales it
+   up. Until it is ready — and under the blur-off tier — the plain gradient shows. */
+.world-launcher__ambient {
+  position: absolute;
+  inset: -15%;
+  background: radial-gradient(ellipse at 50% 45%, #17202e 0%, #0b0d16 72%);
+  pointer-events: none;
+}
+.world-launcher__ambient-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+.world-launcher__ambient-image.is-ready { opacity: 1; }
+
+.world-launcher button { font: inherit; color: inherit; cursor: pointer; }
+
+.world-launcher__top {
+  position: relative;
+  /* one above the kinds strip that follows it: the banner line (and the bar's popovers) hang over that strip */
+  z-index: var(--depth-entity-control);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.world-launcher__brand { font: 600 20px/1 var(--ux-font-human, Georgia, serif); letter-spacing: .04em; }
+.world-launcher__brand span { opacity: .55; font-weight: 400; }
+.world-launcher__top nav { display: flex; flex-wrap: wrap; gap: 8px; }
+.world-launcher__pill,
+.world-launcher__langs {
+  border: 1px solid var(--glass-line);
+  background: var(--glass-fill);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25);
+  /* No backdrop-filter: behind the bar is only the pre-blurred dark glow, so
+     a live blur there changed nothing on screen and cost a pass per frame. */
+  border-radius: 999px;
+}
+.world-launcher__pill {
+  padding: 9px 16px;
+  font: 500 12px/1 ui-monospace, "SFMono-Regular", monospace;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.world-launcher__pill:hover { background: rgba(255, 255, 255, .14); }
+/* The performance-settings trigger is a pill like its neighbours here: its own
+   paper-and-ink look belongs to the in-world header, and read as a stray
+   colour on the launcher. */
+.world-launcher__top .performance-settings-trigger--launcher {
+  min-height: 0;
+  padding: 9px 16px;
+  border: 1px solid var(--glass-line);
+  background: var(--glass-fill);
+  color: inherit;
+  font: 500 12px/1 ui-monospace, "SFMono-Regular", monospace;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.world-launcher__top .performance-settings-trigger--launcher:hover,
+.world-launcher__top .performance-settings-trigger--launcher[aria-expanded='true'] {
+  border-color: var(--glass-line);
+  background: rgba(255, 255, 255, .14);
+}
+/* Language: the same setting as the world's header, so they stay in sync. */
+.world-launcher__langs { display: flex; padding: 3px; gap: 2px; }
+.world-launcher__langs button {
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font-size: 12.5px;
+  opacity: .7;
+}
+.world-launcher__langs button[aria-pressed="true"] { background: rgba(255, 255, 255, .9); color: #07080f; opacity: 1; }
+.world-launcher__langs button:not([aria-pressed="true"]):hover { opacity: 1; }
+
+/* The three kinds of world: one line each on what
+   playing them is like, then the filter chips. Both scroll sideways on a phone
+   instead of wrapping, so the wall keeps its height. */
+.world-launcher__kinds {
+  position: relative;
+  z-index: var(--depth-entity);
+  display: grid;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.world-launcher__explain {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.world-launcher__explain li {
+  /* ONE line per kind at every scale
+     the name, then its sentence, cut with an ellipsis; the whole sentence is the
+     chip's tooltip. */
+  display: block;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 7px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-line);
+  background: var(--glass-fill);
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgba(245, 243, 238, .72);
+}
+.world-launcher__explain b { font-size: 12.5px; letter-spacing: .04em; color: #f5f3ee; margin-right: 8px; }
+.world-launcher__explain .is-trpg b { color: #ffab85; }
+.world-launcher__explain .is-story b { color: #f3b2dd; }
+.world-launcher__explain .is-free b { color: #9fe3c8; }
+/* Short windows (a phone held sideways, a zoomed-in laptop): the chips alone, so the bricks keep the screen. */
+.world-launcher__line {
+  display: none;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgba(245, 243, 238, .72);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-height: 640px), (max-width: 700px) {
+  .world-launcher__explain { display: none; }
+  .world-launcher__line { display: block; }
+}
+.world-launcher__chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.world-launcher__chips::-webkit-scrollbar { display: none; }
+.world-launcher__chip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 6px 14px;
+  border: 1px solid var(--glass-line);
+  border-radius: 999px;
+  background: var(--glass-fill);
+  font-size: 13px;
+  white-space: nowrap;
+}
+.world-launcher__chip:hover { background: rgba(255, 255, 255, .14); }
+.world-launcher__chip[aria-pressed="true"] { background: rgba(255, 255, 255, .9); color: #07080f; }
+.world-launcher__count { font: 500 11px/1 ui-monospace, "SFMono-Regular", monospace; opacity: .65; }
+.world-launcher__chip:focus-visible { outline: 2px solid rgba(255, 255, 255, .85); outline-offset: 2px; }
+
+/* The wall bleeds to the screen edges; bricks are placed in wall coordinates
+   inside the layer, which the pan moves. */
+.world-launcher__stage {
+  position: relative;
+  z-index: var(--depth-world);
+  flex: 1;
+  min-height: 0;
+  margin-inline: calc(-1 * var(--edge));
+  overflow: hidden;
+  perspective: 1600px;
+  perspective-origin: 50% 45%;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+.world-launcher.is-dragging .world-launcher__stage { cursor: grabbing; }
+.world-launcher__tilt {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(calc(var(--tilt-x) * 6deg)) rotateX(calc(var(--tilt-y) * -4deg)) scale(1.04);
+  transition: transform .6s var(--ease);
+  will-change: transform;
+}
+.world-launcher__layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform;
+}
+
+.world-launcher__tile {
+  --tile-radius: clamp(26px, 9cqw, 52px);
+  position: absolute;
+  container-type: size;
+  contain: layout paint;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--tile-radius);
+  box-shadow: 0 26px 44px -22px rgba(0, 0, 0, .8), 0 0 0 1px rgba(255, 255, 255, .16);
+  transition: transform .45s var(--ease), box-shadow .45s;
+}
+.world-launcher__tile.is-active {
+  transform: scale(1.035);
+  box-shadow: 0 34px 60px -24px rgba(0, 0, 0, .9), 0 0 0 1px rgba(255, 255, 255, .32);
+}
+/* Wheel / keys / glide (WorldLauncher marks `is-moving`): hover is held, and
+   no brick eases its scale and box-shadow — a box-shadow transition runs on
+   the main thread every frame of the very scroll it would slow down. */
+.world-launcher.is-moving .world-launcher__tile { transition: none; }
+.world-launcher.is-panning .world-launcher__tile {
+  transition: none;
+  /* While panning — the drag and the coast after release (is-panning) — every
+     newly exposed raster band re-pays each tile's whole paint stack — cover
+     image, two masked rings, a conic gradient, the sheen, and 24-44px
+     shadows — at device pixel ratio. For the duration of the gesture the brick
+     falls back to its cover, rounded boundary, a hairline ring and a simple
+     bevel proxy; everything restores once the wall really stops. */
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, .16),
+    inset 0 1px 0 rgba(255, 255, 255, .4),
+    inset 0 -1px 0 rgba(0, 0, 0, .5);
+}
+.world-launcher.is-panning .world-launcher__tile.is-active { transform: none; }
+.world-launcher.is-panning .world-launcher__rim,
+.world-launcher.is-panning .world-launcher__fringe,
+.world-launcher.is-panning .world-launcher__sheen { display: none; }
+.world-launcher.is-panning .world-launcher__caption b { text-shadow: none; }
+
+.world-launcher__image,
+.world-launcher__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.world-launcher__image { object-fit: cover; }
+/* The intro video fades in over the still once it has a frame. */
+.world-launcher__video { object-fit: cover; opacity: 0; transition: opacity .6s ease; }
+.world-launcher__video.is-ready { opacity: 1; }
+.world-launcher__sheen::after,
+.world-launcher__tile::after {
+  content: '';
+}
+.world-launcher__tile::after {
+  position: absolute;
+  inset: 0;
+  z-index: var(--depth-background);
+  /* The resting dim of a cover is a flat tint in this overlay, not a
+     `filter: brightness(.86)` on the picture: no filter pass when a brick
+     rasters as the wall moves. The active brick drops the tint. */
+  background: linear-gradient(to top, rgba(4, 5, 12, .8), rgba(4, 5, 12, .12) 50%, transparent 72%), rgba(0, 0, 0, .14);
+  pointer-events: none;
+}
+.world-launcher__tile.is-active::after {
+  background: linear-gradient(to top, rgba(4, 5, 12, .8), rgba(4, 5, 12, .12) 50%, transparent 72%);
+}
+
+/* Thick edge: a band around the brick shows the picture magnified and
+   over-saturated, as if bent through the glass. */
+.world-launcher__rim {
+  position: absolute;
+  inset: 0;
+  z-index: var(--depth-world);
+  box-sizing: border-box;
+  padding: clamp(12px, 4cqw, 20px);
+  border-radius: inherit;
+  overflow: hidden;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.world-launcher__rim > span {
+  position: absolute;
+  inset: 0;
+  background: center / cover no-repeat;
+  filter: saturate(1.7) contrast(1.1) brightness(1.12);
+  transform: scale(1.16);
+}
+/* Colour fringe on the outermost edge. */
+.world-launcher__fringe {
+  position: absolute;
+  inset: 0;
+  z-index: var(--depth-entity);
+  box-sizing: border-box;
+  padding: 5px;
+  border-radius: inherit;
+  background: conic-gradient(from 200deg,
+    rgba(255, 60, 120, .9), rgba(255, 210, 60, .7), rgba(60, 255, 190, .8),
+    rgba(60, 140, 255, .9), rgba(200, 80, 255, .8), rgba(255, 60, 120, .9));
+  opacity: .32;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+/* Bevel light, a soft reflection and two glints (static).
+   Drawn with a border and plain gradients, not the five blurred inset
+   box-shadows it used to be (up to 70px blur): measured 2026-10-02, those
+   shadows were ~3/4 of the GPU time of a fling's coast — every brick that
+   rasters as the wall moves re-blurred them. */
+.world-launcher__sheen {
+  position: absolute;
+  inset: 0;
+  z-index: var(--depth-overlay);
+  border-radius: inherit;
+  /* bevel light along the top edge: a border follows the rounded corners */
+  border-top: 1.5px solid rgba(255, 255, 255, .72);
+  background:
+    linear-gradient(to bottom, rgba(255, 255, 255, .28), transparent 4px),
+    linear-gradient(to right, rgba(255, 255, 255, .26), transparent 12px),
+    linear-gradient(to left, rgba(0, 0, 0, .3), transparent 14px),
+    linear-gradient(to top, rgba(255, 255, 255, .14), transparent 5px),
+    linear-gradient(to top, rgba(0, 0, 0, .34), transparent 34px),
+    radial-gradient(55% 38% at 28% 8%, rgba(255, 255, 255, .2), transparent 70%);
+  pointer-events: none;
+}
+.world-launcher__sheen::before {
+  content: '';
+  position: absolute;
+  top: 6%;
+  right: 7%;
+  width: 3%;
+  height: 1.4%;
+  min-width: 10px;
+  min-height: 4px;
+  border-radius: 50%;
+  background: #fff;
+  transform: rotate(38deg);
+  opacity: .9;
+}
+.world-launcher__sheen::after {
+  position: absolute;
+  left: 2.6%;
+  top: 16%;
+  width: 3px;
+  height: 46%;
+  border-radius: 99px;
+  background: linear-gradient(transparent, rgba(255, 255, 255, .75), transparent);
+}
+
+.world-launcher__hit {
+  position: absolute;
+  inset: 0;
+  z-index: var(--depth-writer);
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+}
+.world-launcher__hit:focus-visible { outline: 2px solid rgba(255, 255, 255, .85); outline-offset: -6px; }
+
+.world-launcher__meta {
+  position: absolute;
+  top: 8%;
+  left: 7%;
+  right: 7%;
+  z-index: var(--depth-ui);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font: 500 clamp(9px, 2.3cqw, 12px)/1 ui-monospace, "SFMono-Regular", monospace;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  opacity: .82;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.world-launcher__meta i { font-style: normal; color: var(--accent); margin-right: 1.4em; }
+
+.world-launcher__caption {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  bottom: 9%;
+  z-index: var(--depth-ui);
+  display: grid;
+  gap: 8px;
+  pointer-events: none;
+}
+.world-launcher__caption::before {
+  content: '';
+  height: 1px;
+  margin-bottom: 6px;
+  background: rgba(255, 255, 255, .35);
+}
+.world-launcher__caption b {
+  font: 700 clamp(22px, 10cqw, 58px)/1 "Helvetica Neue", Inter, var(--ux-font-ui, system-ui), sans-serif;
+  letter-spacing: -.03em;
+  overflow-wrap: anywhere;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, .35);
+}
+.world-launcher__caption small {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: clamp(11px, 3cqw, 14px);
+  line-height: 1.5;
+  opacity: .85;
+}
+.world-launcher__actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; pointer-events: auto; }
+.world-launcher__actions button,
+:root[data-airp-launcher] .world-directory button {
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .3);
+  background: var(--glass-fill, rgba(16, 17, 27, .62));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28);
+  color: #f5f3ee;
+  font: 500 12px/1.2 ui-monospace, "SFMono-Regular", monospace;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.world-launcher__actions button:not(:hover) { background: rgba(16, 17, 27, .74); } /* a denser fill stands in for the old 14px backdrop blur */
+.world-launcher__actions button:hover { background: rgba(255, 255, 255, .18); }
+.world-launcher__actions button:disabled { opacity: .5; cursor: wait; }
+
+/* Favorite, your stars, a private note (components/WorldSocial.tsx): small, inside the open caption. */
+.world-launcher__marks { display: inline-flex; gap: 1em; margin-left: auto; letter-spacing: .08em; }
+/* server-wide opens / tokens (WorldSocial.tsx): same line, never wider than the brick — wraps, and tighter on a phone */
+.world-launcher__marks { flex-wrap: wrap; justify-content: flex-end; min-width: 0; }
+.world-launcher__stat { display: inline-flex; align-items: center; gap: .3em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+@media (max-width: 480px) { .world-launcher__marks { gap: .6em; letter-spacing: .02em; } }
+.world-launcher__heart { color: var(--accent); }
+.world-launcher__progress {
+  flex-basis: 100%;
+  font: 400 12px/1.4 ui-monospace, "SFMono-Regular", monospace;
+  letter-spacing: .04em;
+  opacity: .78;
+}
+.world-launcher__social { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; flex-basis: 100%; }
+.world-launcher__actions .world-launcher__social button { padding: 6px 10px; letter-spacing: .04em; }
+.world-launcher__actions .world-launcher__fav.is-on,
+.world-launcher__actions .world-launcher__stars button.is-on { color: var(--accent); }
+.world-launcher__stars { display: inline-flex; gap: 2px; }
+.world-launcher__actions .world-launcher__stars button { padding: 6px 7px; border-color: transparent; background: transparent; box-shadow: none; font-size: 15px; }
+.world-launcher__note { display: grid; gap: 6px; flex-basis: 100%; }
+.world-launcher__note textarea {
+  width: 100%;
+  resize: vertical;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, .3);
+  background: rgba(10, 11, 18, .7);
+  color: #f5f3ee;
+  font: 400 13px/1.45 system-ui, sans-serif;
+}
+.world-launcher__note small { font-size: 11px; opacity: .7; }
+.world-launcher__note button { justify-self: start; }
+
+.world-launcher__hint {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  z-index: var(--depth-entity);
+  margin: 0;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(10, 11, 18, .55);
+  font: 500 11px/1 ui-monospace, "SFMono-Regular", monospace;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  opacity: .7;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* Music credit required by 魔王魂's terms. */
+.world-launcher__credit {
+  position: absolute;
+  left: var(--edge);
+  bottom: 18px;
+  z-index: var(--depth-entity);
+  margin: 0;
+  font: 500 11px/1 ui-monospace, "SFMono-Regular", monospace;
+  letter-spacing: .12em;
+  opacity: .55;
+  pointer-events: none;
+}
+
+/* The save manager, opened from the launcher, wears the launcher's glass. */
+:root[data-airp-launcher] .prototype-world-picker.world-directory {
+  z-index: var(--depth-ui);
+  left: auto;
+  right: clamp(16px, 2.4vw, 36px);
+  top: 70px;
+  width: min(400px, calc(100vw - 32px));
+  max-height: calc(100dvh - 110px);
+  padding: 24px 26px 26px;
+  color: #f5f3ee;
+  /* A near-opaque fill instead of `backdrop-filter: blur(26px)`: the panel
+     sat over moving bricks and playing videos, re-blurring them every frame. */
+  background: rgba(14, 15, 24, .92);
+  border: 1px solid rgba(255, 255, 255, .22);
+  border-radius: 28px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 40px 80px -30px rgba(0, 0, 0, .85);
+  font-family: "Helvetica Neue", Inter, var(--ux-font-ui, system-ui), sans-serif;
+}
+:root[data-airp-launcher] .world-directory__header {
+  font: 500 11px/1 ui-monospace, "SFMono-Regular", monospace;
+  letter-spacing: .18em;
+  color: rgba(245, 243, 238, .7);
+}
+/* Blur tiers: `reduced` makes the glow with a 24px radius (WorldLauncher
+   passes it to lib/launcher-ambient.ts); `off` shows only the gradient. */
+:root[data-airp-blur="off"] .world-launcher__ambient-image { display: none; }
+
+/* The contact / account sheet, opened from the launcher: same swap. */
+:root[data-airp-launcher] .contact-panel__sheet {
+  background: rgba(16, 17, 27, .9);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+/* The world's own chrome stays mounted under the launcher, which is opaque
+   and full-screen: its glass is never seen there, but each backdrop-filter
+   still made the compositor blur what lies under it every frame. */
+:root[data-airp-launcher] :is(.prototype-chrome, .prototype-chrome *, .prototype-immersion-toggle, .prototype-bag-toggle, .prototype-edge-controls button, .prototype-action-toggle) {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+:root[data-airp-shadow="reduced"] .world-launcher__tile,
+:root[data-airp-shadow="reduced"] .world-launcher__tile.is-active {
+  box-shadow: 0 10px 24px -16px rgba(0, 0, 0, .55), 0 0 0 1px rgba(255, 255, 255, .22);
+}
+:root[data-airp-shadow="off"] .world-launcher__tile,
+:root[data-airp-shadow="off"] .world-launcher__tile.is-active {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .22);
+}
+:root[data-airp-shadow="reduced"][data-airp-launcher] .prototype-world-picker.world-directory {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 10px 24px -16px rgba(0, 0, 0, .6);
+}
+:root[data-airp-shadow="off"][data-airp-launcher] .prototype-world-picker.world-directory {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3);
+}
+:root[data-airp-launcher] .world-directory__header button {
+  padding: 4px 11px 6px;
+  font: 400 20px/1 var(--ux-font-ui, system-ui);
+  letter-spacing: 0;
+}
+:root[data-airp-launcher] .world-directory h2 {
+  margin: 12px 0 18px;
+  font: 700 28px/1.1 "Helvetica Neue", Inter, var(--ux-font-ui, system-ui), sans-serif;
+  letter-spacing: -.02em;
+}
+:root[data-airp-launcher] .world-directory h3 {
+  margin: 22px 0 6px;
+  font: 500 11px/1 ui-monospace, "SFMono-Regular", monospace;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(245, 243, 238, .6);
+}
+:root[data-airp-launcher] .world-directory p { color: rgba(245, 243, 238, .75); }
+/* World rows and the save list: hairlines instead of pills. */
+:root[data-airp-launcher] .prototype-world-picker.world-directory > .world-directory__entry,
+:root[data-airp-launcher] .world-directory .world-save-open {
+  width: 100%;
+  padding: 13px 4px;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  font: inherit;
+  letter-spacing: 0;
+  text-transform: none;
+  text-align: left;
+}
+:root[data-airp-launcher] .prototype-world-picker.world-directory > .world-directory__entry:hover,
+:root[data-airp-launcher] .world-directory .world-save-open:hover { background: rgba(255, 255, 255, .06); }
+:root[data-airp-launcher] .world-directory__entry > small { color: var(--accent, #c9f27a); }
+:root[data-airp-launcher] .world-directory__entry b,
+:root[data-airp-launcher] .world-directory .world-save-open b { font: 600 16px/1.3 "Helvetica Neue", Inter, var(--ux-font-ui, system-ui), sans-serif !important; }
+:root[data-airp-launcher] .world-directory__entry span,
+:root[data-airp-launcher] .world-directory .world-save-open span { color: rgba(245, 243, 238, .6); font-size: 12px; }
+:root[data-airp-launcher] .world-directory .world-save-row { padding: 0; margin: 0; border: 0; border-radius: 0; }
+:root[data-airp-launcher] .world-directory .world-save-row > button:last-of-type { margin: 8px 0 12px; padding: 7px 12px; font-size: 11px; }
+:root[data-airp-launcher] .world-directory .world-save-confirm { padding: 10px 0; border-color: rgba(255, 255, 255, .12); }
+:root[data-airp-launcher] .world-directory .world-save-confirm button { margin: 0 8px 0 0; }
+:root[data-airp-launcher] .prototype-world-picker.world-directory > button:not(.world-directory__entry) { margin: 6px 8px 0 0; }
+:root[data-airp-launcher] .world-directory button:hover:not(:disabled) { background: rgba(255, 255, 255, .16); }
+:root[data-airp-launcher] .world-directory button:disabled { opacity: .45; }
+
+@media (prefers-reduced-motion: reduce) {
+  .world-launcher__tilt { transform: none; }
+  .world-launcher *, .world-launcher *::before, .world-launcher *::after { transition: none !important; }
+}
+
+/* Effects-off tier (App projects settings.effectsEnabled onto
+   :root[data-airp-effects]). This fires for the performance preset AND any
+   custom preset with effects disabled — a custom tier that only turns shadows
+   off must still shed these. The wall pans every drag frame, so anything
+   per-pixel inside a tile pays on every newly exposed raster band, and the
+   stage perspective makes the wall a 3D surface whose raster tiles key on the
+   full camera transform instead of reusing under plain translation. All three
+   are atmosphere at most. */
+:root[data-airp-effects="off"] .world-launcher__stage { perspective: none; }
+:root[data-airp-effects="off"] .world-launcher__tilt {
+  transform: none;
+  transition: none;
+  will-change: auto;
+}
+
+/* 公告 (components/Announcements.tsx): a slim line under the top bar + the list behind 「Notices」. Launcher only. */
+.launcher-notices__pill { position: relative; }
+.launcher-notices__dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: 6px;
+  border-radius: 50%;
+  background: var(--accent, #e8b86b);
+  vertical-align: middle;
+}
+.launcher-notices__banner {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--depth-ui);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(720px, calc(100vw - 32px));
+  padding: 6px 8px 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-line, rgba(255, 255, 255, .3));
+  background: rgba(10, 11, 18, .92); /* it hangs over the kinds strip: opaque enough to read */
+  color: #f5f3ee;
+  font: 400 13px/1.3 system-ui, sans-serif;
+}
+.launcher-notices__banner button { border: 0; background: none; color: inherit; font: inherit; cursor: pointer; padding: 2px 6px; }
+.launcher-notices__title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; }
+.launcher-notices__banner .launcher-notices__title { min-width: 0; padding: 2px 0; color: inherit; text-decoration: none; }
+.launcher-notices__banner .launcher-notices__title:hover,
+.launcher-notices__banner .launcher-notices__title:focus-visible { text-decoration: underline; }
+/* 日志 banner levels (data 日志接口 §7): info neutral, maintenance yellow, important red */
+.launcher-notices__banner.is-maintenance { border-color: rgba(232, 184, 107, .55); }
+.launcher-notices__banner.is-important { border-color: rgba(255, 155, 133, .6); }
+.launcher-notices__level { font: 500 10px/1 ui-monospace, "SFMono-Regular", monospace; letter-spacing: .14em; text-transform: uppercase; opacity: .75; white-space: nowrap; }
+.launcher-notices__banner.is-important .launcher-notices__level,
+.launcher-notices__item.is-important .launcher-notices__level { color: #ff9b85; opacity: 1; }
+.launcher-notices__banner.is-maintenance .launcher-notices__level,
+.launcher-notices__item.is-maintenance .launcher-notices__level { color: var(--accent, #e8b86b); opacity: 1; }
+.launcher-notices__panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: var(--depth-ui);
+  display: grid;
+  gap: 10px;
+  width: min(440px, calc(100vw - 32px));
+  max-height: 70vh;
+  overflow: auto;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--glass-line, rgba(255, 255, 255, .3));
+  background: rgba(10, 11, 18, .9);
+  color: #f5f3ee;
+}
+.launcher-notices__item header { display: flex; align-items: baseline; gap: 8px; }
+.launcher-notices__item header b { flex: 1; font: 600 14px/1.35 system-ui, sans-serif; }
+.launcher-notices__item header button,
+.launcher-notices__close { border: 1px solid rgba(255, 255, 255, .3); border-radius: 999px; background: none; color: inherit; padding: 3px 10px; font: 500 11px/1.2 ui-monospace, monospace; cursor: pointer; }
+.launcher-notices__close { justify-self: end; }
+.launcher-notices__item.is-read { opacity: .6; }
+.launcher-notices__body { font: 400 13px/1.5 system-ui, sans-serif; }
+.launcher-notices__body p, .launcher-notices__body ul { margin: 6px 0 0; }
+.launcher-notices__body a { color: var(--accent, #e8b86b); }
+
+/* Everyone's comments under an open brick (components/WorldSocial.tsx). */
+.world-launcher__comments { flex-basis: 100%; display: grid; gap: 6px; max-height: 180px; overflow: auto; margin: 0; padding: 0; list-style: none; }
+.world-launcher__comment { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; font: 400 12px/1.45 system-ui, sans-serif; }
+.world-launcher__comment-stars { color: var(--accent); letter-spacing: .05em; }
+.world-launcher__comment-text { flex-basis: 100%; white-space: pre-wrap; overflow-wrap: anywhere; }
+.world-launcher__comment small { opacity: .65; }
+.world-launcher__actions .world-launcher__report { padding: 2px 8px; font-size: 10px; background: transparent; box-shadow: none; }
+.world-launcher__report-form { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 6px; }
+.world-launcher__report-form select,
+.world-launcher__report-form input { padding: 4px 8px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, .3); background: rgba(10, 11, 18, .7); color: #f5f3ee; font: 400 12px/1.3 system-ui, sans-serif; }
+.world-launcher__report-form input { flex: 1; min-width: 140px; }
+.world-launcher__comments-empty { flex-basis: 100%; margin: 0; font-size: 12px; opacity: .7; }
+.world-launcher__note-actions { display: flex; gap: 6px; }
+
+/* Phone: the five wide-tracked pills wrapped one per row and the bar took a
+   third of the screen before the wall began. Tighter tracking and padding put
+   them on two rows (three at 360px), still 36px tall to the finger. */
+@media (max-width: 700px) {
+  .world-launcher__top { gap: 8px 10px; margin-bottom: 8px; }
+  .world-launcher__top nav { gap: 6px; }
+  .world-launcher__pill,
+  .world-launcher__top .performance-settings-trigger--launcher {
+    min-height: 36px;
+    padding: 8px 11px;
+    font-size: 11px;
+    letter-spacing: .08em;
+    white-space: nowrap;
+  }
+  .world-launcher__langs button { min-height: 32px; padding: 6px 10px; }
+  .world-launcher__kinds { gap: 6px; margin-bottom: 6px; }
+  /* Narrow: the chips alone (each names its kind; the sentence is its tooltip and the line under the chips). */
+  .world-launcher__explain { display: none; }
+  .world-launcher__chips { margin-inline: calc(-1 * var(--edge)); padding-inline: var(--edge); }
+  .world-launcher__chip { min-height: 36px; }
+}
+
+/* Phone, an opened brick (smoke test 2026-10-05): the brick is ~170px tall but title + blurb + 「开始新游戏」 +
+   the like / save / stars / comments row stood ~310px, so the caption grew up past the brick's clipped top and
+   「开始新游戏」 was neither seen nor tappable. Opened, the caption takes the brick below its meta line, drops the
+   blurb (the collapsed brick shows it), and scrolls its own overflow — the title and the play buttons come first,
+   so they show without scrolling. */
+@media (max-width: 520px) {
+  .world-launcher__caption:has(> .world-launcher__actions) {
+    top: 20%;
+    bottom: 5%;
+    align-content: start;
+    gap: 6px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+    pointer-events: auto;
+  }
+  .world-launcher__caption:has(> .world-launcher__actions)::before { margin-bottom: 2px; }
+  .world-launcher__caption:has(> .world-launcher__actions) > b { font-size: 22px; }
+  .world-launcher__caption:has(> .world-launcher__actions) > small { display: none; }
+  .world-launcher__caption:has(> .world-launcher__actions) .world-launcher__actions { margin-top: 0; }
+}

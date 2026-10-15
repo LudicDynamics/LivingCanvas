@@ -1,0 +1,23 @@
+name: "Pin the fourth thread: Second Wake"
+desc: After a decisive Check on the chart succeeds (60 or under) or after Long Way Around, put "Second Wake" into your bag as evidence and tick it on the chart.
+do:
+  - action: give
+    with:
+      path: player/second-wake.md
+      title: Evidence · The Second Wake in the Fog
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        Two wakes are drawn side by side on the chart: one from the unmanned ship drifting into Berth 7, the other coming out of the Old Customs Tunnel's mouth, grazing right past it, then turning back into the fog.
+
+        The second wake runs deep, and it takes the only channel that was passable during those twelve dark minutes. The ship missing from the ledger is that one.
+  - action: set_status
+    with:
+      path: world/harbor-chart/05-accuse.md
+      values:
+        wake: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: "✓ The chart thread is pinned: there is a second wake in the fog."

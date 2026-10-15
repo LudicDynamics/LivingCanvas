@@ -1,0 +1,22 @@
+{
+  "//": "Typecheck-only config for the jiti-run extension sources (docs/tools/12 §10.5). `extensions/` is outside the pnpm workspace, so no workspace tsconfig covers it: `pnpm -r build` would leave a broken tool shell undetected until an agent process silently skipped it (loader.ts:511-515). Run: node_modules/.bin/tsc -p extensions/tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "typeRoots": ["../node_modules/@types"],
+    "paths": {
+      "@earendil-works/pi-coding-agent": ["../vendor/pi-rp/packages/coding-agent/dist/index.d.ts"],
+      "@earendil-works/pi-ai": ["../vendor/pi-rp/packages/ai/dist/compat.d.ts"],
+      "@earendil-works/pi-ai/providers/all": ["../vendor/pi-rp/packages/ai/dist/providers/all.d.ts"],
+      "typebox": ["../vendor/pi-rp/node_modules/typebox/build/index.d.mts"]
+    }
+  },
+  "include": ["**/*.ts"]
+}

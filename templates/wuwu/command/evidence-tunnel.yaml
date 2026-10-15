@@ -1,0 +1,23 @@
+name: "Pin the second thread: the Old Customs Tunnel"
+desc: After a successful Old Lighthouse Check (60 or under) or the Long Way Around, put "the twelve dark minutes and the Old Customs Tunnel" in your bag as evidence and tick it on the Harbor Map.
+do:
+  - action: give
+    with:
+      path: player/customs-tunnel.md
+      title: Evidence · The Old Customs Tunnel and the Twelve Dark Minutes
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        The twelve dark minutes line up exactly with the stretch when the tide lets a ship pass through the Old Customs Tunnel's mouth. With the light out, no one can see a ship leaving the tunnel mouth.
+
+        Old Mo admits he put out the light, but he cannot say what ship was out there during that time. He truly did not know a ship was following behind.
+  - action: set_status
+    with:
+      path: world/harbor-chart/05-accuse.md
+      values:
+        tunnel: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: "✓ The Old Lighthouse thread is pinned: the twelve dark minutes, aimed at the Old Customs Tunnel's mouth."

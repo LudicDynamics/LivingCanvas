@@ -1,0 +1,8 @@
+name: 식당차를 다 뒤지지 못함
+desc: 식당차 수색이 61–100에 떨어졌다. 휘저어진 석탄재만 알아챘다. "돌아가기"(05-long-way.md)를 연다
+do:
+  - action: set_status
+    with:
+      path: world/dining-car/05-long-way.md
+      values:
+        open: yes

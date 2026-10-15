@@ -1,0 +1,684 @@
+{
+  "world": "last-train",
+  "names": {
+    "en": "The Last Train",
+    "ja": "終電",
+    "zh": "末班车",
+    "ko": "막차"
+  },
+  "koReview": "ko names seeded by hand 2026-10-03 (Korean editions) — TO REVIEW; the rest are filled by `localize-from-zh.mjs glossary --to ko`",
+  "terms": [
+    {
+      "zh": "末班车",
+      "en": "The Last Train",
+      "ja": "終電",
+      "note": "world title",
+      "ko": "막차"
+    },
+    {
+      "zh": "断云隧道",
+      "en": "Broken Cloud Tunnel",
+      "ja": "断雲トンネル",
+      "note": "key location",
+      "ko": "단운 터널"
+    },
+    {
+      "zh": "夏澄",
+      "en": "Xia Cheng",
+      "ja": "夏澄",
+      "note": "protagonist",
+      "ko": "샤청"
+    },
+    {
+      "zh": "钟怀礼",
+      "en": "Zhong Huaili",
+      "ja": "鐘懐礼",
+      "note": "suspect, deputy bureau chief",
+      "ko": "중화이리"
+    },
+    {
+      "zh": "苏禾",
+      "en": "Su He",
+      "ja": "蘇禾",
+      "note": "victim, signalman's daughter",
+      "ko": "쑤허"
+    },
+    {
+      "zh": "周子航",
+      "en": "Zhou Zihang",
+      "ja": "周子航",
+      "note": "student witness",
+      "ko": "저우쯔항"
+    },
+    {
+      "zh": "老秦",
+      "en": "Old Qin",
+      "ja": "秦じい",
+      "note": "driver",
+      "ko": "친 영감"
+    },
+    {
+      "zh": "老贺",
+      "en": "Old He",
+      "ja": "賀じい",
+      "note": "cook",
+      "ko": "허 영감"
+    },
+    {
+      "zh": "苏长庚",
+      "en": "Su Changgeng",
+      "ja": "蘇長庚",
+      "note": "signalman, deceased",
+      "ko": "쑤창겅"
+    },
+    {
+      "zh": "岭口",
+      "en": "Lingkou",
+      "ja": "嶺口",
+      "note": "dispatch station",
+      "ko": "링커우"
+    },
+    {
+      "zh": "K7次",
+      "en": "Train K7",
+      "ja": "K7列車",
+      "note": "train number",
+      "ko": "K7 열차"
+    },
+    {
+      "zh": "1车 · 驾驶室",
+      "en": "Car 1 · Cab",
+      "ja": "1号車・運転室",
+      "note": "location",
+      "ko": "1호차 · 운전실"
+    },
+    {
+      "zh": "2车 · 硬座车",
+      "en": "Car 2 · Hard Seat Car",
+      "ja": "2号車・硬座車",
+      "note": "location",
+      "ko": "2호차 · 경좌차"
+    },
+    {
+      "zh": "3车 · 卧铺车",
+      "en": "Car 3 · Sleeper Car",
+      "ja": "3号車・寝台車",
+      "note": "location",
+      "ko": "3호차 · 침대차"
+    },
+    {
+      "zh": "4车 · 餐车",
+      "en": "Car 4 · Dining Car",
+      "ja": "4号車・食堂車",
+      "note": "location",
+      "ko": "4호차 · 식당차"
+    },
+    {
+      "zh": "5车 · 行李车",
+      "en": "Car 5 · Baggage Car",
+      "ja": "5号車・荷物車",
+      "note": "location",
+      "ko": "5호차 · 화물차"
+    },
+    {
+      "zh": "驾驶室",
+      "en": "Cab",
+      "ja": "運転室",
+      "note": "room",
+      "ko": "운전실"
+    },
+    {
+      "zh": "硬座车",
+      "en": "Hard Seat Car",
+      "ja": "硬座車",
+      "note": "car type",
+      "ko": "경좌차"
+    },
+    {
+      "zh": "卧铺车",
+      "en": "Sleeper Car",
+      "ja": "寝台車",
+      "note": "car type",
+      "ko": "침대차"
+    },
+    {
+      "zh": "餐车",
+      "en": "Dining Car",
+      "ja": "食堂車",
+      "note": "car type",
+      "ko": "식당차"
+    },
+    {
+      "zh": "行李车",
+      "en": "Baggage Car",
+      "ja": "荷物車",
+      "note": "car type",
+      "ko": "화물차"
+    },
+    {
+      "zh": "电台",
+      "en": "Radio",
+      "ja": "無線",
+      "note": "communication device",
+      "ko": "무전기"
+    },
+    {
+      "zh": "调度",
+      "en": "Dispatcher",
+      "ja": "指令",
+      "note": "role",
+      "ko": "관제사"
+    },
+    {
+      "zh": "分局副局长",
+      "en": "Deputy Bureau Chief",
+      "ja": "分局副局長",
+      "note": "rank",
+      "ko": "지국 부국장"
+    },
+    {
+      "zh": "信号员",
+      "en": "Signalman",
+      "ja": "信号係",
+      "note": "rank",
+      "ko": "신호원"
+    },
+    {
+      "zh": "司机",
+      "en": "Driver",
+      "ja": "運転士",
+      "note": "rank",
+      "ko": "기관사"
+    },
+    {
+      "zh": "厨师",
+      "en": "Cook",
+      "ja": "料理人",
+      "note": "rank",
+      "ko": "요리사"
+    },
+    {
+      "zh": "乘客",
+      "en": "Passenger",
+      "ja": "乗客",
+      "note": "role",
+      "ko": "승객"
+    },
+    {
+      "zh": "乘客名单",
+      "en": "Passenger List",
+      "ja": "乗客名簿",
+      "note": "document",
+      "ko": "승객 명단"
+    },
+    {
+      "zh": "行车日志",
+      "en": "Train Logbook",
+      "ja": "運転日誌",
+      "note": "document",
+      "ko": "운행 일지"
+    },
+    {
+      "zh": "日志页",
+      "en": "Logbook Page",
+      "ja": "日誌のページ",
+      "note": "key evidence",
+      "ko": "일지 페이지"
+    },
+    {
+      "zh": "抢修通知",
+      "en": "Repair Notice",
+      "ja": "復旧通知",
+      "note": "document",
+      "ko": "복구 통지"
+    },
+    {
+      "zh": "小票",
+      "en": "Receipt",
+      "ja": "レシート",
+      "note": "evidence",
+      "ko": "영수증"
+    },
+    {
+      "zh": "茶杯",
+      "en": "Teacup",
+      "ja": "茶碗",
+      "note": "object",
+      "ko": "찻잔"
+    },
+    {
+      "zh": "灰呢大衣",
+      "en": "Grey Wool Coat",
+      "ja": "グレーのウールコート",
+      "note": "object",
+      "ko": "회색 모직 코트"
+    },
+    {
+      "zh": "安眠药",
+      "en": "Sleeping Pills",
+      "ja": "睡眠薬",
+      "note": "object",
+      "ko": "수면제"
+    },
+    {
+      "zh": "钥匙板",
+      "en": "Key Board",
+      "ja": "鍵板",
+      "note": "object",
+      "ko": "열쇠판"
+    },
+    {
+      "zh": "煤斗",
+      "en": "Coal Scuttle",
+      "ja": "石炭入れ",
+      "note": "object",
+      "ko": "석탄통"
+    },
+    {
+      "zh": "邮袋",
+      "en": "Mail Sack",
+      "ja": "郵袋",
+      "note": "object",
+      "ko": "우편 자루"
+    },
+    {
+      "zh": "黄麻絮",
+      "en": "Jute Fibers",
+      "ja": "ジュート繊維",
+      "note": "trace evidence",
+      "ko": "황마 섬유"
+    },
+    {
+      "zh": "渡板",
+      "en": "Gangway Plate",
+      "ja": "渡り板",
+      "note": "object",
+      "ko": "연결 발판"
+    },
+    {
+      "zh": "道砟",
+      "en": "Ballast",
+      "ja": "バラスト",
+      "note": "object",
+      "ko": "자갈"
+    },
+    {
+      "zh": "塌方",
+      "en": "Landslide",
+      "ja": "土砂崩れ",
+      "note": "event",
+      "ko": "산사태"
+    },
+    {
+      "zh": "纪念会",
+      "en": "Memorial Service",
+      "ja": "追悼式",
+      "note": "event",
+      "ko": "추모식"
+    },
+    {
+      "zh": "距离发车",
+      "en": "Time to Departure",
+      "ja": "発車まで",
+      "note": "clock label",
+      "ko": "출발까지"
+    },
+    {
+      "zh": "找到了她",
+      "en": "Found Her",
+      "ja": "彼女を見つけた",
+      "note": "ending",
+      "ko": "그녀를 찾았다"
+    },
+    {
+      "zh": "列车开走了",
+      "en": "The Train Departed",
+      "ja": "列車は発車した",
+      "note": "ending",
+      "ko": "열차가 떠났다"
+    },
+    {
+      "zh": "伤得撑不住了",
+      "en": "Too Hurt to Continue",
+      "ja": "傷が限界",
+      "note": "command",
+      "ko": "부상이 한계다"
+    },
+    {
+      "zh": "用电台报告真相",
+      "en": "Report the Truth by Radio",
+      "ja": "無線で真実を報告",
+      "note": "command",
+      "ko": "무전기로 진실을 보고한다"
+    },
+    {
+      "zh": "时间往前走一步",
+      "en": "Time Moves Forward",
+      "ja": "時間が進む",
+      "note": "command",
+      "ko": "시간이 한 걸음 나아간다"
+    },
+    {
+      "zh": "拦住钟怀礼",
+      "en": "Confront Zhong Huaili",
+      "ja": "鐘懐礼を止める",
+      "note": "scene",
+      "ko": "중화이리를 막아선다"
+    },
+    {
+      "zh": "苏禾的话",
+      "en": "Su He's Testimony",
+      "ja": "蘇禾の証言",
+      "note": "evidence",
+      "ko": "쑤허의 증언"
+    },
+    {
+      "zh": "苏禾的笔记本",
+      "en": "Su He's Notebook",
+      "ja": "蘇禾のノート",
+      "note": "evidence",
+      "ko": "쑤허의 수첩"
+    },
+    {
+      "zh": "4号桌的小票",
+      "en": "Table 4 Receipt",
+      "ja": "4号卓のレシート",
+      "note": "evidence",
+      "ko": "4번 테이블 영수증"
+    },
+    {
+      "zh": "4号桌上的两只茶杯",
+      "en": "Two Teacups on Table 4",
+      "ja": "4号卓の二つの茶碗",
+      "note": "evidence",
+      "ko": "4번 테이블의 찻잔 두 개"
+    },
+    {
+      "zh": "夏澄的乘客名单（凌晨一点十分）",
+      "en": "Xia Cheng's Passenger List (1:10 AM)",
+      "ja": "夏澄の乗客名簿（午前1時10分）",
+      "note": "document",
+      "ko": "샤청의 승객 명단 (새벽 1시 10분)"
+    },
+    {
+      "zh": "今天的日记",
+      "en": "Today's Diary",
+      "ja": "今日の日記",
+      "note": "file title",
+      "ko": "오늘의 일기"
+    },
+    {
+      "zh": "关于我",
+      "en": "About Me",
+      "ja": "私について",
+      "note": "file title",
+      "ko": "나에 대하여"
+    },
+    {
+      "zh": "喜欢的事，害怕的事",
+      "en": "Likes and Fears",
+      "ja": "好きなこと、怖いこと",
+      "note": "file title",
+      "ko": "좋아하는 것, 무서운 것"
+    },
+    {
+      "zh": "将来想成为的人",
+      "en": "Who I Want to Become",
+      "ja": "将来なりたい人",
+      "note": "file title",
+      "ko": "장래 희망"
+    },
+    {
+      "zh": "我的所见所闻",
+      "en": "What I've Seen and Heard",
+      "ja": "私の見聞き",
+      "note": "file title",
+      "ko": "내가 보고 들은 것"
+    },
+    {
+      "zh": "现在想做的事",
+      "en": "What I Want to Do Now",
+      "ja": "今したいこと",
+      "note": "file title",
+      "ko": "지금 하고 싶은 것"
+    },
+    {
+      "zh": "我身边的人",
+      "en": "People Around Me",
+      "ja": "私の周りの人",
+      "note": "file title",
+      "ko": "내 주변 사람들"
+    },
+    {
+      "zh": "还说不出口的事",
+      "en": "Things I Can't Say Yet",
+      "ja": "まだ言えないこと",
+      "note": "file title",
+      "ko": "아직 말할 수 없는 것"
+    },
+    {
+      "zh": "你",
+      "en": "You",
+      "ja": "あなた",
+      "note": "player title",
+      "ko": "당신"
+    },
+    {
+      "zh": "再来一局",
+      "en": "Play Again",
+      "ja": "もう一度プレイ",
+      "note": "UI prompt",
+      "ko": "다시 한 판"
+    },
+    {
+      "zh": "断云隧道 · 停下的末班车",
+      "en": "Duanyun Tunnel · The Stopped Last Train",
+      "ko": "단운 터널 · 멈춘 막차",
+      "note": "ko: model"
+    },
+    {
+      "zh": "电台 · 向岭口调度报告",
+      "en": "Radio · Report to Lingkou Dispatcher",
+      "ko": "무전기 · 링커우 관제사에게 보고",
+      "note": "ko: model"
+    },
+    {
+      "zh": "12年前",
+      "en": "12 years ago",
+      "ko": "12년 전",
+      "note": "ko: model"
+    },
+    {
+      "zh": "11月7日",
+      "en": "November 7",
+      "ko": "11월 7일",
+      "note": "ko: model"
+    },
+    {
+      "zh": "两车相撞",
+      "en": "Two trains collided",
+      "ko": "두 열차 충돌",
+      "note": "ko: model"
+    },
+    {
+      "zh": "三人遇难",
+      "en": "Three fatalities",
+      "ko": "세 명 사망",
+      "note": "ko: model"
+    },
+    {
+      "zh": "红灯放行",
+      "en": "Clear on red",
+      "ko": "적색 신호 통과",
+      "note": "ko: model"
+    },
+    {
+      "zh": "口令",
+      "en": "verbal order",
+      "ko": "구두 명령",
+      "note": "ko: model"
+    },
+    {
+      "zh": "失职",
+      "en": "dereliction of duty",
+      "ko": "직무 태만",
+      "note": "ko: model"
+    },
+    {
+      "zh": "档案",
+      "en": "archives",
+      "ko": "기록 보관소",
+      "note": "ko: model"
+    },
+    {
+      "zh": "旧剪报",
+      "en": "old newspaper clipping",
+      "ko": "오래된 신문 스크랩",
+      "note": "ko: model"
+    },
+    {
+      "zh": "17号座",
+      "en": "Seat 17",
+      "ko": "17번 좌석",
+      "note": "ko: model"
+    },
+    {
+      "zh": "18号座",
+      "en": "Seat 18",
+      "ko": "18번 좌석",
+      "note": "ko: model"
+    },
+    {
+      "zh": "3号下铺",
+      "en": "Lower berth 3",
+      "ko": "3번 하단 침대",
+      "note": "ko: model"
+    },
+    {
+      "zh": "2车17号",
+      "en": "Car 2, Seat 17",
+      "ko": "2호차 17번",
+      "note": "ko: model"
+    },
+    {
+      "zh": "3车3号下铺",
+      "en": "Car 3, Lower Berth 3",
+      "ko": "3호차 3번 하단 침대",
+      "note": "ko: model"
+    },
+    {
+      "zh": "开水炉",
+      "en": "water boiler",
+      "ko": "온수기",
+      "note": "ko: model"
+    },
+    {
+      "zh": "钥匙钩",
+      "en": "key hook",
+      "ko": "열쇠 고리",
+      "note": "ko: model"
+    },
+    {
+      "zh": "5车钥匙",
+      "en": "Car 5 key",
+      "ko": "5호차 열쇠",
+      "note": "ko: model"
+    },
+    {
+      "zh": "进5车的钥匙",
+      "en": "key to Car 5",
+      "ko": "5호차 출입 열쇠",
+      "note": "ko: model"
+    },
+    {
+      "zh": "烧焦的一角",
+      "en": "torn corner",
+      "ko": "그을린 모서리",
+      "note": "ko: model"
+    },
+    {
+      "zh": "决定性判定",
+      "en": "decisive check",
+      "ko": "결정적 판정",
+      "note": "ko: model"
+    },
+    {
+      "zh": "搜查",
+      "en": "search",
+      "ko": "수색",
+      "note": "ko: model"
+    },
+    {
+      "zh": "掷骰",
+      "en": "roll dice",
+      "ko": "주사위 굴리기",
+      "note": "ko: model"
+    },
+    {
+      "zh": "毫发无伤",
+      "en": "unharmed",
+      "ko": "무사",
+      "note": "ko: model"
+    },
+    {
+      "zh": "受了伤",
+      "en": "injured",
+      "ko": "부상",
+      "note": "ko: model"
+    },
+    {
+      "zh": "伤得很重",
+      "en": "badly hurt",
+      "ko": "중상",
+      "note": "ko: model"
+    },
+    {
+      "zh": "奄奄一息",
+      "en": "barely alive",
+      "ko": "빈사",
+      "note": "ko: model"
+    },
+    {
+      "zh": "隐藏生命值",
+      "en": "hidden HP",
+      "ko": "숨겨진 체력",
+      "note": "ko: model"
+    },
+    {
+      "zh": "尾声",
+      "en": "epilogue",
+      "ko": "에필로그",
+      "note": "ko: model"
+    },
+    {
+      "zh": "复盘",
+      "en": "debrief",
+      "ko": "복기",
+      "note": "ko: model"
+    },
+    {
+      "zh": "后日谈",
+      "en": "afterstory",
+      "ko": "후일담",
+      "note": "ko: model"
+    },
+    {
+      "zh": "封闭跑团",
+      "en": "closed TRPG",
+      "ko": "폐쇄 TRPG",
+      "note": "ko: model"
+    },
+    {
+      "zh": "NPC 卡",
+      "en": "NPC card",
+      "ko": "NPC 카드",
+      "note": "ko: model"
+    },
+    {
+      "zh": "对话",
+      "en": "dialogue",
+      "ko": "대화",
+      "note": "ko: model"
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+/* A card's big action buttons.
+   Paper pill, human type, hover = ink/paper reversal (doc-04 §10.2). Every
+   button is at least 44px tall: the forced tutorial asks for exactly these. */
+.card-actions {
+  font-family: var(--ux-font-human);
+  color: var(--ux-color-ink);
+}
+.card-actions--float {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: var(--depth-card-actions);
+  padding: 6px;
+  border-radius: var(--ux-radius-pill);
+  background: color-mix(in srgb, var(--ux-color-paper) 94%, transparent);
+  border: 1px solid var(--ux-color-line);
+  box-shadow: var(--ux-shadow-halo);
+  /* Appears with the lift; placement is written by the component. */
+  animation: card-actions-in var(--ux-motion-fast) var(--ux-motion-ink);
+  max-width: calc(100vw - 16px);
+}
+.card-actions--float[hidden] { display: none; }
+.card-actions--float .card-actions__row { flex-wrap: nowrap; }
+.card-actions__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.card-actions__btn {
+  min-height: 44px;
+  min-width: 88px;
+  padding: 8px 20px;
+  border-radius: var(--ux-radius-pill);
+  border: 1px solid var(--ux-color-line);
+  background: var(--ux-color-cream);
+  color: var(--ux-color-ink);
+  font: 500 17px/1.2 var(--ux-font-human);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--ux-motion-fast) var(--ux-motion-ink), color var(--ux-motion-fast) var(--ux-motion-ink);
+}
+.card-actions__btn:hover,
+.card-actions__btn:focus-visible {
+  background: var(--ux-color-ink);
+  color: var(--ux-color-paper);
+  border-color: transparent;
+}
+.card-actions__btn:focus-visible { outline: 2px solid var(--ux-color-rust); outline-offset: 2px; }
+/* The one the card is for (take / enter) carries the warm accent. */
+.card-actions__btn--take,
+.card-actions__btn--enter {
+  background: var(--ux-color-rust);
+  color: var(--ux-color-cream);
+  border-color: transparent;
+}
+.card-actions__btn:disabled { opacity: 0.5; cursor: wait; }
+.card-actions small { display: block; padding: 6px 12px 2px; font: 13px/1.5 var(--ux-font-ui); }
+.card-actions--inline { margin-top: 16px; }
+.card-actions--inline .card-actions__btn { flex: 1 1 auto; }
+
+@keyframes card-actions-in {
+  from { opacity: 0; }
+}
+
+/* ---- the lift: the card grows in place to a readable size ---- */
+.object[data-card-lifted] > :first-child {
+  scale: var(--card-lift, 1);
+  transition: scale var(--ux-motion-fast) var(--ux-motion-ink);
+}
+.object:not([data-card-lifted]) > :first-child {
+  transition: scale var(--ux-motion-fast) var(--ux-motion-ink);
+}
+.object[data-card-lifted] { z-index: var(--depth-entity-focus) !important; }
+
+/* ---- the focus view: one card, centred, for reading ---- */
+.card-focus {
+  position: fixed;
+  inset: 0;
+  z-index: var(--depth-card-focus);
+  display: grid;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+  pointer-events: none;
+}
+.card-focus > .paper-reading--focus {
+  pointer-events: auto;
+  position: relative;
+  width: min(560px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--ux-shadow-deep);
+  animation: card-focus-in var(--ux-motion-panel) var(--ux-motion-ink);
+}
+.card-focus > .paper-reading--focus .paper-reading__content { max-height: none; flex: 1 1 auto; min-height: 0; }
+@keyframes card-focus-in {
+  from { opacity: 0; scale: 0.94; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-actions--float,
+  .card-focus > .paper-reading--focus { animation: none; }
+  /* Still grows to a readable size — it just does not animate there. */
+  .object[data-card-lifted] > :first-child,
+  .object:not([data-card-lifted]) > :first-child,
+  .card-actions__btn { transition: none; }
+}
+
+@media (max-width: 640px) {
+  .card-actions__btn { font-size: 16px; padding: 8px 16px; min-width: 0; }
+  .card-focus > .paper-reading--focus { width: calc(100vw - 24px); }
+}

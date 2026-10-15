@@ -1,0 +1,6 @@
+name: Tide Rises One Step
+desc: After each investigation Check, the time limit drops by one (a great success 1–12 investigates quickly and costs no tide, controlled by the when on the card)
+do:
+  - action: tick
+    with:
+      by: "-1"

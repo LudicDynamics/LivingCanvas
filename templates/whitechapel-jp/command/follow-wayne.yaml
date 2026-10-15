@@ -1,0 +1,11 @@
+name: '行かせて、そっと後をつける'
+desc: '彼は霧の中で待っていた。重い一撃を受け、第四の絵は現実になる'
+do:
+  - action: add_state
+    with:
+      target: player
+      state: hp
+      by: "-5"
+  - action: end
+    with:
+      ending: fourth-picture

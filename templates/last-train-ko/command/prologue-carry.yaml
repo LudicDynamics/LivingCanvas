@@ -1,0 +1,27 @@
+name: 서장에서 빨리 감기
+desc: "서장에서 온 플레이어는 제1막을 건너뛴다: 수첩과 저우쯔항의 증언이 가방에 들어가고, 시계가 한 걸음 나아가며(학생에게 물은 몫), 열차 지도로 바로 간다"
+do:
+  - action: move
+    when: has("world/seated-car/su-he-notebook.md")
+    with:
+      from: world/seated-car/su-he-notebook.md
+      to: player/su-he-notebook.md
+  - action: give
+    with:
+      path: player/witness-account.md
+      title: 저우쯔항의 증언
+      frontmatter:
+        type: note
+        portable: true
+      body: "학생 저우쯔항(2호차 20번): 0시 50분쯤, 회색 모직 코트를 입고 머리가 희끗희끗한 노인이 쑤허를 부축해 차 뒤쪽으로 걸어갔고, 그녀가 '멀미가 나서 뒤에서 바람을 쐬게 해주려 한다'고 했다. 쑤허는 걸음이 휘청거렸고, 마치 잠이 덜 깬 것 같았다. 노인의 얼굴은 보지 못했다."
+  - action: set_status
+    with:
+      path: world/seated-car/01-opening.md
+      values:
+        skipped: yes
+  - action: tick
+    with:
+      by: "-1"
+  - action: enter
+    with:
+      layer: map

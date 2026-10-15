@@ -1,0 +1,17 @@
+name: "돌아가기: 7번 부두"
+desc: 7번 부두의 조사 판정을 다 살피지 못한 뒤, 은솔개에게 직접 화물칸을 열어 달라 청한다. 조수가 한 걸음 더 밀려온다. 손에 있던 반쪽 실마리(페인트 조각)가 온전한 증거로 들어온다
+do:
+  - action: edit
+    when: has("player/decoy-ship-half.md")
+    with:
+      path: player/decoy-ship-half.md
+      frontmatter:
+        title: 반쪽 실마리 · 보완됨(가방 속 증거 참조)
+  - action: set_status
+    with:
+      path: world/harbor-chart/seventh-berth/05-long-way.md
+      values:
+        done: yes
+  - action: tick
+    with:
+      by: "-1"

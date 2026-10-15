@@ -1,0 +1,12 @@
+name: 在海图上指认
+desc: 四条线的证据都在包里才揭穿；线没钉齐时不结束，只在卡上留一句还差线的提示
+do:
+  - action: end
+    when: 'has("player/decoy-ship.md") && has("player/customs-tunnel.md") && has("player/ledger-page.md") && has("player/second-wake.md")'
+    with:
+      ending: exposed
+  - action: edit
+    when: 'status.decoy != "yes" || status.tunnel != "yes" || status.ledger != "yes" || status.wake != "yes"'
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: 对照了一遍：海图上还有线没钉上。看看哪一处还没打✓，去那里掷一次调查骰——潮水不等人。

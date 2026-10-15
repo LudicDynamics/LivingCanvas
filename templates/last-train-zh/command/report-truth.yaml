@@ -1,0 +1,10 @@
+name: 用电台报告真相
+desc: 找到了苏禾又拿得出证据，就把钟怀礼报给岭口调度；证据不够，这通电话白白耗掉一步
+do:
+  - action: end
+    when: 'has("player/su-he-testimony.md") && has("player/logbook-page.md") || has("player/su-he-testimony.md") && has("player/pill-strip.md") && has("player/tea-bill.md")'
+    with:
+      ending: found
+  - action: tick
+    with:
+      by: "-1"

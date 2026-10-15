@@ -1,0 +1,445 @@
+{
+  "id": "last-train-ko",
+  "audio": {
+    "theme": "canvas-mistport"
+  },
+  "name": "막차 · 한국어",
+  "version": "1.0.0",
+  "schema": 1,
+  "description": "산속의 막차가 터널 한가운데에 멈췄고, 한 승객이 객차에서 사라졌다. 5시 정각에 열차는 다시 출발한다—그 전에, 그녀를 찾고, 진실도 찾아라.",
+  "intro": {
+    "status": "playable",
+    "category": "trpg",
+    "rank": 4,
+    "hook": "산속 막차가 터널 한가운데 멈춰 섰고, 17번 좌석 승객이 사라졌다. 다섯 시에 열차가 다시 움직이기 전에 그녀를 찾아라.",
+    "genres": [
+      "mystery"
+    ],
+    "loop": [
+      "제1막: 2호차에서 깨어나 그녀의 수첩을 집어 들고, 깨어 있는 학생에게 주사위로 묻는다",
+      "제2막: 침대차, 식당차, 운전실 — 세 칸마다 수수께끼가 하나, 순서는 자유",
+      "제3막: 열쇠로 화물차를 연다 — 시계는 05:00을 향해 한 칸씩"
+    ],
+    "minutes": [
+      25,
+      35
+    ],
+    "difficulty": "standard",
+    "mechanics": [
+      "dice",
+      "clock",
+      "endings",
+      "voice"
+    ],
+    "endings": 2,
+    "characters": [
+      {
+        "id": "xia-cheng",
+        "line": "17번 좌석이 빈 걸 발견한 스물네 살 승무원"
+      },
+      {
+        "name": "친 영감",
+        "avatar": "assets/characters/lao-qin.webp",
+        "line": "무전기를 지키는 늙은 기관사. 장화가 자갈 가루투성이다"
+      },
+      {
+        "name": "저우쯔항",
+        "avatar": "assets/characters/zhou-zihang.webp",
+        "line": "헤드폰을 낀 채 밤새 한숨도 안 잔 대학생"
+      }
+    ],
+    "for": [
+      "밀실 추리 좋아하는 사람",
+      "짧고 밀도 있는 한 판",
+      "시간 제한 좋아하는 사람"
+    ]
+  },
+  "author": "Worldlines Canvas / AIRP",
+  "genre": "이야기 체험",
+  "tags": [
+    "단편 이야기",
+    "폐쇄 TRPG",
+    "밀실"
+  ],
+  "locale": "ko",
+  "material": "parchment",
+  "extensions": [
+    {
+      "id": "airp:note",
+      "version": ">=1.0.0",
+      "optional": false
+    }
+  ],
+  "mode": "closed",
+  "clock": {
+    "path": "world/departure-clock.md",
+    "key": "left",
+    "start": 8,
+    "label": "출발까지",
+    "time": {
+      "start": "01:10",
+      "end": "05:00"
+    }
+  },
+  "endings": [
+    {
+      "id": "found",
+      "title": "그녀를 찾았다",
+      "path": "endings/found/README.md"
+    },
+    {
+      "id": "departed",
+      "title": "열차가 떠났다",
+      "path": "endings/departed/README.md",
+      "when": "clock <= 0"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "too-hurt",
+      "label": "부상이 너무 심해, 더는 버틸 수 없다",
+      "kind": "state",
+      "when": "player.hp <= 0",
+      "do": "collapse"
+    },
+    {
+      "id": "car-two-exits",
+      "label": "2호차의 출구: 증언을 얻거나, 여기서 네 박자를 보냄",
+      "kind": "state",
+      "when": "has(\"world/seated-car/witness-account.md\") || has(\"world/seated-car/witness-half.md\") || has(\"player/witness-account.md\") || has(\"player/witness-half.md\") || world.turns >= 4",
+      "do": "open-exits"
+    }
+  ],
+  "characters": [
+    {
+      "id": "xia-cheng",
+      "name": "샤청",
+      "home": "world/seated-car",
+      "role": "companion",
+      "description": "이 막차의 승무원, 스물네 살. 그녀가 인원을 세다가 17번 좌석이 비어 있는 것을 발견했다. 모든 객차에 익숙하지만, 자신이 직접 본 것만 말한다.",
+      "avatar": "assets/characters/xia-cheng.webp"
+    },
+    {
+      "id": "zhong-huaili",
+      "name": "중화이리",
+      "home": "world/sleeper",
+      "role": "npc",
+      "description": "3호차 3번 하단 침대의 승객, 철도 지국의 오랜 지도부로, 링커우에서 열리는 단운 터널 사고 추모식에 가는 길이다. 자신은 열한 시 반에 잤다고 말한다.",
+      "avatar": "assets/characters/zhong-huaili.webp"
+    }
+  ],
+  "opening": {
+    "greeter": "xia-cheng",
+    "replies": [
+      "물론이죠, 같이 찾아볼게요",
+      "죄송해요, 잠들었어요. 무슨 일이에요?",
+      "마지막으로 그녀를 본 게 언제예요?"
+    ]
+  },
+  "ui": {
+    "replyChips": true
+  },
+  "player": {
+    "id": "player",
+    "name": "2호차 18번의 승객",
+    "avatar": "assets/characters/player.webp"
+  },
+  "entry": "world/seated-car",
+  "rules": {
+    "system": "coc",
+    "characterChecks": true
+  },
+  "inspiration": {
+    "per": "clock",
+    "max": 4,
+    "fumble": [
+      {
+        "clock": -1
+      }
+    ]
+  },
+  "createdAt": "2026-09-26T00:00:00Z",
+  "updatedAt": "2026-09-26T00:00:00Z",
+  "cover": "assets/scenes/tunnel-train.webp",
+  "mysteries": [
+    {
+      "id": "who",
+      "question": "누가 쑤허를 좌석에서 데리고 나가 화물차에 가둔 것인가?",
+      "options": [
+        {
+          "id": "zhong",
+          "label": "3호차 3번의 중화이리",
+          "tier": "surface",
+          "clues": [
+            "world/seated-car/witness-account.md",
+            "world/sleeper/pill-strip.md",
+            "player/tea-bill.md"
+          ],
+          "epilogue": "저우쯔항은 나중에 링커우역에서 그 회색 모직 코트를 알아보았다. 그는 그날 밤에 한 마디만 더 물었더라면 좋았을 것이라고 말했다."
+        },
+        {
+          "id": "driver",
+          "label": "기관사 친 영감",
+          "tier": "wrong"
+        },
+        {
+          "id": "student",
+          "label": "뒷줄에 앉은 학생 저우쯔항",
+          "tier": "wrong"
+        },
+        {
+          "id": "herself",
+          "label": "아무도 없다—쑤허는 스스로 숨은 것이다",
+          "tier": "wrong"
+        }
+      ]
+    },
+    {
+      "id": "tea",
+      "question": "쑤허는 왜 정신이 몽롱한 채로 누군가를 따라 차 뒤쪽으로 걸어갔는가?",
+      "options": [
+        {
+          "id": "sleeping-pills",
+          "label": "식당차의 그 차에 수면제가 들어 있었다",
+          "tier": "surface",
+          "clues": [
+            "world/sleeper/pill-strip.md",
+            "player/tea-bill.md"
+          ],
+          "epilogue": "검사 결과가 나온 날, 허 영감은 4번 테이블의 찻잔 두 개에 대한 이야기를 다시 꺼냈다. 그는 앞으로 누가 남의 셈을 대신 계산한다며 차를 청하면, 자기가 한 번 더 살펴보겠다고 했다."
+        },
+        {
+          "id": "motion-sick",
+          "label": "그녀는 정말 멀미가 나서 바람을 쐬러 간 것이다",
+          "tier": "wrong"
+        },
+        {
+          "id": "willing",
+          "label": "그녀는 자발적으로 차 뒤쪽에서 누군가를 만나러 간 것이다",
+          "tier": "wrong"
+        }
+      ]
+    },
+    {
+      "id": "key",
+      "question": "화물차 열쇠는 어떻게 범인의 손에 들어갔고, 그 후 어디로 갔는가?",
+      "options": [
+        {
+          "id": "cab-to-coal",
+          "label": "기관사가 내려 운전실이 비었을 때 열쇠판에서 가져갔고, 돌아와서는 감히 다시 걸지 못해 식당차의 석탄통에 던져 넣었다",
+          "tier": "surface",
+          "clues": [
+            "player/repair-notice.md",
+            "world/dining-car/freight-key.md"
+          ],
+          "epilogue": "친 영감은 그 후로 열쇠판을 철제 캐비닛에 잠가 두었다. 그는 철도를 아는 사람이 열쇠가 어디 걸려 있는지 가장 잘 알며, 가장 만져서는 안 된다는 것도 안다고 말했다."
+        },
+        {
+          "id": "conductor",
+          "label": "승무원 샤청이 그에게 빌려주었고, 그는 다 쓰고 돌려주었다",
+          "tier": "wrong"
+        },
+        {
+          "id": "su-he-key",
+          "label": "열쇠는 계속 쑤허 자신에게 있었다",
+          "tier": "wrong"
+        }
+      ]
+    },
+    {
+      "id": "motive",
+      "question": "그는 왜 굳이 쑤허를 오늘 밤 사라지게 하려 했는가?",
+      "options": [
+        {
+          "id": "memorial",
+          "label": "쑤허가 사고 추모식에서 12년 전 일을 공개적으로 인정하라고 했기 때문이다",
+          "tier": "surface",
+          "clues": [
+            "player/su-he-notebook.md",
+            "player/su-he-testimony.md",
+            "world/freight-car/logbook-page.md",
+            "world/freight-car/torn-corner.md"
+          ],
+          "epilogue": "추모식은 예정대로 열렸고, 다만 무대 위에 발언자가 한 명 없었다. 쑤허는 첫 줄에 앉아, 손에 차표 한 장을 쥐고 있었다."
+        },
+        {
+          "id": "red-light",
+          "label": "12년 전 01:12, 그가 전화로 '적색 신호 통과'를 명령했다; 쑤창겅은 그대로 따랐고, 그 말을 운행 일지에 기록했다",
+          "tier": "hidden",
+          "title": "01:12의 적색 신호",
+          "clues": [
+            "world/freight-car/logbook-page.md"
+          ],
+          "epilogue": "그 일지 페이지는 나중에 여러 부로 복사되었다. 단운 터널의 기념비에는 쑤창겅의 이름 옆에 작은 글씨 한 줄이 더해졌다: 그는 이의를 제기했다. 쑤허는 비 앞에 오래 서 있다가, 아빠, 이번에는 누군가 들었다고 말했다."
+        },
+        {
+          "id": "money",
+          "label": "돈을 위해, 쑤허가 그의 뇌물 수뢰 장부를 가지고 있었다",
+          "tier": "wrong"
+        },
+        {
+          "id": "threat",
+          "label": "쑤허가 해치겠다고 협박했고, 그는 자기 방어를 한 것뿐이다",
+          "tier": "wrong"
+        }
+      ]
+    }
+  ],
+  "reckoning": {
+    "epilogues": {
+      "all": "그날 밤의 모든 고리를 너는 똑똑히 보았다: 차 한 잔, 열쇠 하나, 잠긴 문 하나, 그리고 12년 전 그 1분. 샤청은 나중에 그날 18번에 앉은 사람이 온 열차에서 유일하게 잠들지 않은 사람이었다고 말했다.",
+      "most": "그날 밤의 일을 너는 대부분 보았다. 남은 몇 고리는 나중에 링커우 조사팀이 하나씩 채웠다—하지만 '17번은 어디로 갔는가'를 가장 먼저 물은 것은 너였다.",
+      "few": "그날 밤은 터널 속 안개 같아서, 너는 몇 군데 윤곽만 더듬었다. 여러 해가 지나도 너는 산속에 멈춰 있던 그 막차를, 17번 좌석 위의 아무도 찾지 않는 외투를 떠올리곤 할 것이다."
+    }
+  },
+  "view": {
+    "default": "map"
+  },
+  "tutorial": {
+    "firstLine": {
+      "en": "Sorry — I must have dozed off. What's going on?",
+      "zh-CN": "不好意思，我刚才睡着了。出什么事了？",
+      "ja": "すみません、眠ってしまって……何があったんですか？",
+      "ko": "죄송해요, 깜빡 잠들었네요. 무슨 일이에요?"
+    }
+  },
+  "experience": {
+    "kind": "story",
+    "turnEnd": "turn-end"
+  },
+  "tick": {
+    "every": 5,
+    "window": 1,
+    "grace": 2,
+    "budget": 4,
+    "landCap": 3,
+    "chooser": "rules",
+    "wip": true,
+    "pace": {
+      "pageGrace": 2,
+      "lineGap": 4,
+      "cooldown": 7,
+      "chatter": 4,
+      "chatterChance": 0.3
+    },
+    "deny": [
+      "수면제",
+      "일지 페이지",
+      "석탄통",
+      "적색 신호",
+      "12년 전",
+      "01:12",
+      "쑤창겅"
+    ],
+    "actors": {
+      "xia-cheng": {
+        "goal": "샤청: 17번 승객을 함께 찾는다. 이 칸을 다 봤으면 다음으로 가자고 한마디 재촉한다",
+        "moves": [
+          {
+            "id": "nudge-on",
+            "verb": "speak",
+            "suggest": [
+              {
+                "card": "world/seated-car/README.md",
+                "option": "go-sleeper"
+              },
+              {
+                "card": "world/seated-car/README.md",
+                "option": "go-train"
+              }
+            ]
+          },
+          {
+            "id": "chat",
+            "verb": "speak"
+          },
+          {
+            "id": "invite",
+            "verb": "invite"
+          }
+        ]
+      },
+      "zhou-zihang": {
+        "card": "world/seated-car/zhou-zihang.md",
+        "goal": "저우쯔항: 휘말리고 싶지 않다",
+        "moves": [
+          {
+            "id": "glance-seat",
+            "verb": "approach",
+            "target": "world/seated-car/su-he-notebook.md",
+            "weight": 1,
+            "run": "tick-zhou-zihang-glance",
+            "label": {
+              "intent": "저우쯔항 → 17번 좌석",
+              "landed": "저우쯔항이 이어폰 한쪽을 빼고 빈 17번 좌석을 한참 보더니, 다시 꽂았다.",
+              "stopped": "저우쯔항은 당신과 눈이 마주치자 황급히 이어폰 줄을 만지작거렸다."
+            },
+            "counter": [
+              "talk",
+              "guard"
+            ]
+          },
+          {
+            "id": "mutter",
+            "verb": "speak"
+          }
+        ]
+      },
+      "lao-he": {
+        "card": "world/dining-car/lao-he.md",
+        "goal": "허 영감: 다시 자고 싶고, 책임지기 싫다",
+        "moves": [
+          {
+            "id": "wipe-table",
+            "verb": "mark",
+            "target": "world/dining-car/two-teacups.md",
+            "weight": 1,
+            "run": "tick-lao-he-wipe",
+            "label": {
+              "intent": "허 영감 → 4번 테이블의 찻잔",
+              "landed": "허 영감이 행주로 4번 테이블 가장자리를 두어 번 닦고 찻잔 두 개를 보더니, 치우지 않고 다시 졸기 시작했다.",
+              "stopped": "허 영감이 행주를 어깨에 걸쳤다. \"안 만져요, 안 만져. 조사하세요.\""
+            },
+            "counter": [
+              "talk",
+              "guard"
+            ]
+          },
+          {
+            "id": "grumble",
+            "verb": "speak"
+          },
+          {
+            "id": "invite",
+            "verb": "invite"
+          }
+        ]
+      },
+      "zhong-huaili": {
+        "goal": "중화이리: 밤이 조용히 지나가길 바란다",
+        "moves": [
+          {
+            "id": "fix-coat",
+            "verb": "approach",
+            "target": "world/sleeper/grey-coat.md",
+            "weight": 1,
+            "run": "tick-zhong-huaili-coat",
+            "label": {
+              "intent": "중화이리 → 문가의 코트",
+              "landed": "중화이리가 담요를 두른 채 일어나 문가 코트의 깃을 펴고는, 천천히 다시 누웠다.",
+              "stopped": "중화이리는 당신을 힐끗 보고 손을 담요 속으로 거뒀다. \"밤이 춥네, 젊은이.\""
+            },
+            "counter": [
+              "talk",
+              "guard"
+            ]
+          },
+          {
+            "id": "murmur",
+            "verb": "speak"
+          }
+        ]
+      }
+    }
+  }
+}

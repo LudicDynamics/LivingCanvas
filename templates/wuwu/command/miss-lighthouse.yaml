@@ -1,0 +1,31 @@
+name: Old Lighthouse not fully investigated
+desc: The Old Lighthouse Check lands on 61–100. On 61–95 you get only half a thread (tide table); on 96–100 you crack Old Mo's telescope (a character event). Either way, take the Long Way Around
+do:
+  - action: give
+    when: roll.rank >= 2
+    with:
+      path: player/customs-tunnel-half.md
+      title: Half a Thread · Tonight's tide table
+      frontmatter:
+        partial: true
+        type: note
+        portable: true
+      body: |
+        Fog covers the tunnel mouth; you only get tonight's tide table from Old Mo's desk: when the Old Customs Tunnel's mouth will surface.
+
+        It shows when the tunnel can be used, not that the twelve dark minutes line up with it. To pin this thread, take the Long Way Around: ask Old Mo to check his logbook against the tide table minute by minute.
+  - action: event
+    when: roll.rank == 1
+    with:
+      target: characters/old-mo
+      title: The telescope cracked
+      text: Old Mo's brass telescope slips from your hand over the lamp gallery railing and hits the stone; the lens cracks. He sees it, says nothing, and picks up the broken pieces one by one. To get him to talk about that night again, you must apologize properly first.
+  - action: set_status
+    with:
+      path: world/harbor-chart/old-lighthouse/05-long-way.md
+      values:
+        open: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: "✗ The Old Lighthouse thread is not pinned yet: could not see the tunnel mouth clearly. Take the Long Way Around and ask Old Mo to check minute by minute."

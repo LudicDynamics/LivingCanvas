@@ -1,0 +1,12 @@
+name: 첫 수확
+desc: 첫 수확. 가장 좋은 순무를 기념으로 남긴다
+do:
+  - action: give
+    with:
+      path: player/first-turnip.md
+      title: 첫 순무
+      body: 당신의 밭에서 처음 거둔 순무. 하얗고 둥글고, 잎엔 아직 이슬이 맺혀 있다. 렌은 첫 순무는 먹지 않고 간직하는 거라고 한다.
+  - action: show_cg
+    with:
+      path: assets/cg/first-harvest.webp
+      caption: 당신의 밭에서 거둔 첫 바구니.

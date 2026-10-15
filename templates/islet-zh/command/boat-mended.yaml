@@ -1,0 +1,22 @@
+name: 修好的船下水
+desc: 漂流木够了，健太把旧渔船补好推下水，把舵柄交给你
+do:
+  - action: set_state
+    with:
+      target: world
+      state: boat_fixed
+      value: "true"
+  - action: give
+    with:
+      path: player/boat-tiller.md
+      title: 修好的船的舵柄
+      body: 健太亲手削的新舵柄，握的地方还带着刨花的味道。有了它，就能开船去海藻岛和鸟岩。暴风雨天别出海。
+  - action: event
+    with:
+      target: world/dock
+      title: 修好的船下水
+      text: 健太把最后一块船板钉上，退后一步看了很久。大家一起把船推下滑道，它在水里晃了两下，稳稳地浮住了。健太把一根新削的舵柄塞进你手里，只说了一句：「天好的时候，去外岛看看。」
+  - action: show_cg
+    with:
+      path: assets/cg/boat-launch.webp
+      caption: 修好的船滑进了海里。

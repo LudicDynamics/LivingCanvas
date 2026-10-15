@@ -1,0 +1,23 @@
+name: "Pin the first thread: the Decoy Ship"
+desc: After a successful check at Berth 7 (60 or under) or the Long Way Around, put "the unmanned ship is a decoy" in the bag as evidence and check it off on the chart
+do:
+  - action: give
+    with:
+      path: player/decoy-ship.md
+      title: Evidence · That ship is a decoy
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        In the unmanned ship's cargo hold there is only ballast stone and nailed-shut empty crates. The scrape along its side sits higher than the high-tide line, left by another ship squeezing past it.
+
+        This ship did not drift into port because something happened to it. It was deliberately set loose, so that everyone's eyes would be fixed on Berth 7.
+  - action: set_status
+    with:
+      path: world/harbor-chart/05-accuse.md
+      values:
+        decoy: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: "✓ The thread at Berth 7 is pinned: that unmanned ship was deliberately set loose."

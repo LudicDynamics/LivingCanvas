@@ -1,0 +1,31 @@
+name: 古い灯台を調べ尽くしていない
+desc: 古い灯台の判定は61–100に落ちる。61–95は半本の糸（潮汐表）しか手に入らない。96–100は老モーの望遠鏡を落として割る（キャラクターに降りかかる事件）。どちらも遠回りしないとこの糸は留められない
+do:
+  - action: give
+    when: roll.rank >= 2
+    with:
+      path: player/customs-tunnel-half.md
+      title: 半本の糸・今夜の潮汐表
+      frontmatter:
+        partial: true
+        type: note
+        portable: true
+      body: |
+        霧が隧道の入り口を覆い、君は老モーの机の上にあった今夜の潮汐表だけを手に入れた：旧税関隧道の入り口がいつ水面から現れるか。
+
+        それは隧道がいつ使えるかを示すが、消灯の十二分がちょうどそれに対応するとは示せない。この糸を留めるには、遠回りしなければならない：老モーに日誌を持ってきてもらい、潮汐表と一分一分照らし合わせる。
+  - action: event
+    when: roll.rank == 1
+    with:
+      target: characters/old-mo
+      title: 望遠鏡が落ちて割れた
+      text: 老モーの真鍮の望遠鏡が君の手から灯廊の手すりを滑り落ち、石にぶつかって、レンズが割れた。彼はそれを見て、一言も言わず、割れたレンズを一片ずつ拾い集めた。あの夜のことを再び彼の口から聞き出すには、まずきちんと謝らなければならない。
+  - action: set_status
+    with:
+      path: world/harbor-chart/old-lighthouse/05-long-way.md
+      values:
+        open: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: ✗ 古い灯台の糸はまだ留められていない：隧道の入り口を見ていない。遠回りして、老モーに日誌を持ってきてもらい一分一分照らし合わせる必要がある。

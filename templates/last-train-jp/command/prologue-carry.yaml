@@ -1,0 +1,27 @@
+name: 序章からの早送り
+desc: 序章から来たプレイヤーは第一幕を飛ばす：ノートと周子航の証言が鞄に入り、時計が一歩進み（学生に尋ねた分）、列車の地図へ直行する
+do:
+  - action: move
+    when: has("world/seated-car/su-he-notebook.md")
+    with:
+      from: world/seated-car/su-he-notebook.md
+      to: player/su-he-notebook.md
+  - action: give
+    with:
+      path: player/witness-account.md
+      title: 周子航の証言
+      frontmatter:
+        type: note
+        portable: true
+      body: 学生・周子航（2車20号）：だいたい零時五十分ごろ、グレーのウールコートを着た白髪交じりの老人が蘇禾を支えて車尾の方へ歩いていき、彼女が「車酔いした、後ろで風に当たらせてやる」と言った。蘇禾の足取りはふらつき、寝ぼけているようだった。老人の顔ははっきり見ていない。
+  - action: set_status
+    with:
+      path: world/seated-car/01-opening.md
+      values:
+        skipped: yes
+  - action: tick
+    with:
+      by: "-1"
+  - action: enter
+    with:
+      layer: map

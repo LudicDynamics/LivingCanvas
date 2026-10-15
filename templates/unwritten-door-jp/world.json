@@ -1,0 +1,81 @@
+{
+  "id": "unwritten-door-jp",
+  "audio": {
+    "theme": "firstsnow"
+  },
+  "name": "未書の扉 · 日本語",
+  "version": "1.2.0",
+  "schema": 1,
+  "description": "未開封の手紙と電話が、外に広がる場所の雰囲気を形作っています。扉はひとつ、新しい生きているシーンがひとつ。",
+  "intro": {
+    "status": "in-development",
+    "category": "trpg",
+    "rank": 7,
+    "hook": "雨の夜、記憶のないまま山小屋で目を覚ます。未開封の手紙と電池の切れた携帯——その二つが扉の外の世界を決める。",
+    "genres": [
+      "fantasy",
+      "adventure"
+    ],
+    "loop": [
+      "手紙と携帯を調べ、開けるかどうか決める",
+      "扉を開けると、選んだことからAIがその場で新しい場所と絵を描く",
+      "アイリスと外へ：筋書きはなく、ダイスで自分の道を切り開く"
+    ],
+    "minutes": [
+      15,
+      30
+    ],
+    "difficulty": "hardcore",
+    "mechanics": [
+      "dice",
+      "live-image",
+      "free-explore",
+      "voice"
+    ],
+    "endings": 0,
+    "characters": [
+      {
+        "id": "iris",
+        "line": "あなたより先にここへ来た人。自分の目で見たことしか話さない"
+      }
+    ],
+    "for": [
+      "ハードコアなサンドボックスTRPG好き",
+      "AIの即興を見たい人"
+    ],
+    "unfinished": "開発中：書かれているのは最初の山小屋だけで、扉の外はすべて生成。目標と結末はまだありません。"
+  },
+  "author": "AIRP",
+  "genre": "物語体験",
+  "tags": [
+    "短い物語",
+    "生成する世界"
+  ],
+  "material": "parchment",
+  "player": {
+    "id": "you",
+    "name": "あなた"
+  },
+  "characters": [
+    {
+      "id": "iris",
+      "name": "アイリス",
+      "home": "map",
+      "role": "companion",
+      "description": "アイリスは、もう一つだけあるドアから入ってきた。ランプが点いたのが見えたからだ。ここにいる時間はあなたより長いのに、外に何があるのかはまだ言えない。見たことだけを話し、それ以外には触れない——そういう覚え方をした人。"
+    }
+  ],
+  "opening": {
+    "greeter": "iris"
+  },
+  "extensions": [],
+  "createdAt": "2026-09-12T00:00:00Z",
+  "updatedAt": "2026-09-12T00:00:00Z",
+  "locale": "ja",
+  "entry": "map",
+  "rules": {
+    "system": "dnd",
+    "proficiency": 2,
+    "characterChecks": true
+  }
+}

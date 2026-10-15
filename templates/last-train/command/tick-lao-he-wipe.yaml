@@ -1,0 +1,8 @@
+name: "Character tick: Old He wipes table 4"
+desc: "Old He wipes the edge of table 4: the cups stay where they are."
+do:
+- action: set_status
+  with:
+    path: world/dining-car/lao-he.md
+    values:
+      wiped_table: 'yes'

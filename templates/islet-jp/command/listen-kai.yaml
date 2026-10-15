@@ -1,0 +1,11 @@
+name: 木陰でギターを聴く
+desc: 広場の木陰でしばらく座る。海がいれば彼のギターを聴く
+do:
+  - action: add_state
+    with:
+      target: characters/kai
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "60"

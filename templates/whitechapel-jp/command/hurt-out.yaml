@@ -1,0 +1,11 @@
+name: '傷が重くて動けない'
+desc: '隠れた体力がゼロ（world.json のトリガー too-hurt）：ワトソンに支えられて221Bへ戻る。もう正午には間に合わない'
+do:
+  - action: event
+    with:
+      target: characters/watson
+      title: 'ワトソンに連れ戻される'
+      text: '壁にもたれたまま、もう一歩も進めない。駆けつけたワトソンがあなたの腕を肩に回し、ベーカー街まで支えて歩く。口にしたのは一言だけだった。「黙っていろ、ホームズ」正午までの出来事を止めるのは、もうあなたではない。'
+  - action: end
+    with:
+      ending: fourth-picture

@@ -1,0 +1,32 @@
+name: 모 영감의 일지를 몰래 보기
+desc: 굴려도 되고 안 굴려도 되는 주사위 하나. 성공하면 일지에 연필 글씨 한 줄이 더 생긴다(물품에 떨어지는 사건); 실패하면 모 영감이 본다(캐릭터에 떨어지는 사건), 이후 대화에서 그는 너를 경계한다
+do:
+  - action: edit
+    when: roll.passed == true
+    with:
+      path: world/harbor-chart/old-lighthouse/lighthouse-logbook.md
+      append_body: "일지 안감에는 아주 흐린 연필 글씨 한 줄이 더 있다: 불이 꺼지기 직전, 모 영감은 안개부두 항구의 것이 아닌 등불 신호 하나를 적었다—짧게 셋, 길게 하나."
+  - action: event
+    when: roll.passed == true
+    with:
+      target: world/harbor-chart/old-lighthouse/lighthouse-logbook.md
+      title: 일지 안감 속 연필 글씨
+      text: "모 영감이 돌아서서 기름을 붓는 사이, 너는 일지 안감을 펼쳤다: 불이 꺼지기 직전, 그는 안개부두 항구의 것이 아닌 등불 신호 하나를 적었다—짧게 셋, 길게 하나."
+  - action: event
+    when: roll.passed == false
+    with:
+      target: characters/old-mo
+      title: 모 영감에게 들켰다
+      text: 모 영감이 돌아보았을 때, 당신의 손은 아직 그의 일지 위에 얹혀 있었다. 그는 재빨리 일지를 덮고 얼굴이 굳었다. 이제 그의 입에서 무언가를 캐내려면 먼저 사과해야 한다.
+  - action: give
+    when: roll.rank == 4
+    with:
+      path: player/lamp-signal.md
+      title: 베껴 적은 등불 신호
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        모 영감이 한 번도 돌아보지 않아서, 너는 그 연필 글씨 한 줄을 종잇조각에 베껴 적을 틈이 있었다: 불이 꺼지기 직전, 안개부두 항구의 것이 아닌 등불 신호—짧게 셋, 길게 하나.
+
+        고발의 증거는 아니다. 일지에 적힌 것이 이제 네 주머니에도 있다는 것뿐이다.

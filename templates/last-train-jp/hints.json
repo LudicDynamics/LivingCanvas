@@ -1,0 +1,634 @@
+{
+  "by": "xia-cheng",
+  "gap": 3,
+  "hints": [
+    {
+      "id": "lt-notebook",
+      "when": {
+        "layer": "world/seated-car",
+        "has": [
+          "world/seated-car/su-he-notebook.md"
+        ],
+        "lacks": [
+          "player/su-he-notebook.md"
+        ],
+        "idle": 1
+      },
+      "say": "ノートがまだ17番の座席に開いたまま……先に見てみる？",
+      "suggest": [
+        {
+          "card": "world/seated-car/README.md",
+          "option": "take-notebook"
+        }
+      ],
+      "replies": [
+        "これ、彼女のノート？"
+      ],
+      "priority": 80
+    },
+    {
+      "id": "lt-ask",
+      "when": {
+        "layer": "world/seated-car",
+        "has": [
+          "player/su-he-notebook.md"
+        ],
+        "lacks": [
+          "world/seated-car/witness-account.md",
+          "world/seated-car/witness-half.md",
+          "player/witness-account.md",
+          "player/witness-half.md"
+        ],
+        "idle": 1
+      },
+      "say": "20番のあの学生、ずっと起きてるみたい。何を見たか聞いてみる？",
+      "suggest": [
+        {
+          "card": "world/seated-car/README.md",
+          "option": "search"
+        }
+      ],
+      "replies": [
+        "ずっと起きてたの？"
+      ],
+      "priority": 70
+    },
+    {
+      "id": "lt-coat",
+      "when": {
+        "expr": "has(\"world/seated-car/witness-account.md\") || has(\"player/witness-account.md\")",
+        "unvisited": "world/sleeper"
+      },
+      "say": "グレーのウールコート……寝台車の3号個室の扉口に、一着掛かってた気がする。",
+      "suggest": [
+        {
+          "card": "world/seated-car/README.md",
+          "option": "go-sleeper"
+        },
+        {
+          "enter": "world/sleeper",
+          "label": "車尾の寝台車（3号車）へ"
+        }
+      ],
+      "replies": [
+        "グレーのコート……誰か着てるのを見た？"
+      ],
+      "priority": 75
+    },
+    {
+      "id": "lt-coat-half",
+      "when": {
+        "expr": "has(\"world/seated-car/witness-half.md\") || has(\"player/witness-half.md\")",
+        "lacks": [
+          "world/seated-car/witness-account.md",
+          "player/witness-account.md"
+        ],
+        "unvisited": "world/sleeper"
+      },
+      "say": "誰かが彼女を車尾へ……車尾のほうへ行くなら、最初は寝台車。",
+      "suggest": [
+        {
+          "card": "world/seated-car/README.md",
+          "option": "go-sleeper"
+        },
+        {
+          "enter": "world/sleeper",
+          "label": "車尾の寝台車（3号車）へ"
+        }
+      ],
+      "priority": 74
+    },
+    {
+      "id": "lt-move-on",
+      "when": {
+        "layer": "world/seated-car",
+        "expr": "world.turns >= 4",
+        "idle": 1,
+        "unvisited": "world/sleeper"
+      },
+      "say": "この車両はひとまずここまでかな。車尾のほうは寝台車。それとも列車全体を見てみる？",
+      "suggest": [
+        {
+          "card": "world/seated-car/README.md",
+          "option": "go-sleeper"
+        },
+        {
+          "card": "world/seated-car/README.md",
+          "option": "go-train"
+        }
+      ],
+      "priority": 45
+    },
+    {
+      "id": "lt-overview",
+      "when": {
+        "layer": "map"
+      },
+      "say": "もう一時過ぎ、発車は五時。寝台車、食堂車、運転室——どこから行く？",
+      "replies": [
+        "鍵って普段どこに掛けてあるの？"
+      ],
+      "priority": 60,
+      "inspire": {
+        "vague": "三つの車両、それぞれにおかしなところがある。"
+      }
+    },
+    {
+      "id": "lt-coat-look",
+      "when": {
+        "layer": "world/sleeper",
+        "idle": 1
+      },
+      "say": "扉口のあのコート……裾のあたり、近くで見てみる？",
+      "suggest": [
+        {
+          "card": "world/sleeper/README.md",
+          "option": "read-coat"
+        }
+      ],
+      "replies": [
+        "このコート、誰の？"
+      ],
+      "priority": 55
+    },
+    {
+      "id": "lt-sleeper-search",
+      "when": {
+        "layer": "world/sleeper",
+        "lacks": [
+          "world/sleeper/pill-strip.md",
+          "player/pill-strip.md",
+          "world/sleeper/pill-strip-half.md"
+        ],
+        "idle": 3
+      },
+      "say": "扉に背を向けて寝てる……眠ってるうちに、枕の下を見てみる？",
+      "suggest": [
+        {
+          "card": "world/sleeper/README.md",
+          "option": "search"
+        }
+      ],
+      "priority": 50,
+      "inspire": {
+        "vague": "鐘さん、ずいぶんよく眠ってる……本当に？",
+        "sharp": "扉に背を向けて動かないのに、寝息が眠っている人のそれじゃない。枕の下に何かある——今のうちにダイスで寝台を探そう。"
+      }
+    },
+    {
+      "id": "lt-pills-long",
+      "when": {
+        "layer": "world/sleeper",
+        "has": [
+          "world/sleeper/pill-strip-half.md"
+        ],
+        "lacks": [
+          "player/pill-strip.md",
+          "world/sleeper/pill-strip.md"
+        ],
+        "idle": 1
+      },
+      "say": "わたしが検札で彼を呼び出して、少し引き止める——その間に枕の下を。",
+      "suggest": [
+        {
+          "card": "world/sleeper/05-long-way.md",
+          "option": "long-way"
+        }
+      ],
+      "priority": 65
+    },
+    {
+      "id": "lt-pill-take",
+      "when": {
+        "has": [
+          "world/sleeper/pill-strip.md"
+        ],
+        "lacks": [
+          "player/pill-strip.md"
+        ]
+      },
+      "say": "その薬、持っておいて。二錠足りない——ぐっすり寝てたって言ってたのに。",
+      "suggest": [
+        {
+          "card": "world/sleeper/search-scene.md",
+          "option": "collect-reward-0"
+        }
+      ],
+      "priority": 88
+    },
+    {
+      "id": "lt-bill-1",
+      "group": "bill",
+      "level": 1,
+      "when": {
+        "layer": "world/dining-car",
+        "lacks": [
+          "player/tea-bill.md"
+        ],
+        "idle": 1
+      },
+      "say": "4号卓、まだ片付いてない。",
+      "replies": [
+        "あの二つの茶碗、誰が使ったの？"
+      ],
+      "priority": 55
+    },
+    {
+      "id": "lt-bill-2",
+      "group": "bill",
+      "level": 2,
+      "when": {
+        "layer": "world/dining-car",
+        "lacks": [
+          "player/tea-bill.md"
+        ],
+        "idle": 3
+      },
+      "say": "卓の隅に挟まってるあのレシート……誰のつけになってる？",
+      "priority": 56
+    },
+    {
+      "id": "lt-bill-3",
+      "group": "bill",
+      "level": 3,
+      "when": {
+        "layer": "world/dining-car",
+        "lacks": [
+          "player/tea-bill.md"
+        ],
+        "idle": 5
+      },
+      "say": "あのレシート、持っていこう。指令は証拠を欲しがるから。",
+      "suggest": [
+        {
+          "card": "world/dining-car/README.md",
+          "option": "take-bill"
+        }
+      ],
+      "priority": 57
+    },
+    {
+      "id": "lt-key-search",
+      "when": {
+        "layer": "world/dining-car",
+        "lacks": [
+          "world/dining-car/freight-key.md",
+          "player/freight-key.md",
+          "world/dining-car/freight-key-half.md"
+        ],
+        "idle": 2,
+        "visited": "world/cab"
+      },
+      "say": "荷物車の鍵は運転室にない……誰かがこの車両に捨てていったのかも？",
+      "suggest": [
+        {
+          "card": "world/dining-car/README.md",
+          "option": "search"
+        }
+      ],
+      "priority": 52,
+      "inspire": {
+        "vague": "人に見られたくない鍵なら、どこに捨てる？",
+        "sharp": "慌てて鍵を捨てるなら、食堂車でいちばん目立たないのは湯沸かし器の横の石炭箱。ダイスで探してみよう。"
+      }
+    },
+    {
+      "id": "lt-key-search-fresh",
+      "when": {
+        "layer": "world/dining-car",
+        "lacks": [
+          "world/dining-car/freight-key.md",
+          "player/freight-key.md",
+          "world/dining-car/freight-key-half.md"
+        ],
+        "idle": 2,
+        "unvisited": "world/cab"
+      },
+      "say": "5号車の鍵は、ふだん運転室に掛かってる。もし誰かが持ち出したなら……この車両に捨てていったのかも？",
+      "suggest": [
+        {
+          "card": "world/dining-car/README.md",
+          "option": "search"
+        }
+      ],
+      "priority": 52,
+      "inspire": {
+        "vague": "人に見られたくない鍵なら、どこに捨てる？",
+        "sharp": "慌てて鍵を捨てるなら、食堂車でいちばん目立たないのは湯沸かし器の横の石炭箱。ダイスで探してみよう。"
+      }
+    },
+    {
+      "id": "lt-key-miss",
+      "when": {
+        "layer": "world/dining-car",
+        "expr": "clock.left >= 2",
+        "has": [
+          "world/dining-car/freight-key-half.md"
+        ],
+        "lacks": [
+          "player/freight-key.md",
+          "world/dining-car/freight-key.md"
+        ],
+        "idle": 1
+      },
+      "say": "石炭入れのほう……賀じいに頼んで、中身を全部出してもらおうか？",
+      "suggest": [
+        {
+          "card": "world/dining-car/05-long-way.md",
+          "option": "long-way"
+        }
+      ],
+      "priority": 65
+    },
+    {
+      "id": "lt-key-miss-late",
+      "when": {
+        "layer": "world/dining-car",
+        "expr": "clock.left <= 1",
+        "has": [
+          "world/dining-car/freight-key-half.md"
+        ],
+        "lacks": [
+          "player/freight-key.md",
+          "world/dining-car/freight-key.md"
+        ],
+        "idle": 1
+      },
+      "say": "石炭入れを空けるには結構かかる……でも五時まで、もうほとんど時間がない。そのあと荷物車を開けに行くのは間に合わないよ。",
+      "priority": 65
+    },
+    {
+      "id": "lt-key-take",
+      "when": {
+        "has": [
+          "world/dining-car/freight-key.md"
+        ],
+        "lacks": [
+          "player/freight-key.md"
+        ]
+      },
+      "say": "鍵！しっかり持ってて。もう誰にも取られないように。",
+      "suggest": [
+        {
+          "card": "world/dining-car/search-scene.md",
+          "option": "collect-reward-0"
+        }
+      ],
+      "priority": 90
+    },
+    {
+      "id": "lt-key",
+      "when": {
+        "has": [
+          "player/freight-key.md"
+        ],
+        "unvisited": "world/freight-car"
+      },
+      "say": "5号車の鍵だ！荷物車はいつも鍵がかかってる——彼女、あそこにいるんじゃ？",
+      "suggest": [
+        {
+          "enter": "world/freight-car",
+          "label": "5号車・荷物車へ行く"
+        }
+      ],
+      "replies": [
+        "荷物車っていつも鍵がかかってるの？"
+      ],
+      "priority": 85
+    },
+    {
+      "id": "lt-late-key",
+      "when": {
+        "expr": "clock.left <= 3",
+        "has": [
+          "player/freight-key.md"
+        ],
+        "unvisited": "world/freight-car"
+      },
+      "say": "もうすぐ三時半。先に5号車へ。ほかは道々で。",
+      "suggest": [
+        {
+          "enter": "world/freight-car",
+          "label": "5号車・荷物車へ行く"
+        }
+      ],
+      "priority": 95
+    },
+    {
+      "id": "lt-late-nokey",
+      "when": {
+        "expr": "clock.left <= 3",
+        "lacks": [
+          "player/freight-key.md"
+        ],
+        "visited": "world/cab"
+      },
+      "say": "もうすぐ三時半。荷物車の鍵は運転室にない……食堂車をもう一度探してみる？",
+      "suggest": [
+        {
+          "enter": "world/dining-car",
+          "label": "4号車・食堂車へ行く"
+        }
+      ],
+      "priority": 94
+    },
+    {
+      "id": "lt-late-nokey-fresh",
+      "when": {
+        "expr": "clock.left <= 3",
+        "lacks": [
+          "player/freight-key.md"
+        ],
+        "unvisited": "world/cab"
+      },
+      "say": "もうすぐ三時半。5号車の鍵はふだん運転室に掛かってる——先に運転室を見てみる？",
+      "suggest": [
+        {
+          "enter": "world/cab",
+          "label": "1号車・運転室へ行く"
+        }
+      ],
+      "priority": 94
+    },
+    {
+      "id": "lt-cab",
+      "when": {
+        "layer": "world/cab",
+        "lacks": [
+          "player/su-he-testimony.md"
+        ],
+        "idle": 1
+      },
+      "say": "指令は証拠しか信じない。どこにいるか、誰がやったか、なぜそう言えるか——三つとも要る。",
+      "priority": 40,
+      "inspire": {
+        "vague": "指令が聞いてくるのは、きっと一つじゃない。",
+        "sharp": "指令が欲しいのは三つ：蘇禾がどこにいるか（本人を見つける）、誰がやったか（日誌のページ、または錠剤シートとレシートの両方）、なぜそう言えるか。足りないものを埋めよう。"
+      }
+    },
+    {
+      "id": "lt-freight",
+      "when": {
+        "layer": "world/freight-car",
+        "lacks": [
+          "player/su-he-testimony.md"
+        ]
+      },
+      "say": "蘇禾！……先に起こしてあげて、話を聞こう。",
+      "suggest": [
+        {
+          "card": "world/freight-car/README.md",
+          "option": "take-testimony"
+        }
+      ],
+      "replies": [
+        "まだ息はある？"
+      ],
+      "priority": 90
+    },
+    {
+      "id": "lt-confront",
+      "when": {
+        "layer": "world/freight-car",
+        "has": [
+          "player/su-he-testimony.md"
+        ],
+        "lacks": [
+          "world/freight-car/logbook-page.md",
+          "player/logbook-page.md",
+          "world/freight-car/torn-corner.md",
+          "player/torn-corner.md"
+        ],
+        "idle": 1
+      },
+      "say": "扉口に……鐘懐礼が来た。手がコートの内ポケットに当てられてる。",
+      "suggest": [
+        {
+          "card": "world/freight-car/README.md",
+          "option": "confront"
+        }
+      ],
+      "priority": 80
+    },
+    {
+      "id": "lt-log-take",
+      "when": {
+        "has": [
+          "world/freight-car/logbook-page.md"
+        ],
+        "lacks": [
+          "player/logbook-page.md"
+        ]
+      },
+      "say": "日誌のページ、しまっておいて——この一枚を、彼は十二年探してたんだ。",
+      "suggest": [
+        {
+          "card": "world/freight-car/04-confront-dice.md",
+          "option": "collect-reward-0"
+        }
+      ],
+      "priority": 92
+    },
+    {
+      "id": "lt-sustain",
+      "when": {
+        "expr": "has(\"world/freight-car/torn-corner.md\") || has(\"player/torn-corner.md\")",
+        "lacks": [
+          "player/pill-strip.md"
+        ]
+      },
+      "say": "この切れ端だけじゃ、指令は信じない。枕の下の薬、食堂車のレシート——それも持っていかないと。",
+      "priority": 70
+    },
+    {
+      "id": "lt-report-a",
+      "when": {
+        "has": [
+          "player/su-he-testimony.md",
+          "player/logbook-page.md"
+        ]
+      },
+      "say": "もう十分。わたしが運転室から嶺口指令を呼ぶ——それとも、あなたが行く？",
+      "suggest": [
+        {
+          "card": "world/freight-car/06-radio-relay.md",
+          "option": "relay"
+        },
+        {
+          "enter": "world/cab",
+          "label": "自分で運転室に戻って無線を使う"
+        }
+      ],
+      "replies": [
+        "指令に報告しよう。"
+      ],
+      "priority": 98
+    },
+    {
+      "id": "lt-report-b",
+      "when": {
+        "expr": "has(\"world/freight-car/torn-corner.md\") || has(\"player/torn-corner.md\")",
+        "has": [
+          "player/su-he-testimony.md",
+          "player/pill-strip.md",
+          "player/tea-bill.md"
+        ],
+        "lacks": [
+          "player/logbook-page.md"
+        ]
+      },
+      "say": "薬、レシート、それに彼女の言葉……十分だ。わたしが指令を呼ぶ——それとも、あなたが行く？",
+      "suggest": [
+        {
+          "card": "world/freight-car/06-radio-relay.md",
+          "option": "relay"
+        },
+        {
+          "enter": "world/cab",
+          "label": "自分で運転室に戻って無線を使う"
+        }
+      ],
+      "replies": [
+        "指令に報告しよう。"
+      ],
+      "priority": 97
+    },
+    {
+      "id": "lt-report-b-away",
+      "when": {
+        "layer": [
+          "map",
+          "world/seated-car",
+          "world/sleeper",
+          "world/dining-car",
+          "world/cab"
+        ],
+        "has": [
+          "player/su-he-testimony.md",
+          "player/pill-strip.md",
+          "player/tea-bill.md"
+        ],
+        "lacks": [
+          "player/logbook-page.md",
+          "world/freight-car/torn-corner.md",
+          "player/torn-corner.md"
+        ]
+      },
+      "say": "薬、レシート、それに彼女の言葉……十分だ。わたしが指令を呼ぶ——それとも、あなたが行く？",
+      "suggest": [
+        {
+          "card": "world/freight-car/06-radio-relay.md",
+          "option": "relay"
+        },
+        {
+          "enter": "world/cab",
+          "label": "自分で運転室に戻って無線を使う"
+        }
+      ],
+      "replies": [
+        "指令に報告しよう。"
+      ],
+      "priority": 97
+    }
+  ]
+}

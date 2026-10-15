@@ -1,0 +1,17 @@
+name: "Long Way Around: Old Lighthouse"
+desc: After the Old Lighthouse roll falls short, ask Old Mo to check his logbook minute by minute. Costs one more stretch of tide; the half thread (tide table) becomes full evidence
+do:
+  - action: edit
+    when: has("player/customs-tunnel-half.md")
+    with:
+      path: player/customs-tunnel-half.md
+      frontmatter:
+        title: Half a Thread · Completed (see evidence in bag)
+  - action: set_status
+    with:
+      path: world/harbor-chart/old-lighthouse/05-long-way.md
+      values:
+        done: yes
+  - action: tick
+    with:
+      by: "-1"

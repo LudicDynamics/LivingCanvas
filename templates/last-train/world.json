@@ -1,0 +1,445 @@
+{
+  "id": "last-train",
+  "audio": {
+    "theme": "canvas-mistport"
+  },
+  "name": "The Last Train · English",
+  "version": "1.0.0",
+  "schema": 1,
+  "description": "The last train in the mountains stops in the very middle of the tunnel, and one passenger vanishes from the car. At five o'clock the train starts again — before then, find her, and find the truth.",
+  "intro": {
+    "status": "playable",
+    "category": "trpg",
+    "rank": 4,
+    "hook": "The last mountain train has stopped dead in the middle of a tunnel, and the passenger in seat 17 is gone. Find her before the train moves again at five.",
+    "genres": [
+      "mystery"
+    ],
+    "loop": [
+      "Act One: wake in Car 2, pick up her notebook, roll to ask the student who's still awake",
+      "Act Two: sleeper, dining car, cab — each car hides a puzzle, in any order",
+      "Act Three: the key opens the baggage car — while the clock ticks toward 05:00"
+    ],
+    "minutes": [
+      25,
+      35
+    ],
+    "difficulty": "standard",
+    "mechanics": [
+      "dice",
+      "clock",
+      "endings",
+      "voice"
+    ],
+    "endings": 2,
+    "characters": [
+      {
+        "id": "xia-cheng",
+        "line": "The 24-year-old conductor who found seat 17 empty"
+      },
+      {
+        "name": "Old Qin",
+        "avatar": "assets/characters/lao-qin.webp",
+        "line": "The old driver minding the radio, boots white with gravel dust"
+      },
+      {
+        "name": "Zhou Zihang",
+        "avatar": "assets/characters/zhou-zihang.webp",
+        "line": "A college student in headphones who hasn’t slept all night"
+      }
+    ],
+    "for": [
+      "Locked-room mystery fans",
+      "A tight, short session",
+      "Fans of a ticking clock"
+    ]
+  },
+  "author": "Worldlines Canvas / AIRP",
+  "genre": "Story Experience",
+  "tags": [
+    "Short Story",
+    "Closed Tabletop",
+    "Locked Room"
+  ],
+  "locale": "en",
+  "material": "parchment",
+  "extensions": [
+    {
+      "id": "airp:note",
+      "version": ">=1.0.0",
+      "optional": false
+    }
+  ],
+  "mode": "closed",
+  "clock": {
+    "path": "world/departure-clock.md",
+    "key": "left",
+    "start": 8,
+    "label": "Time to Departure",
+    "time": {
+      "start": "01:10",
+      "end": "05:00"
+    }
+  },
+  "endings": [
+    {
+      "id": "found",
+      "title": "Found Her",
+      "path": "endings/found/README.md"
+    },
+    {
+      "id": "departed",
+      "title": "The Train Departed",
+      "path": "endings/departed/README.md",
+      "when": "clock <= 0"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "too-hurt",
+      "label": "Too Hurt to Continue",
+      "kind": "state",
+      "when": "player.hp <= 0",
+      "do": "collapse"
+    },
+    {
+      "id": "car-two-exits",
+      "label": "Car 2's exits: the account, or four beats here",
+      "kind": "state",
+      "when": "has(\"world/seated-car/witness-account.md\") || has(\"world/seated-car/witness-half.md\") || has(\"player/witness-account.md\") || has(\"player/witness-half.md\") || world.turns >= 4",
+      "do": "open-exits"
+    }
+  ],
+  "characters": [
+    {
+      "id": "xia-cheng",
+      "name": "Xia Cheng",
+      "home": "world/seated-car",
+      "role": "companion",
+      "description": "Train attendant on this last train, twenty-four years old. It was during her headcount that she found seat 17 empty. She knows every car, but only says what she saw with her own eyes.",
+      "avatar": "assets/characters/xia-cheng.webp"
+    },
+    {
+      "id": "zhong-huaili",
+      "name": "Zhong Huaili",
+      "home": "world/sleeper",
+      "role": "npc",
+      "description": "Passenger in the lower berth of Car 3, seat 3, an old leader from the railway bureau, going to Lingkou for the memorial service for the Broken Cloud Tunnel accident. Says he went to sleep at eleven thirty.",
+      "avatar": "assets/characters/zhong-huaili.webp"
+    }
+  ],
+  "opening": {
+    "greeter": "xia-cheng",
+    "replies": [
+      "Of course. I'll help you look",
+      "Sorry, I was asleep. What happened?",
+      "When did you last see her?"
+    ]
+  },
+  "ui": {
+    "replyChips": true
+  },
+  "player": {
+    "id": "player",
+    "name": "Passenger in Car 2, seat 18",
+    "avatar": "assets/characters/player.webp"
+  },
+  "entry": "world/seated-car",
+  "rules": {
+    "system": "coc",
+    "characterChecks": true
+  },
+  "inspiration": {
+    "per": "clock",
+    "max": 4,
+    "fumble": [
+      {
+        "clock": -1
+      }
+    ]
+  },
+  "createdAt": "2026-09-26T00:00:00Z",
+  "updatedAt": "2026-09-26T00:00:00Z",
+  "cover": "assets/scenes/tunnel-train.webp",
+  "mysteries": [
+    {
+      "id": "who",
+      "question": "Who took Su He from her seat and locked her in the baggage car?",
+      "options": [
+        {
+          "id": "zhong",
+          "label": "Zhong Huaili in Car 3 seat 3",
+          "tier": "surface",
+          "clues": [
+            "world/seated-car/witness-account.md",
+            "world/sleeper/pill-strip.md",
+            "player/tea-bill.md"
+          ],
+          "epilogue": "Later, at Lingkou Station, Zhou Zihang recognized that grey wool coat. He said that if only he had asked one more question that night."
+        },
+        {
+          "id": "driver",
+          "label": "Driver Old Qin",
+          "tier": "wrong"
+        },
+        {
+          "id": "student",
+          "label": "Student Zhou Zihang in the back row",
+          "tier": "wrong"
+        },
+        {
+          "id": "herself",
+          "label": "No one — Su He hid herself",
+          "tier": "wrong"
+        }
+      ]
+    },
+    {
+      "id": "tea",
+      "question": "Why did Su He follow someone to the rear of the train in a daze?",
+      "options": [
+        {
+          "id": "sleeping-pills",
+          "label": "Sleeping pills were put in that cup of tea in the dining car",
+          "tier": "surface",
+          "clues": [
+            "world/sleeper/pill-strip.md",
+            "player/tea-bill.md"
+          ],
+          "epilogue": "The day the lab report came out, Old He told the story of the two teacups on table 4 once more. He said from then on, whenever anyone offered tea to settle someone else's account, he would take a closer look."
+        },
+        {
+          "id": "motion-sick",
+          "label": "She really was carsick and needed air",
+          "tier": "wrong"
+        },
+        {
+          "id": "willing",
+          "label": "She willingly went to the rear of the train to meet someone",
+          "tier": "wrong"
+        }
+      ]
+    },
+    {
+      "id": "key",
+      "question": "How did the baggage car key get into the culprit's hands, and where did it go afterward?",
+      "options": [
+        {
+          "id": "cab-to-coal",
+          "label": "Taken from the key board while the driver was off the train and the cab was empty; on the way back he didn't dare hang it up again, and threw it into the dining car's coal scuttle",
+          "tier": "surface",
+          "clues": [
+            "player/repair-notice.md",
+            "world/dining-car/freight-key.md"
+          ],
+          "epilogue": "After that, Old Qin locked the key board in an iron cabinet. He said people who understand railways know best where keys hang, and should be the last to touch them."
+        },
+        {
+          "id": "conductor",
+          "label": "Conductor Xia Cheng lent it to him, and he returned it after use",
+          "tier": "wrong"
+        },
+        {
+          "id": "su-he-key",
+          "label": "The key was on Su He herself all along",
+          "tier": "wrong"
+        }
+      ]
+    },
+    {
+      "id": "motive",
+      "question": "Why did he insist on making Su He disappear tonight?",
+      "options": [
+        {
+          "id": "memorial",
+          "label": "Su He wanted him to admit, in public at the accident memorial service, what happened twelve years ago",
+          "tier": "surface",
+          "clues": [
+            "player/su-he-notebook.md",
+            "player/su-he-testimony.md",
+            "world/freight-car/logbook-page.md",
+            "world/freight-car/torn-corner.md"
+          ],
+          "epilogue": "The memorial service went on as scheduled, only the stage was missing one speaker. Su He sat in the front row, clutching a train ticket."
+        },
+        {
+          "id": "red-light",
+          "label": "Twelve years ago at 01:12, it was he who ordered \"green light\" over the phone; Su Changgeng obeyed, and wrote that sentence in the train logbook",
+          "tier": "hidden",
+          "title": "The red light at 01:12",
+          "clues": [
+            "world/freight-car/logbook-page.md"
+          ],
+          "epilogue": "That logbook page was later photocopied many times. On the Broken Cloud Tunnel memorial, beside Su Changgeng's name, a small line was added: he raised an objection. Su He stood before the monument for a long time, and said, Dad, this time someone heard it."
+        },
+        {
+          "id": "money",
+          "label": "For money; Su He had his bribery ledger",
+          "tier": "wrong"
+        },
+        {
+          "id": "threat",
+          "label": "Su He threatened to hurt him; he was only defending himself",
+          "tier": "wrong"
+        }
+      ]
+    }
+  ],
+  "reckoning": {
+    "epilogues": {
+      "all": "You saw every link of that night clearly: a cup of tea, a key, a locked door, and that one minute twelve years ago. Xia Cheng later said that the person sitting in 18 that day was the only one on the whole train who hadn't slept.",
+      "most": "You saw most of what happened that night. The remaining links were pieced together bit by bit later by the Lingkou investigation team — but the first person to ask \"where did 17 go\" was you.",
+      "few": "That night was like fog in the tunnel; you only touched a few outlines. Many years later you would still think of that last train stopped in the belly of the mountain, and of the unclaimed coat on seat 17."
+    }
+  },
+  "view": {
+    "default": "map"
+  },
+  "tutorial": {
+    "firstLine": {
+      "en": "Sorry — I must have dozed off. What's going on?",
+      "zh-CN": "不好意思，我刚才睡着了。出什么事了？",
+      "ja": "すみません、眠ってしまって……何があったんですか？",
+      "ko": "죄송해요, 깜빡 잠들었네요. 무슨 일이에요?"
+    }
+  },
+  "experience": {
+    "kind": "story",
+    "turnEnd": "turn-end"
+  },
+  "tick": {
+    "every": 5,
+    "window": 1,
+    "grace": 2,
+    "budget": 4,
+    "landCap": 3,
+    "chooser": "rules",
+    "wip": true,
+    "pace": {
+      "pageGrace": 2,
+      "lineGap": 4,
+      "cooldown": 7,
+      "chatter": 4,
+      "chatterChance": 0.3
+    },
+    "deny": [
+      "sleeping pill",
+      "logbook page",
+      "coal scuttle",
+      "green light",
+      "twelve years ago",
+      "01:12",
+      "Su Changgeng"
+    ],
+    "actors": {
+      "xia-cheng": {
+        "goal": "Xia Cheng: help the passenger find the woman from seat 17; when a car is done, urge them on",
+        "moves": [
+          {
+            "id": "nudge-on",
+            "verb": "speak",
+            "suggest": [
+              {
+                "card": "world/seated-car/README.md",
+                "option": "go-sleeper"
+              },
+              {
+                "card": "world/seated-car/README.md",
+                "option": "go-train"
+              }
+            ]
+          },
+          {
+            "id": "chat",
+            "verb": "speak"
+          },
+          {
+            "id": "invite",
+            "verb": "invite"
+          }
+        ]
+      },
+      "zhou-zihang": {
+        "card": "world/seated-car/zhou-zihang.md",
+        "goal": "Zhou Zihang: stay out of it",
+        "moves": [
+          {
+            "id": "glance-seat",
+            "verb": "approach",
+            "target": "world/seated-car/su-he-notebook.md",
+            "weight": 1,
+            "run": "tick-zhou-zihang-glance",
+            "label": {
+              "intent": "Zhou Zihang → seat 17",
+              "landed": "Zhou Zihang slips off one earbud, stares at the empty seat 17 for a while, then puts it back in.",
+              "stopped": "Zhou Zihang meets your eyes and quickly fiddles with his earbud cable."
+            },
+            "counter": [
+              "talk",
+              "guard"
+            ]
+          },
+          {
+            "id": "mutter",
+            "verb": "speak"
+          }
+        ]
+      },
+      "lao-he": {
+        "card": "world/dining-car/lao-he.md",
+        "goal": "Old He: get back to sleep, take no blame",
+        "moves": [
+          {
+            "id": "wipe-table",
+            "verb": "mark",
+            "target": "world/dining-car/two-teacups.md",
+            "weight": 1,
+            "run": "tick-lao-he-wipe",
+            "label": {
+              "intent": "Old He → the cups on table 4",
+              "landed": "Old He wipes the edge of table 4, looks at the two cups, leaves them, and goes back to dozing.",
+              "stopped": "Old He slings the cloth over his shoulder: \"Not touching a thing. Go on, look.\""
+            },
+            "counter": [
+              "talk",
+              "guard"
+            ]
+          },
+          {
+            "id": "grumble",
+            "verb": "speak"
+          },
+          {
+            "id": "invite",
+            "verb": "invite"
+          }
+        ]
+      },
+      "zhong-huaili": {
+        "goal": "Zhong Huaili: let the night pass quietly",
+        "moves": [
+          {
+            "id": "fix-coat",
+            "verb": "approach",
+            "target": "world/sleeper/grey-coat.md",
+            "weight": 1,
+            "run": "tick-zhong-huaili-coat",
+            "label": {
+              "intent": "Zhong Huaili → the coat by the door",
+              "landed": "Zhong Huaili rises in his blanket, smooths the collar of the coat by the door, and slowly lies back down.",
+              "stopped": "Zhong Huaili glances at you and draws his hand back under the blanket: \"Cold night, young man.\""
+            },
+            "counter": [
+              "talk",
+              "guard"
+            ]
+          },
+          {
+            "id": "murmur",
+            "verb": "speak"
+          }
+        ]
+      }
+    }
+  }
+}

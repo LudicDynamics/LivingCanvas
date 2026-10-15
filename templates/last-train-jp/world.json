@@ -1,0 +1,445 @@
+{
+  "id": "last-train-jp",
+  "audio": {
+    "theme": "canvas-mistport"
+  },
+  "name": "終電 · 日本語",
+  "version": "1.0.0",
+  "schema": 1,
+  "description": "山あいの終電がトンネルの真ん中で止まり、一人の乗客が車内から消えた。五時ちょうどに列車は再び動き出す——それまでに、彼女を見つけ、真実も見つけよ。",
+  "intro": {
+    "status": "playable",
+    "category": "trpg",
+    "rank": 4,
+    "hook": "山あいの終電がトンネルの真ん中で止まり、17番席の乗客が消えた。五時に列車が動き出す前に、彼女を見つけ出せ。",
+    "genres": [
+      "mystery"
+    ],
+    "loop": [
+      "第一幕：2号車で目を覚まし、彼女のノートを手に取り、起きている学生にダイスで尋ねる",
+      "第二幕：寝台車、食堂車、運転室——三両それぞれに謎が一つ、順番は自由",
+      "第三幕：鍵で荷物車を開ける——時計は05:00へ一刻ずつ進む"
+    ],
+    "minutes": [
+      25,
+      35
+    ],
+    "difficulty": "standard",
+    "mechanics": [
+      "dice",
+      "clock",
+      "endings",
+      "voice"
+    ],
+    "endings": 2,
+    "characters": [
+      {
+        "id": "xia-cheng",
+        "line": "17番席が空だと気づいた二十四歳の車掌"
+      },
+      {
+        "name": "秦じい",
+        "avatar": "assets/characters/lao-qin.webp",
+        "line": "無線を守る年配の運転士。靴は砕石の粉だらけ"
+      },
+      {
+        "name": "周子航",
+        "avatar": "assets/characters/zhou-zihang.webp",
+        "line": "ヘッドホンをつけたまま一睡もしていない大学生"
+      }
+    ],
+    "for": [
+      "密室ミステリー好き",
+      "短く濃い一局を遊びたい人",
+      "タイムリミット好き"
+    ]
+  },
+  "author": "Worldlines Canvas / AIRP",
+  "genre": "物語体験",
+  "tags": [
+    "短編物語",
+    "クローズドTRPG",
+    "密室"
+  ],
+  "locale": "ja",
+  "material": "parchment",
+  "extensions": [
+    {
+      "id": "airp:note",
+      "version": ">=1.0.0",
+      "optional": false
+    }
+  ],
+  "mode": "closed",
+  "clock": {
+    "path": "world/departure-clock.md",
+    "key": "left",
+    "start": 8,
+    "label": "発車まで",
+    "time": {
+      "start": "01:10",
+      "end": "05:00"
+    }
+  },
+  "endings": [
+    {
+      "id": "found",
+      "title": "彼女を見つけた",
+      "path": "endings/found/README.md"
+    },
+    {
+      "id": "departed",
+      "title": "列車は発車した",
+      "path": "endings/departed/README.md",
+      "when": "clock <= 0"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "too-hurt",
+      "label": "傷が限界",
+      "kind": "state",
+      "when": "player.hp <= 0",
+      "do": "collapse"
+    },
+    {
+      "id": "car-two-exits",
+      "label": "2号車の出口：証言を得るか、ここで四拍過ごす",
+      "kind": "state",
+      "when": "has(\"world/seated-car/witness-account.md\") || has(\"world/seated-car/witness-half.md\") || has(\"player/witness-account.md\") || has(\"player/witness-half.md\") || world.turns >= 4",
+      "do": "open-exits"
+    }
+  ],
+  "characters": [
+    {
+      "id": "xia-cheng",
+      "name": "夏澄",
+      "home": "world/seated-car",
+      "role": "companion",
+      "description": "この終電の車掌、二十四歳。彼女が人数を数えたとき、17号の席が空いているのに気づいた。各車両に詳しいが、自分の目で見たことだけを言う。",
+      "avatar": "assets/characters/xia-cheng.webp"
+    },
+    {
+      "id": "zhong-huaili",
+      "name": "鐘懐礼",
+      "home": "world/sleeper",
+      "role": "npc",
+      "description": "3号車3号下段の乗客。鉄道分局の古い幹部で、断雲トンネル事故の追悼式に出席するため嶺口へ向かう。十一時半には寝たと言っている。",
+      "avatar": "assets/characters/zhong-huaili.webp"
+    }
+  ],
+  "opening": {
+    "greeter": "xia-cheng",
+    "replies": [
+      "もちろん、一緒に探すよ",
+      "ごめん、寝てた。何があったの？",
+      "最後に彼女を見たのはいつ？"
+    ]
+  },
+  "ui": {
+    "replyChips": true
+  },
+  "player": {
+    "id": "player",
+    "name": "2車18号の乗客",
+    "avatar": "assets/characters/player.webp"
+  },
+  "entry": "world/seated-car",
+  "rules": {
+    "system": "coc",
+    "characterChecks": true
+  },
+  "inspiration": {
+    "per": "clock",
+    "max": 4,
+    "fumble": [
+      {
+        "clock": -1
+      }
+    ]
+  },
+  "createdAt": "2026-09-26T00:00:00Z",
+  "updatedAt": "2026-09-26T00:00:00Z",
+  "cover": "assets/scenes/tunnel-train.webp",
+  "mysteries": [
+    {
+      "id": "who",
+      "question": "誰が蘇禾を座席から連れ去り、荷物車に閉じ込めたのか？",
+      "options": [
+        {
+          "id": "zhong",
+          "label": "3車3号の鐘懐礼",
+          "tier": "surface",
+          "clues": [
+            "world/seated-car/witness-account.md",
+            "world/sleeper/pill-strip.md",
+            "player/tea-bill.md"
+          ],
+          "epilogue": "周子航は後に嶺口駅でそのグレーのウールコートを思い出した。彼は言う、あの夜もう一言尋ねていればよかった、と。"
+        },
+        {
+          "id": "driver",
+          "label": "運転士・秦じい",
+          "tier": "wrong"
+        },
+        {
+          "id": "student",
+          "label": "後ろの座席にいた学生・周子航",
+          "tier": "wrong"
+        },
+        {
+          "id": "herself",
+          "label": "誰もいない——蘇禾は自分で隠れていた",
+          "tier": "wrong"
+        }
+      ]
+    },
+    {
+      "id": "tea",
+      "question": "蘇禾はなぜぼんやりと人について車尾へ歩いていったのか？",
+      "options": [
+        {
+          "id": "sleeping-pills",
+          "label": "食堂車のあの茶には睡眠薬が入れられていた",
+          "tier": "surface",
+          "clues": [
+            "world/sleeper/pill-strip.md",
+            "player/tea-bill.md"
+          ],
+          "epilogue": "検査結果が出た日、賀じいは4号卓の二つの茶碗のことをもう一度話した。彼は言う、これから誰かの勘定を覚えて茶を奢る時は、必ずもう一度よく見ると。"
+        },
+        {
+          "id": "motion-sick",
+          "label": "彼女は本当に車酔いし、風に当たる必要があった",
+          "tier": "wrong"
+        },
+        {
+          "id": "willing",
+          "label": "彼女は自ら車尾へある人に会いに行った",
+          "tier": "wrong"
+        }
+      ]
+    },
+    {
+      "id": "key",
+      "question": "荷物車の鍵はどうやって犯人の手に渡り、その後どこへ行ったのか？",
+      "options": [
+        {
+          "id": "cab-to-coal",
+          "label": "運転士が降りて運転室が無人になった隙に鍵板から持ち去り、戻って掛ける勇気がなく食堂車の石炭入れに捨てた",
+          "tier": "surface",
+          "clues": [
+            "player/repair-notice.md",
+            "world/dining-car/freight-key.md"
+          ],
+          "epilogue": "秦じいはそれ以来、鍵板を鉄の戸棚にしまい込んだ。彼は言う、鉄道を分かっている者ほど鍵がどこに掛かっているか知っているし、最も触れてはならない、と。"
+        },
+        {
+          "id": "conductor",
+          "label": "車掌の夏澄が彼に貸し、彼は使い終わるとすぐ返した",
+          "tier": "wrong"
+        },
+        {
+          "id": "su-he-key",
+          "label": "鍵はずっと蘇禾自身が持っていた",
+          "tier": "wrong"
+        }
+      ]
+    },
+    {
+      "id": "motive",
+      "question": "彼はなぜ蘇禾を今夜消さねばならなかったのか？",
+      "options": [
+        {
+          "id": "memorial",
+          "label": "蘇禾は彼に、事故追悼式で十二年前のことを公衆の面前で認めさせようとしていた",
+          "tier": "surface",
+          "clues": [
+            "player/su-he-notebook.md",
+            "player/su-he-testimony.md",
+            "world/freight-car/logbook-page.md",
+            "world/freight-car/torn-corner.md"
+          ],
+          "epilogue": "追悼式は予定通り開かれ、ただ壇上に発言者が一人欠けていた。蘇禾は最前列に座り、手に一枚の切符を握りしめていた。"
+        },
+        {
+          "id": "red-light",
+          "label": "十二年前の01:12、電話で「赤信号で通せ」と命じたのは彼だった。蘇長庚はそれに従い、その言葉を運転日誌に書き留めていた",
+          "tier": "hidden",
+          "title": "01:12の赤信号",
+          "clues": [
+            "world/freight-car/logbook-page.md"
+          ],
+          "epilogue": "その日誌のページは後に何部もコピーされた。断雲トンネルの記念碑では、蘇長庚の名前の横に小さな一行が加えられた：彼は異議を唱えていた。蘇禾は碑の前で長く立ち尽くし、言った、お父さん、今度は誰かが聞いてくれたよ、と。"
+        },
+        {
+          "id": "money",
+          "label": "金のため、蘇禾は彼の収賄の帳簿を握っていた",
+          "tier": "wrong"
+        },
+        {
+          "id": "threat",
+          "label": "蘇禾が彼を傷つけると脅したので、彼はただ自衛しただけ",
+          "tier": "wrong"
+        }
+      ]
+    }
+  ],
+  "reckoning": {
+    "epilogues": {
+      "all": "あの夜のすべての環をあなたは見抜いた：一杯の茶、一本の鍵、施錠された扉、そして十二年前のあの一分間。夏澄は後に言った、あの日18号に座っていた人は、列車全体で唯一眠っていなかった人だ、と。",
+      "most": "あの夜の出来事を、あなたは大半見抜いた。残りのいくつかの環は、後に嶺口の調査班が少しずつ補ったものだ——だが最初に「17号はどこへ行った」と問いかけたのは、あなただった。",
+      "few": "あの夜はトンネルの中の霧のようで、あなたはいくつかの輪郭に触れただけだった。何年も後、あなたは山腹に止まったあの終電を思い出すだろう、17号の座席にあった誰も引き取り手のないコートを思い出すだろう。"
+    }
+  },
+  "view": {
+    "default": "map"
+  },
+  "tutorial": {
+    "firstLine": {
+      "en": "Sorry — I must have dozed off. What's going on?",
+      "zh-CN": "不好意思，我刚才睡着了。出什么事了？",
+      "ja": "すみません、眠ってしまって……何があったんですか？",
+      "ko": "죄송해요, 깜빡 잠들었네요. 무슨 일이에요?"
+    }
+  },
+  "experience": {
+    "kind": "story",
+    "turnEnd": "turn-end"
+  },
+  "tick": {
+    "every": 5,
+    "window": 1,
+    "grace": 2,
+    "budget": 4,
+    "landCap": 3,
+    "chooser": "rules",
+    "wip": true,
+    "pace": {
+      "pageGrace": 2,
+      "lineGap": 4,
+      "cooldown": 7,
+      "chatter": 4,
+      "chatterChance": 0.3
+    },
+    "deny": [
+      "睡眠薬",
+      "日誌のページ",
+      "石炭入れ",
+      "赤信号",
+      "十二年前",
+      "01:12",
+      "蘇長庚"
+    ],
+    "actors": {
+      "xia-cheng": {
+        "goal": "夏澄：17番の女性を一緒に探す。この車両が済んだら、先へ進むよう一言うながす",
+        "moves": [
+          {
+            "id": "nudge-on",
+            "verb": "speak",
+            "suggest": [
+              {
+                "card": "world/seated-car/README.md",
+                "option": "go-sleeper"
+              },
+              {
+                "card": "world/seated-car/README.md",
+                "option": "go-train"
+              }
+            ]
+          },
+          {
+            "id": "chat",
+            "verb": "speak"
+          },
+          {
+            "id": "invite",
+            "verb": "invite"
+          }
+        ]
+      },
+      "zhou-zihang": {
+        "card": "world/seated-car/zhou-zihang.md",
+        "goal": "周子航：巻き込まれたくない",
+        "moves": [
+          {
+            "id": "glance-seat",
+            "verb": "approach",
+            "target": "world/seated-car/su-he-notebook.md",
+            "weight": 1,
+            "run": "tick-zhou-zihang-glance",
+            "label": {
+              "intent": "周子航 → 17番の座席",
+              "landed": "周子航がイヤホンを片方外し、空いた17番の座席をしばらく見つめて、またつけ直した。",
+              "stopped": "周子航はあなたと目が合うと、慌ててイヤホンのコードをいじりだした。"
+            },
+            "counter": [
+              "talk",
+              "guard"
+            ]
+          },
+          {
+            "id": "mutter",
+            "verb": "speak"
+          }
+        ]
+      },
+      "lao-he": {
+        "card": "world/dining-car/lao-he.md",
+        "goal": "賀じい：また寝たい、責任は負いたくない",
+        "moves": [
+          {
+            "id": "wipe-table",
+            "verb": "mark",
+            "target": "world/dining-car/two-teacups.md",
+            "weight": 1,
+            "run": "tick-lao-he-wipe",
+            "label": {
+              "intent": "賀じい → 4号卓の茶碗",
+              "landed": "賀じいが布巾で4号卓の端を二度拭き、二つの茶碗を眺めたが片づけず、また居眠りに戻った。",
+              "stopped": "賀じいは布巾を肩にかけた。「触らん触らん、どうぞ調べて。」"
+            },
+            "counter": [
+              "talk",
+              "guard"
+            ]
+          },
+          {
+            "id": "grumble",
+            "verb": "speak"
+          },
+          {
+            "id": "invite",
+            "verb": "invite"
+          }
+        ]
+      },
+      "zhong-huaili": {
+        "goal": "鐘懐礼：夜を静かにやり過ごしたい",
+        "moves": [
+          {
+            "id": "fix-coat",
+            "verb": "approach",
+            "target": "world/sleeper/grey-coat.md",
+            "weight": 1,
+            "run": "tick-zhong-huaili-coat",
+            "label": {
+              "intent": "鐘懐礼 → 戸口のコート",
+              "landed": "鐘懐礼が毛布をはおって起き、戸口のコートの襟を整えると、またゆっくり横になった。",
+              "stopped": "鐘懐礼はあなたを一瞥し、手を毛布に引っ込めた。「夜は冷えるよ、若い人。」"
+            },
+            "counter": [
+              "talk",
+              "guard"
+            ]
+          },
+          {
+            "id": "murmur",
+            "verb": "speak"
+          }
+        ]
+      }
+    }
+  }
+}

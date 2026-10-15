@@ -1,0 +1,3172 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* A01 visual grammar — the single global source for shell and default surfaces. */
+  --ux-color-wall: #d9d0bf;
+  --ux-color-paper: #f4f0e8;
+  --ux-color-cream: #fbf8f1;
+  --ux-color-ink: #292820;
+  --ux-color-muted: #777468;
+  --ux-color-line: rgba(41, 40, 32, 0.15);
+  --ux-color-rust: #c96f4c;
+  --ux-color-sage: #899b87;
+  --ux-color-blue: #7893a2;
+  --ux-surface-stage: radial-gradient(ellipse at 35% 35%, color-mix(in srgb, var(--ux-color-paper) 72%, transparent), transparent 55%), var(--ux-color-wall);
+  --ux-surface-transparent-ink: transparent;
+  /* Chalk legibility: bare chalk stays
+     transparent — no frame — and survives a photo backdrop through a soft
+     halo around the glyphs instead. Light scenes: dark ink, paper-coloured
+     halo. Dark scenes: lavender ink (the old "purple chalk"), ink-dark halo. */
+  --ux-color-chalk-ink-dark: #efe7f7;
+  --ux-shadow-chalk-glow: 0 0 1px rgba(255, 252, 240, 0.95), 0 0 7px rgba(255, 252, 240, 0.85), -1px 1px 0 rgba(255, 252, 240, 0.8);
+  --ux-shadow-chalk-glow-dark: 0 0 1px rgba(12, 8, 20, 0.95), 0 0 7px rgba(12, 8, 20, 0.85), 0 1px 2px rgba(12, 8, 20, 0.7);
+  --ux-surface-paper: var(--ux-color-paper);
+  /* Hangul: Gowun Batang / Noto Sans KR follow the Latin + CJK families (lib/locale-fonts.ts loads them for Korean). */
+  --ux-font-human: 'LXGW WenKai', 'Gowun Batang', 'Kaiti SC', 'KaiTi', serif;
+  --ux-font-hand: 'Caveat', 'LXGW WenKai', 'Gowun Batang', 'Kaiti SC', 'KaiTi', serif;
+  --ux-font-ui: 'Manrope', 'Noto Sans KR', system-ui, -apple-system, sans-serif;
+  --ux-font-machine: 'DM Mono', ui-monospace, monospace;
+  --ux-shadow-soft: 0 8px 30px rgba(45, 38, 28, 0.13);
+  --ux-shadow-halo: 0 14px 40px rgba(45, 38, 28, 0.18);
+  --ux-shadow-deep: 0 22px 50px rgba(35, 28, 20, 0.32);
+  /* The onboarding guide's dim: one spread shadow big enough
+     to reach any viewport, so the darkening is a shadow and the hole in it is
+     the control being pointed at. Transparent enough to keep the scene
+     readable — the team asked for 变暗, not a black sheet. */
+  --ux-shadow-guide-scrim: 0 0 0 9999px rgba(24, 21, 15, 0.52);
+  --ux-radius-touch: 14px;
+  --ux-radius-panel: 18px;
+  --ux-radius-toolbar: 24px;
+  --ux-radius-avatar: 50%;
+  --ux-radius-pill: 999px;
+  --ux-motion-ink: cubic-bezier(0.16, 1, 0.3, 1);
+  --ux-motion-fast: 220ms;
+  --ux-motion-panel: 300ms;
+  --ux-motion-slow: 420ms;
+  --ux-duration-pulse: 1.2s;
+  --ux-duration-spin: 0.9s;
+  --ux-duration-reduced: 1ms;
+  --ux-duration-reveal: 1.3s;
+  --ux-color-dusk-veil: rgba(16, 12, 24, 0.36);
+  --ux-color-dusk-edge: rgba(16, 12, 24, 0.48);
+  --ux-color-dusk-ink: #d9cbe6;
+  --ux-color-dusk-button: rgba(44, 36, 59, 0.85);
+  --ux-color-dusk-button-soft: rgba(44, 36, 59, 0.78);
+  --ux-color-dusk-line: rgba(177, 156, 195, 0.33);
+  --ux-color-dusk-shadow: rgba(0, 0, 0, 0.8);
+  --ux-color-dusk-glow: rgba(217, 176, 106, 0.2);
+  --ux-color-dusk-shadow-soft: rgba(0, 0, 0, 0.75);
+  --ux-color-dusk-pulse: rgba(201, 111, 76, 0.45);
+  --ux-color-dusk-clear: rgba(201, 111, 76, 0);
+  /* Launcher glass (the world list's near-black translucent bricks), shared so
+     the performance-settings window and the dice surfaces wear the same
+     material.
+     Text on --ux-glass-panel, worst case (panel straight over a cream card):
+     glass-ink 11:1, muted 7.5:1, faint 5.1:1, fail 7.2:1, fumble 5.6:1 —
+     all WCAG AA; inside a scrimmed modal every pair is higher. */
+  --ux-glass-fill: rgba(16, 17, 27, 0.62);
+  --ux-glass-panel: rgba(14, 15, 24, 0.84);
+  --ux-glass-well: rgba(255, 255, 255, 0.06);
+  --ux-glass-hover: rgba(255, 255, 255, 0.14);
+  --ux-glass-line: rgba(255, 255, 255, 0.22);
+  --ux-glass-line-soft: rgba(255, 255, 255, 0.12);
+  --ux-glass-ink: #f5f3ee;
+  --ux-glass-muted: rgba(245, 243, 238, 0.78);
+  --ux-glass-faint: rgba(245, 243, 238, 0.6);
+  --ux-glass-pressed: rgba(245, 243, 238, 0.92);
+  --ux-glass-pressed-ink: #07080f;
+  --ux-glass-accent: #c9f27a;
+  --ux-glass-pass: #9fe0b0;
+  --ux-glass-pass-fill: rgba(80, 190, 120, 0.16);
+  --ux-glass-fail: #ffb3a8;
+  --ux-glass-fail-fill: rgba(230, 90, 80, 0.18);
+  --ux-glass-crit: #ffd27a;
+  --ux-glass-fumble: #ff8f86;
+  --ux-glass-scrim: rgba(4, 5, 12, 0.62);
+  --ux-glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  --ux-glass-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 40px 80px -30px rgba(0, 0, 0, 0.85);
+  --ux-glass-blur: blur(26px) saturate(1.4);
+  --ux-glass-blur-pill: blur(14px);
+  --ux-font-glass: 'Helvetica Neue', Inter, var(--ux-font-ui), sans-serif;
+  --ux-font-glass-label: ui-monospace, 'SFMono-Regular', monospace;
+  /* v2 aliases retained while existing JSX/CSS consumers migrate. */
+  --ink: var(--ux-color-ink);
+  --muted: var(--ux-color-muted);
+  --paper: var(--ux-color-paper);
+  --cream: var(--ux-color-cream);
+  --wall: var(--ux-color-wall);
+  --rust: var(--ux-color-rust);
+  --sage: var(--ux-color-sage);
+  --blue: var(--ux-color-blue);
+  --line: var(--ux-color-line);
+
+  /* legacy compat names — values synced to v2 (keep until JSX waves migrate) */
+  --canvas-bg: var(--ux-color-wall);
+  --card-cream: var(--ux-color-cream);
+  --ink-secondary: var(--ux-color-muted);
+
+  /* Depth registry — the only global stacking vocabulary. Surface kinds map to
+     these seven bands; the aliases below preserve legacy selectors while
+     keeping every declaration on this registry. */
+  --depth-background: 0;
+  --depth-world: 10;
+  --depth-entity: 20;
+  --depth-overlay: 30;
+  --depth-writer: 40;
+  --depth-modal: 50;
+  /* Notice and activity receipts stay above ordinary chrome but below modal/dialogue. */
+  --depth-notice: calc(var(--depth-modal) - 1);
+  --depth-ui: 60;
+
+  /* Legacy aliases. Local offsets remain finite and semantic; they do not
+     introduce another global z-index scale. */
+  --depth-background-scene: var(--depth-background);
+  --depth-background-grain: var(--depth-world);
+  --depth-entity-base: var(--depth-entity);
+  --depth-entity-inspect: calc(var(--depth-entity) + 1);
+  --depth-entity-control: calc(var(--depth-entity) + 2);
+  --depth-entity-focus: calc(var(--depth-entity) + 10);
+  --depth-entity-drag: calc(var(--depth-entity) + 20);
+  --depth-entity-reading: var(--depth-writer);
+  --depth-performance-root: var(--depth-overlay);
+  --depth-performance-fumble: calc(var(--depth-overlay) + 1);
+  --depth-overlay-performance: calc(var(--depth-overlay) + 1);
+  /* The blocking dice ceremony is a root-level overlay (ported to <body>): it
+     must cover chrome blocking dialogs — the declared-action dialog opened from
+     a Chalk sits at `--depth-entity-reading` (40) — while staying below
+     `dialogue`. */
+  --depth-performance-ceremony: calc(var(--depth-modal) - 1);
+  --depth-modal-dialogue: calc(var(--depth-modal) + 1);
+  /* The companion stage's column width. Shared because two files must agree on
+     it: the dock is that wide, and the writer FAB steps clear of exactly that
+     much when the stage is open. */
+  --ux-companion-column: 300px;
+  --depth-chrome-writer: var(--depth-writer);
+  --depth-chrome-stub: calc(var(--depth-writer) + 5);
+  --depth-chrome-hint: var(--depth-notice);
+  --depth-chrome-minimap: var(--depth-notice);
+  --depth-chrome-badge: calc(var(--depth-writer) + 10);
+  --depth-chrome-carried-reader: var(--depth-writer);
+  --depth-chrome-gate-threshold: calc(var(--depth-writer) + 8);
+  /* An opened chrome drawer (belongings) sits above every resting chrome rail
+     (residents, activity log/minimap/badge), still below modal dialogs. */
+  --depth-chrome-open-drawer: calc(var(--depth-writer) + 12);
+  /* The world hover panel hangs under the
+     clock badge / world title: above resting rails and an opened drawer, below
+     the onboarding guide's dim. */
+  --depth-chrome-world-panel: calc(var(--depth-writer) + 13);
+  /* The creation-mode 素材 panel and its map-view note:
+     a docked drawer like the belongings one — above resting rails, below the
+     world hover, the guide's dim and every modal. */
+  --depth-chrome-art-panel: calc(var(--depth-writer) + 12);
+  /* A card's big action pill and its centred focus view (owner CardActionBar /
+     CanvasObject, the design notes §卡片行动按钮): above the canvas and the resting
+     chrome so the buttons are never covered, below the gate threshold the
+     enter button opens (the focus view closes first), drawers and modals. */
+  --depth-card-actions: calc(var(--depth-writer) + 7);
+  --depth-card-focus: calc(var(--depth-writer) + 11);
+  /* The onboarding guide dims the whole play chrome, so it sits above every
+     resting rail AND above an opened drawer — but it paints nothing and
+     catches no pointer, so nothing it covers stops working. */
+  --depth-chrome-guide: calc(var(--depth-writer) + 14);
+  /* A world's CG reveal (show_cg, the design notes; owner CgReveal):
+     full-screen, above the canvas, the dock, dialogue and the ending card, but
+     below the forced tutorial and the system notices above it. */
+  --depth-cg-reveal: calc(var(--depth-ui) + 20);
+  /* The two transient presentations (the design notes;
+     owner MilestoneStage): a new scene's name and animated picture, an item
+     obtained, a scene replayed from the bag. Above the canvas, dock and
+     dialogue, just below the CG reveal (a CG landing in the same moment is the
+     world's own picture). */
+  --depth-milestone: calc(var(--depth-ui) + 19);
+  /* The forced first-run tutorial dims EVERYTHING, dialogue included, with one
+     cut-out; it paints only the mask and its caption and blocks presses itself. */
+  --depth-chrome-tutorial: calc(var(--depth-ui) + 30);
+  /* System notices stay readable and closable above the tutorial's dim. */
+  --depth-chrome-tutorial-notice: calc(var(--depth-chrome-tutorial) + 1);
+  /* The frame-diagnostics HUD (Performance settings → diagnostics) is a developer
+     readout: it must stay visible over everything the player can open. */
+  --depth-diagnostics: calc(var(--depth-chrome-tutorial-notice) + 1);
+  --depth-dialogue-root: var(--depth-modal);
+  --depth-dialogue-media-back: var(--depth-modal);
+  --depth-dialogue-portrait: var(--depth-modal);
+  --depth-dialogue-media-front: calc(var(--depth-modal) + 1);
+  --depth-dialogue-caption: calc(var(--depth-modal) + 2);
+  --depth-dialogue-speech: calc(var(--depth-modal) + 2);
+  --depth-dialogue-close: calc(var(--depth-modal) + 10);
+}
+/* Device-level paint overrides. Full intentionally inherits the original values. */
+:root {
+  --airp-blur-scale: 1;
+  --airp-launcher-ambient-radius: 70px;
+}
+
+:root[data-airp-shadow="reduced"] {
+  --ux-shadow-soft: 0 3px 12px rgba(45, 38, 28, 0.09);
+  --ux-shadow-halo: 0 6px 18px rgba(45, 38, 28, 0.12);
+  --ux-shadow-deep: 0 10px 24px rgba(35, 28, 20, 0.2);
+}
+:root[data-airp-shadow="off"] {
+  --ux-shadow-soft: none;
+  --ux-shadow-halo: none;
+  --ux-shadow-deep: none;
+}
+:root[data-airp-blur="reduced"] {
+  --airp-blur-scale: 0.5;
+  --airp-launcher-ambient-radius: 24px;
+  --ux-glass-blur: blur(12px) saturate(1.3);
+  --ux-glass-blur-pill: blur(7px);
+}
+/* No blur: the glass turns nearly opaque so text keeps its contrast. */
+:root[data-airp-blur="off"] {
+  --ux-glass-fill: rgba(16, 17, 27, 0.96);
+  --ux-glass-panel: rgba(14, 15, 24, 0.97);
+  --ux-glass-blur: none;
+  --ux-glass-blur-pill: none;
+}
+:root[data-airp-shadow="off"] {
+  --ux-glass-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+:root[data-airp-grain="off"] body::before { display: none; }
+
+:root[data-airp-shadow="reduced"] .gate,
+:root[data-airp-shadow="reduced"] .note,
+:root[data-airp-shadow="reduced"] .letter,
+:root[data-airp-shadow="reduced"] .html-card,
+:root[data-airp-shadow="reduced"] .html-detail__panel,
+:root[data-airp-shadow="reduced"] .photo-card,
+:root[data-airp-shadow="reduced"] .photo-detail__panel,
+:root[data-airp-shadow="reduced"] .declared-action-dialog {
+  --airp-device-appearance-shadow: 0 3px 12px rgba(45, 38, 28, 0.09);
+}
+:root[data-airp-shadow="off"] .gate,
+:root[data-airp-shadow="off"] .note,
+:root[data-airp-shadow="off"] .letter,
+:root[data-airp-shadow="off"] .html-card,
+:root[data-airp-shadow="off"] .html-detail__panel,
+:root[data-airp-shadow="off"] .photo-card,
+:root[data-airp-shadow="off"] .photo-detail__panel,
+:root[data-airp-shadow="off"] .declared-action-dialog {
+  --airp-device-appearance-shadow: none;
+}
+
+:root[data-airp-blur="reduced"] .character-modal-layer {
+  backdrop-filter: brightness(0.35) blur(3px);
+  -webkit-backdrop-filter: brightness(0.35) blur(3px);
+}
+:root[data-airp-blur="off"] .character-modal-layer {
+  backdrop-filter: brightness(0.35);
+  -webkit-backdrop-filter: brightness(0.35);
+}
+:root[data-airp-blur="reduced"] .identity-status { backdrop-filter: blur(1.5px); }
+:root[data-airp-shadow="reduced"] .speech-paper,
+:root[data-airp-shadow="reduced"] .identity-status {
+  box-shadow: 0 4px 14px rgba(41, 40, 32, .14);
+}
+:root[data-airp-shadow="off"] .speech-paper,
+:root[data-airp-shadow="off"] .identity-status { box-shadow: none; }
+:root[data-airp-blur="off"] .identity-status {
+  background: var(--paper);
+  backdrop-filter: none;
+}
+:root[data-airp-blur="reduced"] .chalk.chalk--dice,
+:root[data-airp-blur="reduced"] [data-scene-tone="dark"] .chalk.chalk--dice {
+  backdrop-filter: blur(3px);
+}
+:root[data-airp-blur="off"] .chalk.chalk--dice,
+:root[data-airp-blur="off"] [data-scene-tone="dark"] .chalk.chalk--dice {
+  background: var(--ux-color-ink);
+  backdrop-filter: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--ux-font-ui);
+  background-color: var(--ux-color-wall);
+  color: var(--ux-color-ink);
+  user-select: none;
+  overflow: hidden;
+}
+
+/* 2.5D world grid — v2 ink canvas. The material base (radial paper) now lives
+   on .scene-backdrop (the viewport-fixed sheet the world sits on), so this
+   element carries ONLY the 80px hairlines. It is a large fixed sheet parked
+   inside the world transform layer, so the grid pans and zooms with the cards
+   (hearth .canvas) instead of sitting still under a moving world. */
+.canvas-grid {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--ux-color-line) 23%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--ux-color-line) 23%, transparent) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px;
+}
+
+/* Flat-canvas sheet mount (CanvasGrid surface="viewport"): a clipped,
+   viewport-sized wrapper holding a FIXED sheet that never resizes. The pan
+   phase is one compositor translate3d; zoom is a single background-size write.
+   The inset must exceed the largest pitch (CELL * Z_MAX = 176px) and stay in
+   sync with BLEED in CanvasGrid.tsx. */
+.canvas-grid-viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  /* Float above the scene image but beneath the world layer's cards — same
+     band the background grain uses. */
+  z-index: var(--depth-background-grain);
+}
+.canvas-grid--sheet {
+  position: absolute;
+  inset: -192px;
+  will-change: transform;
+}
+
+/* Smooth physics transition */
+.ease-ink {
+  transition-timing-function: var(--ux-motion-ink);
+}
+
+/* 3D Dice Cube Styles */
+.dice-scene {
+  perspective: 600px;
+}
+
+.dice-cube {
+  width: 60px;
+  height: 60px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dice-face {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: #FFFEF6;
+  border: 2px solid #5F5142;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-weight: bold;
+  font-size: 20px;
+  color: #2B2117;
+  box-shadow: inset 0 0 10px rgba(43, 33, 23, 0.1);
+}
+
+.face-1 { transform: rotateY(0deg) translateZ(30px); }
+.face-2 { transform: rotateY(90deg) translateZ(30px); }
+.face-3 { transform: rotateY(180deg) translateZ(30px); }
+.face-4 { transform: rotateY(-90deg) translateZ(30px); }
+.face-5 { transform: rotateX(90deg) translateZ(30px); }
+.face-6 { transform: rotateX(-90deg) translateZ(30px); }
+
+/* Atmospheric floating dust overlay */
+.dust-particle {
+  pointer-events: none;
+  position: absolute;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 70%);
+  border-radius: 50%;
+  animation: floatDust 12s infinite ease-in-out;
+}
+
+@keyframes floatDust {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translateY(-40px) translateX(20px);
+    opacity: 0.7;
+  }
+}
+
+/* ================= Infinite canvas world layer (T0.3+) ================= */
+
+/* Card shell — absolutely positioned inside the world transform layer.
+   rot comes from the server-derived --target-rot (deterministic per path).
+   Collision uses the UNROTATED box (item.w/h), so rot is cosmetic only. */
+.object {
+  position: absolute;
+  touch-action: none;
+  cursor: grab;
+  z-index: var(--depth-entity-base);
+  transform: rotate(var(--target-rot, 0deg));
+}
+.object:hover {
+  /* the shell's z-index is written inline (server row order), so a plain
+     declaration here would never win. !important lets hover/drag lift the
+     card above its neighbours — needed for the gate's floating detail sheet. */
+  z-index: var(--depth-entity-focus) !important;
+}
+.object:active {
+  cursor: grabbing;
+}
+/* Rail emphasis: hovering an option in
+   the left rail lifts the card it belongs to and settles the rest, so "which
+   card is this about?" is answered without moving the camera. Written as
+   attributes from one module, never React state — a rail hover must not
+   re-render every card on the layer. `--target-rot` is preserved: the cards
+   carry an authored tilt and dropping it would make the lift a jump. */
+.object[data-emphasis='on'] {
+  transform: rotate(var(--target-rot, 0deg)) scale(1.06);
+  z-index: var(--depth-entity-focus) !important;
+  transition: transform var(--ux-motion-fast) var(--ux-motion-ink);
+}
+.depth-surface--world[data-emphasis-active='on'] .object:not([data-emphasis='on']) {
+  opacity: 0.85;
+  transition: opacity var(--ux-motion-fast) var(--ux-motion-ink);
+}
+@media (prefers-reduced-motion: reduce) {
+  .object[data-emphasis='on'],
+  .depth-surface--world[data-emphasis-active='on'] .object:not([data-emphasis='on']) {
+    transition: none;
+  }
+}
+.object-locked {
+  cursor: default;
+}
+.object.dragging-item {
+  cursor: grabbing;
+  box-shadow: 0 22px 50px rgba(35, 28, 20, 0.32);
+  /* must beat the hover lift below (both !important); the dragged card is also
+     :hover, so without a higher value a neighbour's hover could cover it. */
+  z-index: var(--depth-entity-drag) !important;
+}
+/* Smooth slide when a neighbour pushes this card (v2 L51). */
+.object.pushed {
+  transition:
+    left 0.25s cubic-bezier(0.2, 0.8, 0.3, 1),
+    top 0.25s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+/* Relationship lines (v2 §1.3). */
+.thread-line {
+  fill: none;
+  stroke-linecap: round;
+  transition:
+    opacity 0.45s cubic-bezier(0.2, 0.8, 0.3, 1),
+    stroke-width 0.45s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+.thread-dashed {
+  stroke-dasharray: 7 6;
+  animation: dashFlow 20s linear infinite;
+}
+.thread-archived {
+  opacity: 0 !important;
+}
+.thread-active {
+  opacity: 0.8 !important;
+  stroke-width: 2.2px !important;
+}
+.thread-latest {
+  opacity: 0.75;
+}
+@keyframes dashFlow {
+  to {
+    stroke-dashoffset: -300;
+  }
+}
+
+/* Zero-size world-coordinate SVG; never intercepts pointer events. */
+.links-svg {
+  pointer-events: none;
+}
+
+/* ============================================================
+   v2 visual layer — ink-canvas material system (doc-04 §10.2;
+   authoritative values copied verbatim from hearth.html).
+   Appended at the end of the cascade so every rule above is
+   re-painted. JSX/class names are untouched — this layer is the
+   whole re-skin.
+   ============================================================ */
+
+/* ---- grain: fractalNoise paper texture over the whole canvas ----
+   Hearth body:before verbatim (viewBox 180, feTurbulence .8/3/stitch,
+   rect opacity .22, layer opacity .18). z-index 10 covers the canvas
+   and cards (z ≤ 9) and stays under modal/toast chrome (z-50, both
+   position:fixed). Note: header/sidebar are position:static so their
+   z-30 is inert and they also get textured — a one-line z:5 change
+   drops the grain below them if the chrome needs to be grain-free. */
+body:before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+  z-index: var(--depth-background-grain);
+}
+
+/* ---- ink animation note ----
+   `paperForm` remains available to explicit `.paper-form` callers below, but
+   `.object` shells must not animate on every world refresh: position updates
+   during hover otherwise look like a card teleport. */
+.object {
+  animation: none;
+  transition: box-shadow 0.2s ease;
+}
+
+.object:hover {
+  filter: none; /* Keep transformed canvas text out of filtered raster layers. */
+}
+/* ---- v2 interaction spec (doc-04 §10.2 交互态) ----
+   hover = ink-background / paper-text reversal is the SINGLE strong
+   feedback (replaces the v1 red-pen accent). Utility below is for
+   waves B/C/D to apply on pills/buttons: add `.ink-reverse` and the
+   existing `hover:bg-ink hover:text-white` pattern already flips to
+   the ink surface. Cards stay filter-free for text clarity; dragged
+   objects get the big soft shadow (.dragging-item, already v2). */
+.ink-reverse {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* ---- ink-seep text reveal (hearth textInkSpread) ----
+   blur 3.2px→0, opacity .18→1 over 1.35s — text that seeps into the
+   paper like ink. Apply as a class for card bodies in later waves. */
+.ink-spread {
+  animation: textInkSpread 1.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---- paper form — standalone mount-entrance utility ---- */
+.paper-form {
+  animation: paperForm 1.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes paperForm {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--target-rot, 0deg)) scale(0.92);
+  }
+  45% {
+    opacity: 0.75;
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(var(--target-rot, 0deg)) scale(1);
+  }
+}
+
+@keyframes textInkSpread {
+  0% {
+    filter: blur(3.2px);
+    opacity: 0.18;
+    color: #93887d;
+  }
+  45% {
+    filter: blur(1px);
+    opacity: 0.8;
+  }
+  100% {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+/* ---- phantom chalk: wet ink not yet dry ----
+   A chalk phantom is a promise, not a card: translucent, faintly blurred,
+   sitting on the world grid at the seat the real card will take. Both classes
+   are additive — `.chalk` / `.chalk--bare` and their tone/big/card variants
+   are untouched (ChalkCard.tsx composes from those). */
+.chalk--ghost {
+  opacity: 0.62;
+  filter: blur(0.6px);
+  pointer-events: none;
+}
+
+/* landed: let the ink-seep animation HOLD its dry 100% frame instead of
+   snapping back to the wet .chalk--ghost look (which has no fill-mode). */
+.chalk--ghost.ink-spread {
+  animation-fill-mode: forwards;
+}
+
+/* the pen is here, the words are not yet. A small breathing nib. */
+.ink-tip {
+  display: inline-block;
+  width: 2px;
+  height: 1.15em;
+  margin-left: 2px;
+  vertical-align: -0.2em;
+  background: currentColor;
+  border-radius: 1px;
+  animation: inkTip 1.1s ease-in-out infinite;
+}
+
+@keyframes inkTip {
+  0%, 100% { opacity: 0.15; transform: translateY(0); }
+  50% { opacity: 0.85; transform: translateY(1px); }
+}
+
+/* failed chalk: the ghost leaves visibly — right + fade — never a stub. */
+.ghost--evicting {
+  animation: ghostEvict 320ms ease-in forwards;
+}
+
+@keyframes ghostEvict {
+  0% { opacity: 0.62; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(10px); }
+}
+
+/* ============================================================
+   Character modal — galgame overlay (T3.3, wave 2 Task D)
+   Appended at the end of the cascade on purpose. Uses the v2
+   ink-canvas tokens (--ink/--rust/--sage/--blue/--paper/--cream/
+   --wall/--muted/--line) declared in :root above. Layout spec in
+   doc-06 §3: dimmed canvas behind, one bottom-pinned portrait,
+   tilted paper dialog, streaming line — no bubbles, no scroll history.
+   ============================================================ */
+
+/* ---- full-screen layer: the canvas itself dims + blurs behind a
+   warm-ink tint (brightness(.35) blur(6px) + rgba tint). Not a
+   black sheet — the fireplace notes stay faintly visible. ---- */
+.character-modal-layer {
+  position: fixed;
+  inset: 0;
+  min-height: 100dvh;
+  box-sizing: border-box;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  --dialogue-bottom-safe: max(1rem, env(safe-area-inset-bottom));
+  --dialogue-paper-offset: clamp(1.25rem, 5.5vh, 3rem);
+  z-index: var(--depth-dialogue-root);
+  overflow: hidden;
+  backdrop-filter: brightness(0.35) blur(6px);
+  -webkit-backdrop-filter: brightness(0.35) blur(6px);
+  background: rgba(41, 40, 32, 0.25);
+  animation: modalEnter 0.3s ease-out;
+}
+
+.modal-closing {
+  animation: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---- one bottom-pinned portrait slot, sharing the paper safe baseline ---- */
+.portrait-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0 max(1rem, 6vw) calc(var(--dialogue-bottom-safe) + var(--dialogue-paper-offset));
+  box-sizing: border-box;
+  z-index: var(--depth-dialogue-portrait);
+  pointer-events: none;
+}
+
+.portrait-slot {
+  flex: none;
+  width: min(40vh, 26vw, 360px);
+  height: min(64vh, 560px);
+  filter: saturate(0.35) brightness(0.6);
+  transform: translateY(12px);
+  transition: filter 0.35s ease, transform 0.35s ease;
+}
+
+
+.portrait-slot.lit {
+  filter: none;
+  transform: none;
+}
+
+/* Breathing scale lives on the inner wrapper (its animation owns the
+   transform), so slot-level lit/dim transforms never conflict. */
+.portrait-breathe {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  transform-origin: 50% 100%;
+  animation: portraitBreathe 5s ease-in-out infinite;
+}
+
+@keyframes portraitBreathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+/* Emotion differentials. Worlds that ship the six
+   portraits get a real image swap on `[emo: tag]`; the old CSS-filter
+   simulation is gone. The container stays so `.portrait-emo` still owns the
+   `.emo-shock-shake` ornament and the breathing transform. */
+.portrait-emo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: filter 0.35s ease, transform 0.35s ease;
+}
+
+.portrait-emo img, .portrait-emo video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Preserve the full portrait and alpha silhouette. */
+  object-position: center top;
+}
+
+/* The per-emotion still. Sized/contained by the `.portrait-emo img` rule above
+   (same box as MotionPortrait, so a video→still swap never shifts). */
+.portrait-still {
+  transition: opacity 0.35s ease;
+}
+
+.emo-shock-shake {
+  animation: emoShockShake 0.35s linear infinite;
+}
+
+@keyframes emoShockShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-1.5px);
+  }
+  75% {
+    transform: translateX(1.5px);
+  }
+}
+
+/* ---- portrait fallback: first-letter monogram on a v2 gradient
+   when the avatar asset is missing or fails to load (T3.8) ---- */
+.portrait-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'LXGW WenKai', 'Gowun Batang', 'KaiTi', serif;
+  font-weight: 700;
+  font-size: clamp(4rem, 14vh, 9rem);
+  color: var(--rust);
+  background: linear-gradient(165deg, var(--cream) 0%, var(--paper) 58%, var(--sage) 175%);
+  border: 1px solid var(--line);
+}
+
+/* ---- bottom tilted paper dialog ---- */
+.speech-paper {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--dialogue-bottom-safe) + var(--dialogue-paper-offset));
+  z-index: var(--depth-dialogue-speech);
+  width: min(720px, 78vw);
+  padding: 1.2rem 1.6rem 1.1rem;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid rgba(41, 40, 32, 0.28);
+  box-shadow: 0 18px 42px rgba(41, 40, 32, 0.32), 0 4px 10px rgba(41, 40, 32, 0.2);
+  transform: translateX(-50%) rotate(-0.4deg);
+  animation: speechRise 0.6s cubic-bezier(0.16, 1, 0.3, 1); /* rises from below */
+}
+
+.speech-paper-closing {
+  animation: none;
+  opacity: 0;
+  transform: translateX(-50%) translateY(60px) rotate(-0.4deg);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+@keyframes speechRise {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 60px) rotate(-0.4deg);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) rotate(-0.4deg);
+  }
+}
+
+/* ---- identity/status sibling: never part of the speech paper flow ---- */
+.identity-status {
+  position: absolute;
+  top: max(4.5rem, calc(env(safe-area-inset-top) + 2.5rem));
+  left: max(1rem, calc(6vw + env(safe-area-inset-left)));
+  z-index: var(--depth-dialogue-caption);
+  width: min(320px, calc(100vw - 2rem));
+  box-sizing: border-box;
+  padding: 0.85rem 1rem;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  border: 1px solid rgba(41, 40, 32, 0.2);
+  box-shadow: 0 8px 22px rgba(41, 40, 32, 0.2);
+  backdrop-filter: blur(3px);
+  pointer-events: auto;
+}
+
+.identity-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.identity-name {
+  margin: 0;
+  font-family: 'LXGW WenKai', 'Gowun Batang', 'KaiTi', serif;
+  font-size: 1.15rem;
+  line-height: 1.3;
+}
+
+.identity-heading > button {
+  flex: none;
+  border: 1px solid var(--rust);
+  padding: 0.3rem 0.55rem;
+  color: var(--ink);
+  background: var(--cream);
+  font: 0.76rem/1.2 'Manrope', system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.identity-heading > button:hover,
+.identity-heading > button:focus-visible {
+  color: var(--paper);
+  background: var(--rust);
+}
+
+.identity-bio {
+  margin: 0.45rem 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.identity-activity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.7rem;
+}
+
+/* fixed streaming stage: min-height 3.2em with line-height 2, per spec */
+.line-stage {
+  min-height: 3.2em;
+  max-height: 9.6em;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 1.6rem; /* room for the ▼ advance indicator in the corner */
+  line-height: 2;
+  font-family: 'LXGW WenKai', 'Gowun Batang', 'KaiTi', serif;
+  font-size: 1.12rem;
+  color: var(--ink);
+  cursor: pointer;
+  border-radius: 0.2rem;
+}
+
+.line-stage:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 3px;
+}
+
+/* clickable advance affordance — pure visual hint, logic lives in `advance` */
+.line-stage.is-advanceable:hover {
+  background: rgba(41, 40, 32, 0.03);
+}
+
+.speech-line {
+  display: block;
+}
+
+
+.thinking-hint {
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+/* typewriter caret for the streaming line */
+.type-caret {
+  display: inline-block;
+  width: 1px;
+  height: 1.1em;
+  margin-left: 3px;
+  vertical-align: -0.12em;
+  background: var(--rust);
+  animation: caretBlink 1s steps(1) infinite;
+}
+
+@keyframes caretBlink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ▼ advance indicator: the galgame "click to continue" tell */
+.advance-indicator {
+  position: absolute;
+  right: 1.1rem;
+  bottom: 0.7rem;
+  font-size: 0.85rem;
+  color: var(--rust);
+  line-height: 1;
+  user-select: none;
+  pointer-events: none; /* clicks still land on .line-stage */
+  animation: advanceBlink 1.1s steps(1) infinite;
+}
+
+.advance-indicator.is-hidden {
+  visibility: hidden;
+}
+
+@keyframes advanceBlink {
+  50% {
+    opacity: 0.15;
+  }
+}
+
+/* player input — hidden until the pages are exhausted, then fades in (§6.6) */
+.speech-input-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  border-top: 1px solid rgba(41, 40, 32, 0.12);
+  margin-top: 0.5rem;
+  padding-top: 0.35rem;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity 0.35s ease, max-height 0.35s ease;
+}
+
+.speech-input-row.is-ready {
+  opacity: 1;
+  /* Room for the input, the voice button beside it and one line of voice error. */
+  max-height: 6rem;
+  pointer-events: auto;
+}
+.speech-input {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto;
+  margin-top: 0.4rem;
+  padding: 0.3rem 0.1rem 0.25rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(41, 40, 32, 0.2);
+  font-family: 'Manrope', 'Noto Sans KR', system-ui, sans-serif;
+  font-size: 0.95rem;
+  color: var(--ink);
+  caret-color: var(--rust);
+  outline: none;
+  user-select: text;
+  transition: border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.speech-input:focus {
+  border-bottom-color: var(--rust);
+}
+
+.speech-input::placeholder {
+  color: var(--muted);
+  opacity: 0.75;
+}
+
+.speech-input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Character activity status stays in the identity sibling, not on the paper. */
+.identity-status .activity-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 100%;
+  pointer-events: none;
+}
+.identity-status .activity-rail__list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.identity-status .activity-rail__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  background: var(--cream);
+  color: var(--muted);
+  border: 1px solid rgba(41, 40, 32, 0.18);
+  box-shadow: 0 1px 4px rgba(41, 40, 32, 0.12);
+  font-family: 'Manrope', 'Noto Sans KR', system-ui, sans-serif;
+  font-size: .78rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.identity-status .activity-rail__item[data-state='running'] { color: var(--ink); }
+.identity-status .activity-rail__item[data-state='error'] { color: var(--ink); border-color: rgba(201, 111, 76, 0.55); background: #f9ece4; }
+.identity-status .activity-rail__dot { width: 5px; height: 5px; border-radius: 50%; flex: none; background: var(--sage); }
+.identity-status .activity-rail__item[data-state='running'] .activity-rail__dot { background: var(--blue); animation: activity-pulse 1.6s ease-out infinite; }
+.identity-status .activity-rail__item[data-state='error'] .activity-rail__dot { background: var(--rust); }
+@media (prefers-reduced-motion: reduce) {
+  .identity-status .activity-rail__item[data-state='running'] .activity-rail__dot { animation: none; }
+}
+
+/* ---- dialogue call mode ---- */
+/* The paper keeps its −0.4° tilt: switching modes must not reseat the sheet. */
+.speech-paper[data-dialogue-mode='call'] {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  transform: translateX(-50%) rotate(-0.4deg);
+}
+/* Same baseline/line metrics as `.line-stage` so entering a call never jumps height. */
+.call-stage__transcript {
+  min-height: 3.2em;
+  max-height: 9.6em;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  line-height: 2;
+  font-family: 'LXGW WenKai', 'Gowun Batang', 'KaiTi', serif;
+  font-size: 1.12rem;
+  color: var(--ink);
+}
+.call-bar { display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+  border-top: 1px solid rgba(41, 40, 32, .12); margin-top: .5rem; padding-top: .35rem; }
+.call-status { display: inline-flex; align-items: center; gap: .35rem; font-family: 'Manrope', 'Noto Sans KR', system-ui, sans-serif; font-size: .78rem; color: var(--rust); }
+.call-hangup { flex: none; border: 1px solid var(--rust); padding: .3rem .55rem; color: var(--ink); background: var(--cream);
+  font: .76rem/1.2 'Manrope', system-ui, sans-serif; cursor: pointer; }
+.call-hangup:hover, .call-hangup:focus-visible { color: var(--paper); background: var(--rust); }
+.dialogue-call-alert { margin: .35rem 0 0; font-size: .78rem; color: var(--rust); }
+.call-stage .activity-rail { display: flex; flex-direction: column; gap: 4px; margin-bottom: .4rem; pointer-events: none; }
+.call-stage .activity-rail__list { display: flex; flex-direction: column; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.call-stage .activity-rail__item { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; max-width: 100%; overflow: hidden; padding: 3px 10px; border-radius: 9999px;
+  background: var(--cream); color: var(--muted); border: 1px solid rgba(41, 40, 32, .18); font-family: 'Manrope', 'Noto Sans KR', system-ui, sans-serif; font-size: .78rem; text-overflow: ellipsis; white-space: nowrap; }
+.call-stage .activity-rail__item[data-state='running'] { color: var(--ink); }
+.call-stage .activity-rail__item[data-state='error'] { color: var(--ink); border-color: rgba(201, 111, 76, .55); background: #f9ece4; }
+.dialogue-modes { display: flex; gap: .4rem; margin-top: .55rem; }
+.dialogue-mode { flex: 1 1 auto; border: 1px solid var(--line); padding: .3rem .55rem; color: var(--ink);
+  background: var(--cream); font: .76rem/1.2 'Manrope', system-ui, sans-serif; cursor: pointer; }
+.dialogue-mode[aria-pressed='true'] { color: var(--paper); background: var(--rust); border-color: var(--rust); }
+.dialogue-mode:disabled { opacity: .7; cursor: default; }
+
+@media (max-width: 700px) {
+  .identity-status {
+    top: max(3.75rem, calc(env(safe-area-inset-top) + 2rem));
+    left: max(0.75rem, calc(env(safe-area-inset-left) + 0.75rem));
+    right: max(0.75rem, calc(env(safe-area-inset-right) + 0.75rem));
+    width: auto;
+  }
+  .identity-heading {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .identity-heading > button {
+    align-self: flex-start;
+  }
+
+  .portrait-stage {
+    padding-right: max(0.75rem, calc(env(safe-area-inset-right) + 0.75rem));
+    padding-left: max(0.75rem, calc(env(safe-area-inset-left) + 0.75rem));
+  }
+
+  .portrait-slot {
+    width: min(58vw, 280px);
+    height: min(48vh, 420px);
+  }
+
+  .speech-paper {
+    width: calc(100vw - max(1.5rem, env(safe-area-inset-left) + env(safe-area-inset-right) + 1.5rem));
+    max-height: 48dvh;
+    overflow-y: auto;
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .call-stage__transcript { max-height: 6.4em; }
+  .dialogue-modes { width: 100%; }
+}
+
+/* Visually hidden but screen-reader available (App.tsx already used the class). */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+/* minimal top-right close affordance (Esc also closes) */
+.modal-close {
+  position: absolute;
+  top: max(0.75rem, calc(env(safe-area-inset-top) + 0.75rem));
+  right: max(0.75rem, calc(env(safe-area-inset-right) + 0.75rem));
+  z-index: var(--depth-dialogue-close);
+  width: 2.2rem;
+  height: 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Manrope', 'Noto Sans KR', system-ui, sans-serif;
+  font-size: 1.35rem;
+  line-height: 1;
+  color: var(--paper);
+  background: rgba(41, 40, 32, 0.55);
+  border: 1px solid rgba(244, 240, 232, 0.35);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.modal-close:hover {
+  background: var(--rust);
+  border-color: var(--rust);
+  color: #ffffff;
+}
+
+/* ============================================================
+   Dice ceremony (T2.3, wave 2 Task C) — fullscreen roll overlay,
+   charge bar, crit bloom / fumble crack / screen shake. Appended
+   after Task D's modal section; these classes are dice-only and
+   reuse the .dice-cube/.dice-face mechanics from above.
+   ============================================================ */
+
+/* 160px ceremonial die — same 3D mechanics as the card mini-cube,
+   just larger; the 1.2s roll tween lives on this transition. */
+.dice-cube-ceremony {
+  width: 160px;
+  height: 160px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dice-scene-ceremony {
+  perspective: 1000px;
+}
+
+/* faces climb to the ceremony scale — translateZ = half the edge (80px). */
+.dice-cube-ceremony .dice-face {
+  width: 160px;
+  height: 160px;
+  border-radius: 24px;
+  font-size: 48px;
+}
+.dice-cube-ceremony .face-1 {
+  transform: rotateY(0deg) translateZ(80px);
+}
+.dice-cube-ceremony .face-2 {
+  transform: rotateY(90deg) translateZ(80px);
+}
+.dice-cube-ceremony .face-3 {
+  transform: rotateY(180deg) translateZ(80px);
+}
+.dice-cube-ceremony .face-4 {
+  transform: rotateY(-90deg) translateZ(80px);
+}
+.dice-cube-ceremony .face-5 {
+  transform: rotateX(90deg) translateZ(80px);
+}
+.dice-cube-ceremony .face-6 {
+  transform: rotateX(-90deg) translateZ(80px);
+}
+
+/* charge bar — sage→rust fill under "HOLD TO ROLL". */
+.charge-bar {
+  width: 260px;
+  height: 10px;
+  border-radius: 9999px;
+  background: rgba(41, 40, 32, 0.16);
+  border: 1px solid rgba(41, 40, 32, 0.28);
+  overflow: hidden;
+}
+
+.charge-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, var(--sage), var(--rust));
+  transition: width 0.05s linear;
+}
+
+/* settled result — oversized mono figure. */
+.dice-result-number {
+  font-family: 'DM Mono', monospace;
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* crit: gold bloom — one radial expansion behind the die, plus a warm
+   cast on the number. */
+.crit-glow {
+  position: absolute;
+  inset: -60px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 196, 92, 0.5) 0%, rgba(255, 196, 92, 0) 65%);
+  animation: critBloom 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.dice-result-crit {
+  color: var(--ux-glass-crit);
+  text-shadow: 0 0 28px rgba(255, 196, 92, 0.85);
+}
+
+@keyframes critBloom {
+  0% {
+    opacity: 0;
+    transform: scale(0.45);
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+}
+
+/* fumble: scarlet fissure layer over the whole viewport + tremor on the
+   panel. The cracks are three offset diagonal strokes + a red vignette. */
+.fumble-crack {
+  position: fixed;
+  inset: 0;
+  z-index: var(--depth-performance-fumble);
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 46%, rgba(176, 32, 32, 0.3) 0%, rgba(176, 32, 32, 0) 62%),
+    linear-gradient(104deg, transparent 43.5%, rgba(190, 40, 40, 0.8) 45.5%, rgba(120, 22, 22, 0.7) 47%, transparent 49%),
+    linear-gradient(74deg, transparent 55%, rgba(190, 40, 40, 0.65) 57%, transparent 59.5%),
+    linear-gradient(162deg, transparent 31%, rgba(150, 30, 30, 0.6) 32.5%, transparent 34%);
+  animation: crackIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.dice-result-fumble {
+  color: var(--ux-glass-fumble);
+  text-shadow: 0 0 24px rgba(190, 40, 40, 0.7);
+}
+
+@keyframes crackIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* The four tiers: one colour each —
+   gold 大成功, sage 成功, slate 失败, scarlet 大失败 — on the badge, the
+   consequence chip, the ceremony number and the resolved dice card. */
+:root {
+  --tier-crit-success: #c98a12;
+  --tier-success: #4f7a4a;
+  --tier-fail: #5d6b7a;
+  --tier-crit-fail: #b02a2a;
+}
+.dice-tier-line {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  max-width: min(92vw, 420px);
+}
+.dice-tier-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: var(--tier-fail);
+}
+.dice-tier-badge[data-outcome='crit_success'] {
+  background: linear-gradient(90deg, #e2a92a, var(--tier-crit-success));
+  box-shadow: 0 0 14px rgba(255, 196, 92, 0.65);
+  animation: tierPop 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dice-tier-badge[data-outcome='success'] { background: var(--tier-success); }
+.dice-tier-badge[data-outcome='fail'] { background: var(--tier-fail); }
+.dice-tier-badge[data-outcome='crit_fail'] {
+  background: var(--tier-crit-fail);
+  box-shadow: 0 0 12px rgba(190, 40, 40, 0.55);
+  animation: tierPop 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dice-tier-chip {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  border: 1px solid currentColor;
+  background: rgba(255, 255, 255, 0.82);
+  overflow-wrap: anywhere;
+}
+.dice-tier-chip[data-chip='cost'] { color: var(--tier-crit-fail); }
+.dice-tier-chip[data-chip='bonus'] { color: var(--tier-crit-success); }
+.dice-tier-chip[data-chip='pending'] { color: var(--tier-fail); border-style: dashed; }
+.dice-tier-line--compact .dice-tier-badge { font-size: 11px; padding: 1px 7px; }
+.dice-tier-line--compact .dice-tier-chip { font-size: 11px; padding: 1px 6px; }
+.dice-stage--success .dice-result-plain { color: var(--tier-success); }
+.dice-stage--fail .dice-result-plain { color: var(--tier-fail); opacity: 0.85; }
+@keyframes tierPop {
+  0% { transform: scale(0.6); opacity: 0; }
+  60% { transform: scale(1.12); opacity: 1; }
+  100% { transform: scale(1); }
+}
+/* A resolved dice card wears its tier on its edge. */
+.chalk[data-outcome='crit_success'] { box-shadow: inset 0 0 0 2px var(--tier-crit-success); }
+.chalk[data-outcome='crit_fail'] { box-shadow: inset 0 0 0 2px var(--tier-crit-fail); }
+
+/* 2–3px tremor, 0.4s — applied to the ceremony panel on a big failure. */
+.dice-shake {
+  animation: diceShake 0.4s linear;
+}
+
+@keyframes diceShake {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-3px, 2px);
+  }
+  40% {
+    transform: translate(3px, -2px);
+  }
+  60% {
+    transform: translate(-2px, -3px);
+  }
+  80% {
+    transform: translate(2px, 3px);
+  }
+}
+
+
+
+/* ============================================================
+   Paper-object material system — ported from the prototype
+   (canvas-stack-mingyue.html object CSS L74-191, chrome L327-407;
+   hearth.html chalk/note family L48-65). Append-only: every block
+   above keeps its cascade position, this layer only adds the NEW
+   form/chrome classes and re-paints the two thread-line values at
+   the very bottom. Class names are a frozen contract — see
+   packages/shared/src/schemas/forms.ts (cardKindOf / cardFormOf /
+   chalkStyleOf / materialSkinOf).
+   ============================================================ */
+
+/* ---- object tokens ----
+   Values named by the prototype but absent from the v2 :root above.
+   Each maps 1:1 onto a prototype token (canvas-stack-mingyue L15-32,
+   hearth L14-15) — nothing invented. --paper/--ink/--line/--rust/
+   --sage/--blue/--muted/--cream already exist and are reused as-is. */
+:root {
+  --kai: var(--ux-font-human);
+  --ink-2: var(--ux-color-ink);
+  --pencil: var(--ux-color-muted);
+  --red: var(--ux-color-rust);
+  --hair: var(--ux-color-line);
+  --legal: var(--ux-color-paper);
+  --kraft: var(--ux-color-paper);
+  --note-yellow: var(--ux-color-cream);
+  --shadow-far: var(--ux-shadow-soft);
+  --shadow-mid: var(--ux-shadow-halo);
+  --shadow-near: var(--ux-shadow-deep);
+  --chalk-size: 20px; /* chalk base size; a form may inline-override */
+}
+
+/* ---- appearance token IDs ----
+   The shared registry hands the adapter controlled IDs (`font-hand`, `ink-rust`,
+   `surface-parchment`, `motion-calm`, …); this block is 04's ONE place that gives
+   those IDs concrete paint. The adapter writes `--appearance-X: var(--<id>)`; an
+   ID with no rule here resolves to the declaration's own legacy fallback, so a
+   resolution that never sets a var paints exactly like the pre-appearance build.
+   These mirror the existing kind rules one-to-one — no new palette is invented. */
+:root {
+  /* font axis → the family stacks already used by .chalk / .chalk--hand */
+  --font-serif: var(--kai);
+  --font-hand: 'Caveat', var(--kai);
+  --font-mono: 'DM Mono', monospace;
+
+  /* accent axis → the ink tones frozen in the v2 palette */
+  --ink-ink: var(--ink);
+  --ink-rust: #a9573b;
+  --ink-blue: #3f606c;
+  --ink-sage: #6d7d6b;
+  --muted-ink: var(--muted);
+  --muted-rust: #a9573b;
+  --muted-blue: #3f606c;
+  --muted-sage: #6d7d6b;
+  --border-ink: var(--line);
+  --contrast-readable: var(--ink); /* registry guarantees a readable fg/bg pair */
+
+  /* surface axis → the paper family (none is emitted as literal transparent) */
+  --surface-paper: var(--paper);
+  --surface-parchment: var(--kraft);
+  --surface-iron: #d9d0bf;
+  --surface-scroll: var(--legal);
+  --surface-panel: var(--cream);
+  --surface-board: var(--wall);
+  --border-paper: var(--hair);
+  --border-parchment: var(--hair);
+  --border-iron: var(--hair);
+  --border-scroll: var(--hair);
+  --border-panel: var(--hair);
+  --border-board: var(--hair);
+  --shadow-paper: var(--shadow-mid);
+  --shadow-none: none;
+  --shadow-parchment: var(--shadow-mid);
+  --shadow-iron: var(--shadow-mid);
+  --shadow-scroll: var(--shadow-mid);
+  --shadow-panel: var(--shadow-far);
+  --shadow-board: var(--shadow-mid);
+  --radius-card: 3px;
+
+  /* motion axis → finite durations only (still is emitted as 0s) */
+  --motion-calm: 0.25s;
+
+  /* ornament axis → the fixed hook each decoration branch reads */
+  --ornament-underline: underline;
+  --ornament-seal: seal;
+  --ornament-ribbon: ribbon;
+  --ornament-etched: etched;
+  --ornament-route-marks: route-marks;
+  --ornament-rules: rules;
+  --ornament-ticks: ticks;
+  --ornament-grid: grid;
+}
+
+.ink-form {
+  box-sizing: border-box;
+  color: var(--ink);
+}
+
+/* Base chalk root (prototype `.chalk` L112). CardForms may emit the
+   bare root plus modifiers, or the `.chalk--bare` bundle directly. */
+.chalk {
+  /* appearance axes are opt-in: the var is only present when the author chose it,
+     so the legacy `var(--kai)` / `var(--ink)` stays the default paint. */
+  font-family: var(--appearance-font-family, var(--kai));
+  font-size: var(--chalk-size);
+  line-height: 1.7;
+  color: var(--appearance-ink, var(--ink));
+  text-shadow: -1px 1px 0 rgba(255, 252, 240, 0.8);
+}
+/* The camera writes the world transform every animated frame from rAF (JS
+   driven, so the compositor's automatic promotion heuristics do not reliably
+   apply). Promoting the layer keeps zoom and pan on the compositor: only
+   freshly exposed tiles rasterize, instead of repainting the whole scene per
+   frame. The viewport-sized texture cost is the same one the launcher wall
+   already pays for its `will-change: transform` layer. */
+.origin-top-left {
+  will-change: transform;
+}
+/* Large CSS zooms make text-shadow repaint the whole transformed glyph layer.
+   Keep the warm glow at normal scale, but drop it in the compact camera paint
+   profile so zooming remains responsive without hiding the narrative text. */
+.origin-top-left[data-zoom-paint="compact"] .chalk {
+  text-shadow: none !important;
+}
+/* The procedural grain is a full-viewport fractal texture. It is valuable at
+   normal scale, but its repaint cost dominates close zooms where the player is
+   inspecting a card. */
+body:has(.origin-top-left[data-zoom-paint="compact"])::before {
+  display: none;
+}
+/* The world grid is another large transformed paint surface. At close zoom it
+   contributes no useful detail, so remove it from the compositor entirely. */
+.origin-top-left[data-zoom-paint="compact"] .canvas-grid {
+  display: none;
+}
+/* ============================================================
+   1. chalk — words that LIVE on the canvas (no paper, no card).
+   Prototype `.chalk` L112-116 + hearth `.note` family L48-57.
+   The text sits straight on the world grid: transparent surface,
+   kai hand for CJK, Caveat for latin, and a warm paper glow that
+   lets it survive the grain overlay.
+   ============================================================ */
+.chalk--bare {
+  /* Bare Chalk is a first-class transparent surface; paper belongs to
+     `.chalk--card` or an explicit reading/dialogue surface. Legibility on a
+     photo backdrop comes from the glyph halo, never from a box
+     . */
+  background: var(--ux-surface-transparent-ink);
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  font-family: var(--appearance-font-family, var(--kai));
+  font-size: var(--chalk-size);
+  line-height: 1.7;
+  color: var(--appearance-ink, var(--ink));
+  text-shadow: var(--ux-shadow-chalk-glow); /* paper-coloured halo */
+  white-space: pre-wrap;
+  /* Narration hugs its shell: the shell has no fixed height, so long chalk is
+     never cropped — but it can never bleed past the declared box either. */
+  overflow-wrap: anywhere;
+}
+
+/* Dark scenes (declared `bgStyle.tone: dark`, or a sampled dark backdrop —
+   lib/scene-tone.ts): lavender ink with an ink-dark halo, still no box. */
+[data-scene-tone="dark"] .chalk--bare,
+[data-scene-tone="dark"] .chalk {
+  color: var(--appearance-ink, var(--ux-color-chalk-ink-dark));
+  text-shadow: var(--ux-shadow-chalk-glow-dark);
+}
+
+/* Controlled ornament hooks: decoration stays additive and cannot change the
+   card's declared footprint. The data attribute is emitted only from the
+   verified appearance resolution. */
+.chalk[data-appearance-ornament="underline"] .chalk__body,
+.object[data-appearance-ornament="underline"] .chalk__body {
+  text-decoration: underline;
+  text-decoration-color: var(--appearance-ink, currentColor);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+.object[data-appearance-ornament="ribbon"] .letter__head {
+  border-bottom: 2px solid var(--appearance-ink, var(--rust));
+  padding-bottom: 4px;
+}
+
+.object[data-appearance-ornament="etched"] {
+  outline: 1px solid var(--appearance-border, var(--hair));
+  outline-offset: -4px;
+}
+
+/* oversized chalk line. Prototype is 64px/.12em; the AIRP canvas runs
+   smaller so the tone scale keeps one step between normal and big. */
+.chalk--big {
+  font-size: 44px;
+  letter-spacing: 0.08em;
+}
+
+/* tone set — hearth `.note.rust/.blue` + prototype --sage shade */
+.chalk--rust {
+  color: #a9573b;
+}
+
+.chalk--blue {
+  color: #3f606c;
+}
+
+.chalk--sage {
+  color: #6d7d6b;
+}
+
+/* the ONE chalk special case: a card becomes real paper.
+   Everything else in the chalk family stays surface-less. */
+.chalk--card {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  box-shadow: var(--shadow-mid);
+  padding: 20px 24px;
+}
+
+/* A dice chalk reads on a plate, on any scene: bare chalk's glyph halo is not
+   enough once a roller, a result and an outcome record sit in the same card
+   . The outcome record scrolls inside the card instead of
+   growing past the box the canvas reserved for it. */
+.chalk.chalk--dice,
+[data-scene-tone="dark"] .chalk.chalk--dice {
+  background: color-mix(in srgb, var(--ux-color-ink) 78%, transparent);
+  color: var(--ux-color-cream);
+  text-shadow: none;
+  padding: 14px 16px;
+  border-radius: var(--ux-radius-panel);
+  box-shadow: var(--ux-shadow-soft);
+  backdrop-filter: blur(6px);
+}
+.chalk--dice .dice-outcome-letter > summary {
+  cursor: pointer;
+  font: 13px/1.6 var(--ux-font-ui);
+  color: var(--ux-color-cream);
+}
+.chalk--dice .dice-outcome-letter[open] .chalk__body {
+  max-height: 42vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin-top: 8px;
+}
+
+/* one-line summary form (hearth `.object.collapsed .summary-text` L54) */
+.chalk--collapsed {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 210px;
+}
+
+/* aged layer: the world dims but stays legible; hover wakes it */
+.chalk--aged {
+  opacity: 0.42;
+  filter: grayscale(25%) brightness(0.96);
+  transition: opacity 0.35s ease, filter 0.35s ease;
+}
+
+.chalk--aged:hover {
+  opacity: 0.85;
+  filter: none;
+}
+
+/* ============================================================
+   2. gate — the scene card, a directory made into a door
+   (prototype `.gate` L82-109).
+   ============================================================ */
+.gate {
+  position: relative; /* anchors .gate__pin / .gate__num (and later children) */
+  width: 100%; /* the shell owns the width (form table); the card fills it */
+  /* appearance axes are opt-in: the var exists only when the author chose the
+     axis, so the legacy paper paint is the untouched fallback (04 §:104). */
+  background: var(--appearance-surface, var(--paper));
+  border: 1px solid var(--appearance-border, var(--hair));
+  border-radius: var(--appearance-radius, 3px);
+  box-shadow: var(--airp-device-appearance-shadow, var(--appearance-shadow, var(--shadow-mid)));
+  font-family: var(--appearance-font-family, inherit);
+  cursor: pointer;
+  transition:
+    box-shadow var(--appearance-motion-duration, 0.25s) ease,
+    transform var(--appearance-motion-duration, 0.25s) ease;
+}
+
+/* The lift is driven by the SHELL, not by `.gate:hover`. `.gate` is the element
+   that moves (translateY + rotate), so letting it own `:hover` makes the state
+   self-referential: the lift pulls the card's own edge out from under a pointer
+   resting in that strip, which un-hovers it, drops it back, and re-hovers it —
+   a visible flash (the detail sheet fades in and straight back out). `.object`
+   never moves on hover, so its hit area is stable and the state is self-consistent. */
+.object:hover .gate,
+.object:focus-within .gate {
+  box-shadow: var(--shadow-near);
+  transform: translateY(-3px) rotate(-0.4deg);
+}
+
+/* the cover plate carries the material gradient; the icon is centred
+   on it, and a hairline seals it off from the body. */
+.gate__cover {
+  position: relative;
+  height: 158px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-bottom: 1px solid var(--hair);
+  border-radius: 2px 2px 0 0;
+}
+
+.gate__cover svg {
+  width: 72px;
+  height: 72px;
+  opacity: 0.85; /* hand-drawn cover icon, never flat black */
+}
+
+.gate__body {
+  padding: 12px 16px 10px;
+}
+
+.gate__title {
+  font-size: 19px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gate__desc {
+  margin-top: 5px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.gate__meta {
+  margin-top: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10.5px;
+  color: var(--muted);
+}
+
+/* pin: tacked onto the top edge, a touch off-square */
+.gate__pin {
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  width: 18px;
+  height: 24px;
+  transform: translateX(-50%) rotate(-3deg);
+}
+
+/* number ring: red-pen index in the cover's top-left corner */
+.gate__num {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  z-index: var(--depth-entity-control);
+  width: 34px;
+  height: 34px;
+}
+
+/* un-instantiated layer: still a sketch, not yet built */
+.gate--stub {
+  border: 1px dashed rgba(41, 40, 32, 0.28);
+  background: rgba(244, 240, 232, 0.55);
+  box-shadow: none;
+}
+
+.object:hover .gate--stub,
+.object:focus-within .gate--stub {
+  box-shadow: var(--shadow-far);
+}
+
+.note {
+  position: relative; /* anchors .note__clip */
+  width: 100%; /* fills the shell; the form table is the one width source */
+  padding: 14px 16px 18px;
+  /* appearance axes are opt-in: the var exists only when the author chose the
+     axis, so the legacy memo-pad paint is the untouched fallback (04 §:104). */
+  background: var(--appearance-surface, var(--note-yellow));
+  border-radius: var(--appearance-radius, 2px);
+  box-shadow: var(--airp-device-appearance-shadow, var(--appearance-shadow, var(--shadow-mid)));
+  font-family: var(--appearance-font-family, inherit);
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: var(--appearance-muted, var(--ink-2));
+  /* ruled paper: one hairline every 27px */
+  background-image: repeating-linear-gradient(0deg, transparent 0 27px, rgba(43, 33, 23, 0.05) 27px 28px);
+}
+
+/* paper clip straddling the top edge */
+.note__clip {
+  position: absolute;
+  top: -8px;
+  right: 14px;
+  width: 15px;
+  height: 26px;
+  background: transparent;
+  border: 2px solid var(--pencil);
+  border-bottom-color: transparent;
+  border-radius: 8px;
+  transform: rotate(6deg);
+}
+
+.note__title {
+  font-weight: 700;
+  color: var(--appearance-ink, var(--ink));
+  border-bottom: 1px solid var(--appearance-ink, #a8362b); /* red pen underline */
+  padding-bottom: 1px;
+}
+
+.note__body {
+  font-size: 13.5px;
+  line-height: 1.8;
+}
+/* ============================================================
+   4. letter — the file-as-correspondence (prototype `.letter` L134-145)
+   ============================================================ */
+.letter {
+  position: relative;
+  width: 100%;
+  padding: 16px 18px;
+  /* appearance axes are opt-in: the var exists only when the author chose the
+     axis, so the legacy paper sheet is the untouched fallback (04 §:104). */
+  background: var(--appearance-surface, var(--paper));
+  border: 1px solid var(--appearance-border, var(--hair));
+  border-radius: var(--appearance-radius, 2px);
+  box-shadow: var(--airp-device-appearance-shadow, var(--appearance-shadow, var(--shadow-mid)));
+  font-family: var(--appearance-font-family, inherit);
+  cursor: pointer;
+  transition:
+    box-shadow var(--appearance-motion-duration, 0.25s) ease,
+    transform var(--appearance-motion-duration, 0.25s) ease;
+}
+
+/* Same reasoning as `.gate:hover` above: `.letter` moves itself, so the shell
+   must own the hover state or the lift flickers the pointer at its edges. */
+.object:hover .letter,
+.object:focus-within .letter {
+  box-shadow: var(--shadow-near);
+  transform: translateY(-2px) rotate(0.4deg);
+}
+
+/* wax seal: a rust dot, pressed not printed. The accent axis recolours it; the
+   `seal` ornament is a separate hook and never changes this element's meaning. */
+.letter__seal {
+  flex: none;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--appearance-ink, var(--rust));
+  box-shadow: inset -1px 1px 2px rgba(43, 33, 23, 0.35);
+}
+
+.letter__head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--appearance-font-family, inherit);
+  font-size: 16px;
+  letter-spacing: 0.05em;
+}
+
+.letter__preview {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.letter__meta {
+  margin-top: 10px;
+  font-family: var(--appearance-font-family, 'DM Mono', monospace);
+  font-size: 10px;
+  color: var(--appearance-muted, var(--muted));
+}
+
+/* ============================================================
+   5. sprite — a person present in the world (prototype `.sprite` L148-169)
+   ============================================================ */
+.sprite {
+  position: relative;
+  cursor: pointer;
+}
+
+/* idle breathing — 4px, slow enough to read as living, not animating */
+.sprite__fig {
+  animation: spriteIdle 3.2s ease-in-out infinite;
+}
+
+@keyframes spriteIdle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* halo: radial light behind the figure, breathing on its own clock
+   (hearth .presence .halo L68 + @keyframes breathe L76) */
+.sprite__halo {
+  width: 104px;
+  height: 104px;
+  margin: auto;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 28%, #e3b685, #9b6555 48%, #465864 50%, #222e33);
+  box-shadow: 0 0 0 14px rgba(255, 255, 255, 0.3), 0 18px 40px rgba(44, 37, 30, 0.25);
+  animation: spriteBreathe 5s ease-in-out infinite;
+}
+
+@keyframes spriteBreathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.035);
+  }
+}
+
+/* name tag: a paper slip, slightly crooked, never centred flat */
+.sprite__name {
+  width: max-content;
+  max-width: 140px;
+  margin: 6px auto 0;
+  padding: 2px 10px 3px;
+  text-align: center;
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  border-radius: 2px;
+  box-shadow: var(--shadow-far);
+  font-size: 13px;
+  transform: rotate(-1deg);
+}
+
+/* ============================================================
+   5b. portrait — a living figure in a nook (nook 03 §③-5).
+   The shell (.object) eats item.w; this block MUST NOT declare a
+   width (AGENTS §7.5 rule 1: one width source = CARD_FORMS).
+   ============================================================ */
+.portrait {
+  width: 100%;              /* fills the shell; never a fixed px */
+  position: relative;       /* anchors .portrait__caption (absolute, no flow) */
+}
+
+/* The media box is the ONE place the ratio is pinned. `aspect-ratio`
+   derives the height from the width, so the painted box == declared box
+   (288×384) with no measurement drift. */
+.portrait__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+}
+
+.portrait__video,
+.portrait__still {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;      /* the clip is 9:16, the frame is 3:4 — letterbox */
+  object-position: center bottom;
+}
+
+/* Shown while the video decodes its first frame; sits UNDER the video so
+   the swap is invisible. */
+.portrait__still {
+  z-index: var(--depth-dialogue-media-back);
+}
+.portrait__video {
+  z-index: var(--depth-dialogue-media-front);
+}
+
+/* The visible end of the fallback chain: a name plate, never a blank box.
+   Reuses the modal's monogram treatment (index.css:426-441). */
+.portrait__missing {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  text-align: center;
+  font-family: var(--kai);
+  font-size: 15px;
+  color: var(--rust);
+  background: linear-gradient(165deg, var(--cream) 0%, var(--paper) 58%, var(--sage) 175%);
+  border: 1px dashed var(--hair);
+}
+
+/* caption: a paper slip riding the frame's lower edge, crooked like
+   .sprite__name (index.css:1173-1185). ABSOLUTE on purpose: it must not add
+   to the painted height, or `.object`'s measured height would drift from
+   CARD_FORMS.portrait.h (nook 03 §③-7). */
+.portrait__caption {
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  width: max-content;
+  max-width: calc(100% - 16px);
+  padding: 2px 10px 3px;
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  border-radius: 2px;
+  box-shadow: var(--shadow-far);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-2);
+  transform: translateX(-50%) rotate(-1deg);
+  z-index: var(--depth-dialogue-caption);
+  pointer-events: none;     /* never eats the drag/collision pointer events */
+}
+
+/* Reduced motion: the clip is NEVER mounted (nook 03 §③-4 `useStill`), so
+   this rule only has to keep the still from being scaled by any inherited
+   animation. Belt for the case where the JS probe is bypassed. */
+@media (prefers-reduced-motion: reduce) {
+  .portrait__video { display: none; }
+}
+
+/* ============================================================
+   6. material skins — every layer has its own paper
+   (prototype L56-66). Standalone modifiers: background only, no
+   layout, border or shadow, so they drop onto `.scene-backdrop`.
+   ============================================================ */
+.mat-parchment {
+  background:
+    radial-gradient(120% 90% at 50% 40%, rgba(255, 250, 235, 0) 55%, rgba(43, 33, 23, 0.14) 100%),
+    radial-gradient(80% 70% at 78% 18%, rgba(255, 248, 225, 0.55), rgba(226, 211, 180, 0) 60%),
+    var(--kraft);
+}
+
+.mat-warm {
+  background:
+    radial-gradient(70% 60% at 82% 8%, rgba(255, 249, 225, 0.8), rgba(255, 254, 246, 0) 55%),
+    var(--paper);
+}
+
+.mat-stub {
+  background:
+    radial-gradient(110% 85% at 50% 45%, rgba(255, 250, 230, 0) 55%, rgba(43, 33, 23, 0.08) 100%),
+    var(--legal);
+}
+
+/* kraft cover material — COVER_MATS.kraft (prototype L712) */
+.mat-kraft {
+  background: linear-gradient(160deg, #e5d6b8, #d9c69f 70%, #ceb98d);
+}
+
+/* backdrop screen: the skin lives on this box, which sits under the
+   world transform layer and never eats pointer events. */
+.scene-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: var(--depth-background-scene);
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--ux-surface-stage);
+}
+
+.scene-backdrop__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.92;
+}
+
+/* warm-ink edge falloff — keeps the flat material from going plastic */
+.scene-backdrop__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(115% 95% at 50% 42%, rgba(41, 40, 32, 0) 55%, rgba(41, 40, 32, 0.15) 100%);
+}
+
+/* ============================================================
+   7. hand-drawn links (prototype `.roads path` L187 + hearth L30-35)
+   Later in the cascade on purpose: this re-paints the dot spacing the
+   v2 layer above shipped (7 6 -> 2 9) and keeps dashFlow running.
+   `.thread-latest` stays at .75 via its own rule above.
+   ============================================================ */
+.thread-line {
+  stroke-linecap: round;
+}
+
+.thread-dashed {
+  stroke-dasharray: 2 9; /* dotted pen, not dashed */
+  opacity: 0.5;
+}
+
+/* State modifiers must outrank the dotted default for opacity, since
+   this block sits below the v2 layer. `.thread-active` is already
+   !important above; `.thread-latest` needs re-asserting here. */
+.thread-line.thread-latest {
+  opacity: 0.75;
+}
+
+/* ============================================================
+   8. chrome — minimap / writer bar / hint / layer badge / compass
+   (prototype L327-407, L191). All fixed-position furniture that
+   floats above the grain (z 10) and under the modals (z 50+).
+   ============================================================ */
+
+/* minimap: a navigation control, not a second view */
+.minimap-wrap {
+  /* absolute (not fixed): the chrome lives inside the canvas area, so it
+     clears the app header and the right sidebar that the prototype lacks. */
+  position: absolute;
+  right: 20px;
+  bottom: 18px;
+  z-index: var(--depth-chrome-minimap);
+  width: 176px;
+  height: 132px;
+  overflow: hidden;
+  background-color: var(--paper);
+  /* 12px dot grid — the surface reads as graph paper */
+  background-image: radial-gradient(rgba(43, 33, 23, 0.1) 1px, transparent 1px);
+  background-size: 12px 12px;
+  border: 1px solid var(--hair);
+  border-radius: 2px;
+  box-shadow: var(--shadow-mid);
+  cursor: pointer;
+}
+
+.minimap__title {
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+/* writer bar: the paper strip you hand notes to the author */
+.writer-bar {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  z-index: var(--depth-chrome-writer);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: min(560px, 70vw);
+  padding: 8px 10px 8px 16px;
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  border-radius: 3px;
+  box-shadow: var(--shadow-mid);
+  transform: translateX(-50%) rotate(-0.3deg);
+  transition: box-shadow 0.25s ease, opacity 0.25s ease;
+}
+
+.writer-bar:focus-within {
+  box-shadow: var(--shadow-near);
+}
+
+/* Chrome sets data-disabled="true" on the bar; `disabled` on the
+   input/button is styled per-control below. */
+.writer-bar[data-disabled="true"] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* The writer is mid-turn: the bar is not broken, it is occupied. A warm wash
+   instead of the frozen bar's dim-out, so "you cannot type now" reads as the
+   pen being busy, not the UI being dead. */
+.writer-bar[data-writing="true"] {
+  background: var(--cream);
+  border-color: var(--hair);
+  opacity: 0.92;
+}
+
+/* 176x132 CSS box, filled by the canvas; DPR width/height attributes
+   must not upscale it. */
+.minimap__canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 176px;
+  height: 132px;
+}
+
+.writer-bar__input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'Caveat', var(--kai);
+  font-size: 20px;
+  line-height: 1.4;
+  color: var(--ink);
+  caret-color: var(--rust);
+}
+
+.writer-bar__input::placeholder {
+  color: var(--muted);
+  opacity: 0.8;
+}
+
+/* while the author is writing: red pen in the placeholder */
+.writer-bar__input.busy::placeholder {
+  color: #a8362b;
+}
+
+.writer-bar__send {
+  flex: none;
+  padding: 4px 14px 5px;
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--hair);
+  border-radius: 9999px;
+  font-family: var(--kai);
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: var(--shadow-far);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.writer-bar__send:hover {
+  box-shadow: var(--shadow-mid);
+  transform: translateY(-1px);
+}
+
+.writer-bar__send:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* The character reply boxes reuse the writer's pill (SendButton). On touch it
+   grows to a 44px target; it stays in the input's own row, so whatever scrolls
+   the focused field above the on-screen keyboard brings the button with it. */
+.character-send {
+  align-self: center;
+}
+
+@media (pointer: coarse) {
+  .character-send {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* Stub prompt: the "what is this place?" line for an unwritten space
+   . Same paper-slip language as `.writer-bar`, but it is a
+   separate element: an EMPTY submit here is a valid meaning, so it cannot reuse
+   WriterBar's non-empty contract. Ordinary DOM only — never a full-screen
+   layer (AGENTS §7.6①). */
+.stub-prompt {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  z-index: var(--depth-chrome-stub);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: min(560px, 70vw);
+  padding: 10px 16px;
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  border-radius: 3px;
+  box-shadow: var(--shadow-mid);
+  transform: translateX(-50%) rotate(-0.3deg);
+}
+
+.stub-prompt__label {
+  font-family: var(--kai);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.stub-prompt__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stub-prompt__input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'Caveat', var(--kai);
+  font-size: 20px;
+  line-height: 1.4;
+  color: var(--ink);
+  caret-color: var(--rust);
+}
+
+.stub-prompt__input::placeholder {
+  color: var(--muted);
+  opacity: 0.8;
+}
+
+.stub-prompt__skip {
+  flex: none;
+  padding: 3px 12px 4px;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--hair);
+  border-radius: 9999px;
+  font-family: var(--kai);
+  font-size: 13px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.stub-prompt__skip:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+/* hint bar: the key cheat sheet, bottom-left.
+   Collapsed (default) it is a bare "?" chip that cannot overlap the centered
+   writer bar; expanded it lifts above the writer strip and wraps within a
+   bounded width, so the two bottom-edge controls never fight for space. */
+.hint-bar {
+  position: absolute;
+  left: 20px;
+  bottom: 18px;
+  z-index: var(--depth-chrome-hint);
+  max-width: min(420px, calc(100% - 40px));
+  padding: 6px 12px;
+  text-align: left;
+  background: rgba(255, 254, 246, 0.7);
+  border: 1px solid var(--hair);
+  border-radius: 2px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--ink-2);
+  opacity: 0.78;
+  cursor: pointer;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* Collapsed chip: a compact square, out of the writer bar's lane. */
+.hint-bar--chip {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  border-radius: 9999px;
+}
+
+/* Expanded: clear the writer strip (bottom 24px + ~48px tall). */
+.hint-bar:not(.hint-bar--chip) {
+  bottom: 84px;
+}
+
+.hint-bar b {
+  color: #a8362b;
+  font-weight: 400;
+}
+
+/* layer badge: which world am I standing in */
+.layer-badge {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  z-index: var(--depth-chrome-badge);
+  padding: 9px 16px 10px;
+  text-align: right;
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  border-radius: 2px;
+  box-shadow: var(--shadow-mid);
+  transform: rotate(0.8deg);
+}
+
+.layer-badge__name {
+  font-size: 14px;
+  letter-spacing: 0.06em;
+}
+
+.layer-badge__mat {
+  margin-top: 3px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--muted);
+}
+
+/* compass rose: orientation, never a focal point */
+.compass-rose {
+  opacity: 0.55;
+  pointer-events: none;
+  width: 120px; /* prototype COMPASS is 120x120; caller may override */
+  height: 120px;
+}
+
+/* ============================================================
+   Point-and-Click Physical Puzzle feedback (doc-19 §3.1)
+   ============================================================ */
+
+/* While dragging an item from the backpack, valid puzzle targets gently pulse */
+.puzzle-target-ready {
+  outline: 2px dashed rgba(201, 111, 76, 0.45) !important;
+  outline-offset: 3px;
+  animation: puzzleReadyPulse 2s ease-in-out infinite;
+}
+
+@keyframes puzzleReadyPulse {
+  0%, 100% {
+    outline-color: rgba(201, 111, 76, 0.3);
+  }
+  50% {
+    outline-color: rgba(201, 111, 76, 0.85);
+  }
+}
+
+/* Hovering with an item: magnetic lift, rust border & glowing inset */
+.puzzle-target-hover {
+  outline: 2.5px solid var(--rust) !important;
+  outline-offset: 3px;
+  transform: translateY(-4px) scale(1.02) !important;
+  box-shadow: 0 16px 36px rgba(201, 111, 76, 0.28), 0 0 15px rgba(201, 111, 76, 0.2) !important;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease !important;
+}
+
+/* Unlock / Use Item success burst on the card */
+.puzzle-unlock-burst {
+  animation: puzzleUnlockShake 0.65s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+@keyframes puzzleUnlockShake {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(201, 111, 76, 0.8);
+  }
+  20% {
+    transform: scale(1.05) rotate(1deg);
+    box-shadow: 0 0 35px rgba(201, 111, 76, 0.6);
+  }
+  40% {
+    transform: scale(0.98) rotate(-1deg);
+  }
+  60% {
+    transform: scale(1.02) rotate(0.5deg);
+  }
+  100% {
+    transform: scale(1) rotate(0);
+    box-shadow: none;
+  }
+}
+
+.note__take {
+  margin-top: 12px;
+  padding: 6px 11px;
+  border: 1px solid color-mix(in srgb, var(--rust) 55%, transparent);
+  border-radius: 999px;
+  color: var(--rust);
+  font: 600 10px/1 'DM Mono', monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.note__take:hover {
+  color: var(--cream);
+  background: var(--rust);
+}
+
+
+/* ============================================================
+   Image ghost — the placeholder that becomes the picture
+   .
+   A ghost reuses the paper family (--paper/--hair/--shadow-*) so a
+   shell that "will grow into a picture" does not read as a UI patch.
+   ============================================================ */
+/* Shell: same world-space box as `.object`, but never a drag target
+   (`Canvas` hit-tests with `closest('.object')`, which must not match). */
+.object--ghost {
+  position: absolute;
+  pointer-events: none;
+}
+/* Keep the inherited contract explicit for future ghost content additions:
+   a descendant cannot opt back into pointer input. */
+.object--ghost > * {
+  pointer-events: none;
+}
+
+.ghost-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--paper);
+  border: 1px solid var(--hair);
+}
+
+/* Pending: distant, airy, and a faint wash of light crossing the paper. */
+.ghost-card--pending {
+  box-shadow: var(--shadow-far);
+  animation: ghostForm 1.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ghost-card__skeleton {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    105deg,
+    rgba(255, 255, 255, 0) 38%,
+    rgba(255, 253, 245, 0.72) 50%,
+    rgba(255, 255, 255, 0) 62%
+  );
+  background-color: rgba(43, 33, 23, 0.07);
+  background-repeat: no-repeat;
+  background-size: 240% 100%;
+  animation: ghostShimmer 1.9s linear infinite;
+}
+
+/* Landed: the picture itself, heavier on the page. */
+.ghost-card--landed {
+  box-shadow: var(--shadow-mid);
+}
+
+/* Evicted: fade, do not vanish (the exit must be visible — 03 §7). */
+.ghost-card--evicted {
+  box-shadow: var(--shadow-far);
+  animation: ghostFade 0.7s ease forwards;
+}
+
+.ghost-card__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The heartbeat line — same voice as the chrome labels. */
+.ghost-card__stage {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 7px 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  background: rgba(255, 254, 246, 0.82);
+  border-top: 1px solid var(--hair);
+}
+
+/* Reused: quiet, out of the way — the reveal is smaller, not louder. */
+.ghost-card__badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 3px 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--ink-2);
+  background: var(--cream);
+  border: 1px solid var(--hair);
+  border-radius: 2px;
+  box-shadow: var(--shadow-far);
+  transform: rotate(-1.2deg);
+}
+
+@keyframes ghostShimmer {
+  from { background-position: 140% 0; }
+  to   { background-position: -140% 0; }
+}
+
+@keyframes ghostForm {
+  from { opacity: 0; transform: scale(0.985); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes ghostFade {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+
+/* ============================================================
+   Dice ceremony — frame path (`dice_result`, the design notes).
+   Same visual language as the player's roll (the .dice-ceremony
+   block above: 40% warm-black dim, 160px faces, crit bloom,
+   fumble crack / tremor, oversized mono result) but the faces are
+   NUMBER tiles, not a pip cube: `rolls` can hold 1d100 / 4d6
+   values that a six-face cube cannot express.
+   ============================================================ */
+
+/* Panel: the launcher's dark glass, so the dice read as
+   objects lit on a black table. Colours come from the --ux-glass-* tokens,
+   which follow data-airp-blur / data-airp-shadow. */
+.dice-ceremony-overlay {
+  background: var(--ux-glass-scrim);
+  backdrop-filter: var(--ux-glass-blur-pill);
+  -webkit-backdrop-filter: var(--ux-glass-blur-pill);
+}
+
+.dice-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 40px 64px;
+  border-radius: 28px;
+  background: var(--ux-glass-panel);
+  border: 1px solid var(--ux-glass-line);
+  box-shadow: var(--ux-glass-shadow);
+  backdrop-filter: var(--ux-glass-blur);
+  -webkit-backdrop-filter: var(--ux-glass-blur);
+  color: var(--ux-glass-ink);
+  font-family: var(--ux-font-glass);
+}
+
+/* Roll-in for the group: the spread of dice settling onto the table. */
+.dice-stage__faces {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  max-width: 640px;
+  perspective: 1000px;
+}
+
+/* One die: 160px, same edge as .dice-cube-ceremony, same paper face. */
+.dice-face-tile {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 24px;
+  border: 1px solid rgba(41, 40, 32, 0.12);
+  background: var(--cream);
+  font-family: 'DM Mono', monospace;
+  font-size: 56px;
+  font-weight: 800;
+  color: var(--ink);
+  box-shadow: inset 0 -6px 0 rgba(41, 40, 32, 0.08), 0 18px 36px rgba(0, 0, 0, 0.55);
+  animation: diceTileIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Up to 6 dice keeps the 160px face; beyond that the spread would overflow. */
+.dice-stage__faces:has(> .dice-face-tile:nth-child(7)) .dice-face-tile {
+  width: 72px;
+  height: 72px;
+  border-radius: 14px;
+  font-size: 28px;
+}
+
+.dice-stage__caption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--ux-glass-ink);
+}
+
+.dice-stage__requires,
+.dice-stage__meta,
+.dice-stage__rolling {
+  font: 500 12px/1.4 var(--ux-font-glass-label);
+  letter-spacing: 0.12em;
+}
+.dice-stage__requires { color: var(--ux-glass-muted); }
+.dice-stage__meta { color: var(--ux-glass-faint); }
+.dice-stage__rolling {
+  color: var(--ux-glass-muted);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* The command receipt line under the result. */
+.dice-stage__commands {
+  margin: 0;
+  max-width: 420px;
+  color: var(--ux-glass-muted);
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+}
+.dice-stage__commands--error { color: var(--ux-glass-fail); }
+
+/* DONE: was `bg-ink text-white`, but `bg-ink` is not a generated utility
+   (the palette only has paper-ink), so it rendered white text on the pale
+   panel — invisible. Now a
+   launcher pill. */
+.dice-stage__done {
+  padding: 10px 22px;
+  border: 1px solid var(--ux-glass-line);
+  border-radius: 999px;
+  background: var(--ux-glass-fill);
+  box-shadow: var(--ux-glass-highlight);
+  color: var(--ux-glass-ink);
+  font: 500 12px/1.2 var(--ux-font-glass-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.18s ease;
+}
+.dice-stage__done:hover { background: var(--ux-glass-hover); }
+.dice-stage__done:focus-visible {
+  outline: 2px solid var(--ux-glass-accent);
+  outline-offset: 3px;
+}
+
+.dice-result-plain { color: var(--ux-glass-ink); }
+
+/* Pass / fail verdict chip on dark glass (card roller and ceremony). */
+.dice-verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font: 500 11px/1.3 var(--ux-font-glass-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.dice-verdict--pass { color: var(--ux-glass-pass); background: var(--ux-glass-pass-fill); }
+.dice-verdict--fail { color: var(--ux-glass-fail); background: var(--ux-glass-fail-fill); }
+
+/* The dice roller under a card's text: a small slab of launcher glass. */
+.dice-roller {
+  padding: 16px;
+  border: 1px solid var(--ux-glass-line);
+  border-radius: 20px;
+  background: var(--ux-glass-panel);
+  box-shadow: var(--ux-glass-highlight);
+  backdrop-filter: var(--ux-glass-blur-pill);
+  -webkit-backdrop-filter: var(--ux-glass-blur-pill);
+  color: var(--ux-glass-ink);
+  font-family: var(--ux-font-glass);
+  text-shadow: none;
+}
+.dice-roller > :first-child {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.dice-roller__icon { color: var(--ux-glass-accent); }
+.dice-roller__title {
+  color: var(--ux-glass-ink);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.dice-roller__requires {
+  padding: 3px 9px;
+  border: 1px solid var(--ux-glass-line-soft);
+  border-radius: 999px;
+  background: var(--ux-glass-well);
+  color: var(--ux-glass-muted);
+  font: 500 11px/1.3 var(--ux-font-glass-label);
+  letter-spacing: 0.1em;
+}
+.dice-roller__note {
+  color: var(--ux-glass-faint);
+  font-size: 12px;
+}
+.dice-roller__result {
+  color: var(--ux-glass-ink);
+  font: 700 22px/1 var(--ux-font-machine);
+}
+.dice-roller__error {
+  margin: 0;
+  color: var(--ux-glass-fail);
+  font-size: 12px;
+}
+/* 0,3,0: outranks host button rules (the declared-action dialog's
+   `.declared-action-dialog button`, paper-reading's `.fm-body button`). */
+.dice-roller .dice-roller__roll.dice-roller__roll {
+  margin: 0;
+  padding: 9px 18px;
+  border: 1px solid var(--ux-glass-pressed);
+  border-radius: 999px;
+  background: var(--ux-glass-pressed);
+  box-shadow: var(--ux-glass-highlight);
+  color: var(--ux-glass-pressed-ink);
+  font: 600 12px/1.2 var(--ux-font-glass-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.18s ease, opacity 0.18s ease;
+}
+.dice-roller .dice-roller__roll.dice-roller__roll:hover:not(:disabled) { background: var(--ux-glass-ink); }
+.dice-roller .dice-roller__roll.dice-roller__roll:disabled { opacity: 0.6; cursor: wait; }
+.dice-roller .dice-roller__roll.dice-roller__roll:focus-visible {
+  outline: 2px solid var(--ux-glass-accent);
+  outline-offset: 3px;
+}
+/* The compact card cube keeps its paper face, lit on the glass. */
+.dice-roller .dice-cube-compact { color: var(--ux-glass-ink); }
+
+/* One glance back at the card that was judged (§3.2 step 7): transient,
+   data-driven (the class is removed on unmount / after 800ms). */
+.dice-ceremony-highlight {
+  outline: 2px solid var(--rust);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 8px rgba(201, 111, 76, 0.18);
+  transition: box-shadow 0.2s ease, outline-color 0.2s ease;
+}
+
+@keyframes diceTileIn {
+  from {
+    opacity: 0;
+    transform: translateY(-14px) rotateX(-40deg) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateX(0) scale(1);
+  }
+}
+
+/* Reduced motion: no tumble, no tremor, no bloom (the design notes —
+   less movement, never less information). */
+@media (prefers-reduced-motion: reduce) {
+  .dice-face-tile {
+    animation: none;
+  }
+  .dice-stage.dice-shake {
+    animation: none;
+  }
+  .crit-glow,
+  .fumble-crack,
+  .dice-tier-badge {
+    animation: none;
+  }
+}
+/* ============================================================
+   Performance shows — the 7 show_frame
+   performances. All classes are `.show-` prefixed so they never
+   collide with card / thread / dice classes. The layer itself is
+   z-20: below the dice ceremony (z-50) and its fumble crack (z-55).
+   ============================================================ */
+
+.show-root {
+  position: absolute;
+  inset: 0;
+  z-index: var(--depth-performance-root);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Full-canvas dim veil. --show-dim is the brightness the frame asked for
+   (doc 10 §14.3: spotlight def .15 / lights_out def .08), so the sheet's
+   opacity is its complement — two stacked veils multiply toward black,
+   which is why the store keeps only ONE 'dim' show alive at a time. */
+.show-dim {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: calc(1 - var(--show-dim, 0.15));
+  animation: showFadeIn 0.35s ease-out;
+}
+
+/* Spotlight beam — a warm radial bloom centred on the target card, sized by
+   --show-beam-spread. It is positioned by JS with left/top at the card centre. */
+.show-beam {
+  position: absolute;
+  width: var(--show-beam-spread, 520px);
+  height: var(--show-beam-spread, 520px);
+  margin-left: calc(var(--show-beam-spread, 520px) / -2);
+  margin-top: calc(var(--show-beam-spread, 520px) / -2);
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    var(--show-beam-tone, rgba(235, 205, 140, 0.55)) 0%,
+    transparent 68%
+  );
+  animation: showBeamIn 0.5s ease-out;
+}
+
+/* lights_out's "one card stays faintly lit" halo. */
+.show-focus-lift {
+  position: absolute;
+  border-radius: 18px;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(244, 240, 232, 0.28) 0%, transparent 72%);
+  animation: showFadeIn 0.6s ease-out;
+}
+
+/* evidence_burst threads. The container carries the world transform (written by
+   JS from the camera), so its children use world coordinates. */
+.show-thread-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+.show-thread {
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-dasharray: 6 5;
+  opacity: 0;
+  animation: showThreadIn 0.4s ease-out forwards;
+}
+
+/* Shared caption line — one faint italic line for any show (§4.3). */
+.show-caption {
+  position: absolute;
+  left: 50%;
+  bottom: 12%;
+  transform: translateX(-50%);
+  max-width: 70%;
+  text-align: center;
+  pointer-events: none;
+  font-family: 'Manrope', 'Noto Sans KR', system-ui, sans-serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  color: var(--cream);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  animation: showFadeIn 0.6s ease-out both;
+}
+
+/* ink_burst splash over a target card; --show-ms is the frame's durationMs. */
+.show-ink {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  margin-left: -60px;
+  margin-top: -60px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(41, 40, 32, 0.45) 0%, transparent 70%);
+  transform: scale(var(--show-scale, 1));
+  animation: textInkSpread var(--show-ms, 1200ms) cubic-bezier(0.16, 1, 0.3, 1);
+}
+.show-ink[data-tone='rust'] {
+  background: radial-gradient(circle, rgba(201, 111, 76, 0.5) 0%, transparent 70%);
+}
+.show-ink[data-tone='blue'] {
+  background: radial-gradient(circle, rgba(120, 147, 162, 0.5) 0%, transparent 70%);
+}
+.show-ink[data-tone='sage'] {
+  background: radial-gradient(circle, rgba(137, 155, 135, 0.5) 0%, transparent 70%);
+}
+
+/* roll_ceremony: the die's entrance tumble. Geometry reuses the face-N
+   transforms from .dice-cube-ceremony at a 120px variant; this show renders
+   NO faces and NO result — it only performs the entrance. */
+.show-ceremony {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.show-ceremony-scene {
+  perspective: 900px;
+}
+.show-ceremony-cube {
+  width: 120px;
+  height: 120px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: showCubeIn var(--show-ms, 2200ms) cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--show-anticipation, 0ms);
+}
+.show-ceremony-cube .dice-face {
+  width: 120px;
+  height: 120px;
+  border-radius: 20px;
+}
+.show-ceremony-cube .face-1 { transform: rotateY(0deg) translateZ(60px); }
+.show-ceremony-cube .face-2 { transform: rotateY(90deg) translateZ(60px); }
+.show-ceremony-cube .face-3 { transform: rotateY(180deg) translateZ(60px); }
+.show-ceremony-cube .face-4 { transform: rotateY(-90deg) translateZ(60px); }
+.show-ceremony-cube .face-5 { transform: rotateX(90deg) translateZ(60px); }
+.show-ceremony-cube .face-6 { transform: rotateX(-90deg) translateZ(60px); }
+
+@keyframes showFadeIn {
+  from { opacity: 0; }
+}
+@keyframes showBeamIn {
+  from { opacity: 0; transform: scale(0.86); }
+}
+@keyframes showThreadIn {
+  from { opacity: 0; stroke-dashoffset: 24; }
+  to { opacity: 0.85; stroke-dashoffset: 0; }
+}
+@keyframes showCubeIn {
+  0% { transform: rotateX(-120deg) rotateY(220deg) scale(0.6); opacity: 0; }
+  55% { transform: rotateX(20deg) rotateY(60deg) scale(1.06); opacity: 1; }
+  100% { transform: rotateX(12deg) rotateY(20deg) scale(1); opacity: 1; }
+}
+
+/* Reduced motion: the dim/veil IS information so it
+   still appears, but without transitions or tumble. */
+@media (prefers-reduced-motion: reduce) {
+  .show-dim,
+  .show-beam,
+  .show-focus-lift,
+  .show-thread,
+  .show-ceremony-cube {
+    animation: none;
+  }
+  .show-ink {
+    animation: none;
+    opacity: 0.5;
+  }
+  .show-thread {
+    opacity: 0.85;
+  }
+}
+
+/* ============================================================================
+   Component card skeletons — the `kind:'component'` phantom
+   lane. A writer `write` registers a phantom the instant the server announces
+   it (card_writing frame); this sketches a structure-only grey skeleton in the
+   real seat until the card lands and `reconcileLanded` removes it. Shows no
+   text; never in `items`/drag/footprint (00 §6.4).
+
+   Colours are the existing material tokens plus three local slate values the
+   vocabulary needs (forms.ts:16/19 name "stone/metal" and "kraft paper" but the
+   token set has no slate): #e9e3d6 / #d9d1bf (slab gradient) and #d3c1a0
+   (scroll edge underside). See the design notes/§5.7 (ruling I).
+   ========================================================================= */
+
+@keyframes cardSkeletonPulse {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 0.92; }
+}
+@keyframes cardSkeletonEvict {
+  0%   { opacity: 0.92; }
+  100% { opacity: 0; }
+}
+
+.card-skeleton {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;          /* decorations never spill into a neighbour */
+  border-radius: 2px;
+  animation: cardSkeletonPulse 600ms ease-in-out infinite;
+}
+.card-skeleton__lines {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 14px 16px;
+}
+.card-skeleton__line {
+  display: block;
+  height: 6px;               /* overridden by the inline height */
+  border-radius: 1px;
+  background: rgba(43, 33, 23, 0.10);
+}
+
+/* paper — a sheet with ragged grey lines (default / letter / book / …) */
+.card-skeleton--paper {
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  box-shadow: var(--shadow-mid);
+}
+
+/* note — memo pad, ruled lines, paper clip */
+.card-skeleton--note {
+  background: var(--note-yellow);
+  box-shadow: var(--shadow-mid);
+  background-image: repeating-linear-gradient(0deg, transparent 0 27px, rgba(43, 33, 23, 0.05) 27px 28px);
+}
+.card-skeleton__clip {
+  position: absolute;
+  top: 2px;                  /* deliberately inside the box (overflow: hidden) */
+  right: 14px;
+  width: 15px;
+  height: 26px;
+  border: 2px solid var(--pencil);
+  border-bottom-color: transparent;
+  border-radius: 8px;
+  transform: rotate(6deg);
+}
+
+/* slab — stone/metal block set INTO the scene (inset shading) */
+.card-skeleton--slab {
+  background: linear-gradient(180deg, #e9e3d6 0%, #d9d1bf 100%);
+  border: 1px solid var(--hair);
+  box-shadow:
+    inset 0 2px 6px rgba(43, 33, 23, 0.22),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.35),
+    var(--shadow-far);
+}
+.card-skeleton__block {
+  position: absolute;
+  inset: 24% 26%;
+  border: 1px solid rgba(43, 33, 23, 0.18);
+  border-radius: 2px;
+  background: rgba(43, 33, 23, 0.05);
+}
+
+/* board — the world's table top: deeper cream + the same 80px grid as CanvasGrid */
+.card-skeleton--board {
+  background-color: var(--kraft);
+  background-image:
+    linear-gradient(rgba(41, 40, 32, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(41, 40, 32, 0.06) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px;
+  border: 1px solid var(--hair);
+  box-shadow: var(--shadow-mid);
+}
+
+/* panel — an instrument face: pale ink wash + equal-width bars */
+.card-skeleton--panel {
+  background: rgba(43, 33, 23, 0.06);
+  border: 1px solid var(--hair);
+  border-radius: 1px;
+}
+.card-skeleton--panel .card-skeleton__line {
+  background: rgba(43, 33, 23, 0.16);
+}
+
+/* scroll — legal paper with doubled top/bottom edges, no rounding */
+.card-skeleton--scroll {
+  background: var(--legal);
+  border-radius: 0;
+  box-shadow: var(--shadow-mid);
+}
+.card-skeleton__edge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 7px;
+  background: linear-gradient(180deg, var(--kraft) 0%, #d3c1a0 100%);
+}
+.card-skeleton__edge--top    { top: 0;    border-bottom: 1px solid var(--hair); }
+.card-skeleton__edge--bottom { bottom: 0; border-top: 1px solid var(--hair); }
+
+/* cover — top material band + a numbered seal ring (ring only: no digits) */
+.card-skeleton--cover {
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  box-shadow: var(--shadow-mid);
+}
+.card-skeleton--cover .card-skeleton__lines { padding-top: 48px; }
+.card-skeleton__band {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 36px;
+  background: var(--kraft);
+  border-bottom: 1px solid var(--hair);
+}
+.card-skeleton__seal {
+  position: absolute;
+  top: 8px; left: 8px;
+  width: 18px; height: 18px;
+  border: 1.8px solid var(--red);
+  border-radius: 50%;
+  transform: rotate(-6deg);
+}
+
+/* phase variants: landed freezes solid to meet the real card; evicted fades out.
+   The 320ms MUST equal SKELETON_EVICT_MS in PhantomLayer.tsx. */
+.card-skeleton--landed { animation: none; opacity: 1; }
+.card-skeleton--evicted { animation: cardSkeletonEvict 320ms ease-in forwards; }
+
+/* Reduced motion: the shape IS the information, the breathing is decoration. */
+@media (prefers-reduced-motion: reduce) {
+  .card-skeleton { animation: none; opacity: 0.8; }
+  .card-skeleton--landed { opacity: 1; }
+  .card-skeleton--evicted { animation: none; opacity: 0; }
+}
+
+/* Narration about a character (（低下头）/ *looks away*): shown as a quiet stage
+   note and never spoken (packages/shared/src/rules/tts-text.ts). The modal, the
+   companion dock and the NPC dialogue all render it through `NarratedText`. */
+.dialogue-narration {
+  font-style: italic;
+  opacity: 0.68;
+}

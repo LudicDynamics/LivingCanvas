@@ -1,0 +1,11 @@
+name: 傷で動けない
+desc: 隠し体力がゼロに（world.jsonトリガー too-hurt）：老モーが灯を掲げて見つけに来た時、あなたはもう立ち上がれず、潮と霧が手がかりを一緒に呑み込んだ
+do:
+  - action: event
+    with:
+      target: characters/old-mo
+      title: 老モーがあなたを見つけた
+      text: あなたは濡れそぼった係留柱にもたれ、もう立ち上がれない。老モーが灯を掲げて探しに来て、灯台まで担ぎ戻した。道中、一言もなかった。潮は背後で少しずつ満ちてくる。
+  - action: end
+    with:
+      ending: swallowed

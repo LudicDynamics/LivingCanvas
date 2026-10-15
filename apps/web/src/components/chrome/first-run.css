@@ -1,0 +1,271 @@
+/* The first-run experience: the language screen, the prologue's minimal chrome
+   (`.app--first-run` on the play root), the 「⋯」 menu and the reply chips. */
+
+/* ① The language confirm screen: the prologue's cover, darkened, one guessed button and three others. */
+.first-run {
+  position: fixed;
+  inset: 0;
+  z-index: var(--depth-modal);
+  display: grid;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--ux-font-ui);
+  overflow: hidden;
+}
+.first-run__cover { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.55; }
+.first-run__scrim { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 55%, color-mix(in srgb, var(--ink) 35%, transparent), color-mix(in srgb, var(--ink) 85%, transparent)); }
+.first-run__panel { position: relative; width: min(440px, 100%); display: flex; flex-direction: column; align-items: stretch; gap: 14px; text-align: center; }
+.first-run__brand { margin: 0 0 6px; font-family: var(--ux-font-machine); font-size: clamp(22px, 5vw, 30px); font-weight: 500; letter-spacing: 0.32em; }
+.first-run__brand span { color: var(--rust); }
+.first-run__pick { margin: 0; color: color-mix(in srgb, var(--paper) 78%, transparent); font-size: 14px; letter-spacing: 0.04em; }
+.first-run__start {
+  min-height: 56px;
+  padding: 14px 22px;
+  border: 0;
+  border-radius: var(--ux-radius-pill);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--ux-shadow-halo);
+}
+.first-run__start:hover:not(:disabled), .first-run__start:focus-visible { background: var(--rust); color: var(--paper); outline: none; }
+.first-run__langs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.first-run__lang {
+  min-height: 44px;
+  padding: 10px 6px;
+  border: 1px solid color-mix(in srgb, var(--paper) 40%, transparent);
+  border-radius: var(--ux-radius-pill);
+  background: transparent;
+  color: var(--paper);
+  font-size: 15px;
+  cursor: pointer;
+}
+.first-run__lang:hover:not(:disabled), .first-run__lang:focus-visible { border-color: var(--paper); background: color-mix(in srgb, var(--paper) 14%, transparent); outline: none; }
+.first-run__lang--suggested { border-style: dashed; border-color: color-mix(in srgb, var(--paper) 75%, transparent); }
+.first-run__lang[aria-checked='true'] { border-color: var(--paper); background: color-mix(in srgb, var(--paper) 22%, transparent); font-weight: 700; }
+.first-run__all {
+  align-self: center; min-height: 44px; padding: 8px 12px; border: 0; background: none;
+  color: color-mix(in srgb, var(--paper) 82%, transparent); font-size: 15px;
+  text-decoration: underline; text-underline-offset: 4px; cursor: pointer;
+}
+.first-run__all:hover:not(:disabled), .first-run__all:focus-visible { color: var(--paper); outline: none; }
+.first-run button:disabled { cursor: progress; opacity: 0.75; }
+.first-run__tagline { margin: 6px 0 0; color: color-mix(in srgb, var(--paper) 72%, transparent); font-size: 14px; }
+
+/* ② The prologue: the story only. Everything else waits for the lobby / the full world (§3.1). */
+.app--first-run .prototype-worldtop,
+.app--first-run .prototype-edge-controls,
+.app--first-run .prototype-tools,
+.app--first-run .prototype-player-orb,
+.app--first-run .prototype-immersion-toggle,
+.app--first-run .prototype-edge-wake,
+.app--first-run .choice-rail,
+.app--first-run .writer-fab,
+.app--first-run .activity-rail,
+.app--first-run .agent-activity-log,
+.app--first-run .world-toast-region,
+.app--first-run .closed-strip,
+.app--first-run .prototype-panel-stop,
+.app--first-run .character-dock__collapse { display: none !important; }
+/* The bag appears with the first thing picked up; the clock with its first step (§3.1).
+   The 画布 / 地图 switch comes with the first answer: the
+   first look stays HUD-free and the first beat is only the chip; once the world answers, both views are one tap. */
+.app--first-run[data-first-run-bag='empty'] .prototype-belongings { display: none; }
+.app--first-run[data-first-run-clock='hidden'] .closed-clock { display: none; }
+.app--first-run[data-first-run-view='hidden'] .view-mode-switch { display: none; }
+.app--first-run[data-first-run-view='shown'] .view-mode-switch { animation: first-run-appear var(--ux-motion-slow) var(--ux-motion-ink); }
+.app--first-run .prototype-belongings { animation: first-run-appear var(--ux-motion-slow) var(--ux-motion-ink); }
+@keyframes first-run-appear { from { opacity: 0; transform: scale(0.8); } }
+
+/* The 「⋯」 menu, top right, always there in the prologue. */
+.first-run-menu { position: fixed; top: max(12px, env(safe-area-inset-top)); right: 16px; z-index: var(--depth-chrome-badge); font-family: var(--ux-font-ui); }
+.first-run-menu__toggle {
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--ux-radius-avatar);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  color: var(--ink);
+  box-shadow: var(--ux-shadow-soft);
+  cursor: pointer;
+}
+.first-run-menu__sheet {
+  position: absolute; top: 48px; right: 0;
+  min-width: 220px;
+  display: flex; flex-direction: column;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--ux-radius-panel);
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: var(--ux-shadow-halo);
+}
+.first-run-menu__row {
+  min-height: 44px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 8px 12px;
+  border: 0; border-radius: var(--ux-radius-touch);
+  background: transparent; color: inherit;
+  font-size: 15px; text-align: left; cursor: pointer;
+}
+.first-run-menu__row:hover, .first-run-menu__row:focus-visible { background: color-mix(in srgb, var(--ink) 7%, transparent); outline: none; }
+.first-run-menu__row select { font: inherit; border: 1px solid var(--line); border-radius: var(--ux-radius-touch); padding: 4px 8px; background: var(--paper); color: var(--ink); }
+
+/* The reply chips (§2.2): above the reply box, a tap = sent. At least 44px tall; no keyboard. */
+.reply-chips { display: flex; flex-direction: column; gap: 8px; padding: 8px 0 4px; pointer-events: auto; }
+.reply-chip {
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--ux-radius-touch);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--ux-font-ui);
+  font-size: 15px;
+  line-height: 1.35;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--ux-shadow-soft);
+  transition: background var(--ux-motion-fast), border-color var(--ux-motion-fast);
+}
+.reply-chip:hover:not(:disabled), .reply-chip:focus-visible { border-color: var(--rust); background: color-mix(in srgb, var(--rust) 10%, var(--paper)); outline: none; }
+.reply-chip:disabled { opacity: 0.55; cursor: progress; }
+
+/* Any other world: the same chips as one quiet row — the opening's
+   replies, then at most three moves and 「更多 · N」. Pills, still 44px tall. On a phone the row never wraps: it
+   scrolls sideways (one row, never a wall over the scene); 「更多」 opens it into a short scrolling block. */
+.airp-prototype:not(.app--first-run) .reply-chips { flex-direction: row; flex-wrap: wrap; gap: 6px; padding: 6px 0 2px; }
+.airp-prototype:not(.app--first-run) .reply-chip {
+  max-width: 100%;
+  padding: 8px 14px;
+  border-radius: var(--ux-radius-pill);
+  font-size: 14px;
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+}
+.reply-chip--more { border-style: dashed; background: transparent !important; color: var(--ux-glass-ink, var(--paper)); box-shadow: none; }
+@media (max-width: 1100px) {
+  .airp-prototype:not(.app--first-run) .reply-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    /* Let the row run to the sheet's edges so the cut-off chip says 「there is more this way」. */
+    margin-inline: -2px;
+  }
+  .airp-prototype:not(.app--first-run) .reply-chips::-webkit-scrollbar { display: none; }
+  .airp-prototype:not(.app--first-run) .reply-chip {
+    flex: 0 0 auto;
+    max-width: 78vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    scroll-snap-align: start;
+  }
+  .airp-prototype:not(.app--first-run) .reply-chips[data-expanded='true'] { flex-wrap: wrap; overflow-x: visible; max-height: 32dvh; overflow-y: auto; }
+}
+
+/* The four tiers of a d100 skill roll, listed before the roll and lit after (§3.2 ③). Only in the prologue for now;
+   keyed on <html> because the dice card opens in a dialog portalled to <body>. */
+.dice-tier-table { display: none; }
+:root[data-airp-first-run='on'] .dice-tier-table { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; margin: 8px 0 12px; font-family: var(--ux-font-ui); font-size: 14px; }
+.dice-tier-table__row { display: contents; }
+.dice-tier-table__row > span { padding: 4px 0; transition: opacity var(--ux-motion-panel); }
+.dice-tier-table__range { font-family: var(--ux-font-machine); text-align: right; }
+.dice-tier-table[data-rolled='true'] .dice-tier-table__row:not([data-lit='true']) > span { opacity: 0.35; }
+.dice-tier-table__row[data-lit='true'] > span { font-weight: 700; color: var(--rust); }
+
+/* No ✎ in the prologue, so the reply row needs no room for it. */
+.app--first-run .character-dock__input-row { padding-right: 0; }
+
+/* ③ Phone, upright: the scene on top, the conversation stacked under it — no rotate hint (§3.2). The dock is
+   already a bottom sheet below 1100px (character-dock.css); in the prologue it takes the full width (no ✎ to clear). */
+@media (orientation: portrait) and (max-width: 600px) {
+  .app--first-run .character-dock__stage {
+    left: 0; right: 0; bottom: 0; max-height: 60dvh;
+    padding: 28px 10px max(10px, env(safe-area-inset-bottom));
+    /* The scene stays on top; the conversation gets its own dark ground so the two texts never overlap. */
+    background: linear-gradient(to top, color-mix(in srgb, var(--ink) 94%, transparent) 78%, transparent);
+  }
+  .first-run-menu { right: 12px; }
+  /* Map view: the floor plan is framed in the strip above the conversation, not under it. */
+  .app--first-run .board[data-clear-companion='true'] .board__safe { right: 16px; bottom: calc(60dvh + 8px); }
+}
+/* Phone on its side: the scene keeps the left, the conversation becomes a right-hand column (no bottom sheet over
+   the whole picture); the chips get a little smaller so three of them and the reply box fit 390px of height. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .app--first-run .character-dock__stage {
+    top: 0; bottom: 0; left: auto; right: 8px;
+    width: min(46vw, 400px); max-height: none;
+    padding: 60px 0 max(8px, env(safe-area-inset-bottom)) 14px;
+    /* Its own dark ground, as upright: the greeter's line never reads through the scene's narration behind it. */
+    background: linear-gradient(to top, color-mix(in srgb, var(--ink) 92%, transparent) 62%, transparent 82%);
+  }
+  .app--first-run .character-dock__portrait { width: 120px; height: 170px; }
+  .app--first-run .reply-chip { min-height: 40px; padding: 8px 12px; font-size: 14px; }
+  .app--first-run .reply-chips { gap: 6px; }
+  .app--first-run .board[data-clear-companion='true'] .board__safe { right: calc(min(46vw, 400px) + 16px); }
+}
+@media (prefers-reduced-motion: reduce) { .app--first-run .prototype-belongings, .app--first-run .view-mode-switch { animation: none !important; } }
+
+/* ④ The prologue's ending card (§3.2 ④): the recap, then one wide choice and a text link. */
+.closed-ending__actions--prologue { flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 12px; }
+.closed-ending__recap { margin: 0; color: var(--ux-glass-ink); font-size: 14px; opacity: 0.82; }
+.closed-ending__actions .closed-ending__next {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 4px;
+  padding: 14px 20px;
+  border-radius: var(--ux-radius-panel);
+  text-align: left;
+}
+.closed-ending__next-title { font-size: 17px; }
+.closed-ending__next-line { font-weight: 400; opacity: 0.8; }
+.closed-ending__actions .closed-ending__link {
+  align-self: center;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* In the prologue the dice card leads with the table and the roll button: its prose (which lists the same four
+   bands) stays on the canvas card, out of the dialog, so 「掷骰」 is on screen without scrolling. */
+:root[data-airp-first-run='on'] .declared-action-dialog--dice .declared-action-dialog__body { display: none; }
+:root[data-airp-first-run='on'] .declared-action-dialog--dice .dice-roller__roll { min-height: 48px; padding-inline: 28px; font-size: 16px; }
+
+/* The first run without a guest session: the card in place of the reply box — in the dock's flow,
+   UNDER the greeter's line, never over it. Compact: the reason, one
+   line, then 登录 and 「先看看所有世界」 side by side, so the line above keeps its room on a short window or a phone. */
+.first-run-gate {
+  flex: 0 0 auto;
+  display: flex; flex-direction: column; align-items: stretch; gap: 8px;
+  margin-top: 4px; padding: 12px 14px; border-radius: 16px;
+  background: rgba(16, 14, 12, .82); border: 1px solid rgba(255, 255, 255, .16); color: #f3ede2;
+  pointer-events: auto;
+}
+.first-run-gate__why { margin: 0; font-size: 13px; line-height: 1.4; opacity: .8; }
+.first-run-gate__line { margin: 0; font-size: 14px; line-height: 1.45; }
+.first-run-gate__actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.first-run-gate__sign-in {
+  flex: 1 1 auto; min-height: 44px; padding: 0 20px; border: 0; border-radius: 999px; background: #c8714f; color: #fff;
+  font-weight: 600; font-size: 15px; cursor: pointer;
+}
+.first-run-gate__all {
+  flex: 0 0 auto; min-height: 44px; border: 0; background: none; color: inherit; opacity: .75;
+  text-decoration: underline; text-underline-offset: 3px; font-size: 13px; cursor: pointer; padding: 4px 8px;
+}
+
+/* The greeter's line keeps its whole height in the prologue (the card or the three reply chips under it never
+   squeeze it into a scrolled sliver): it only scrolls past a third of the window. */
+.app--first-run .character-dock__lines { flex-shrink: 0; max-height: 34dvh; }
+@media (orientation: landscape) and (max-height: 500px) {
+  .app--first-run .character-dock__lines { max-height: 30dvh; }
+  .app--first-run .first-run-gate { padding: 10px 12px; gap: 6px; }
+  .app--first-run .first-run-gate__line { font-size: 13px; }
+  .app--first-run .first-run-gate__sign-in { min-height: 40px; }
+  .app--first-run .first-run-gate__all { min-height: 40px; }
+}

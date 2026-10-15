@@ -1,0 +1,19 @@
+name: 灯油が燃え尽きた
+desc: 判定が 96–100 に落ちたとき、手元の灯油は慌てて点すうちに燃え尽き、空の瓶だけが残る
+do:
+  - action: move
+    with:
+      from: player/lamp-oil.md
+      to: player/empty-oil-flask.md
+  - action: edit
+    with:
+      path: player/empty-oil-flask.md
+      frontmatter:
+        title: 空の油瓶 · 灯油はもう燃え尽きた
+        status:
+          data:
+            oil: empty
+      body: |
+        瓶の底には黒ずんだ油の輪だけが残る。さっき慌てて点した一瞬の光で、一回分をすべて燃やしてしまった。
+
+        霧の中でまた何かあっても、もう点す灯りはない。

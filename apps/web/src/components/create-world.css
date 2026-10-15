@@ -1,0 +1,305 @@
+/* CreateWorldDialog: the workshop's front door,
+   in the launcher's dark glass so it reads as part of the wall it opens from. */
+.create-world {
+  --glass-line: rgba(255, 255, 255, .22);
+  --glass-fill: rgba(16, 17, 27, .62);
+  --accent: #c9f27a;
+  position: fixed;
+  inset: 0;
+  z-index: var(--depth-modal);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(4, 5, 12, .55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #f5f3ee;
+  font-family: "Helvetica Neue", Inter, var(--ux-font-ui, system-ui), sans-serif;
+}
+.create-world__panel {
+  box-sizing: border-box;
+  width: min(560px, 100%);
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: 24px 28px 26px;
+  border: 1px solid var(--glass-line);
+  border-radius: 28px;
+  background: rgba(14, 15, 24, .82);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 40px 80px -30px rgba(0, 0, 0, .85);
+}
+.create-world button { font: inherit; color: inherit; cursor: pointer; }
+.create-world button:disabled { cursor: default; opacity: .5; }
+
+.create-world__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font: 500 11px/1 ui-monospace, "SFMono-Regular", monospace;
+  letter-spacing: .18em;
+  color: rgba(245, 243, 238, .7);
+}
+.create-world__header button {
+  padding: 2px 10px 4px;
+  border: 1px solid var(--glass-line);
+  border-radius: 999px;
+  background: transparent;
+  font-size: 20px;
+  line-height: 1;
+}
+.create-world h2 {
+  margin: 12px 0 6px;
+  font: 700 30px/1.1 "Helvetica Neue", Inter, var(--ux-font-ui, system-ui), sans-serif;
+  letter-spacing: -.02em;
+}
+.create-world__lede { margin: 0 0 20px; font-size: 14px; line-height: 1.55; color: rgba(245, 243, 238, .72); }
+
+.create-world__suggest {
+  margin: -8px 0 18px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(201, 242, 122, .55);
+  background: rgba(201, 242, 122, .1);
+  color: var(--accent);
+  font: 500 12px/1.2 ui-monospace, "SFMono-Regular", monospace;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.create-world__suggest:not(:disabled):hover { background: rgba(201, 242, 122, .2); }
+
+.create-world__field { display: grid; gap: 6px; margin-bottom: 14px; }
+.create-world__field > span {
+  font: 500 11px/1 ui-monospace, "SFMono-Regular", monospace;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(245, 243, 238, .6);
+}
+.create-world__field input,
+.create-world__field textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--glass-line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .06);
+  color: inherit;
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.45;
+  resize: vertical;
+}
+.create-world__field input:focus-visible,
+.create-world__field textarea:focus-visible { outline: 2px solid rgba(201, 242, 122, .8); outline-offset: 1px; }
+.create-world__field input::placeholder,
+.create-world__field textarea::placeholder { color: rgba(245, 243, 238, .35); }
+.create-world__field small { font-size: 12px; line-height: 1.5; color: rgba(245, 243, 238, .55); }
+.create-world__row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 520px) { .create-world__row { grid-template-columns: 1fr; } }
+
+.create-world__langs,
+.create-world__tabs {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--glass-line);
+  border-radius: 999px;
+  background: var(--glass-fill);
+}
+.create-world__langs button,
+.create-world__tabs button {
+  flex: 1;
+  padding: 7px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font-size: 12.5px;
+  opacity: .7;
+}
+.create-world__langs button[aria-pressed="true"],
+.create-world__tabs button[aria-selected="true"] { background: rgba(255, 255, 255, .9); color: #07080f; opacity: 1; }
+
+.create-world__cover {
+  margin-top: 6px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 18px;
+}
+.create-world__tabs { margin-bottom: 14px; }
+.create-world__cover .create-world__field { margin-bottom: 0; }
+
+/* The upload well: a dashed slab the same 5:3 as a brick, showing the picture once chosen. */
+.create-world__drop {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 5 / 3;
+  border: 1px dashed rgba(255, 255, 255, .35);
+  border-radius: 16px;
+  overflow: hidden;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(245, 243, 238, .6);
+  cursor: pointer;
+}
+.create-world__drop.has-picture { border-style: solid; }
+.create-world__drop > span { padding: 0 28px; }
+.create-world__drop img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.create-world__drop input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+
+.create-world__error {
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 90, 110, .14);
+  border: 1px solid rgba(255, 90, 110, .4);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.create-world__actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+.create-world__ghost,
+.create-world__go {
+  padding: 11px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .3);
+  background: var(--glass-fill);
+  font: 500 12px/1.2 ui-monospace, "SFMono-Regular", monospace;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.create-world__go { background: var(--accent); color: #0a1204; border-color: transparent; }
+.create-world__go:not(:disabled):hover { filter: brightness(1.06); }
+.create-world__panel[aria-busy="true"] .create-world__go { animation: create-world-pulse 1.4s ease-in-out infinite; }
+@keyframes create-world-pulse { 50% { opacity: .55; } }
+
+/* The launcher's first brick: a dashed slab of the same glass, with a plus. */
+.world-launcher__tile.is-new {
+  background: rgba(255, 255, 255, .04);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .18), 0 26px 44px -22px rgba(0, 0, 0, .8);
+}
+.world-launcher__tile.is-new::after { display: none; }
+.world-launcher__plus {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border: 1.5px dashed rgba(255, 255, 255, .35);
+  border-radius: inherit;
+  font: 300 clamp(48px, 22cqw, 120px)/1 "Helvetica Neue", Inter, var(--ux-font-ui, system-ui), sans-serif;
+  color: rgba(255, 255, 255, .8);
+  pointer-events: none;
+}
+.world-launcher__tile.is-new.is-active .world-launcher__plus { color: var(--accent, #c9f27a); border-color: rgba(201, 242, 122, .6); }
+/* Draft / published state on a made world's brick. */
+.world-launcher__badge {
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .3);
+  letter-spacing: .14em;
+}
+.world-launcher__badge.is-published { background: var(--accent, #c9f27a); color: #0a1204; border-color: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  .create-world__panel[aria-busy="true"] .create-world__go { animation: none; }
+}
+:root[data-airp-blur="reduced"] .create-world {
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+:root[data-airp-blur="off"] .create-world {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+:root[data-airp-blur="off"] .create-world__panel { background: rgba(14, 15, 24, .97); }
+:root[data-airp-shadow="reduced"] .create-world__panel {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 10px 24px -16px rgba(0, 0, 0, .6);
+}
+:root[data-airp-shadow="off"] .create-world__panel {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3);
+}
+:root[data-airp-shadow="reduced"] .world-launcher__tile.is-new {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .18), 0 10px 24px -16px rgba(0, 0, 0, .55);
+}
+:root[data-airp-shadow="off"] .world-launcher__tile.is-new {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .18);
+}
+
+/* World type, rules and structure: a type presets the
+   rest; the toggles stay editable. Same glass language as the fields above. */
+.create-world__types {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+.create-world__types button {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px solid var(--glass-line);
+  border-radius: 14px;
+  background: var(--glass-fill);
+  text-align: left;
+}
+.create-world__types button[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: rgba(201, 242, 122, .12);
+}
+.create-world__types strong { font-size: 14px; }
+.create-world__types small { font-size: 11px; line-height: 1.4; color: rgba(245, 243, 238, .62); }
+.create-world__flags { display: grid; gap: 6px; }
+.create-world__flag {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 8px 10px;
+  border: 1px solid var(--glass-line);
+  border-radius: 12px;
+  cursor: pointer;
+}
+.create-world__flag input { width: auto; padding: 0; margin-top: 3px; accent-color: var(--accent); }
+.create-world__flag > span { display: grid; gap: 2px; }
+.create-world__flag strong { font-size: 13px; }
+.create-world__flag small { font-size: 11px; line-height: 1.4; color: rgba(245, 243, 238, .62); }
+.create-world__flag:has(input:disabled) { opacity: .5; cursor: default; }
+.create-world__sandbox { color: var(--accent); }
+
+/* Phone: the 28px panel gutter left the cover tabs ("Paint the cover" /
+   "Upload a picture") and "Multiplayer · Coming soon" ~95px each, so they
+   broke onto two lines inside a pill and the pill bulged into a lozenge. A
+   narrower gutter lets the short labels stay on one line; a label that still
+   wraps sits in a rounded rectangle that wraps with it, and every segment is
+   a full 40px touch target. */
+@media (max-width: 520px) {
+  .create-world { padding: 10px; }
+  .create-world__panel { max-height: calc(100dvh - 20px); padding: 20px 18px 20px; border-radius: 22px; }
+  .create-world__cover { padding: 10px; }
+  .create-world__langs,
+  .create-world__tabs { border-radius: 16px; }
+  .create-world__langs button,
+  .create-world__tabs button {
+    min-height: 40px;
+    padding: 6px 8px;
+    border-radius: 13px;
+    line-height: 1.25;
+  }
+}
+/* 官方 / 云端 / 本机: one small pill per tile, shelf entry and save. */
+.world-place {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .32);
+  font: 500 11px/1.1 ui-monospace, "SFMono-Regular", monospace;
+  font-style: normal;
+  letter-spacing: .08em;
+  text-transform: none;
+  white-space: nowrap;
+  vertical-align: middle;
+  color: #f4efe4;
+  background: rgba(10, 12, 16, .45);
+}
+.world-launcher__meta .world-place { font-size: inherit; letter-spacing: .1em; }
+.world-place--official { border-color: rgba(232, 200, 120, .75); color: #f3d68c; }
+.world-place--cloud { border-color: rgba(140, 196, 255, .75); color: #b9dcff; }
+.world-place--local { border-color: rgba(255, 255, 255, .4); color: #e9e3d6; }
+.world-place--pending { border-color: rgba(255, 186, 102, .85); color: #ffcf8f; }
+.world-place--conflict { border-color: rgba(255, 120, 110, .9); color: #ffb0a8; background: rgba(60, 10, 8, .55); }

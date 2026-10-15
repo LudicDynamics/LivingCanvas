@@ -1,0 +1,80 @@
+{
+  "id": "moonlit-contract-ko",
+  "name": "달빛 아래의 맹세 · 한국어",
+  "version": "1.2.0",
+  "schema": 1,
+  "description": "달빛 아래의 소환. 내민 손에 어떻게 응답할 것인가? 하나의 약속에서, 아직 이야기되지 않은 밤들로.",
+  "intro": {
+    "status": "in-development",
+    "category": "story",
+    "rank": 8,
+    "hook": "바닷가의 버려진 천문대에서 흑동 갑옷을 입은 여기사를 소환한다. 그녀가 내민 계약에 응할지는 당신에게 달렸다.",
+    "genres": [
+      "fantasy",
+      "romance"
+    ],
+    "loop": [
+      "라일라의 계약을 듣고 받아들이거나, 조건을 묻거나, 거절한다",
+      "그 뒤로는 한 걸음 나아갈 때마다 새 장면을 AI가 즉석에서 쓴다",
+      "그녀와 이야기하며 이 맹세가 향할 곳을 정한다"
+    ],
+    "minutes": [
+      15,
+      30
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "free-explore",
+      "voice"
+    ],
+    "endings": 0,
+    "characters": [
+      {
+        "id": "lyra",
+        "line": "옅은 보랏빛에 불려 온 기사. 당신이 직접 승낙하기 전엔 결코 손을 잡지 않는다"
+      }
+    ],
+    "for": [
+      "판타지 로맨스 좋아하는 사람",
+      "캐릭터와 천천히 대화하고 싶은 사람"
+    ],
+    "unfinished": "개발 중: 계약 이후는 자유 생성이며, 아직 목표·카운트다운·결말이 없습니다."
+  },
+  "author": "AIRP",
+  "genre": "생성형 비주얼 노벨",
+  "tags": [
+    "단편 소설",
+    "생성형 세계"
+  ],
+  "locale": "ko",
+  "material": "parchment",
+  "entry": "map",
+  "rules": {
+    "system": "dnd",
+    "proficiency": 2,
+    "characterChecks": true
+  },
+  "cover": "assets/backgrounds/opening.webp",
+  "player": {
+    "id": "you",
+    "name": "당신"
+  },
+  "characters": [
+    {
+      "id": "lyra",
+      "name": "라일라",
+      "home": "map",
+      "role": "companion",
+      "description": "라일라, 흑동 갑옷을 입은 기사로, 오래된 바닷가 천문대의 옅은 보라 빛에 소환되었다. 그녀는 당신을 지키러 왔고 계약을 제안하지만, 당신의 말 없이는 당신의 손을 잡지 않는다. 그녀는 증표인 푸른 리본을 건틀릿에 지니고 있다."
+    }
+  ],
+  "opening": {
+    "greeter": "lyra"
+  },
+  "extensions": [],
+  "audio": {
+    "theme": "emberglass"
+  },
+  "createdAt": "2026-09-14T00:00:00Z",
+  "updatedAt": "2026-09-14T00:00:00Z"
+}

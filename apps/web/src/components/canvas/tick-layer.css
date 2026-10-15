@@ -1,0 +1,497 @@
+/*
+ * Character tick (components/canvas/TickIntentLayer.tsx, the design notes).
+ *
+ * Above the ambient pointers (an intent is about to become a fact) and still
+ * on the registered overlay depth token. Only the marker and its menu take
+ * the pointer; the ring, the cursor and the badges never block a click.
+ * Sizes are screen-constant through `--tick-scale` (1 / zoom).
+ */
+
+.tick-host {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.tick-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: var(--depth-overlay);
+}
+
+/* ---- the ring tightening on the target ---- */
+.tick-ring {
+  --tick-color: var(--tick-hue, var(--ux-color-rust));
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.tick-ring::before,
+.tick-ring::after {
+  content: '';
+  position: absolute;
+  left: calc(var(--tick-ring) / -2);
+  top: calc(var(--tick-ring) / -2);
+  width: var(--tick-ring);
+  height: var(--tick-ring);
+  border-radius: 999px;
+  border: calc(2.5px * var(--tick-scale, 1)) solid var(--tick-color);
+  box-sizing: border-box;
+}
+
+.tick-ring::before {
+  opacity: 0.85;
+  animation: tick-tighten 1600ms ease-in-out infinite;
+}
+
+.tick-ring::after {
+  opacity: 0.35;
+  border-style: dashed;
+  animation: tick-tighten 1600ms ease-in-out 800ms infinite;
+}
+
+.tick-ring[data-phase='landed']::before,
+.tick-ring[data-phase='landed']::after {
+  animation: tick-flash 900ms ease-out forwards;
+}
+
+.tick-ring[data-phase='stopped']::before,
+.tick-ring[data-phase='stopped']::after {
+  animation: tick-loosen 700ms ease-out forwards;
+}
+
+.tick-layer[data-still='true'] .tick-ring::before,
+.tick-layer[data-still='true'] .tick-ring::after {
+  animation: none;
+}
+
+@keyframes tick-tighten {
+  0% { transform: scale(1.55); opacity: 0; }
+  35% { opacity: 0.9; }
+  100% { transform: scale(1); opacity: 0.85; }
+}
+
+@keyframes tick-flash {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+@keyframes tick-loosen {
+  0% { transform: scale(1); opacity: 0.85; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* ---- the acting person's pointer, parked on the target ---- */
+.tick-cursor {
+  --tick-color: var(--tick-hue, var(--ux-color-rust));
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.tick-cursor__body {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 1px;
+  transform: scale(var(--tick-scale, 1));
+  transform-origin: 0 0;
+}
+
+.tick-cursor__pointer path {
+  fill: var(--tick-color);
+  stroke: var(--ux-color-cream);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.tick-cursor__tag {
+  margin-top: 16px;
+  padding: 3px 10px 4px;
+  max-width: 260px;
+  border-radius: 999px;
+  background: var(--tick-color);
+  color: var(--ux-color-cream);
+  box-shadow: var(--ux-shadow-soft);
+  font-family: var(--ux-font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tick-cursor[data-phase='stopped'] {
+  transition: opacity 900ms ease-out 1200ms;
+  opacity: 0.55;
+}
+
+.tick-cursor__ripple {
+  position: absolute;
+  left: -10px;
+  top: -10px;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 2px solid var(--tick-color);
+  animation: tick-flash 700ms ease-out forwards;
+}
+
+/* Phones: a dot beside the target, not a pointer (the tag stays). */
+.tick-cursor[data-dot='true'] .tick-cursor__pointer {
+  display: none;
+}
+
+.tick-cursor[data-dot='true'] .tick-cursor__body::before {
+  content: '';
+  flex: none;
+  width: 12px;
+  height: 12px;
+  margin: 4px 2px 0 0;
+  border-radius: 999px;
+  border: 2px solid var(--ux-color-cream);
+  background: var(--tick-color);
+}
+
+/* ---- the marker: the move's icon, and the counters ---- */
+.tick-marker {
+  --tick-color: var(--tick-hue, var(--ux-color-rust));
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.tick-marker__body {
+  position: relative;
+  transform: scale(var(--tick-scale, 1));
+  transform-origin: 0 100%;
+}
+
+.tick-marker__icon {
+  pointer-events: auto;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 2px solid var(--ux-color-cream);
+  background: var(--tick-color);
+  color: var(--ux-color-cream);
+  box-shadow: var(--ux-shadow-soft);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  animation: tick-pop 420ms ease-out backwards;
+}
+
+.tick-marker__icon:disabled {
+  cursor: default;
+  opacity: 0.8;
+}
+
+.tick-marker__icon:focus-visible {
+  outline: 2px solid var(--ux-color-ink);
+  outline-offset: 2px;
+}
+
+@keyframes tick-pop {
+  0% { transform: scale(0.4); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.tick-marker__result {
+  position: absolute;
+  left: 36px;
+  top: 0;
+  margin: 0;
+  width: max-content;
+  max-width: 260px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: var(--ux-color-cream);
+  color: var(--ux-color-ink);
+  box-shadow: var(--ux-shadow-soft);
+  font-family: var(--ux-font-human);
+  font-size: 13px;
+  line-height: 1.45;
+  animation: tick-pop 360ms ease-out backwards;
+}
+
+/* Phones: the landed / stopped line as a toast (portalled to <body>). */
+.tick-toast {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 96px;
+  z-index: var(--depth-overlay);
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border-left: 4px solid var(--tick-hue, var(--ux-color-rust));
+  background: var(--ux-color-cream);
+  color: var(--ux-color-ink);
+  box-shadow: var(--ux-shadow-soft);
+  font-family: var(--ux-font-human);
+  font-size: 14px;
+  line-height: 1.45;
+  pointer-events: none;
+  animation: tick-pop 360ms ease-out backwards;
+}
+
+/* Portalled to <body> and placed in viewport px by the marker (never clipped by the map). */
+.tick-menu {
+  --tick-color: var(--tick-hue, var(--ux-color-rust));
+  pointer-events: auto;
+  position: fixed;
+  z-index: var(--depth-overlay);
+  display: grid;
+  gap: 4px;
+  width: min(260px, calc(100vw - 16px));
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 12px;
+  background: var(--ux-color-cream);
+  color: var(--ux-color-ink);
+  box-shadow: var(--ux-shadow-soft);
+  font-family: var(--ux-font-ui);
+  font-size: 13px;
+}
+
+.tick-menu__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin: 0;
+  font-weight: 700;
+}
+
+.tick-menu__wip {
+  flex: none;
+  padding: 1px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--ux-color-rust);
+  color: var(--ux-color-rust);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.tick-menu__label {
+  margin: 0 0 4px;
+  color: var(--tick-color);
+  font-weight: 700;
+}
+
+.tick-menu__item {
+  padding: 6px 8px;
+  border: 1px solid var(--tick-color);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ux-color-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.tick-menu__item:hover,
+.tick-menu__item:focus-visible {
+  background: var(--tick-color);
+  color: var(--ux-color-cream);
+}
+
+.tick-menu__item--quiet {
+  border-color: transparent;
+  opacity: 0.8;
+}
+
+.tick-menu__hint {
+  margin: 2px 0 0;
+  font-size: 11px;
+  opacity: 0.75;
+}
+
+/* ---- 「有人动过」 on a door / card a landed move touched ---- */
+.tick-touched {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.tick-touched__inner {
+  display: inline-block;
+  transform: translate(-50%, -100%) scale(var(--tick-scale, 1));
+  transform-origin: 50% 100%;
+  padding: 1px 7px 2px;
+  border-radius: 999px;
+  border: 1px solid var(--tick-hue, var(--ux-color-rust));
+  background: var(--ux-color-cream);
+  color: var(--ux-color-ink);
+  font-family: var(--ux-font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tick-ring::before,
+  .tick-ring::after,
+  .tick-marker__icon,
+  .tick-marker__result,
+  .tick-cursor__ripple {
+    animation: none;
+  }
+}
+
+/* ---- v2: the person's own words ----
+ * A ✎ marks every generated line: it is what that person said or wrote — a claim, never a fact.
+ * Handwritten face (--ux-font-human), on paper, the person's hue on the edge. */
+.tick-say {
+  position: absolute;
+  left: 18px;
+  top: 44px;
+  display: block;
+  width: max-content;
+  max-width: 240px;
+  padding: 5px 10px 6px;
+  border-radius: 4px 12px 12px 12px;
+  border-left: 3px solid var(--tick-color);
+  background: var(--ux-color-cream);
+  color: var(--ux-color-ink);
+  box-shadow: var(--ux-shadow-soft);
+  font-family: var(--ux-font-human);
+  font-size: 13px;
+  line-height: 1.45;
+  white-space: normal;
+  animation: tick-pop 360ms ease-out backwards;
+}
+
+.tick-say__mark {
+  margin-right: 4px;
+  color: var(--tick-hue, var(--ux-color-rust));
+  font-family: var(--ux-font-ui);
+  font-weight: 700;
+}
+
+.tick-say__mood {
+  margin: 0 4px;
+  font-family: var(--ux-font-ui);
+}
+
+.tick-said,
+.tick-invite {
+  --tick-color: var(--tick-hue, var(--ux-color-rust));
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.tick-said__body,
+.tick-invite__body {
+  display: grid;
+  gap: 2px;
+  width: max-content;
+  max-width: 250px;
+  padding: 6px 10px 7px;
+  border-radius: 4px 12px 12px 12px;
+  border-left: 3px solid var(--tick-color);
+  background: var(--ux-color-cream);
+  color: var(--ux-color-ink);
+  box-shadow: var(--ux-shadow-soft);
+  transform: scale(var(--tick-scale, 1));
+  transform-origin: 0 0;
+  animation: tick-pop 360ms ease-out backwards;
+}
+
+.tick-said__who,
+.tick-invite__title {
+  margin: 0;
+  font-family: var(--ux-font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--tick-color);
+}
+
+.tick-said__text,
+.tick-invite__text {
+  margin: 0;
+  font-family: var(--ux-font-human);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.tick-said[data-verb='note'] .tick-said__body {
+  border-radius: 2px;
+  border-left-width: 1px;
+  border-top: 3px solid var(--tick-color);
+}
+
+.tick-invite__body {
+  pointer-events: auto;
+}
+
+.tick-invite__actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.tick-invite__go,
+.tick-invite__skip {
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--tick-color);
+  font-family: var(--ux-font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tick-invite__go {
+  background: var(--tick-color);
+  color: var(--ux-color-cream);
+}
+
+.tick-invite__skip {
+  background: transparent;
+  color: var(--ux-color-ink);
+}
+
+.tick-invite__go:focus-visible,
+.tick-invite__skip:focus-visible {
+  outline: 2px solid var(--ux-color-ink);
+  outline-offset: 2px;
+}
+
+.tick-layer[data-still='true'] .tick-say,
+.tick-layer[data-still='true'] .tick-said__body,
+.tick-layer[data-still='true'] .tick-invite__body {
+  animation: none;
+}
+
+/* Phones: a person's line or invite docks above the input (portalled to <body>), full width, never clipped. */
+.tick-said--dock,
+.tick-invite--dock {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  top: auto;
+  bottom: 150px;
+  z-index: var(--depth-overlay);
+}
+
+.tick-said--dock .tick-said__body,
+.tick-invite--dock .tick-invite__body {
+  width: auto;
+  max-width: none;
+  transform: none;
+}

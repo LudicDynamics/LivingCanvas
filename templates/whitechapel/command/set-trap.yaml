@@ -1,0 +1,19 @@
+name: 'Play along'
+desc: 'Meet him in the print-shop courtyard at noon. He shoves you when he moves; only other proof in hand lets Lestrade hold him'
+do:
+  - action: add_state
+    with:
+      target: player
+      state: hp
+      by: "-2"
+  - action: end
+    when: 'status.picture == "yes"'
+    with:
+      ending: caught
+  - action: end
+    when: 'status.hand == "yes"'
+    with:
+      ending: caught
+  - action: end
+    with:
+      ending: half-truth

@@ -1,0 +1,370 @@
+{
+  "id": "whitechapel-zh",
+  "audio": {
+    "theme": "canvas-whitechapel"
+  },
+  "name": "福尔摩斯：第四件案子 · 中文",
+  "version": "1.2.0",
+  "schema": 1,
+  "description": "你是福尔摩斯。事件照着小说一件件发生。查出是谁把故事变成了犯罪，阻止今天的第四起事件。",
+  "intro": {
+    "status": "playable",
+    "category": "trpg",
+    "recommended": true,
+    "rank": 2,
+    "hook": "你是福尔摩斯。有人照着连载小说的插图，把罪案一件件演成了真的——中午之前，阻止第四幅画。",
+    "genres": [
+      "mystery",
+      "historical"
+    ],
+    "loop": [
+      "在伦敦地图上走访印刷所、编辑部和证人住处",
+      "搜查现场、掷骰找线索，盘问每一个人",
+      "线索够了，揭开是谁把小说变成了犯罪"
+    ],
+    "minutes": [
+      40,
+      60
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "dice",
+      "endings",
+      "clock",
+      "voice",
+      "live-image"
+    ],
+    "endings": 3,
+    "characters": [
+      {
+        "id": "watson",
+        "line": "你的老朋友，答应过要保护伊迪丝"
+      },
+      {
+        "id": "edith",
+        "line": "小说家，亲手改过第四章的地址，害怕却想把话说清楚"
+      },
+      {
+        "id": "tom",
+        "line": "印刷所的排字工，照着值班簿报出日期和时间"
+      }
+    ],
+    "for": [
+      "第一次玩",
+      "喜欢推理",
+      "福尔摩斯迷"
+    ]
+  },
+  "author": "Worldlines Canvas / AIRP",
+  "genre": "故事体验",
+  "tags": [
+    "短篇故事",
+    "生成世界"
+  ],
+  "material": "kraft",
+  "cover": "assets/scenes/intro.webp",
+  "extensions": [
+    {
+      "id": "airp:letter",
+      "version": ">=1.0.0",
+      "optional": false
+    },
+    {
+      "id": "airp:note",
+      "version": ">=1.0.0",
+      "optional": false
+    }
+  ],
+  "characters": [
+    {
+      "id": "watson",
+      "home": "map",
+      "role": "companion",
+      "avatar": "assets/motion/seedance/characters/watson-transparent.webp",
+      "description": "医生，福尔摩斯的朋友。答应过要保护伊迪丝。今早确认第三起事件与插图一致，请求阻止今天的第四起。提供医学观察和人情上的担忧，尊重福尔摩斯的推理。",
+      "avatarVideo": "assets/motion/seedance/characters/watson-transparent.webm",
+      "name": "华生"
+    },
+    {
+      "id": "edith",
+      "home": "world/london-map/edith-room",
+      "role": "npc",
+      "description": "华生的病人，小说家。亲手订正了第四章地址的人。虽然害怕，但想用自己的话清楚地说明。",
+      "avatar": "assets/characters/edith.webp",
+      "name": "伊迪丝·韦尔"
+    },
+    {
+      "id": "tom",
+      "home": "world/london-map/print-shop",
+      "role": "npc",
+      "description": "印刷所的排字工。黑乎乎的手指和值班簿。为人直爽，按记录说出日期时间。",
+      "avatar": "assets/characters/tom.webp",
+      "name": "汤姆·黑尔"
+    },
+    {
+      "id": "blackburn",
+      "home": "world/london-map/print-shop/editor-office",
+      "role": "npc",
+      "description": "管理原稿和校样的编辑。对日期和时间的说明很准确，在意报纸的信誉。",
+      "avatar": "assets/characters/blackburn.webp",
+      "name": "布莱克本主编"
+    },
+    {
+      "id": "wayne",
+      "home": "world/london-map/print-shop/illustration-room",
+      "role": "npc",
+      "description": "连载小说的插画师。袖口沾着群青，护着右手腕，对批评很敏感。",
+      "avatar": "assets/characters/wayne.webp",
+      "name": "亚瑟·韦恩"
+    }
+  ],
+  "opening": {
+    "greeter": "watson"
+  },
+  "createdAt": "2026-09-12T00:00:00Z",
+  "updatedAt": "2026-09-12T00:00:00Z",
+  "player": {
+    "id": "player",
+    "name": "夏洛克·福尔摩斯",
+    "avatar": "assets/characters/sherlock-holmes.webp"
+  },
+  "locale": "zh-CN",
+  "entry": "map",
+  "rules": {
+    "system": "coc",
+    "characterChecks": true
+  },
+  "mode": "semi",
+  "clock": {
+    "path": "world/london-map/03-before-noon.md",
+    "key": "left",
+    "start": 10,
+    "label": "距中午",
+    "time": {
+      "start": "10:00",
+      "end": "12:00"
+    }
+  },
+  "endings": [
+    {
+      "id": "caught",
+      "title": "不在第四幅画里的人",
+      "path": "endings/caught/README.md"
+    },
+    {
+      "id": "half-truth",
+      "title": "守住的，与错过的",
+      "path": "endings/half-truth/README.md"
+    },
+    {
+      "id": "fourth-picture",
+      "title": "第四幅画",
+      "path": "endings/fourth-picture/README.md",
+      "when": "clock <= 0"
+    }
+  ],
+  "mysteries": [
+    {
+      "id": "culprit",
+      "question": "是谁把伊迪丝的小说一件件变成了真事？",
+      "hint": "谁的手，先碰到了那些画？",
+      "options": [
+        {
+          "id": "edith",
+          "label": "伊迪丝自己——为了让小说出名",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "wayne",
+          "label": "插画师亚瑟·韦恩",
+          "tier": "surface",
+          "clues": [
+            "world/london-map/print-shop/illustration-room/visible-details.md",
+            "world/london-map/third-crime-scene/pigment-record.md",
+            "world/london-map/print-shop/illustration-room/visible-details-half.md",
+            "world/london-map/third-crime-scene/pigment-record-half.md"
+          ],
+          "epilogue": "韦恩的名字从连载的署名栏里被划掉了。印刷所的人说起他，只记得他袖口上洗不掉的那一抹群青。"
+        },
+        {
+          "id": "unseen",
+          "label": "韦恩——报社要撤掉他的插图，他要让全伦敦先看见他的画",
+          "tier": "hidden",
+          "clues": [
+            "world/london-map/print-shop/illustration-room/returned-proofs.md"
+          ],
+          "title": "退回的校样",
+          "epilogue": "那叠被退回的校样被收进了苏格兰场的证物袋。布莱克本主编看着上面自己的批语，第一次在稿子上改了主意：往后的连载，插图照登，也署上画师的名字。"
+        },
+        {
+          "id": "blackburn",
+          "label": "布莱克本主编——为了报纸的销量",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "order",
+      "question": "那三起事件，是照着什么布置出来的？",
+      "hint": "比一比签收单上的时间和事发的时间。",
+      "options": [
+        {
+          "id": "reader",
+          "label": "照着小说的文字——凶手是一个着了魔的读者",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "picture",
+          "label": "照着插图——画在事件之前就已经交到了印刷所",
+          "tier": "surface",
+          "clues": [
+            "world/london-map/print-shop/receipt.md",
+            "world/london-map/morgue/time-record.md",
+            "world/london-map/print-shop/receipt-half.md",
+            "world/london-map/morgue/time-record-half.md"
+          ],
+          "epilogue": "《晨报》登了一则更正：连载的插图从此在刊出当天才交稿。排字工汤姆说，这是他见过最慢的一次改规矩，也是最对的一次。"
+        },
+        {
+          "id": "hat",
+          "label": "照着韦恩自己的画——现场有小说里从没写过的东西",
+          "tier": "hidden",
+          "clues": [
+            "world/london-map/edith-room/margin-note.md"
+          ],
+          "title": "小说里没有那顶帽子",
+          "epilogue": "伊迪丝把三起事件的原稿和插图摊在一起，用红笔圈出了画里多出来的东西：那顶帽子、那把椅子。她说，她终于能确定那不是她写的故事。"
+        },
+        {
+          "id": "chance",
+          "label": "只是巧合",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "address",
+      "question": "伊迪丝为什么把第四章的地址改成一条不存在的街？",
+      "hint": "去地图上找找那条街。",
+      "options": [
+        {
+          "id": "ambush",
+          "label": "为了把凶手引到那条街上埋伏起来",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "test",
+          "label": "为了看看谁读到了新地址，又因为找不到那条街而露出马脚",
+          "tier": "surface",
+          "clues": [
+            "world/london-map/edith-room/address-correction.md",
+            "world/london-map/unnamed-street/revision-scrap.md",
+            "world/london-map/edith-room/address-correction-half.md",
+            "world/london-map/unnamed-street/revision-scrap-half.md"
+          ],
+          "epilogue": "伊迪丝把那条不存在的街写进了第四章的定稿。读者只当它是小说家的想象，只有华生知道，那是她替自己设的一道门闩。"
+        },
+        {
+          "id": "typo",
+          "label": "只是笔误",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "leak",
+      "question": "改过地址的原稿，是怎么到了凶手手里的？",
+      "hint": "编辑室的传阅记录上，签着谁的名字？",
+      "options": [
+        {
+          "id": "tom",
+          "label": "汤姆排字的时候偷看的",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "forwarded",
+          "label": "布莱克本主编按惯例在8:15把它转给了韦恩",
+          "tier": "surface",
+          "clues": [
+            "world/london-map/print-shop/editor-office/correction-log.md",
+            "world/london-map/print-shop/editor-office/correction-log-half.md"
+          ],
+          "epilogue": "布莱克本改了编辑室的规矩：订正稿只在作者和编辑之间传，谁要看，就在他桌前看。"
+        },
+        {
+          "id": "asked",
+          "label": "韦恩一拿到就去打听那条街——假地址当天上午就把他钓了出来",
+          "tier": "hidden",
+          "clues": [
+            "world/london-map/unnamed-street/asked-the-way.md"
+          ],
+          "title": "打听那条街的人",
+          "epilogue": "街角卖地图的老人认出了照片上的人：“就是他，袖口一抹蓝，问了三遍那条街在哪。”伊迪丝的试探，比任何人以为的都更早起了作用。"
+        },
+        {
+          "id": "edith-gave",
+          "label": "伊迪丝亲手交给了他",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    }
+  ],
+  "reckoning": {
+    "epilogues": {
+      "all": "四个秘密都摊开了。后来贝克街的人说起那个正午，总会提到那顶小说里没有的帽子——还有伊迪丝，她把第四章写完了，用的是自己的地址。",
+      "most": "你看清了大半。剩下的那一点，只有韦恩自己知道；可至少，再没有人把伊迪丝的小说当作犯罪的剧本。",
+      "few": "正午过去了，可那三起事件背后还有太多没说清。也许下一次连载刊出的时候，你会再去印刷所看一看。"
+    }
+  },
+  "triggers": [
+    {
+      "id": "wayne-turns-up",
+      "label": "证据够了：韦恩找上门",
+      "kind": "state",
+      "when": "clues.held >= 3",
+      "clues": [
+        "world/london-map/third-crime-scene/pigment-record.md",
+        "world/london-map/print-shop/receipt.md",
+        "world/london-map/morgue/time-record.md",
+        "world/london-map/print-shop/editor-office/correction-log.md",
+        "world/london-map/print-shop/illustration-room/visible-details.md",
+        "world/london-map/edith-room/address-correction.md",
+        "world/london-map/unnamed-street/revision-scrap.md"
+      ],
+      "do": "wayne-turns-up",
+      "fallback": "街角有人叫住了你。亚瑟·韦恩夹着一个红信封站在雾里：“福尔摩斯先生，我正要去找韦尔小姐。”"
+    },
+    {
+      "id": "wayne-turns-up-anyway",
+      "label": "处处搜过却所获不多：韦恩还是找上门来",
+      "kind": "state",
+      "when": "clues.held >= 5",
+      "clues": [
+        "world/london-map/third-crime-scene/pigment-record-half.md",
+        "world/london-map/print-shop/receipt-half.md",
+        "world/london-map/morgue/time-record-half.md",
+        "world/london-map/print-shop/editor-office/correction-log-half.md",
+        "world/london-map/print-shop/illustration-room/visible-details-half.md",
+        "world/london-map/edith-room/address-correction-half.md",
+        "world/london-map/unnamed-street/revision-scrap-half.md"
+      ],
+      "do": "wayne-turns-up",
+      "fallback": "街角有人叫住了你。亚瑟·韦恩夹着一个红信封站在雾里：“福尔摩斯先生，我正要去找韦尔小姐。”"
+    },
+    {
+      "id": "too-hurt",
+      "label": "伤得太重：福尔摩斯倒下",
+      "kind": "state",
+      "when": "player.hp <= 0",
+      "do": "hurt-out"
+    }
+  ]
+}

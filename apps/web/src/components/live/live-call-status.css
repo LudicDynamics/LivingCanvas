@@ -1,0 +1,12 @@
+/* `LiveCallStatus`: the in-call state line. Tokens only (index.css), no outer layout —
+ * the host places it, the same discipline as live-call-transcript.css. */
+.live-call-status { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .7rem; font-family: var(--ux-font-ui); font-size: .78rem; color: var(--muted); }
+.live-call-status__bot { display: inline-flex; align-items: center; gap: .35rem; }
+.live-call-status__dot { inline-size: .45rem; block-size: .45rem; border-radius: 50%; background: var(--muted); }
+.live-call-status__bot--thinking .live-call-status__dot { background: var(--rust); animation: live-call-status-pulse 1s ease-in-out infinite; }
+.live-call-status__bot--speaking .live-call-status__dot { background: var(--rust); }
+.live-call-status__minutes--low { color: var(--rust); }
+.live-call-status__notice { flex-basis: 100%; margin: 0; color: var(--ink); }
+.live-call-status__upgrade { color: var(--rust); text-decoration: underline; }
+@keyframes live-call-status-pulse { 50% { opacity: .3; } }
+@media (prefers-reduced-motion: reduce) { .live-call-status__bot--thinking .live-call-status__dot { animation: none; } }

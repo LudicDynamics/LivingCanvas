@@ -1,0 +1,8 @@
+name: Dining car not fully searched
+desc: "The dining car search lands on 61–100: you only noticed the stirred coal ash. Opens the Long Way Around (05-long-way.md)"
+do:
+  - action: set_status
+    with:
+      path: world/dining-car/05-long-way.md
+      values:
+        open: yes

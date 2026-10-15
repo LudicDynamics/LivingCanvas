@@ -1,0 +1,17 @@
+name: Kai steps off the ferry
+desc: The traveler who has been sitting on the ferry deck finally comes ashore with his bags
+do:
+  - action: set_state
+    with:
+      target: world
+      state: kai_arrived
+      value: "true"
+  - action: event
+    with:
+      target: world/dock
+      title: The ferry brings a newcomer
+      text: When the ferry docks, the man who always sat on deck with his guitar walks down the pier with a small suitcase. He nods to Toma and says he would like to stay on the island a while. Hana is already asking whether he wants the empty room above the store.
+  - action: show_cg
+    with:
+      path: assets/cg/ferry-arrival.webp
+      caption: The ferry brought someone new.

@@ -1,0 +1,11 @@
+name: 釣りをする
+desc: 二時間ほど釣りをして、魚籠に何匹か増える
+do:
+  - action: add_state
+    with:
+      target: player
+      state: fish
+      by: "2"
+  - action: pass_time
+    with:
+      minutes: "120"

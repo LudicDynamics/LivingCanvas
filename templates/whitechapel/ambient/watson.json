@@ -1,0 +1,25 @@
+{
+  "barks": [
+    "Noon, Holmes. We haven't long.",
+    "Shall I take notes, Holmes?",
+    "My bag's here if anyone needs it.",
+    "This fog gets into one's chest.",
+    "I gave Miss Vale my word."
+  ],
+  "emotes": [
+    "dots",
+    "question",
+    "exclaim",
+    "sigh"
+  ],
+  "chats": [
+    {
+      "with": "edith",
+      "barks": [
+        "You're safe here, Miss Vale.",
+        "Then why can't I sit still?",
+        "Because you're brave, not foolish."
+      ]
+    }
+  ]
+}

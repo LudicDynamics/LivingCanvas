@@ -1,0 +1,44 @@
+LivingCanvas
+Copyright 2026 Ludic Dynamics
+
+This product includes software developed by Ludic Dynamics, licensed under
+the Apache License, Version 2.0 (see LICENSE).
+
+Bundled content (worlds, characters, art, prompts) is licensed separately
+under Creative Commons Attribution-NonCommercial 4.0 International; see
+CONTENT-LICENSE.md for the exact paths. "LivingCanvas", "Worldlines" and
+their logos are trademarks of Ludic Dynamics; see TRADEMARKS.md.
+
+-------------------------------------------------------------------------------
+Third-party components
+-------------------------------------------------------------------------------
+
+pi-rp (vendor/pi-rp, git submodule)
+  A fork of the "pi" agent toolkit by Mario Zechner (https://github.com/2722550596/pi-rp).
+  Copyright (c) 2025 Mario Zechner. MIT License; see vendor/pi-rp/LICENSE.
+
+Worldlines identity client (vendor/worldlines-identity-client)
+  The Node client of the Worldlines account service, used to sign in to a
+  Worldlines account. Copyright 2026 Ludic Dynamics. Apache License 2.0.
+
+npm dependencies
+  Installed by pnpm, each under its own license (MIT, ISC, Apache-2.0 and
+  BSD-3-Clause). The optional image library sharp downloads a prebuilt libvips
+  binary (@img/sharp-libvips-*), which is licensed under LGPL-3.0-or-later and
+  dynamically linked. It is not part of this repository.
+
+Audio
+  Platform music, ambience and sound effects under assets/audio/ are CC0 or
+  CC BY 4.0 works by third parties. Titles, authors, sources and required
+  attributions are listed in assets/audio/CREDITS.md. They are not covered by
+  CONTENT-LICENSE.md.
+
+Fonts
+  The web app loads fonts from Google Fonts at runtime (Manrope, Caveat,
+  DM Mono, LXGW WenKai, Long Cang, Gowun Batang, Noto Sans KR). All are under
+  the SIL Open Font License 1.1. No font files are bundled.
+
+Public-domain characters
+  "Holmes: The Fourth Case" (templates/whitechapel*) uses characters from
+  Arthur Conan Doyle's Sherlock Holmes stories that are in the public domain.
+  The plots, text and art are original.

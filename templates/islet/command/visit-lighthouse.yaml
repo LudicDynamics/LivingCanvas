@@ -1,0 +1,11 @@
+name: Watch the sky with Grandma Suzu
+desc: Climb the lighthouse and watch the clouds and sea with her
+do:
+  - action: add_state
+    with:
+      target: characters/suzu
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "60"

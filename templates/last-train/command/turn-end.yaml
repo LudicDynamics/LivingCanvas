@@ -1,0 +1,8 @@
+name: "A beat ends"
+desc: "One more beat (world.json experience.turnEnd): Car 2's exits appear after the fourth."
+do:
+- action: add_state
+  with:
+    target: world
+    state: turns
+    by: '1'

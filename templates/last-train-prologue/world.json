@@ -1,0 +1,147 @@
+{
+  "id": "last-train-prologue",
+  "audio": {
+    "theme": "canvas-mistport"
+  },
+  "name": "The Last Train · Prologue",
+  "version": "1.0.0",
+  "schema": 1,
+  "description": "A last train has stopped in the middle of a mountain tunnel, and the passenger in seat 17 beside you is gone. A five-minute prologue: say one thing, pick one thing up, roll once, open one door.",
+  "intro": {
+    "status": "playable",
+    "category": "trpg",
+    "hidden": true,
+    "rank": 0,
+    "hook": "The last train has stopped deep in a tunnel, and the passenger in seat 17 beside you is gone. Five minutes to find her.",
+    "genres": [
+      "mystery"
+    ],
+    "loop": [
+      "Answer the conductor, Xia Cheng, with one tap",
+      "Pick up what she left behind and roll once to question whoever is awake",
+      "Push open the door at the rear and find her"
+    ],
+    "minutes": [
+      5,
+      10
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "dice",
+      "clock"
+    ],
+    "endings": 1,
+    "characters": [
+      {
+        "id": "xia-cheng",
+        "line": "The 24-year-old conductor who found seat 17 empty"
+      }
+    ],
+    "for": [
+      "Playing for the first time",
+      "Only have five minutes"
+    ]
+  },
+  "author": "Worldlines Canvas / AIRP",
+  "genre": "Story Experience",
+  "tags": [
+    "Short Story",
+    "Prologue",
+    "First Play"
+  ],
+  "locale": "en",
+  "material": "parchment",
+  "extensions": [
+    {
+      "id": "airp:note",
+      "version": ">=1.0.0",
+      "optional": false
+    }
+  ],
+  "mode": "closed",
+  "clock": {
+    "path": "world/departure-clock.md",
+    "key": "left",
+    "start": 4,
+    "label": "Time to Departure",
+    "time": {
+      "start": "01:10",
+      "end": "05:00"
+    }
+  },
+  "endings": [
+    {
+      "id": "found-her",
+      "title": "Found Her",
+      "path": "endings/found-her/README.md"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "notebook",
+      "label": "After the first turn: the notebook on seat 17",
+      "kind": "state",
+      "when": "world.turns >= 1",
+      "do": "drop-notebook"
+    },
+    {
+      "id": "door",
+      "label": "The door at the rear",
+      "kind": "state",
+      "when": "has(\"world/seated-car/witness-account.md\") || has(\"world/seated-car/witness-half.md\") || has(\"player/witness-account.md\") || has(\"player/witness-half.md\") || world.turns >= 8 || clock.left <= 1",
+      "do": "open-door"
+    },
+    {
+      "id": "found",
+      "label": "Walk into Car 5",
+      "kind": "place",
+      "when": {
+        "layer": "world/freight-car"
+      },
+      "ending": "found-her"
+    }
+  ],
+  "characters": [
+    {
+      "id": "xia-cheng",
+      "name": "Xia Cheng",
+      "home": "world/seated-car",
+      "role": "companion",
+      "description": "The conductor on this last train, twenty-four. She noticed seat 17 was empty when she counted the passengers. She knows every car, but only says what she saw with her own eyes.",
+      "avatar": "assets/characters/xia-cheng.webp"
+    }
+  ],
+  "opening": {
+    "greeter": "xia-cheng",
+    "replies": [
+      "I was asleep. I didn't see anything",
+      "Did she say anything before she left?",
+      "Don't panic. I'll help you look"
+    ]
+  },
+  "experience": {
+    "kind": "prologue",
+    "next": "last-train",
+    "maxTurns": 10,
+    "turnEnd": "turn-end"
+  },
+  "models": {
+    "character": [
+      { "model": "deepseek-v4-pro", "thinking": "off" },
+      { "model": "deepseek-v4-flash", "thinking": "off" }
+    ]
+  },
+  "player": {
+    "id": "player",
+    "name": "Passenger in Car 2, seat 18",
+    "avatar": "assets/characters/player.webp"
+  },
+  "entry": "world/seated-car",
+  "rules": {
+    "system": "coc",
+    "characterChecks": true
+  },
+  "createdAt": "2026-10-10T00:00:00Z",
+  "updatedAt": "2026-10-10T00:00:00Z",
+  "cover": "assets/scenes/tunnel-train.webp"
+}

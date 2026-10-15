@@ -1,0 +1,218 @@
+{
+  "world": "moonlit-contract",
+  "names": {
+    "en": "The Moonlit Pact",
+    "ja": "月下の誓い",
+    "zh": "月下之誓",
+    "ko": "달빛 아래의 맹세"
+  },
+  "koReview": "ko names seeded by hand 2026-10-03 (Korean editions) — TO REVIEW; the rest are filled by `localize-from-zh.mjs glossary --to ko`",
+  "terms": [
+    {
+      "en": "The Moonlit Pact",
+      "ja": "月下の誓い",
+      "zh": "月下之誓",
+      "ko": "달빛 아래의 맹세",
+      "note": "world title"
+    },
+    {
+      "en": "Lyra",
+      "ja": "ライラ",
+      "zh": "莉拉",
+      "ko": "라일라",
+      "note": "character"
+    },
+    {
+      "en": "Moonlit Summoning",
+      "ja": "月下の召喚",
+      "zh": "月下召唤",
+      "ko": "달빛 아래의 소환",
+      "note": "location"
+    },
+    {
+      "en": "Night of Promise",
+      "ko": "약속의 밤",
+      "note": "world rule title (ko: model)"
+    },
+    {
+      "en": "Chalk",
+      "ko": "초크",
+      "note": "narrative text block (ko: model)"
+    },
+    {
+      "en": "blue-ribbon",
+      "ko": "푸른 리본",
+      "note": "world file (ko: model)"
+    },
+    {
+      "en": "moonlit-courtyard",
+      "ko": "달빛 안뜰",
+      "note": "first scene (ko: model)"
+    },
+    {
+      "en": "Moonlit Courtyard",
+      "ko": "달빛 안뜰",
+      "note": "scene name (ko: model)"
+    },
+    {
+      "en": "contract",
+      "ko": "계약",
+      "note": "pact term (ko: model)"
+    },
+    {
+      "en": "ribbon",
+      "ko": "리본",
+      "note": "item (ko: model)"
+    },
+    {
+      "en": "opening.md",
+      "ko": "오프닝.md",
+      "note": "file (ko: model)"
+    },
+    {
+      "en": "README.md",
+      "ko": "리드미.md",
+      "note": "file (ko: model)"
+    },
+    {
+      "en": "item.md",
+      "ko": "아이템.md",
+      "note": "file (ko: model)"
+    },
+    {
+      "en": "player",
+      "ko": "플레이어",
+      "note": "role (ko: model)"
+    },
+    {
+      "en": "female knight",
+      "ko": "여기사",
+      "note": "Lyra's role (ko: model)"
+    },
+    {
+      "en": "silver-gray hair",
+      "ko": "은회색 머리",
+      "note": "Lyra's trait (ko: model)"
+    },
+    {
+      "en": "amber eyes",
+      "ko": "호박색 눈",
+      "note": "Lyra's trait (ko: model)"
+    },
+    {
+      "en": "black copper armor",
+      "ko": "흑동 갑옷",
+      "note": "Lyra's armor (ko: model)"
+    },
+    {
+      "en": "dark grape clothes",
+      "ko": "짙은 포도색 옷",
+      "note": "Lyra's clothing (ko: model)"
+    },
+    {
+      "en": "natural-colored scarf",
+      "ko": "천연색 스카프",
+      "note": "Lyra's scarf (ko: model)"
+    },
+    {
+      "en": "seaside moonlight",
+      "ko": "바닷가 달빛",
+      "note": "visual theme (ko: model)"
+    },
+    {
+      "en": "pale purple",
+      "ko": "옅은 보라",
+      "note": "color theme (ko: model)"
+    },
+    {
+      "en": "2D visual novel CG",
+      "ko": "2D 비주얼 노벨 CG",
+      "note": "image style (ko: model)"
+    },
+    {
+      "en": "generate_image",
+      "ko": "이미지 생성",
+      "note": "tool (ko: model)"
+    },
+    {
+      "en": "status.data.contract",
+      "ko": "상태.데이터.계약",
+      "note": "data field (ko: model)"
+    },
+    {
+      "en": "kebab-case",
+      "ko": "케밥 표기법",
+      "note": "naming convention (ko: model)"
+    },
+    {
+      "en": "emberglass theme",
+      "ko": "엠버글라스 테마",
+      "note": "BGM theme (ko: model)"
+    },
+    {
+      "en": "bgVideo",
+      "ko": "배경 비디오",
+      "note": "file setting (ko: model)"
+    },
+    {
+      "en": "bg",
+      "ko": "배경",
+      "note": "README field (ko: model)"
+    },
+    {
+      "en": "assets/backgrounds",
+      "ko": "에셋/배경",
+      "note": "folder (ko: model)"
+    },
+    {
+      "en": "unique-scene-id",
+      "ko": "고유 장면 ID",
+      "note": "file naming (ko: model)"
+    },
+    {
+      "en": "step forward",
+      "ko": "앞으로 나아가기",
+      "note": "player action (ko: model)"
+    },
+    {
+      "en": "child folder",
+      "ko": "하위 폴더",
+      "note": "file structure (ko: model)"
+    },
+    {
+      "en": "parent",
+      "ko": "상위",
+      "note": "file structure (ko: model)"
+    },
+    {
+      "en": "whereabouts",
+      "ko": "소재",
+      "note": "location check (ko: model)"
+    },
+    {
+      "en": "state file",
+      "ko": "상태 파일",
+      "note": "file type (ko: model)"
+    },
+    {
+      "en": "tutorial",
+      "ko": "튜토리얼",
+      "note": "guide (ko: model)"
+    },
+    {
+      "en": "standing image",
+      "ko": "스탠딩 이미지",
+      "note": "character art (ko: model)"
+    },
+    {
+      "en": "character button",
+      "ko": "캐릭터 버튼",
+      "note": "UI element (ko: model)"
+    },
+    {
+      "en": "subtitle",
+      "ko": "자막",
+      "note": "text display (ko: model)"
+    }
+  ]
+}

@@ -1,0 +1,147 @@
+{
+  "id": "last-train-prologue-ko",
+  "audio": {
+    "theme": "canvas-mistport"
+  },
+  "name": "막차 · 서장",
+  "version": "1.0.0",
+  "schema": 1,
+  "description": "산속 막차가 터널 한가운데 멈췄고, 옆자리 17번 승객이 사라졌다. 5분짜리 서장: 한마디 하고, 하나를 줍고, 주사위를 한 번 굴리고, 문 하나를 연다.",
+  "intro": {
+    "status": "playable",
+    "category": "trpg",
+    "hidden": true,
+    "rank": 0,
+    "hook": "막차가 터널 한가운데 멈췄고, 옆자리 17번 승객이 사라졌다. 5분 안에 그녀를 찾아라.",
+    "genres": [
+      "mystery"
+    ],
+    "loop": [
+      "승무원 샤청에게 한 번 탭해서 대답한다",
+      "그녀가 남긴 물건을 줍고, 주사위를 한 번 굴려 깨어 있는 사람에게 묻는다",
+      "열차 뒤쪽 문을 밀고 들어가 그녀를 찾는다"
+    ],
+    "minutes": [
+      5,
+      10
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "dice",
+      "clock"
+    ],
+    "endings": 1,
+    "characters": [
+      {
+        "id": "xia-cheng",
+        "line": "17번 좌석이 빈 걸 발견한 스물네 살 승무원"
+      }
+    ],
+    "for": [
+      "처음 플레이하는 사람",
+      "5분만 있는 사람"
+    ]
+  },
+  "author": "Worldlines Canvas / AIRP",
+  "genre": "이야기 체험",
+  "tags": [
+    "단편 이야기",
+    "서장",
+    "처음 플레이"
+  ],
+  "locale": "ko",
+  "material": "parchment",
+  "extensions": [
+    {
+      "id": "airp:note",
+      "version": ">=1.0.0",
+      "optional": false
+    }
+  ],
+  "mode": "closed",
+  "clock": {
+    "path": "world/departure-clock.md",
+    "key": "left",
+    "start": 4,
+    "label": "출발까지",
+    "time": {
+      "start": "01:10",
+      "end": "05:00"
+    }
+  },
+  "endings": [
+    {
+      "id": "found-her",
+      "title": "그녀를 찾았다",
+      "path": "endings/found-her/README.md"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "notebook",
+      "label": "첫 턴 뒤: 17번 좌석의 수첩",
+      "kind": "state",
+      "when": "world.turns >= 1",
+      "do": "drop-notebook"
+    },
+    {
+      "id": "door",
+      "label": "뒤쪽 문",
+      "kind": "state",
+      "when": "has(\"world/seated-car/witness-account.md\") || has(\"world/seated-car/witness-half.md\") || has(\"player/witness-account.md\") || has(\"player/witness-half.md\") || world.turns >= 8 || clock.left <= 1",
+      "do": "open-door"
+    },
+    {
+      "id": "found",
+      "label": "5호차로 들어간다",
+      "kind": "place",
+      "when": {
+        "layer": "world/freight-car"
+      },
+      "ending": "found-her"
+    }
+  ],
+  "characters": [
+    {
+      "id": "xia-cheng",
+      "name": "샤청",
+      "home": "world/seated-car",
+      "role": "companion",
+      "description": "이 막차의 승무원, 스물네 살. 인원을 셀 때 17번 좌석이 빈 걸 발견했다. 모든 칸을 잘 알지만, 자기 눈으로 본 것만 말한다.",
+      "avatar": "assets/characters/xia-cheng.webp"
+    }
+  ],
+  "opening": {
+    "greeter": "xia-cheng",
+    "replies": [
+      "잠들어서 아무것도 못 봤어요",
+      "가기 전에 뭐라고 했어요?",
+      "진정해요. 같이 찾아볼게요"
+    ]
+  },
+  "experience": {
+    "kind": "prologue",
+    "next": "last-train",
+    "maxTurns": 10,
+    "turnEnd": "turn-end"
+  },
+  "models": {
+    "character": [
+      { "model": "deepseek-v4-pro", "thinking": "off" },
+      { "model": "deepseek-v4-flash", "thinking": "off" }
+    ]
+  },
+  "player": {
+    "id": "player",
+    "name": "2호차 18번의 승객",
+    "avatar": "assets/characters/player.webp"
+  },
+  "entry": "world/seated-car",
+  "rules": {
+    "system": "coc",
+    "characterChecks": true
+  },
+  "createdAt": "2026-10-10T00:00:00Z",
+  "updatedAt": "2026-10-10T00:00:00Z",
+  "cover": "assets/scenes/tunnel-train.webp"
+}

@@ -1,0 +1,26 @@
+{
+  "sourceRepository": "worldlines-assets",
+  "characterMapping": {
+    "archivist": "librarian"
+  },
+  "assets": [
+    {
+      "asset": "assets/motion/seedance/characters/librarian-transparent.webp",
+      "source": "looping/seedance/emberglass-demo/characters/archivist/base-transparent.poster.webp",
+      "sha256": "b740334bee131954b79189f369e969a15536b88e9a8953f791fe5e812b93daae",
+      "bytes": 195710
+    },
+    {
+      "asset": "assets/motion/seedance/characters/librarian-transparent.webm",
+      "source": "looping/seedance/emberglass-demo/characters/archivist/base-transparent.webm",
+      "sha256": "3fbdee6f00069b98cd8f6f01d2a50801a179970f049d22b234c82f94f5462525",
+      "bytes": 3035576
+    },
+    {
+      "asset": "assets/scenes/academy-library.webp",
+      "source": "worlds/emberglass-demo/backgrounds/intro.webp",
+      "sha256": "53a943a73360db1f931daeb1cd89548ef5c58a2230959a54ad9af76da567aa95",
+      "bytes": 418880
+    }
+  ]
+}

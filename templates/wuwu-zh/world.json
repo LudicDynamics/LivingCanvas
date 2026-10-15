@@ -1,0 +1,295 @@
+{
+  "id": "wuwu-zh",
+  "audio": {
+    "theme": "canvas-wuwu"
+  },
+  "name": "雾坞镇·潮前 · 中文",
+  "version": "2.0.0",
+  "schema": 1,
+  "description": "涨潮之前，把诱饵船、旧海关隧道和领主家的账簿连成一条线。潮水只等你八步——指认、追丢，或者被雾吞掉。",
+  "intro": {
+    "status": "playable",
+    "category": "trpg",
+    "recommended": true,
+    "rank": 1,
+    "hook": "雾夜的港口漂来一艘空无一人的“鬼船”。潮水回涨前你只有八步——查清是谁趁着雾运走了什么。",
+    "genres": [
+      "mystery",
+      "adventure"
+    ],
+    "loop": [
+      "在港区海图上挑地点搜查，掷骰找线索",
+      "每搜一次潮水涨一格；失手也能拿到半条线索",
+      "凑齐证据，回港务所当众指认"
+    ],
+    "minutes": [
+      30,
+      45
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "dice",
+      "clock",
+      "endings",
+      "voice"
+    ],
+    "endings": 3,
+    "characters": [
+      {
+        "id": "vera",
+        "line": "义手泛着紫光的技师，你的搭档，嘴上从不饶人"
+      },
+      {
+        "id": "silver-kite",
+        "line": "守着空船舷门的精灵骑士，只看证据说话"
+      },
+      {
+        "id": "old-mo",
+        "line": "灯塔看守，承认自己熄过十二分钟的灯"
+      }
+    ],
+    "for": [
+      "第一次玩",
+      "喜欢推理",
+      "想一局打完"
+    ]
+  },
+  "author": "Worldlines Canvas / AIRP",
+  "genre": "故事体验",
+  "tags": [
+    "短篇故事",
+    "封闭结局",
+    "限时调查"
+  ],
+  "material": "parchment",
+  "cover": "assets/scenes/intro.webp",
+  "locale": "zh-CN",
+  "mode": "closed",
+  "clock": {
+    "path": "world/tide.md",
+    "key": "left",
+    "start": 8,
+    "label": "潮水回涨前",
+    "time": {
+      "start": "23:00",
+      "end": "01:00"
+    }
+  },
+  "endings": [
+    {
+      "id": "exposed",
+      "title": "揭穿",
+      "path": "endings/exposed/README.md"
+    },
+    {
+      "id": "lost",
+      "title": "追丢",
+      "path": "endings/lost/README.md",
+      "when": "clock <= 0"
+    },
+    {
+      "id": "swallowed",
+      "title": "被雾吞",
+      "path": "endings/swallowed/README.md"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "too-hurt",
+      "label": "伤得太重，走不动了",
+      "kind": "state",
+      "when": "player.hp <= 0",
+      "do": "hurt-out"
+    }
+  ],
+  "extensions": [
+    {
+      "id": "airp:letter",
+      "version": ">=1.0.0",
+      "optional": false
+    },
+    {
+      "id": "airp:note",
+      "version": ">=1.0.0",
+      "optional": false
+    }
+  ],
+  "characters": [
+    {
+      "id": "vera",
+      "home": "map",
+      "role": "companion",
+      "avatar": "assets/motion/seedance/characters/viola-transparent.webp",
+      "description": "义手泛着紫光的技师。对舵的扣件有私人的关注。爱说俏皮话，但不谈自己没看到的罪行。",
+      "avatarVideo": "assets/motion/seedance/characters/viola-transparent.webm",
+      "name": "薇拉"
+    },
+    {
+      "id": "silver-kite",
+      "home": "world/harbor-chart/seventh-berth",
+      "role": "npc",
+      "avatar": "assets/motion/seedance/characters/silverkite-transparent.webp",
+      "description": "守护空箱与舷门的精灵骑士。根据证据选择措辞。",
+      "avatarVideo": "assets/motion/seedance/characters/silverkite-transparent.webm",
+      "name": "银鸢"
+    },
+    {
+      "id": "old-mo",
+      "home": "world/harbor-chart/old-lighthouse",
+      "role": "npc",
+      "avatar": "assets/characters/old-mo.webp",
+      "description": "带着伤疤的灯塔看守。承认那十二分钟的熄灯是自己所为，但说不清他并不知道的追踪船。",
+      "name": "老莫"
+    }
+  ],
+  "opening": {
+    "greeter": "vera"
+  },
+  "player": {
+    "id": "player",
+    "name": "港口调查员",
+    "avatar": "assets/characters/investigator.webp"
+  },
+  "entry": "map",
+  "rules": {
+    "system": "coc",
+    "characterChecks": true
+  },
+  "createdAt": "2026-09-26T00:00:00Z",
+  "updatedAt": "2026-09-26T00:00:00Z",
+  "mysteries": [
+    {
+      "id": "decoy",
+      "question": "7号码头那艘无人船，到底是怎么回事？",
+      "hint": "想想货舱里装着什么。",
+      "options": [
+        {
+          "id": "storm",
+          "label": "遇上风浪，船员弃船逃生，船自己漂回了港里",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "decoy",
+          "label": "它是故意空着放出来的诱饵，好让所有人都盯着7号码头",
+          "tier": "surface",
+          "clues": [
+            "player/decoy-ship.md"
+          ],
+          "epilogue": "港务所撤了7号码头的封条。那艘空船被拖进船坞，再也没人把它叫作鬼船。"
+        },
+        {
+          "id": "one-wake",
+          "label": "诱饵和隧道是同一个计划：第二道航迹从隧道口出来，正好贴着诱饵船擦过去",
+          "tier": "hidden",
+          "clues": [
+            "player/second-wake.md"
+          ],
+          "title": "同一道航迹",
+          "epilogue": "两道航迹被并排画进了港务所的海图。从那以后，雾坞港每逢起雾都会派人守着旧海关隧道口——诱饵再也骗不走所有人的眼睛。"
+        },
+        {
+          "id": "smugglers",
+          "label": "走私贩子被熄灭的灯塔害得触礁，趁夜上了岸",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "ledger",
+      "question": "是谁为雾里那艘船付的钱？",
+      "hint": "那枚舵扣件底下压着什么？",
+      "options": [
+        {
+          "id": "vera",
+          "label": "薇拉——那枚扣件是她自己的收藏",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "lord",
+          "label": "领主家——那艘不在船册里的船，记在领主家的账簿上",
+          "tier": "surface",
+          "clues": [
+            "player/ledger-page.md"
+          ],
+          "epilogue": "领主家的账房被请去港务所问话。他们说那只是一笔“寻常的订货”，可从那以后，镇上没人再信“寻常”这两个字。"
+        },
+        {
+          "id": "harbor-office",
+          "label": "港务所——他们想骗一笔保险金",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "tunnel",
+      "question": "那艘船趁什么时候、从哪里出的港？",
+      "hint": "灯塔的日志和隧道口的淤泥。",
+      "options": [
+        {
+          "id": "daylight",
+          "label": "大白天从7号码头正大光明开出去的",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "tunnel",
+          "label": "趁灯塔熄灭的十二分钟，从旧海关隧道口出的港",
+          "tier": "surface",
+          "clues": [
+            "player/customs-tunnel.md"
+          ],
+          "epilogue": "旧海关隧道口被钉上了木栅。老莫说，往后灯塔每熄一次，他都会先朝隧道口看一眼。"
+        },
+        {
+          "id": "drift",
+          "label": "船上根本没人，是顺着涨潮漂出去的",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "old-mo",
+      "question": "老莫那天夜里为什么熄灯？",
+      "hint": "问问他自己，也看看他不知道的事。",
+      "options": [
+        {
+          "id": "bribed",
+          "label": "他收了领主家的钱，专门替那艘船熄的灯",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "his-own",
+          "label": "熄灯是他自己的缘故，他并不知道有船借着这段黑暗出了港",
+          "tier": "surface",
+          "clues": [
+            "player/customs-tunnel.md",
+            "player/customs-tunnel-half.md"
+          ],
+          "epilogue": "老莫听说那十二分钟被人利用了，一整晚没合眼。第二天，他在日志上添了一行：“灯灭时，留意隧道口。”"
+        },
+        {
+          "id": "no-oil",
+          "label": "灯油烧完了，他来不及补",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    }
+  ],
+  "reckoning": {
+    "epilogues": {
+      "all": "四个秘密都摊开了。潮水回涨的时候，雾坞镇已经知道那一夜发生过什么——还有薇拉，她终于肯讲那枚扣件的来历了。",
+      "most": "你看清了大半。剩下的那一点，雾坞镇的人各有各的说法；可至少，再没有人把那艘无人船叫作鬼船。",
+      "few": "潮水涨回来了，那一夜的事却还有太多没说清。也许下一次起雾的时候，你会再回到7号码头。"
+    }
+  },
+  "view": {
+    "default": "map"
+  }
+}

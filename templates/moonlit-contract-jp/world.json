@@ -1,0 +1,80 @@
+{
+  "id": "moonlit-contract-jp",
+  "name": "月下の誓い · 日本語",
+  "version": "1.2.0",
+  "schema": 1,
+  "description": "月下の召喚。差し出された手に、あなたはどう答える？ 一つの約束から、まだ描かれていない夜へ。",
+  "intro": {
+    "status": "in-development",
+    "category": "story",
+    "rank": 8,
+    "hook": "海辺の廃天文台で、黒銅の鎧をまとった女騎士を召喚する。差し出された契約に応じるかどうかは、あなた次第。",
+    "genres": [
+      "fantasy",
+      "romance"
+    ],
+    "loop": [
+      "ライラの契約を聞き、受け入れるか、条件を尋ねるか、断るかを選ぶ",
+      "その先は一歩進むたびに、新しい場面をAIがその場で書く",
+      "彼女と話し、この誓いの行き先を決める"
+    ],
+    "minutes": [
+      15,
+      30
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "free-explore",
+      "voice"
+    ],
+    "endings": 0,
+    "characters": [
+      {
+        "id": "lyra",
+        "line": "淡い紫の光に呼ばれた騎士。あなたが口にして応えるまで、決して手を取らない"
+      }
+    ],
+    "for": [
+      "ファンタジー恋愛好き",
+      "キャラとじっくり話したい人"
+    ],
+    "unfinished": "開発中：契約の後は自由生成で、目標・カウントダウン・結末はまだありません。"
+  },
+  "author": "AIRP",
+  "genre": "生成型ビジュアルノベル",
+  "tags": [
+    "短い物語",
+    "生成する世界"
+  ],
+  "locale": "ja",
+  "material": "parchment",
+  "entry": "map",
+  "rules": {
+    "system": "dnd",
+    "proficiency": 2,
+    "characterChecks": true
+  },
+  "cover": "assets/backgrounds/opening.webp",
+  "player": {
+    "id": "you",
+    "name": "あなた"
+  },
+  "characters": [
+    {
+      "id": "lyra",
+      "name": "ライラ",
+      "home": "map",
+      "role": "companion",
+      "description": "ライラ。黒銅の鎧をまとった騎士で、古い海辺の天文台に灯った淡紫の光に呼ばれて現れた。あなたを守るために来て、契約を差し出す。ただし、あなたの言葉がないかぎり手は取らない。証の青いリボンを籠手の上に結んでいる。"
+    }
+  ],
+  "opening": {
+    "greeter": "lyra"
+  },
+  "extensions": [],
+  "audio": {
+    "theme": "emberglass"
+  },
+  "createdAt": "2026-09-14T00:00:00Z",
+  "updatedAt": "2026-09-14T00:00:00Z"
+}

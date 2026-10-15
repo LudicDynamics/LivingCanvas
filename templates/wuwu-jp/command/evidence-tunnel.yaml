@@ -1,0 +1,23 @@
+name: 二本目の線を留める：旧税関隧道
+desc: 旧灯台の判定成功（60以下）または遠回りの後、「消灯の十二分と旧税関隧道」を証拠として鞄に入れ、海図に✓を付ける
+do:
+  - action: give
+    with:
+      path: player/customs-tunnel.md
+      title: 証拠 · 旧税関隧道と消灯の十二分
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        灯が消えた十二分は、ちょうど潮が旧税関隧道の出口を通船可能にする時間帯だった。灯を消せば、隧道口から出る船は誰にも見えない。
+
+        老モーは灯を消したのは自分だと認めたが、その間どんな船があったかは言えなかった——実際、後ろに船がついているとは知らなかった。
+  - action: set_status
+    with:
+      path: world/harbor-chart/05-accuse.md
+      values:
+        tunnel: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: ✓ 古い灯台の糸を留めた：灯が消えた十二分、旧税関隧道の出口に向けて。

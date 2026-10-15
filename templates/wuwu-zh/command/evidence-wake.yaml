@@ -1,0 +1,23 @@
+name: 钉上第四条线：第二道航迹
+desc: 海图上的决定性判定成功（60以下）或绕远路之后，把“第二道航迹”作为证据放进包里，并在海图上打钩
+do:
+  - action: give
+    with:
+      path: player/second-wake.md
+      title: 证据 · 雾里的第二道航迹
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        海图上并排画着两道航迹：一道是漂进7号码头的无人船，另一道从旧海关隧道口出来，贴着它擦过去，又拐回雾里。
+
+        第二道航迹吃水很深，走的正是熄灯那十二分钟里唯一能过的水道。账簿上那艘不在册的船，就是它。
+  - action: set_status
+    with:
+      path: world/harbor-chart/05-accuse.md
+      values:
+        wake: "yes"
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: ✓ 海图上的线钉上了：雾里还有第二道航迹。

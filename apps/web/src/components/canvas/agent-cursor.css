@@ -1,0 +1,164 @@
+/*
+ * The writer's pointer (components/canvas/AgentCursorLayer.tsx).
+ *
+ * Compositor-only motion: the root slides by `transform`, the body counter-scales
+ * by `--agent-cursor-scale` (1 / camera zoom) so the pointer keeps one on-screen
+ * size. Stacking reuses the registered overlay depth token.
+ */
+
+/* End of turn: the pointer lingers, then fades. lib/agent-cursor.ts
+   `CURSOR_IDLE_HIDE_MS` must stay >= hold + fade (asserted in agent-cursor.test). */
+:root {
+  --agent-cursor-hold: 1600ms;
+  --agent-cursor-fade: 1200ms;
+}
+
+.agent-cursor {
+  /* `--agent-cursor-hue` is a character's own colour (inline); the writer keeps rust. */
+  --agent-cursor-color: var(--agent-cursor-hue, var(--ux-color-rust));
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: var(--depth-overlay-performance);
+  pointer-events: none;
+  transition: transform 620ms var(--ux-motion-ink), opacity 480ms ease-out;
+  will-change: transform;
+  /* `backwards`, never `both`: a forwards-filled opacity would pin the pointer
+     at 1 and override the idle fade, so it would vanish instead of fading. */
+  animation: agent-cursor-enter 260ms ease-out backwards;
+}
+
+.agent-cursor[data-state='error'] {
+  --agent-cursor-color: #b3261e;
+}
+
+.agent-cursor[data-idle='true'] {
+  opacity: 0;
+  transition: transform 620ms var(--ux-motion-ink), opacity var(--agent-cursor-fade) ease-in var(--agent-cursor-hold);
+}
+
+/* Target lives in another folder the canvas cannot show: dim, keep the tag. */
+.agent-cursor[data-away='true'] .agent-cursor__pointer {
+  opacity: 0.55;
+}
+
+.agent-cursor__body {
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+  transform: scale(var(--agent-cursor-scale, 1));
+  transform-origin: 0 0;
+}
+
+.agent-cursor[data-state='error'] .agent-cursor__body {
+  animation: agent-cursor-shake 380ms ease-in-out 1;
+}
+
+.agent-cursor__pointer {
+  flex: none;
+  filter: drop-shadow(0 2px 3px rgba(35, 28, 20, 0.35));
+}
+
+.agent-cursor__pointer path {
+  fill: var(--agent-cursor-color);
+  stroke: var(--ux-color-cream);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  transition: fill 200ms ease-out;
+}
+
+/* Writing: the hand keeps moving while the ink flows. */
+.agent-cursor[data-writing='true'] .agent-cursor__pointer {
+  animation: agent-cursor-scribble 900ms ease-in-out infinite;
+}
+
+.agent-cursor__tag {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 20px;
+  padding: 3px 9px 4px;
+  max-width: 260px;
+  border-radius: 999px;
+  background: var(--agent-cursor-color);
+  color: var(--ux-color-cream);
+  box-shadow: var(--ux-shadow-soft);
+  font-family: var(--ux-font-ui);
+  font-size: 12px;
+  line-height: 1.3;
+  white-space: nowrap;
+  transition: background-color 200ms ease-out;
+}
+
+.agent-cursor__name {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.agent-cursor__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.92;
+}
+
+/* The card the pointer is on. Outline, so it never fights a card's own shadow. */
+.object[data-agent-cursor-target] {
+  outline: 2px dashed color-mix(in srgb, var(--ux-color-rust) 70%, transparent);
+  outline-offset: 6px;
+  transition: outline-color 200ms ease-out;
+}
+
+.object[data-agent-cursor-target='error'] {
+  outline-color: color-mix(in srgb, #b3261e 75%, transparent);
+}
+
+/* The outline leaves with the pointer, on the same hold + fade. */
+.object[data-agent-cursor-target='idle'] {
+  outline-color: transparent;
+  transition: outline-color var(--agent-cursor-fade) ease-in var(--agent-cursor-hold);
+}
+
+@keyframes agent-cursor-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes agent-cursor-scribble {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(3px, 1px) rotate(-4deg); }
+  50% { transform: translate(-1px, 2px) rotate(2deg); }
+  75% { transform: translate(2px, -1px) rotate(-2deg); }
+}
+
+@keyframes agent-cursor-shake {
+  0%, 100% { translate: 0 0; }
+  20% { translate: -5px 0; }
+  40% { translate: 5px 0; }
+  60% { translate: -3px 0; }
+  80% { translate: 3px 0; }
+}
+
+.agent-cursor[data-still='true'],
+.agent-cursor[data-still='true'] .agent-cursor__body,
+.agent-cursor[data-still='true'] .agent-cursor__pointer {
+  transition: opacity 120ms linear;
+  animation: none;
+}
+
+/* Still mode skips the glide, not the linger: hold, then a short fade. */
+.agent-cursor[data-still='true'][data-idle='true'] {
+  transition: opacity 240ms linear var(--agent-cursor-hold);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-cursor,
+  .agent-cursor__body,
+  .agent-cursor__pointer {
+    transition: opacity 120ms linear;
+    animation: none !important;
+  }
+
+  .agent-cursor[data-idle='true'] {
+    transition: opacity 240ms linear var(--agent-cursor-hold);
+  }
+}

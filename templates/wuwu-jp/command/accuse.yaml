@@ -1,0 +1,12 @@
+name: 海図の上で告発する
+desc: 四本の線の証拠がすべて鞄にあって初めて暴く。線が揃わないうちは終わらせず、カードに不足の線のヒントだけを残す
+do:
+  - action: end
+    when: has("player/decoy-ship.md") && has("player/customs-tunnel.md") && has("player/ledger-page.md") && has("player/second-wake.md")
+    with:
+      ending: exposed
+  - action: edit
+    when: status.decoy != "yes" || status.tunnel != "yes" || status.ledger != "yes" || status.wake != "yes"
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: 照合した：海図にはまだ留めていない線がある。どこにまだ✓が付いていないか見て、そこへ行って調査判定を一度振れ——潮は待ってくれない。

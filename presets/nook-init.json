@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "nook-init",
+  "name": "Nook Initializer",
+  "description": "Generates the initial furnishings, bearing traces of a life, for a character's or the player's private nook",
+  "delegatable": true,
+  "inheritHistory": 0,
+  "tools": {
+    "deny": [
+      "bash",
+      "recall",
+      "retrieve",
+      "memorize",
+      "revise",
+      "forget",
+      "relocate",
+      "associate",
+      "trigger",
+      "consolidate",
+      "retrace",
+      "set_time",
+      "awaken",
+      "get_state",
+      "state_update"
+    ]
+  },
+  "items": [
+    {
+      "kind": "slot",
+      "id": "nook-init-instruction",
+      "slot": "nook-init-instruction"
+    },
+    {
+      "kind": "slot",
+      "id": "skills",
+      "slot": "skills"
+    }
+  ]
+}

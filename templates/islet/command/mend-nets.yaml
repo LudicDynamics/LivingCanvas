@@ -1,0 +1,11 @@
+name: Mend nets with Nagi
+desc: Sit on the sand mending nets with Nagi
+do:
+  - action: add_state
+    with:
+      target: characters/nagi
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "60"

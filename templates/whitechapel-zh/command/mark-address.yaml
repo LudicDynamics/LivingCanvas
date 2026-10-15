@@ -1,0 +1,8 @@
+name: '钉上一条线：新地址传到了谁手里'
+desc: '客厅、编辑室或无名街的搜查：改过的地址是一个试探，而且有人读到了它'
+do:
+  - action: set_status
+    with:
+      path: world/london-map/03-before-noon.md
+      values:
+        address: "yes"

@@ -1,0 +1,78 @@
+{
+  "sourceRepository": "worldlines-assets",
+  "encoding": "webp-q82",
+  "assets": [
+    {
+      "source": "whitechapel-demo/backgrounds/intro.png",
+      "target": "assets/scenes/intro.webp",
+      "sourceSha256": "bc58fc8d66153507eda751ff469ee7ab17c8a7e4a8d6fb524f43be0f508933c2",
+      "targetSha256": "ae403ec10ab5e02309cc4ede4cc1b63b2aadd8764d806e1c49b56057bb5cf03a"
+    },
+    {
+      "source": "whitechapel-demo/backgrounds/map.png",
+      "target": "assets/scenes/case-board.webp",
+      "sourceSha256": "4e5b910b57c14d1ffe7dda2070fcd2c46762978ba4c8f26b1ec29d676c55b7a4",
+      "targetSha256": "3b3df58cb9c096918725df03b98a8c420226b78bd368b938fc3c1835d177be37"
+    },
+    {
+      "source": "whitechapel-demo/backgrounds/press.png",
+      "target": "assets/scenes/fleet-street-press.webp",
+      "sourceSha256": "65cf2b73497387b94060f774be9c194d499a3e71141561dd822715ea17b16464",
+      "targetSha256": "5c31a084b4e4604d05c9503486bebf81ab0bc1ece2d6ed2b30cde86c9ab26a3c"
+    },
+    {
+      "source": "whitechapel-demo/backgrounds/morgue.png",
+      "target": "assets/scenes/whitechapel-morgue.webp",
+      "sourceSha256": "7a5aa20617fcc92319f9d9c148711f80b8caafb8625ec4a1911b8e501260ca8b",
+      "targetSha256": "69173799309bd2b54449c30a941e68381888f79d2a97182a7e2928f65518c6df"
+    },
+    {
+      "source": "whitechapel-demo/backgrounds/fourth.png",
+      "target": "assets/scenes/fourth-chapter-eve.webp",
+      "sourceSha256": "1c37c1951f8eb19a9e2aff99362ffd94cfb850f384764549d788f82fc61bcf78",
+      "targetSha256": "b12481362c64246804e105992c040708a8900fbe1a36dc9d166d906af31d5c3c"
+    },
+    {
+      "source": "whitechapel-demo/characters/watson/base.png",
+      "target": "assets/characters/watson.webp",
+      "sourceSha256": "43fdcea605e6a296065e35477df0608bcfc5fb7cf399f59d6eea1b25e5c27999",
+      "targetSha256": "75d5201cb95852251aa5e48c274d7fa525dedf063e0bf24b9a56a4602aac24e5"
+    },
+    {
+      "source": "whitechapel-demo/characters/edith/base.png",
+      "target": "assets/characters/edith.webp",
+      "sourceSha256": "386f54c8fa86766a3a0f36f6473bb4c54cb85c7b9721a933a2ff9e4664b63849",
+      "targetSha256": "21d6d864d5bfbcaa6e96ca96fa8bf86e6ea656cab3bde41708319e676313abd8"
+    },
+    {
+      "source": "whitechapel-demo/characters/wayne/base.png",
+      "target": "assets/characters/wayne.webp",
+      "sourceSha256": "1cc8b0c1120a35aaee2d4da301292a2fe3155b2488c42d6a2706c74308c4617d",
+      "targetSha256": "4153f055c0056d9c26188c54a7cd2709a667554feb82d15ab38516b7a9c6564a"
+    },
+    {
+      "source": "whitechapel-demo/characters/blackburn/base.png",
+      "target": "assets/characters/blackburn.webp",
+      "sourceSha256": "56550ce23694564730cbd024a294f719000b7040d26198b8f990e77417b73357",
+      "targetSha256": "b1f7c414cbadf723a306cb6c381dff24ec6b4310014d67d5e3b7258cd99d95dc"
+    },
+    {
+      "source": "whitechapel-demo/characters/tom/base.png",
+      "target": "assets/characters/tom.webp",
+      "sourceSha256": "4f8789f6c0e75724f6a0d4e3d3307acf94f27d8ad03dc6b4f97725b6693ba3b0",
+      "targetSha256": "d1508747a2ba5397c1ce61950abb98d673111ec3fc8a08737505ef2829967ddb"
+    },
+    {
+      "source": "whitechapel-demo/characters/holmes/base.png",
+      "target": "assets/characters/sherlock-holmes.webp",
+      "sourceSha256": "f942c6de9848959b20d804529f6924dc41113f023dbce068ae6ff89a38985733",
+      "targetSha256": "4557e3bdc7dbf3bd0936bd2b3c45ce0aa07215c0fc293a351a9e58e1fee44335"
+    },
+    {
+      "source": "whitechapel-demo/tokens/brasscap.png",
+      "target": "assets/items/brass-portfolio-cap.webp",
+      "sourceSha256": "836fc1d4458d325d55f33e1fb65e9e80b4ff1de2342c6cbcc68cfbd259168b33",
+      "targetSha256": "db71ddd7430dd5347ee33700065350eba1a579b60ec852d1338e0c148ded44f1"
+    }
+  ]
+}

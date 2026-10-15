@@ -1,0 +1,634 @@
+{
+  "by": "xia-cheng",
+  "gap": 3,
+  "hints": [
+    {
+      "id": "lt-notebook",
+      "when": {
+        "layer": "world/seated-car",
+        "has": [
+          "world/seated-car/su-he-notebook.md"
+        ],
+        "lacks": [
+          "player/su-he-notebook.md"
+        ],
+        "idle": 1
+      },
+      "say": "笔记本还摊在17号座上……你先看看？",
+      "suggest": [
+        {
+          "card": "world/seated-car/README.md",
+          "option": "take-notebook"
+        }
+      ],
+      "replies": [
+        "这是她的笔记本？"
+      ],
+      "priority": 80
+    },
+    {
+      "id": "lt-ask",
+      "when": {
+        "layer": "world/seated-car",
+        "has": [
+          "player/su-he-notebook.md"
+        ],
+        "lacks": [
+          "world/seated-car/witness-account.md",
+          "world/seated-car/witness-half.md",
+          "player/witness-account.md",
+          "player/witness-half.md"
+        ],
+        "idle": 1
+      },
+      "say": "20号那个学生好像一直没睡——问问他那会儿看见了什么？",
+      "suggest": [
+        {
+          "card": "world/seated-car/README.md",
+          "option": "search"
+        }
+      ],
+      "replies": [
+        "他一直醒着？"
+      ],
+      "priority": 70
+    },
+    {
+      "id": "lt-coat",
+      "when": {
+        "expr": "has(\"world/seated-car/witness-account.md\") || has(\"player/witness-account.md\")",
+        "unvisited": "world/sleeper"
+      },
+      "say": "灰呢大衣……卧铺3号包厢门口好像就挂着一件。",
+      "suggest": [
+        {
+          "card": "world/seated-car/README.md",
+          "option": "go-sleeper"
+        },
+        {
+          "enter": "world/sleeper",
+          "label": "去车尾的卧铺（3车）"
+        }
+      ],
+      "replies": [
+        "灰呢大衣……你见过谁穿吗？"
+      ],
+      "priority": 75
+    },
+    {
+      "id": "lt-coat-half",
+      "when": {
+        "expr": "has(\"world/seated-car/witness-half.md\") || has(\"player/witness-half.md\")",
+        "lacks": [
+          "world/seated-car/witness-account.md",
+          "player/witness-account.md"
+        ],
+        "unvisited": "world/sleeper"
+      },
+      "say": "有人扶她往车尾走……往车尾去，头一节就是卧铺。",
+      "suggest": [
+        {
+          "card": "world/seated-car/README.md",
+          "option": "go-sleeper"
+        },
+        {
+          "enter": "world/sleeper",
+          "label": "去车尾的卧铺（3车）"
+        }
+      ],
+      "priority": 74
+    },
+    {
+      "id": "lt-move-on",
+      "when": {
+        "layer": "world/seated-car",
+        "expr": "world.turns >= 4",
+        "idle": 1,
+        "unvisited": "world/sleeper"
+      },
+      "say": "这节车厢先这样吧。往车尾去是卧铺——或者回整列车看看？",
+      "suggest": [
+        {
+          "card": "world/seated-car/README.md",
+          "option": "go-sleeper"
+        },
+        {
+          "card": "world/seated-car/README.md",
+          "option": "go-train"
+        }
+      ],
+      "priority": 45
+    },
+    {
+      "id": "lt-overview",
+      "when": {
+        "layer": "map"
+      },
+      "say": "一点多了，五点发车。卧铺、餐车、驾驶室都能去——先去哪节？",
+      "replies": [
+        "钥匙平时挂在哪儿？"
+      ],
+      "priority": 60,
+      "inspire": {
+        "vague": "三节车厢，各有各的不对劲。"
+      }
+    },
+    {
+      "id": "lt-coat-look",
+      "when": {
+        "layer": "world/sleeper",
+        "idle": 1
+      },
+      "say": "门口那件大衣……你凑近看看下摆？",
+      "suggest": [
+        {
+          "card": "world/sleeper/README.md",
+          "option": "read-coat"
+        }
+      ],
+      "replies": [
+        "这件大衣是谁的？"
+      ],
+      "priority": 55
+    },
+    {
+      "id": "lt-sleeper-search",
+      "when": {
+        "layer": "world/sleeper",
+        "lacks": [
+          "world/sleeper/pill-strip.md",
+          "player/pill-strip.md",
+          "world/sleeper/pill-strip-half.md"
+        ],
+        "idle": 3
+      },
+      "say": "他背对着门躺着……要不趁他睡着，看看枕头底下？",
+      "suggest": [
+        {
+          "card": "world/sleeper/README.md",
+          "option": "search"
+        }
+      ],
+      "priority": 50,
+      "inspire": {
+        "vague": "钟先生睡得真沉……真的吗？",
+        "sharp": "他背对着门一动不动，呼吸却不像睡着。枕头底下压着东西——趁现在用骰子搜他的包厢。"
+      }
+    },
+    {
+      "id": "lt-pills-long",
+      "when": {
+        "layer": "world/sleeper",
+        "has": [
+          "world/sleeper/pill-strip-half.md"
+        ],
+        "lacks": [
+          "player/pill-strip.md",
+          "world/sleeper/pill-strip.md"
+        ],
+        "idle": 1
+      },
+      "say": "我去叫他出来查票，拖住他一会儿——你趁机翻枕头。",
+      "suggest": [
+        {
+          "card": "world/sleeper/05-long-way.md",
+          "option": "long-way"
+        }
+      ],
+      "priority": 65
+    },
+    {
+      "id": "lt-pill-take",
+      "when": {
+        "has": [
+          "world/sleeper/pill-strip.md"
+        ],
+        "lacks": [
+          "player/pill-strip.md"
+        ]
+      },
+      "say": "药板收好。少了两粒——他可说自己睡得很沉。",
+      "suggest": [
+        {
+          "card": "world/sleeper/search-scene.md",
+          "option": "collect-reward-0"
+        }
+      ],
+      "priority": 88
+    },
+    {
+      "id": "lt-bill-1",
+      "group": "bill",
+      "level": 1,
+      "when": {
+        "layer": "world/dining-car",
+        "lacks": [
+          "player/tea-bill.md"
+        ],
+        "idle": 1
+      },
+      "say": "4号桌还没收拾。",
+      "replies": [
+        "两只杯子都是谁用的？"
+      ],
+      "priority": 55
+    },
+    {
+      "id": "lt-bill-2",
+      "group": "bill",
+      "level": 2,
+      "when": {
+        "layer": "world/dining-car",
+        "lacks": [
+          "player/tea-bill.md"
+        ],
+        "idle": 3
+      },
+      "say": "桌角压着的那张小票……记的是谁的账？",
+      "priority": 56
+    },
+    {
+      "id": "lt-bill-3",
+      "group": "bill",
+      "level": 3,
+      "when": {
+        "layer": "world/dining-car",
+        "lacks": [
+          "player/tea-bill.md"
+        ],
+        "idle": 5
+      },
+      "say": "把那张小票拿上吧，调度会要凭据的。",
+      "suggest": [
+        {
+          "card": "world/dining-car/README.md",
+          "option": "take-bill"
+        }
+      ],
+      "priority": 57
+    },
+    {
+      "id": "lt-key-search",
+      "when": {
+        "layer": "world/dining-car",
+        "lacks": [
+          "world/dining-car/freight-key.md",
+          "player/freight-key.md",
+          "world/dining-car/freight-key-half.md"
+        ],
+        "idle": 2,
+        "visited": "world/cab"
+      },
+      "say": "行李车的钥匙不在驾驶室……会不会被人扔在这节车里了？",
+      "suggest": [
+        {
+          "card": "world/dining-car/README.md",
+          "option": "search"
+        }
+      ],
+      "priority": 52,
+      "inspire": {
+        "vague": "一把不想被人看见的钥匙，会被扔在哪儿？",
+        "sharp": "钥匙要是被人随手扔掉，餐车里最不起眼的就是开水炉边上的煤斗。用骰子搜一搜。"
+      }
+    },
+    {
+      "id": "lt-key-search-fresh",
+      "when": {
+        "layer": "world/dining-car",
+        "lacks": [
+          "world/dining-car/freight-key.md",
+          "player/freight-key.md",
+          "world/dining-car/freight-key-half.md"
+        ],
+        "idle": 2,
+        "unvisited": "world/cab"
+      },
+      "say": "5车的钥匙平时挂在驾驶室。要是有人动过它……会不会扔在这节车里了？",
+      "suggest": [
+        {
+          "card": "world/dining-car/README.md",
+          "option": "search"
+        }
+      ],
+      "priority": 52,
+      "inspire": {
+        "vague": "一把不想被人看见的钥匙，会被扔在哪儿？",
+        "sharp": "钥匙要是被人随手扔掉，餐车里最不起眼的就是开水炉边上的煤斗。用骰子搜一搜。"
+      }
+    },
+    {
+      "id": "lt-key-miss",
+      "when": {
+        "layer": "world/dining-car",
+        "expr": "clock.left >= 2",
+        "has": [
+          "world/dining-car/freight-key-half.md"
+        ],
+        "lacks": [
+          "player/freight-key.md",
+          "world/dining-car/freight-key.md"
+        ],
+        "idle": 1
+      },
+      "say": "煤斗那边……要不请老贺帮忙，把它倒出来看看？",
+      "suggest": [
+        {
+          "card": "world/dining-car/05-long-way.md",
+          "option": "long-way"
+        }
+      ],
+      "priority": 65
+    },
+    {
+      "id": "lt-key-miss-late",
+      "when": {
+        "layer": "world/dining-car",
+        "expr": "clock.left <= 1",
+        "has": [
+          "world/dining-car/freight-key-half.md"
+        ],
+        "lacks": [
+          "player/freight-key.md",
+          "world/dining-car/freight-key.md"
+        ],
+        "idle": 1
+      },
+      "say": "倒煤斗得花好一阵……可离五点只剩这一点时间了，倒完就来不及去开行李车了。",
+      "priority": 65
+    },
+    {
+      "id": "lt-key-take",
+      "when": {
+        "has": [
+          "world/dining-car/freight-key.md"
+        ],
+        "lacks": [
+          "player/freight-key.md"
+        ]
+      },
+      "say": "钥匙！先揣好，别再让人拿走了。",
+      "suggest": [
+        {
+          "card": "world/dining-car/search-scene.md",
+          "option": "collect-reward-0"
+        }
+      ],
+      "priority": 90
+    },
+    {
+      "id": "lt-key",
+      "when": {
+        "has": [
+          "player/freight-key.md"
+        ],
+        "unvisited": "world/freight-car"
+      },
+      "say": "这是5车的钥匙！行李车平时锁着——她会不会在那儿？",
+      "suggest": [
+        {
+          "enter": "world/freight-car",
+          "label": "去5车行李车"
+        }
+      ],
+      "replies": [
+        "行李车平时锁着？"
+      ],
+      "priority": 85
+    },
+    {
+      "id": "lt-late-key",
+      "when": {
+        "expr": "clock.left <= 3",
+        "has": [
+          "player/freight-key.md"
+        ],
+        "unvisited": "world/freight-car"
+      },
+      "say": "快三点半了。先去5车，别的路上再说。",
+      "suggest": [
+        {
+          "enter": "world/freight-car",
+          "label": "去5车行李车"
+        }
+      ],
+      "priority": 95
+    },
+    {
+      "id": "lt-late-nokey",
+      "when": {
+        "expr": "clock.left <= 3",
+        "lacks": [
+          "player/freight-key.md"
+        ],
+        "visited": "world/cab"
+      },
+      "say": "快三点半了。行李车的钥匙不在驾驶室……餐车那边再找找？",
+      "suggest": [
+        {
+          "enter": "world/dining-car",
+          "label": "去4车餐车"
+        }
+      ],
+      "priority": 94
+    },
+    {
+      "id": "lt-late-nokey-fresh",
+      "when": {
+        "expr": "clock.left <= 3",
+        "lacks": [
+          "player/freight-key.md"
+        ],
+        "unvisited": "world/cab"
+      },
+      "say": "快三点半了。5车的钥匙平时挂在驾驶室——先去驾驶室看看？",
+      "suggest": [
+        {
+          "enter": "world/cab",
+          "label": "去1车驾驶室"
+        }
+      ],
+      "priority": 94
+    },
+    {
+      "id": "lt-cab",
+      "when": {
+        "layer": "world/cab",
+        "lacks": [
+          "player/su-he-testimony.md"
+        ],
+        "idle": 1
+      },
+      "say": "调度只信证据。人在哪、是谁、凭什么——三样都得有。",
+      "priority": 40,
+      "inspire": {
+        "vague": "调度会问的，大概不止一件事。",
+        "sharp": "调度要三样：苏禾人在哪（找到她本人）、是谁干的（日志页，或者药板加小票）、凭什么这么说。缺哪样补哪样。"
+      }
+    },
+    {
+      "id": "lt-freight",
+      "when": {
+        "layer": "world/freight-car",
+        "lacks": [
+          "player/su-he-testimony.md"
+        ]
+      },
+      "say": "苏禾！……先扶她起来，听她说。",
+      "suggest": [
+        {
+          "card": "world/freight-car/README.md",
+          "option": "take-testimony"
+        }
+      ],
+      "replies": [
+        "她还有呼吸吗？"
+      ],
+      "priority": 90
+    },
+    {
+      "id": "lt-confront",
+      "when": {
+        "layer": "world/freight-car",
+        "has": [
+          "player/su-he-testimony.md"
+        ],
+        "lacks": [
+          "world/freight-car/logbook-page.md",
+          "player/logbook-page.md",
+          "world/freight-car/torn-corner.md",
+          "player/torn-corner.md"
+        ],
+        "idle": 1
+      },
+      "say": "门口……钟怀礼来了。他的手按在大衣内袋上。",
+      "suggest": [
+        {
+          "card": "world/freight-car/README.md",
+          "option": "confront"
+        }
+      ],
+      "priority": 80
+    },
+    {
+      "id": "lt-log-take",
+      "when": {
+        "has": [
+          "world/freight-car/logbook-page.md"
+        ],
+        "lacks": [
+          "player/logbook-page.md"
+        ]
+      },
+      "say": "日志页收好——这一页，他找了十二年。",
+      "suggest": [
+        {
+          "card": "world/freight-car/04-confront-dice.md",
+          "option": "collect-reward-0"
+        }
+      ],
+      "priority": 92
+    },
+    {
+      "id": "lt-sustain",
+      "when": {
+        "expr": "has(\"world/freight-car/torn-corner.md\") || has(\"player/torn-corner.md\")",
+        "lacks": [
+          "player/pill-strip.md"
+        ]
+      },
+      "say": "光凭这一角，调度不会信。他枕头底下的药、餐车那张小票——都得带上。",
+      "priority": 70
+    },
+    {
+      "id": "lt-report-a",
+      "when": {
+        "has": [
+          "player/su-he-testimony.md",
+          "player/logbook-page.md"
+        ]
+      },
+      "say": "够了。我去驾驶室叫岭口调度——还是你去？",
+      "suggest": [
+        {
+          "card": "world/freight-car/06-radio-relay.md",
+          "option": "relay"
+        },
+        {
+          "enter": "world/cab",
+          "label": "自己回驾驶室用电台"
+        }
+      ],
+      "replies": [
+        "我们报给调度吧。"
+      ],
+      "priority": 98
+    },
+    {
+      "id": "lt-report-b",
+      "when": {
+        "expr": "has(\"world/freight-car/torn-corner.md\") || has(\"player/torn-corner.md\")",
+        "has": [
+          "player/su-he-testimony.md",
+          "player/pill-strip.md",
+          "player/tea-bill.md"
+        ],
+        "lacks": [
+          "player/logbook-page.md"
+        ]
+      },
+      "say": "药板、小票，加上她的话……够了。我去叫调度——还是你去？",
+      "suggest": [
+        {
+          "card": "world/freight-car/06-radio-relay.md",
+          "option": "relay"
+        },
+        {
+          "enter": "world/cab",
+          "label": "自己回驾驶室用电台"
+        }
+      ],
+      "replies": [
+        "我们报给调度吧。"
+      ],
+      "priority": 97
+    },
+    {
+      "id": "lt-report-b-away",
+      "when": {
+        "layer": [
+          "map",
+          "world/seated-car",
+          "world/sleeper",
+          "world/dining-car",
+          "world/cab"
+        ],
+        "has": [
+          "player/su-he-testimony.md",
+          "player/pill-strip.md",
+          "player/tea-bill.md"
+        ],
+        "lacks": [
+          "player/logbook-page.md",
+          "world/freight-car/torn-corner.md",
+          "player/torn-corner.md"
+        ]
+      },
+      "say": "药板、小票，加上她的话……够了。我去叫调度——还是你去？",
+      "suggest": [
+        {
+          "card": "world/freight-car/06-radio-relay.md",
+          "option": "relay"
+        },
+        {
+          "enter": "world/cab",
+          "label": "自己回驾驶室用电台"
+        }
+      ],
+      "replies": [
+        "我们报给调度吧。"
+      ],
+      "priority": 97
+    }
+  ]
+}

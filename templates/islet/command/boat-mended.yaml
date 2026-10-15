@@ -1,0 +1,22 @@
+name: The mended boat goes in
+desc: With enough driftwood Kenta finishes the boat, launches it and hands you the tiller
+do:
+  - action: set_state
+    with:
+      target: world
+      state: boat_fixed
+      value: "true"
+  - action: give
+    with:
+      path: player/boat-tiller.md
+      title: The mended boat's tiller
+      body: A new tiller Kenta carved himself; the grip still smells of wood shavings. With it you can sail to Kelp Islet and Bird Rock. Never put out in a storm.
+  - action: event
+    with:
+      target: world/dock
+      title: The mended boat goes in
+      text: 'Kenta nails on the last plank and steps back to look for a long time. Together everyone pushes the boat down the slip; it rocks twice in the water and settles, steady. Kenta presses a freshly carved tiller into your hand and says only: "When the weather is fine, go and see the outer islets."'
+  - action: show_cg
+    with:
+      path: assets/cg/boat-launch.webp
+      caption: The mended boat slides down into the sea.

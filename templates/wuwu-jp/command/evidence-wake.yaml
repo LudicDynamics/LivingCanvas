@@ -1,0 +1,23 @@
+name: 四本目の糸を留める：第二の航跡
+desc: 海図上の決定的判定に成功（60以下）するか遠回りをした後、「第二の航跡」を証拠として鞄に入れ、海図にチェックを入れる
+do:
+  - action: give
+    with:
+      path: player/second-wake.md
+      title: 証拠・霧の中の第二の航跡
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        海図には二本の航跡が並んで描かれている。一本は7番埠頭に漂い込んだ無人船、もう一本は旧税関隧道の出口から出て、それに擦り寄るように通り過ぎ、また霧の中へ戻っていく。
+
+        第二の航跡は喫水が深く、通ったのは灯が消えた十二分のうち唯一通れる水路だった。帳簿に載っていないあの船こそ、これだ。
+  - action: set_status
+    with:
+      path: world/harbor-chart/05-accuse.md
+      values:
+        wake: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: ✓ 海図の糸を留めた：霧の中にもう一本、第二の航跡がある。

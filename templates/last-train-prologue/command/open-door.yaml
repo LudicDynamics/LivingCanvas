@@ -1,0 +1,29 @@
+name: The door at the rear
+desc: Once the passengers are asked, by turn eight, or when time runs short, the door to Car 5 appears at the end of Car 2 (no key in the prologue).
+do:
+- action: give
+  with:
+    path: world/seated-car/freight-door.md
+    title: Car 5 · Baggage Car
+    frontmatter:
+      type: gate
+      target: world/freight-car
+      choice:
+        options:
+        - id: go
+          label: Go to Car 5
+        - id: together
+          label: Go with Xia Cheng
+      choice_actions:
+        go:
+          kind: enter
+          target: world/freight-car
+        together:
+          kind: enter
+          target: world/freight-car
+    body: The door at the end of the car, the one to the baggage car, is not locked, only jammed. Cold air seeps through the gap.
+- action: event
+  with:
+    target: characters/xia-cheng
+    title: A sound from the rear
+    text: Xia Cheng suddenly looks up. "Listen. Something moved over in Car 5. That door is always locked, and now... it looks open a crack."

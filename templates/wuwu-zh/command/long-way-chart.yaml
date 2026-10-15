@@ -1,0 +1,17 @@
+name: 绕远路：海图
+desc: 海图上的决定性判定没看清之后，沿着岸边追水痕。多耗一段潮水；手里的半条线（水痕）收进完整的证据
+do:
+  - action: edit
+    when: 'has("player/second-wake-half.md")'
+    with:
+      path: player/second-wake-half.md
+      frontmatter:
+        title: 半条线 · 已补全（见包里的证据）
+  - action: set_status
+    with:
+      path: world/harbor-chart/06-long-way.md
+      values:
+        done: "yes"
+  - action: tick
+    with:
+      by: "-1"

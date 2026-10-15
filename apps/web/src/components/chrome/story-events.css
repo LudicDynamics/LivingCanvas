@@ -1,0 +1,49 @@
+/* Event cards (components/chrome/StoryEvents.tsx): under the top chrome, centred. */
+
+.story-events {
+  position: fixed;
+  top: 74px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--depth-chrome-badge);
+  display: grid;
+  gap: 8px;
+  width: min(460px, calc(100vw - 32px));
+  pointer-events: none;
+}
+
+.story-event {
+  pointer-events: auto;
+  display: grid;
+  gap: 3px;
+  padding: 12px 16px;
+  border: 0;
+  border-left: 3px solid var(--ux-color-rust);
+  border-radius: var(--ux-radius-panel);
+  background: var(--ux-color-cream);
+  color: var(--ux-color-ink);
+  box-shadow: var(--ux-shadow-soft);
+  text-align: left;
+  cursor: pointer;
+  animation: story-event-in var(--ux-motion-panel) var(--ux-motion-ink);
+}
+.story-event[data-kind='item'] { border-left-color: var(--ux-color-ink); }
+.story-event[data-kind='place'] { border-left-color: color-mix(in srgb, var(--ux-color-rust) 45%, var(--ux-color-ink)); }
+
+.story-event__where {
+  font-family: var(--ux-font-ui);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  opacity: 0.6;
+}
+.story-event__title { font-family: var(--ux-font-human); font-size: 16px; }
+.story-event__text { font-family: var(--ux-font-human); font-size: 14px; line-height: 1.6; }
+
+@keyframes story-event-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-event { animation: none; }
+}

@@ -1,0 +1,236 @@
+/* Account panel (components/chrome/AccountPanel.tsx): borrows the contact
+   panel's trigger and sheet; only its own lines and the one action are styled here. */
+
+.account-panel__sheet { min-width: 260px; }
+
+.account-panel__line {
+  margin: 6px 0 2px;
+  font: 600 15px/1.5 var(--ux-font-ui);
+  overflow-wrap: anywhere;
+}
+
+.account-panel__note {
+  margin: 0 0 12px;
+  font: 13px/1.6 var(--ux-font-ui);
+  opacity: 0.72;
+}
+
+.account-panel__note code { font-size: 12px; }
+
+/* Opened by the play / publish gate: why the player is being asked to sign in. */
+.account-panel__reason {
+  margin: 4px 0 8px;
+  padding: 8px 10px;
+  border-left: 3px solid var(--ux-color-rust);
+  font: 600 13px/1.5 var(--ux-font-ui);
+}
+
+/* The guest trial's prompts: the newcomer gift and "nothing is lost" under the reason. */
+.account-panel__gift {
+  display: block;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.account-panel__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 18px;
+  border-radius: var(--ux-radius-pill);
+  background: var(--ux-color-rust);
+  color: var(--ux-color-cream);
+  font: 600 14px/1 var(--ux-font-ui);
+  text-decoration: none;
+}
+
+.account-panel__action:hover { filter: brightness(1.08); }
+
+/* Local sign-in (useRemoteAccount): Google, or email → code. The rules are
+   scoped under the sheet so the world header's `button` defaults don't win. */
+.account-panel__sheet .account-panel__action {
+  min-height: 40px;
+  border: 0;
+  cursor: pointer;
+}
+
+.account-panel__sheet .account-panel__action:disabled,
+.account-panel__sheet .account-panel__secondary:disabled { opacity: .5; cursor: default; }
+
+.account-panel__form {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.account-panel__field {
+  display: grid;
+  gap: 4px;
+  margin-top: 4px;
+  font: 13px/1.4 var(--ux-font-ui);
+}
+
+.account-panel__field input {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid var(--glass-line, rgba(255, 255, 255, .22));
+  border-radius: var(--ux-radius-touch);
+  background: var(--ux-color-cream);
+  color: var(--ux-color-ink);
+  font: 15px/1.2 var(--ux-font-ui);
+  box-sizing: border-box;
+}
+
+.account-panel__sheet .account-panel__secondary {
+  min-height: 40px;
+  padding: 8px 18px;
+  border: 1px solid var(--glass-line, rgba(255, 255, 255, .22));
+  border-radius: var(--ux-radius-pill);
+  background: transparent;
+  color: var(--ux-color-cream);
+  font: 600 14px/1 var(--ux-font-ui);
+  cursor: pointer;
+}
+
+.account-panel__status {
+  margin: 10px 0 0;
+  font: 13px/1.5 var(--ux-font-ui);
+  overflow-wrap: anywhere;
+}
+
+.account-panel__status--error { padding-left: 8px; border-left: 3px solid var(--ux-color-rust); font-weight: 600; }
+
+
+/* 托管方案 (PlansPreview.tsx): the membership tiers and links to the billing site. */
+.plans-preview { margin-top: 12px; }
+.account-panel__sheet .plans-preview__toggle {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.plans-preview__sheet { display: grid; gap: 10px; max-width: min(360px, calc(100vw - 32px)); min-width: 0; }
+.plans-preview__heading { margin: 0; font: 600 14px/1.4 var(--ux-font-ui); }
+.plans-preview__tiers { display: grid; gap: 8px; }
+.plans-preview__block {
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--glass-line, rgba(255, 255, 255, .22));
+  border-radius: var(--ux-radius-touch);
+}
+.plans-preview__block[data-current] { border-color: var(--ux-color-rust); }
+/* 方案主视觉 (lib/plan-art.ts): a 3:1 strip on top of each tier block, decorative, no text on it */
+.plans-preview__art { position: relative; overflow: hidden; aspect-ratio: 3 / 1; margin: -2px -4px 6px; border-radius: calc(var(--ux-radius-touch) - 4px); background: rgba(4, 5, 12, .6); }
+.plans-preview__art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.plans-preview__art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(4, 5, 12, .45), rgba(4, 5, 12, 0) 55%); pointer-events: none; }
+.plans-preview__title { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; font: 600 13px/1.5 var(--ux-font-ui); }
+.plans-preview__badge { padding: 1px 8px; border-radius: var(--ux-radius-pill); background: var(--ux-color-rust); color: var(--ux-color-cream); font: 600 11px/1.5 var(--ux-font-ui); }
+.plans-preview__price { margin: 2px 0 0; font: 600 13px/1.5 var(--ux-font-ui); overflow-wrap: anywhere; }
+.plans-preview__yearly { margin-left: 6px; font-weight: 400; opacity: .72; }
+.plans-preview__lines { margin: 2px 0 0; padding-left: 18px; font: 12px/1.6 var(--ux-font-ui); overflow-wrap: anywhere; }
+.plans-preview__notes { margin: 0; padding-left: 18px; font: 12px/1.6 var(--ux-font-ui); opacity: .72; overflow-wrap: anywhere; }
+.plans-preview__actions { display: flex; flex-wrap: wrap; gap: 8px; }
+/* 卡面角色 (lib/plan-look.ts): a quiet row of pressed-state chips under the heading */
+.plans-preview__look { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.plans-preview__look-label { font: 500 11px/1.4 var(--ux-font-ui); letter-spacing: .04em; color: var(--ux-ink-muted, rgba(245, 243, 238, .7)); margin-right: 2px; }
+.account-panel__sheet .plans-preview__look-option {
+  min-height: 32px; padding: 4px 10px; border: 1px solid rgba(255, 255, 255, .18); border-radius: 999px;
+  background: rgba(255, 255, 255, .06); color: inherit; font: 500 12px/1.2 var(--ux-font-ui); cursor: pointer;
+}
+.account-panel__sheet .plans-preview__look-option[aria-pressed="true"] { background: rgba(245, 243, 238, .92); border-color: transparent; color: #0b0d16; }
+.account-panel__sheet .plans-preview__look-option:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.account-panel__sheet .plans-preview__actions a { min-height: 40px; box-sizing: border-box; text-align: center; }
+.account-panel__sheet a.account-panel__secondary { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+/* 「输入兑换码」 (RedeemCode.tsx) under the plan line; a 体验会员's end date on the plan line. */
+.plans-preview__redeem { display: grid; gap: 8px; margin: 6px 0 0; max-width: min(360px, calc(100vw - 32px)); }
+.plans-preview__redeem input { text-transform: uppercase; letter-spacing: .08em; }
+.plans-preview__trial, .plans-preview__ending { white-space: nowrap; }
+.plans-preview__legal { justify-self: start; font: 12px/1.5 var(--ux-font-ui); color: inherit; opacity: .72; overflow-wrap: anywhere; }
+
+/* 「API key」 (ApiKeys.tsx): a personal key for the Worldlines model gateway, shown once. */
+.api-keys { margin-top: 12px; }
+.account-panel__sheet .api-keys__toggle { padding: 0; border: 0; background: none; color: inherit; font: inherit; text-decoration: underline; cursor: pointer; }
+.api-keys__body { display: grid; gap: 8px; margin-top: 8px; max-width: min(360px, calc(100vw - 32px)); }
+.api-keys__howto { margin: 0; padding-left: 18px; font: 12px/1.6 var(--ux-font-ui); overflow-wrap: anywhere; }
+.api-keys__fresh { display: grid; gap: 6px; padding: 8px; border: 1px solid var(--glass-line, rgba(255, 255, 255, .22)); border-radius: var(--ux-radius-touch); }
+.api-keys__warn { margin: 0; font: 600 12px/1.5 var(--ux-font-ui); }
+.api-keys__value { display: block; padding: 6px 8px; font: 12px/1.4 ui-monospace, monospace; overflow-wrap: anywhere; user-select: all; }
+.api-keys__row { display: flex; flex-wrap: wrap; gap: 8px; }
+.api-keys__list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.api-keys__item { display: grid; gap: 2px; }
+.api-keys__name { font: 600 13px/1.4 var(--ux-font-ui); overflow-wrap: anywhere; }
+.api-keys__meta { font: 12px/1.5 var(--ux-font-ui); opacity: .72; overflow-wrap: anywhere; }
+.account-panel__field select { width: 100%; min-height: 40px; padding: 8px 10px; border-radius: var(--ux-radius-touch); background: var(--ux-color-cream); color: var(--ux-color-ink); font: 15px/1.2 var(--ux-font-ui); box-sizing: border-box; }
+
+/* The optional public nickname (NicknameField.tsx). */
+.account-panel__nickname { display: grid; gap: 6px; margin: 8px 0; }
+.account-panel__nickname label { display: grid; gap: 4px; }
+.account-panel__nickname input { font: inherit; padding: 6px 8px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, .3); background: rgba(10, 11, 18, .5); color: inherit; }
+.account-panel__nickname-actions { display: flex; gap: 6px; }
+
+/* 「模型与密钥」 (LocalKeySettings.tsx): Worldlines credits ↔ the player's own keys, kept in this browser only. */
+.local-key { display: grid; gap: 6px; min-width: 0; max-width: min(360px, calc(100vw - 32px)); margin: 12px 0 0; padding: 0; border: 0; }
+.local-key__legend { padding: 0; font: 600 14px/1.4 var(--ux-font-ui); }
+.local-key__notice { margin: 0; padding: 6px 8px; border-left: 3px solid var(--ux-color-rust); font: 600 12px/1.6 var(--ux-font-ui); overflow-wrap: anywhere; }
+.local-key__choice { display: flex; align-items: center; gap: 8px; min-height: 32px; font: 13px/1.4 var(--ux-font-ui); }
+.local-key__body { display: grid; gap: 8px; }
+.local-key__import { display: grid; gap: 4px; font: 12px/1.5 var(--ux-font-ui); opacity: .85; overflow-wrap: anywhere; }
+.local-key__import input { max-width: 100%; font: inherit; }
+.local-key__row { display: flex; flex-wrap: wrap; gap: 8px; }
+.local-key__keys { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.local-key__key { display: grid; gap: 4px; }
+.local-key__key-name { font: 600 13px/1.4 var(--ux-font-ui); overflow-wrap: anywhere; }
+.local-key__add { display: grid; gap: 8px; padding: 8px; border: 1px solid var(--glass-line, rgba(255, 255, 255, .22)); border-radius: var(--ux-radius-touch); }
+.local-key__lead { margin: 0; font: 600 12px/1.6 var(--ux-font-ui); overflow-wrap: anywhere; }
+.local-key__hint { font: 12px/1.5 var(--ux-font-ui); opacity: .72; overflow-wrap: anywhere; }
+p.local-key__hint { margin: 0; }
+/* The four jobs, one provider + model per row (rows wait, disabled, until a capable key exists). */
+.local-key__jobs { width: 100%; border-collapse: collapse; table-layout: fixed; border: 1px solid var(--glass-line, rgba(255, 255, 255, .22)); border-radius: var(--ux-radius-touch); font: 13px/1.4 var(--ux-font-ui); }
+.local-key__caption { padding: 0 0 4px; text-align: left; font: 600 13px/1.4 var(--ux-font-ui); }
+.local-key__jobs thead th { padding: 6px 8px; text-align: left; font: 600 11px/1.3 var(--ux-font-ui); opacity: .72; border-bottom: 1px solid var(--glass-line, rgba(255, 255, 255, .22)); }
+.local-key__jobs thead th:first-child { width: 34%; }
+.local-key__jobs tbody tr + tr > * { border-top: 1px solid var(--glass-line, rgba(255, 255, 255, .14)); }
+.local-key__job { padding: 8px; text-align: left; vertical-align: top; font-weight: 600; overflow-wrap: anywhere; }
+.local-key__job small { display: block; margin-top: 2px; font: 11px/1.4 var(--ux-font-ui); opacity: .72; }
+.local-key__job-td { padding: 8px; vertical-align: top; min-width: 0; }
+.local-key__job-cell { display: grid; gap: 6px; min-width: 0; }
+.local-key__job-cell select, .local-key__job-cell input:not([type]), .local-key__caps--form input:not([type="checkbox"]) { width: 100%; min-height: 40px; padding: 8px 10px; border: 1px solid var(--glass-line, rgba(255, 255, 255, .22)); border-radius: var(--ux-radius-touch); background: var(--ux-color-cream); color: var(--ux-color-ink); font: 15px/1.2 var(--ux-font-ui); box-sizing: border-box; min-width: 0; }
+.local-key__use[aria-disabled="true"] > * { opacity: .55; }
+.local-key__use[aria-disabled="true"] select { cursor: not-allowed; }
+.local-key__result { font: 12px/1.5 var(--ux-font-ui); overflow-wrap: anywhere; }
+.local-key__result--error { color: var(--ux-color-rust, #e07a5f); }
+.local-key__offer { display: grid; gap: 6px; padding: 8px; border: 1px dashed var(--ux-color-rust); border-radius: var(--ux-radius-touch); }
+.local-key__can { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 0; padding: 0; list-style: none; font: 12px/1.6 var(--ux-font-ui); }
+.local-key__can [data-can="no"] { opacity: .5; }
+.local-key__caps { display: flex; flex-wrap: wrap; gap: 4px 12px; font: 12px/1.6 var(--ux-font-ui); }
+.local-key__caps--form { display: grid; gap: 6px; }
+.local-key__cap { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; }
+.local-key__cap-row { display: grid; gap: 4px; }
+.local-key__stays { margin: 0; padding-left: 18px; font: 12px/1.6 var(--ux-font-ui); opacity: .72; overflow-wrap: anywhere; }
+.account-panel__sheet .local-key__toggle { justify-self: start; padding: 0; border: 0; background: none; color: inherit; font: 13px/1.5 var(--ux-font-ui); text-decoration: underline; cursor: pointer; }
+
+/* 「领取今日额度」 (DailyClaim.tsx): a quiet line in the balance area; the prompt only after a claim_required refusal */
+.daily-claim { display: grid; gap: 6px; }
+.daily-claim__line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; }
+.daily-claim__button { padding: 2px 10px; font-size: 12px; }
+.daily-claim__prompt {
+  position: fixed; right: max(16px, calc(env(safe-area-inset-right) + 16px)); bottom: max(132px, calc(env(safe-area-inset-bottom) + 108px)); z-index: var(--depth-notice);
+  width: min(340px, calc(100vw - 32px)); padding: 12px 36px 12px 14px;
+  border-radius: 10px; background: var(--ux-color-paper, #f6f1e6); color: var(--ux-color-ink, #2b2620);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .22); display: grid; gap: 6px;
+}
+.daily-claim__prompt-text { margin: 0; font-size: 13px; line-height: 1.5; }
+.daily-claim__close { position: absolute; top: 6px; right: 8px; border: 0; background: none; font-size: 18px; line-height: 1; cursor: pointer; color: inherit; }
+.daily-claim__prompt .daily-claim__button {
+  border: 1px solid currentColor; border-radius: 6px; background: transparent; color: inherit; cursor: pointer;
+}
+.daily-claim__prompt .daily-claim__button:disabled { opacity: .5; cursor: default; }
+/* 「个人页面」 (components/profile/ProfilePage.tsx): the entry, first under the heading. */
+.account-panel__sheet .account-panel__profile { display: block; width: 100%; margin: 2px 0 10px; }

@@ -1,0 +1,11 @@
+name: 도마 곁에 있기
+desc: 부두에서 도마와 한 시간 앉아 있는다
+do:
+  - action: add_state
+    with:
+      target: characters/toma
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "60"

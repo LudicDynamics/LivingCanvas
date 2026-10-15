@@ -1,0 +1,653 @@
+/* Board — map mode's stage. Every colour is mixed from the
+   canonical `--ux-*` tokens; the board invents no palette of its own. The
+   scene art stays behind it, dimmed, so each world still looks like itself. */
+
+.board {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background: color-mix(in srgb, var(--ux-color-ink) 78%, transparent);
+  color: var(--ux-color-cream);
+  overflow: hidden;
+}
+
+/* The newest narration, one paragraph, above the map: what the canvas said as
+   chalk, the map says as a caption. */
+.board__narration {
+  margin: 0;
+  padding: 88px max(20px, 18vw) 6px;
+  font-family: var(--ux-font-human);
+  font-size: 15px;
+  line-height: 1.6;
+  text-align: center;
+  color: color-mix(in srgb, var(--ux-color-cream) 88%, transparent);
+  text-wrap: pretty;
+}
+
+.board__svg {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+/* ---- floor ---- */
+.board-tile {
+  stroke: color-mix(in srgb, var(--ux-color-ink) 45%, transparent);
+  stroke-width: 1;
+}
+.board-tile--grass { fill: color-mix(in srgb, var(--ux-color-sage) 70%, var(--ux-color-ink)); }
+.board-tile--water { fill: color-mix(in srgb, var(--ux-color-blue) 65%, var(--ux-color-ink)); }
+.board-tile--road { fill: color-mix(in srgb, var(--ux-color-paper) 45%, var(--ux-color-ink)); }
+.board-tile--plaza { fill: color-mix(in srgb, var(--ux-color-paper) 60%, var(--ux-color-ink)); }
+.board-tile--floor { fill: color-mix(in srgb, var(--ux-color-paper) 55%, var(--ux-color-ink)); }
+.board-tile--rug { fill: color-mix(in srgb, var(--ux-color-rust) 55%, var(--ux-color-ink)); }
+.board-tile--wall { fill: color-mix(in srgb, var(--ux-color-ink) 80%, var(--ux-color-paper)); }
+.board-tile--back { fill: color-mix(in srgb, var(--ux-color-ink) 70%, var(--ux-color-paper)); }
+.board-tile--shelf { fill: color-mix(in srgb, var(--ux-color-paper) 40%, var(--ux-color-ink)); }
+
+.board__roads line {
+  stroke: color-mix(in srgb, var(--ux-color-paper) 55%, transparent);
+  stroke-width: 10;
+  stroke-linecap: round;
+}
+
+/* ---- things standing on it ---- */
+.board-block__lid { fill: color-mix(in srgb, var(--ux-color-paper) 88%, var(--ux-color-ink)); }
+.board-block__side--left { fill: color-mix(in srgb, var(--ux-color-paper) 58%, var(--ux-color-ink)); }
+.board-block__side--right { fill: color-mix(in srgb, var(--ux-color-paper) 42%, var(--ux-color-ink)); }
+.board-block polygon { stroke: color-mix(in srgb, var(--ux-color-ink) 70%, transparent); stroke-width: 1; }
+.board-block--interior .board-block__lid { fill: color-mix(in srgb, var(--ux-color-rust) 70%, var(--ux-color-ink)); }
+.board-block--detail .board-block__lid { fill: color-mix(in srgb, var(--ux-color-paper) 70%, var(--ux-color-rust)); }
+
+.board-place.is-locked .board-block { opacity: 0.55; }
+
+.board-shadow { fill: color-mix(in srgb, var(--ux-color-ink) 55%, transparent); }
+
+.board-item__disc {
+  fill: color-mix(in srgb, var(--ux-color-paper) 92%, transparent);
+  stroke: color-mix(in srgb, var(--ux-color-ink) 60%, transparent);
+}
+.board-item__glyph { font-size: 16px; text-anchor: middle; fill: var(--ux-color-ink); }
+
+.board-character__ring {
+  fill: var(--ux-color-ink);
+  stroke: var(--ux-color-cream);
+  stroke-width: 2;
+}
+.board-character__initial { font-size: 22px; text-anchor: middle; fill: var(--ux-color-cream); }
+
+.board-player__ring {
+  fill: none;
+  stroke: var(--ux-color-rust);
+  stroke-width: 3;
+}
+
+.board-exit__mark {
+  fill: color-mix(in srgb, var(--ux-color-ink) 70%, transparent);
+  stroke: color-mix(in srgb, var(--ux-color-cream) 60%, transparent);
+  stroke-dasharray: 4 3;
+}
+
+.board-label {
+  font-family: var(--ux-font-ui);
+  font-size: 15px;
+  text-anchor: middle;
+  fill: var(--ux-color-cream);
+  paint-order: stroke;
+  stroke: color-mix(in srgb, var(--ux-color-ink) 85%, transparent);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+.board-label--small { font-size: 12px; }
+
+/* ---- interaction ---- */
+.board-piece[role='button'] { cursor: pointer; outline: none; }
+.board-piece[role='button']:hover .board-block__lid,
+.board-piece[role='button']:focus-visible .board-block__lid {
+  fill: var(--ux-color-cream);
+}
+.board-piece[role='button']:hover .board-label,
+.board-piece[role='button']:focus-visible .board-label {
+  fill: var(--ux-color-paper);
+}
+.board-piece[role='button']:focus-visible .board-shadow,
+.board-piece[role='button']:focus-visible .board-exit__mark {
+  stroke: var(--ux-color-rust);
+  stroke-width: 3;
+}
+
+/* The object you tapped: a card at the foot of the map. */
+.board__item {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  width: min(420px, calc(100% - 32px));
+  padding: 14px 16px;
+  border-radius: var(--ux-radius-panel);
+  background: color-mix(in srgb, var(--ux-color-paper) 94%, transparent);
+  color: var(--ux-color-ink);
+  box-shadow: var(--ux-shadow-soft);
+}
+.board__item h3 { margin: 0 0 6px; font-family: var(--ux-font-human); font-size: 16px; }
+.board__item p { margin: 0 0 10px; font-family: var(--ux-font-human); font-size: 14px; line-height: 1.55; }
+.board__item-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.board__item-actions button {
+  padding: 6px 14px;
+  border-radius: var(--ux-radius-pill);
+  border: 1px solid var(--ux-color-line);
+  background: transparent;
+  font-family: var(--ux-font-ui);
+  cursor: pointer;
+}
+.board__item-actions button:first-child {
+  background: var(--ux-color-rust);
+  border-color: transparent;
+  color: var(--ux-color-cream);
+}
+
+/* Narrow: the option rail becomes a row of chips under the top bar, so the
+   caption starts below that row instead of behind it. */
+@media (max-width: 1100px) {
+  .board__narration { padding-top: 156px; }
+  /* Under the clock pill and the avatar column's first orb. */
+  .board--picture { --map-caption-top: 128px; }
+  /* The avatar column stands at the right (scene-shell.css narrow rule): the caption keeps clear of it. */
+  .board--picture .board__story.board__story { padding: 0 96px 0 16px; }
+}
+@media (max-width: 700px) {
+  .board__narration { padding: 156px 16px 4px; font-size: 14px; }
+  .board--picture { --map-caption-top: 224px; }
+  .board--picture .board__story.board__story { padding: 0 108px 0 12px; }
+  .board--picture .board__narration.board__narration { padding: 5px 12px; font-size: 13.5px; }
+}
+
+/* ---- Picture map: the layer's own image with its places pinned on it ---- */
+.board--picture {
+  background: color-mix(in srgb, var(--ux-color-ink) 92%, transparent);
+}
+
+/* The picture fills the whole view (cover at 1×) and fades into the page at
+   every edge
+   Drag pans, wheel / pinch zooms; see PictureMap.tsx. */
+.board__viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+}
+.board__viewport:active { cursor: grabbing; }
+/* Two stages share one transform: the picture under the fog, the pins above it,
+   so the edges fade while every pin stays crisp and on its spot. */
+.board__stage {
+  position: absolute;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+.board__stage--pins { pointer-events: none; }
+.board__stage--pins > * { pointer-events: auto; }
+.board__stage--pins > .agent-cursor { pointer-events: none; }
+.board__picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  pointer-events: none;
+}
+/* The picture's own edges dissolve too: zoomed out (or framed to show every
+   pin) the page shows around it, and it should mist into it, not end in a line.
+   Only the alpha of the mask matters. */
+.board__stage--picture .board__picture {
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, var(--ux-color-ink) 7%, var(--ux-color-ink) 93%, transparent),
+    linear-gradient(to bottom, transparent, var(--ux-color-ink) 7%, var(--ux-color-ink) 93%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent, var(--ux-color-ink) 7%, var(--ux-color-ink) 93%, transparent),
+    linear-gradient(to bottom, transparent, var(--ux-color-ink) 7%, var(--ux-color-ink) 93%, transparent);
+  mask-composite: intersect;
+}
+.board__fog {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  --map-fog: color-mix(in srgb, var(--ux-color-ink) 92%, var(--ux-color-paper));
+  background:
+    linear-gradient(to bottom, var(--map-fog) 0, transparent calc(var(--map-caption-height, 0px) + 48px)),
+    linear-gradient(to top, var(--map-fog) 0, transparent 90px),
+    linear-gradient(to right, var(--map-fog) 0, transparent 90px),
+    linear-gradient(to left, var(--map-fog) 0, transparent 110px),
+    radial-gradient(ellipse at 50% 55%, transparent 58%, color-mix(in srgb, var(--map-fog) 55%, transparent) 100%);
+}
+/* The area no chrome covers: the caption above, the character rail (or the
+   companion column) on the right. Framing puts every pin inside it. */
+.board__safe {
+  position: absolute;
+  /* The caption now sits at a fixed top (its band does not include the chrome above it). */
+  top: calc(var(--map-caption-top, 72px) + var(--map-caption-height, 0px) + 12px);
+  left: 16px;
+  right: 96px;
+  bottom: 24px;
+  pointer-events: none;
+  visibility: hidden;
+}
+.board[data-clear-companion='true'] .board__safe {
+  right: calc(var(--ux-companion-column) + 24px);
+}
+/* A pin is the icon (the button that acts), its name, and a panel that
+   opens on hover or focus with the text the card used to carry. */
+.map-pin {
+  position: absolute;
+  /* Counter-scaled by the zoom so a pin keeps one on-screen size. */
+  transform: translate(-50%, -50%) scale(var(--map-pin-scale, 1));
+  /* People (and anything else that moves) glide to a new spot. */
+  transition: left 900ms var(--ux-motion-ink), top 900ms var(--ux-motion-ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--ux-color-cream);
+  /* The same two depths a canvas card uses at rest and when lifted. */
+  z-index: var(--depth-entity-base);
+}
+.map-pin:hover,
+.map-pin:focus-within,
+.map-pin.is-pinned,
+.map-pin.is-hovered { z-index: var(--depth-entity-focus); }
+/* A place stays reachable: the faces of people inside it crowd beside its pin
+   and must never sit on top of the door you came to press. */
+.map-pin--place { z-index: var(--depth-entity-control); }
+
+.map-pin__icon {
+  display: grid;
+  place-items: center;
+  /* The hit area is at least 44px whatever the glyph draws (the design notes
+     §卡片行动按钮); the pin is counter-scaled, so this holds at every zoom. */
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+.map-pin__icon:focus-visible { outline: 2px solid var(--ux-color-cream); outline-offset: 4px; border-radius: 50%; }
+
+.map-pin__dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--ux-color-rust);
+  border: 2px solid var(--ux-color-cream);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--ux-color-rust) 30%, transparent),
+    0 0 18px color-mix(in srgb, var(--ux-color-rust) 70%, transparent);
+  animation: map-pin-breathe 2.4s ease-in-out infinite;
+}
+
+@keyframes map-pin-breathe {
+  50% { box-shadow: 0 0 0 10px color-mix(in srgb, var(--ux-color-rust) 12%, transparent),
+    0 0 24px color-mix(in srgb, var(--ux-color-rust) 80%, transparent); }
+}
+
+.map-pin__label {
+  padding: 3px 10px;
+  border-radius: var(--ux-radius-pill);
+  background: color-mix(in srgb, var(--ux-color-ink) 78%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ux-color-cream) 35%, transparent);
+  backdrop-filter: blur(6px);
+  font-family: var(--ux-font-ui);
+  font-size: 13px;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+/* A place's name is pressable too (末班车 every car a clear, clickable pin with its name). */
+.map-pin__label--place {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 5px 14px;
+  border-color: color-mix(in srgb, var(--ux-color-cream) 60%, transparent);
+}
+.map-pin.is-locked .map-pin__label--place { cursor: default; opacity: 0.85; }
+.map-pin__go { opacity: 0.75; }
+
+.map-pin:hover .map-pin__label,
+.map-pin.is-hovered .map-pin__label,
+.map-pin.is-pinned .map-pin__label,
+.map-pin:focus-within .map-pin__label {
+  background: var(--ux-color-cream);
+  color: var(--ux-color-ink);
+}
+
+.map-pin__panel {
+  width: min(300px, 70vw);
+  padding: 12px 14px;
+  border-radius: var(--ux-radius-panel);
+  background: color-mix(in srgb, var(--ux-color-paper) 95%, transparent);
+  color: var(--ux-color-ink);
+  box-shadow: var(--ux-shadow-soft);
+  text-align: left;
+}
+.map-pin__panel h4 { margin: 0 0 4px; font-family: var(--ux-font-human); font-size: 17px; }
+.map-pin__panel p {
+  margin: 0 0 8px;
+  font-family: var(--ux-font-human);
+  font-size: 13px;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  overflow: hidden;
+}
+.map-pin__where { color: color-mix(in srgb, var(--ux-color-ink) 65%, transparent); }
+.map-pin__blocked { color: var(--ux-color-rust); }
+.map-pin__actions { display: flex; justify-content: flex-end; }
+.map-pin__actions button {
+  /* The same big button as a card's action pill (card-actions.css). */
+  min-height: 44px;
+  min-width: 112px;
+  padding: 8px 22px;
+  border-radius: var(--ux-radius-pill);
+  border: none;
+  background: var(--ux-color-rust);
+  color: var(--ux-color-cream);
+  font: 500 17px/1.2 var(--ux-font-human);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+.map-pin__actions button:hover,
+.map-pin__actions button:focus-visible { background: var(--ux-color-ink); color: var(--ux-color-paper); }
+
+/* Someone inside the place, not standing here: smaller, beside its pin. */
+.map-pin.is-away .map-pin__avatar,
+.map-pin.is-away .map-pin__initial { width: 34px; height: 34px; opacity: 0.92; }
+
+/* The story so far: the newest paragraph, and everything on hover or focus.
+   On the picture map it floats over the top of the picture, on the fog. */
+.board__story { position: relative; outline: none; }
+.board--picture .board__story {
+  position: absolute;
+  /* A fixed slot right under the top chrome.
+     The band itself never takes the pointer — only the caption's own pill does — so a pin or a place button
+     under the empty part of the band stays pressable. */
+  top: var(--map-caption-top, 72px);
+  left: 0;
+  right: 0;
+  z-index: var(--depth-entity-control);
+  display: flex;
+  justify-content: center;
+  padding: 0 max(16px, 12vw);
+  pointer-events: none;
+}
+.board--picture .board__story > * { pointer-events: auto; }
+.board--picture .board__narration {
+  /* A compact caption: two lines at most (the whole story is on hover / in the message drawer). */
+  max-width: 640px;
+  padding: 6px 14px;
+  border-radius: var(--ux-radius-touch);
+  background: color-mix(in srgb, var(--ux-color-ink) 42%, transparent);
+  text-shadow: 0 1px 8px var(--ux-color-ink);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.board__story-panel {
+  position: absolute;
+  left: 50%;
+  top: calc(100% - 4px);
+  transform: translateX(-50%);
+  width: min(640px, calc(100% - 32px));
+  max-height: 50vh;
+  overflow-y: auto;
+  padding: 14px 18px;
+  border-radius: var(--ux-radius-panel);
+  background: color-mix(in srgb, var(--ux-color-paper) 96%, transparent);
+  color: var(--ux-color-ink);
+  box-shadow: var(--ux-shadow-soft);
+  z-index: var(--depth-entity-focus);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--ux-motion-fast) var(--ux-motion-ink);
+}
+.board__story:hover .board__story-panel,
+.board__story:focus-within .board__story-panel { opacity: 1; visibility: visible; }
+.board__story-panel h4 { margin: 10px 0 2px; font-family: var(--ux-font-ui); font-size: 12px; letter-spacing: 0.04em; }
+.board__story-panel h4:first-child { margin-top: 0; }
+.board__story-panel p { margin: 0; font-family: var(--ux-font-human); font-size: 14px; line-height: 1.6; white-space: pre-line; }
+.board__story:hover .board__narration { color: var(--ux-color-cream); }
+
+.map-pin.is-locked .map-pin__dot {
+  /* Still a door you can see from across the room — just not one that opens yet. */
+  width: 18px;
+  height: 18px;
+  background: color-mix(in srgb, var(--ux-color-cream) 55%, var(--ux-color-ink));
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--ux-color-ink) 55%, transparent),
+    0 0 14px color-mix(in srgb, var(--ux-color-cream) 45%, transparent);
+  animation: none;
+}
+
+/* People standing inside a place crowd beside its pin: their faces are enough,
+   the name comes with the hover panel, so two labels never sit on each other. */
+.map-pin.is-away .map-pin__label { display: none; }
+
+.map-pin--character .map-pin__avatar,
+.map-pin--character .map-pin__initial {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--ux-color-cream);
+  object-fit: cover;
+  object-position: top;
+  background: var(--ux-color-ink);
+  display: grid;
+  place-items: center;
+  box-shadow: var(--ux-shadow-soft);
+}
+
+.map-pin--item .map-pin__glyph {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--ux-color-paper) 92%, transparent);
+  color: var(--ux-color-ink);
+  font-size: 15px;
+  box-shadow: var(--ux-shadow-soft);
+}
+.map-pin--item .map-pin__label { font-size: 12px; }
+
+.map-pin--player { pointer-events: none; }
+.map-pin--player .map-pin__dot {
+  background: var(--ux-color-cream);
+  border-color: var(--ux-color-rust);
+  animation: none;
+}
+
+/* Top-left: the way out and the view controls. Not bottom-left, where the
+   player's own hover card lives. Just under the shell's
+   edge controls (which own the very corner), stacked so it stays narrower
+   than the caption's side margin (max(20px, 18vw)). */
+.map-corner {
+  position: absolute;
+  top: 76px;
+  left: 14px;
+  z-index: var(--depth-entity-control);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: max(124px, calc(18vw - 24px));
+}
+.map-exit { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.map-exit {
+  padding: 7px 14px;
+  border-radius: var(--ux-radius-pill);
+  border: 1px solid color-mix(in srgb, var(--ux-color-cream) 40%, transparent);
+  background: color-mix(in srgb, var(--ux-color-ink) 78%, transparent);
+  color: var(--ux-color-cream);
+  font-family: var(--ux-font-ui);
+  font-size: 13px;
+  cursor: pointer;
+}
+.map-zoom {
+  display: flex;
+  border-radius: var(--ux-radius-pill);
+  border: 1px solid color-mix(in srgb, var(--ux-color-cream) 40%, transparent);
+  background: color-mix(in srgb, var(--ux-color-ink) 78%, transparent);
+  overflow: hidden;
+}
+.map-zoom button {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: none;
+  color: var(--ux-color-cream);
+  font-family: var(--ux-font-ui);
+  font-size: 15px;
+  cursor: pointer;
+}
+.map-zoom button:hover,
+.map-zoom button:focus-visible { background: var(--ux-color-cream); color: var(--ux-color-ink); }
+.map-exit:hover { background: var(--ux-color-cream); color: var(--ux-color-ink); }
+
+/* ---- Text on the map: a paper slip for narration, a die for a roll ---- */
+.map-pin--note .map-pin__glyph,
+.map-pin--dice .map-pin__glyph {
+  display: grid;
+  place-items: center;
+  box-shadow: var(--ux-shadow-soft);
+}
+.map-pin__slip {
+  width: 22px;
+  height: 28px;
+  border-radius: 2px;
+  transform: rotate(-6deg);
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 6px, color-mix(in srgb, var(--ux-color-ink) 28%, transparent) 6px 7px) 4px 7px / 14px 15px no-repeat,
+    color-mix(in srgb, var(--ux-color-paper) 94%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ux-color-ink) 30%, transparent);
+}
+.map-pin__die {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: var(--ux-color-cream);
+  color: var(--ux-color-rust);
+  font-size: 22px;
+  line-height: 1;
+}
+.map-pin--note .map-pin__label,
+.map-pin--dice .map-pin__label { font-size: 12px; max-width: 12em; overflow: hidden; text-overflow: ellipsis; }
+/* Only the hovered / opened slip names itself: a layer can carry many. */
+.map-pin--note .map-pin__label { display: none; }
+.map-pin--note:hover .map-pin__label,
+.map-pin--note.is-hovered .map-pin__label,
+.map-pin--note.is-pinned .map-pin__label,
+.map-pin--note:focus-within .map-pin__label { display: block; }
+
+/* ---- Something new arrived: a glowing ring for a few seconds ---- */
+.map-pin.is-fresh .map-pin__icon {
+  border-radius: 50%;
+  animation: map-pin-arrive 1.2s var(--ux-motion-ink) 3;
+}
+.map-pin.is-fresh { animation: map-pin-pop 480ms var(--ux-motion-ink) backwards; }
+@keyframes map-pin-arrive {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--ux-color-cream) 90%, transparent); }
+  70% { box-shadow: 0 0 0 16px color-mix(in srgb, var(--ux-color-cream) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+@keyframes map-pin-pop {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(calc(var(--map-pin-scale, 1) * 0.4)); }
+}
+
+/* ---- Floating panels (outside the zoomed stage, so they never scale) ---- */
+.map-float {
+  position: absolute;
+  z-index: var(--depth-entity-focus);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.map-card {
+  width: min(380px, calc(100% - 32px));
+  box-sizing: border-box;
+  padding: 12px 16px 14px;
+  border-radius: var(--ux-radius-panel);
+  background: color-mix(in srgb, var(--ux-color-paper) 96%, transparent);
+  color: var(--ux-color-ink);
+  box-shadow: var(--ux-shadow-soft);
+  text-align: left;
+}
+.map-card__head { display: flex; align-items: flex-start; gap: 8px; }
+.map-card__head h3 { flex: 1; margin: 0 0 6px; font-family: var(--ux-font-human); font-size: 16px; }
+.map-card__close {
+  border: none;
+  background: none;
+  color: inherit;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+.map-card__reader {
+  font-family: var(--ux-font-human);
+  font-size: 14px;
+  line-height: 1.65;
+  white-space: pre-line;
+}
+.map-card__reader p { margin: 0 0 8px; }
+/* The canvas card's interactions, placed by the map instead of beside a card. */
+.entity-interactions.entity-interactions--anchored {
+  position: static;
+  width: auto;
+  max-width: none;
+  min-width: 0;
+  padding: 0;
+  margin-top: 8px;
+  visibility: visible;
+  pointer-events: auto;
+  overflow: visible;
+}
+.entity-interactions--anchored .entity-action-arrows { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.entity-interactions--anchored .entity-action-arrows button {
+  padding: 5px 12px;
+  border-radius: var(--ux-radius-pill);
+  border: 1px solid var(--ux-color-line);
+  background: transparent;
+  color: inherit;
+  font-family: var(--ux-font-ui);
+  font-size: 13px;
+  cursor: pointer;
+}
+.entity-interactions--anchored .entity-action-arrows button:hover { background: var(--ux-color-rust); color: var(--ux-color-cream); border-color: transparent; }
+/* The procedural board's card sits at the foot of the board, not by a pin. */
+.board__item.map-card { width: min(420px, calc(100% - 32px)); max-height: 60%; overflow-y: auto; }
+
+/* ---- An agent's pointer on the map: walks between pins ---- */
+.board__stage--pins > .map-agent-cursor {
+  --agent-cursor-scale: var(--map-pin-scale, 1);
+  transition: left 620ms var(--ux-motion-ink), top 620ms var(--ux-motion-ink), opacity 480ms ease-out;
+}
+.board__stage--pins > .map-agent-cursor[data-idle='true'] {
+  transition: left 620ms var(--ux-motion-ink), top 620ms var(--ux-motion-ink), opacity var(--agent-cursor-fade) ease-in var(--agent-cursor-hold);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-pin__dot { animation: none; }
+  .map-pin { transition: none; }
+  .map-pin.is-fresh,
+  .map-pin.is-fresh .map-pin__icon { animation: none; }
+  /* Still marked, just not moving. */
+  .map-pin.is-fresh .map-pin__icon { box-shadow: 0 0 0 4px color-mix(in srgb, var(--ux-color-cream) 70%, transparent); border-radius: 50%; }
+  .board__stage--pins > .map-agent-cursor { transition: none; }
+}
+:root[data-airp-blur="reduced"] .map-pin__label { backdrop-filter: blur(3px); }
+:root[data-airp-blur="off"] .map-pin__label {
+  background: var(--ux-color-ink);
+  backdrop-filter: none;
+}

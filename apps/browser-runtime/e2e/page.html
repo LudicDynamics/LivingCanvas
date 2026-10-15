@@ -1,0 +1,65 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>AIRP browser runtime e2e</title>
+<script type="module">
+// Minimal page side: starts the platform Worker, hands it the VFS image, and
+// exposes request / WebSocket helpers that ride worker messages.
+const worker = new Worker('/dist/worker.js', { type: 'module' });
+let seq = 0;
+const waiters = new Map();
+const wsHandlers = new Map();
+const logs = [];
+window.__logs = logs;
+worker.onmessage = (ev) => {
+  const m = ev.data;
+  if (m.type === 'ws-message' || m.type === 'ws-opened' || m.type === 'ws-closed') { wsHandlers.get(m.id)?.(m); return; }
+  if (m.type === 'ready') { waiters.get('ready')?.(m); return; }
+  if (m.id !== undefined && waiters.has(m.id)) { waiters.get(m.id)(m); waiters.delete(m.id); return; }
+  // A boot that failed (e.g. "server exited before listen(): …") ends boot() now instead of after the 60 s timeout.
+  if (m.type === 'error' && m.id === undefined) waiters.get('ready')?.({ error: m.message });
+  logs.push(m);
+};
+worker.onerror = (e) => logs.push({ type: 'worker-error', message: e.message });
+const call = (msg, transfer) => new Promise((res) => { const id = ++seq; waiters.set(id, res); worker.postMessage({ ...msg, id }, transfer ?? []); });
+
+window.airp = {
+  async boot(env, opts = {}) {
+    const t0 = performance.now();
+    const manifest = await (await fetch('/vfs.json')).json();
+    const files = {};
+    for (const [p, b64] of Object.entries(manifest)) files[p] = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+    const tFetched = performance.now();
+    const ready = new Promise((res) => waiters.set('ready', res));
+    worker.postMessage({ type: 'init', files, env, persist: opts.persist });
+    const r = await Promise.race([ready, new Promise((res) => setTimeout(() => res({ timeout: true }), 60000))]);
+    return { ...r, vfsFetchMs: Math.round(tFetched - t0), bootMs: Math.round(performance.now() - t0) };
+  },
+  async request(method, url, body) {
+    const r = await call({ type: 'fetch', method, url, headers: body ? { 'content-type': 'application/json' } : {}, body: body ? new TextEncoder().encode(JSON.stringify(body)) : null });
+    return { status: r.status, text: r.body ? new TextDecoder().decode(r.body).slice(0, 2000) : r.message };
+  },
+  openWs(url) {
+    const id = ++seq;
+    const frames = [];
+    window.__frames = frames;
+    wsHandlers.set(id, (m) => frames.push({ t: Math.round(performance.now()), ...m }));
+    worker.postMessage({ type: 'ws-open', id, url });
+    return id;
+  },
+  send(id, obj) { worker.postMessage({ type: 'ws-send', id, data: JSON.stringify(obj) }); return Math.round(performance.now()); },
+  stats: () => call({ type: 'stats' }),
+  write: (path, text) => call({ type: 'write', path, data: text }),
+  flush: () => call({ type: 'flush' }),
+  resetPersist: () => call({ type: 'persist-reset' }),
+  read: (path) => call({ type: 'read', path }),
+  tree: (path) => call({ type: 'tree', path }),
+  async memory() {
+    const out = { jsHeap: performance.memory ? { used: performance.memory.usedJSHeapSize, total: performance.memory.totalJSHeapSize } : null };
+    if (self.crossOriginIsolated && performance.measureUserAgentSpecificMemory) {
+      try { out.uasm = (await performance.measureUserAgentSpecificMemory()).bytes; } catch (e) { out.uasmError = String(e); }
+    } else out.uasmError = `crossOriginIsolated=${self.crossOriginIsolated}`;
+    return out;
+  },
+};
+window.__loaded = true;
+</script>

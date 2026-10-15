@@ -1,0 +1,8 @@
+.agent-activity { pointer-events:auto; width:min(350px,calc(100vw - 48px)); margin:8px 0 0 auto; padding:9px 12px; border:1px solid #e5d2b744; border-radius:10px; background:#282231e8; color:#eee3d2; font:11px/1.5 system-ui,sans-serif; text-align:left; overflow-wrap:anywhere; }
+.agent-activity__summary { margin:0 0 6px!important; font:inherit!important; color:inherit!important; }
+.agent-activity summary { cursor:pointer; padding:3px 0; }
+.agent-activity ol { max-height:160px; overflow:auto; overscroll-behavior:contain; margin:4px 0; padding:0 0 0 18px; }
+.agent-activity li { margin-bottom:5px; }
+.agent-activity small { display:block; font-size:10px; opacity:.75; }
+.agent-activity [data-state=failed],.agent-activity [data-state=interrupted] { color:#efc4a5; }
+.agent-activity details p { font:inherit; white-space:pre-wrap; max-height:100px; overflow:auto; }

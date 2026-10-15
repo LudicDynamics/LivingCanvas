@@ -1,0 +1,24 @@
+name: Could not see through the fog
+desc: The decisive chart Check lands on 61–100 (96–100 too if you carry lamp oil). On 61–95 you see only half a thread (a water trace); either way, take the Long Way Around to pin it
+do:
+  - action: give
+    when: roll.rank >= 2
+    with:
+      path: player/second-wake-half.md
+      title: Half a Thread · A water trace in the fog
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        You see no ship, only a churned water trace in the fog, turning out from the Old Customs Tunnel's mouth and vanishing back into the fog.
+
+        Something just passed, but you cannot tell what. To pin this thread, take the Long Way Around: follow the water trace alongshore.
+  - action: set_status
+    with:
+      path: world/harbor-chart/06-long-way.md
+      values:
+        open: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: "✗ The chart thread is not pinned yet: could not see through the fog. Take the Long Way Around and follow the wake alongshore."

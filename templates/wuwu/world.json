@@ -1,0 +1,295 @@
+{
+  "id": "wuwu",
+  "audio": {
+    "theme": "canvas-wuwu"
+  },
+  "name": "Fogwharf: Before the Tide · English",
+  "version": "2.0.0",
+  "schema": 1,
+  "description": "Before the tide comes in, tie the decoy ship, the Old Customs Tunnel and the Lord's ledger into a single thread. The tide gives you only eight steps: make your accusation, lose the trail, or be swallowed by the fog.",
+  "intro": {
+    "status": "playable",
+    "category": "trpg",
+    "recommended": true,
+    "rank": 1,
+    "hook": "An empty “ghost ship” drifts into a fog-bound harbor. You have eight steps before the tide returns — find out who moved what under cover of the fog.",
+    "genres": [
+      "mystery",
+      "adventure"
+    ],
+    "loop": [
+      "Pick places on the harbor chart to search; roll for clues",
+      "Every search costs a step of tide — a miss still gives half a clue",
+      "Gather the evidence and make your accusation at the harbor office"
+    ],
+    "minutes": [
+      30,
+      45
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "dice",
+      "clock",
+      "endings",
+      "voice"
+    ],
+    "endings": 3,
+    "characters": [
+      {
+        "id": "vera",
+        "line": "A mechanic with a violet-glowing prosthetic arm — your partner, never short of a quip"
+      },
+      {
+        "id": "silver-kite",
+        "line": "An elven knight guarding the empty ship’s hatch, swayed only by evidence"
+      },
+      {
+        "id": "old-mo",
+        "line": "The lighthouse keeper, who admits he put the light out for twelve minutes"
+      }
+    ],
+    "for": [
+      "First-time players",
+      "Mystery fans",
+      "One sitting"
+    ]
+  },
+  "author": "Worldlines Canvas / AIRP",
+  "genre": "Story Experience",
+  "tags": [
+    "Short Story",
+    "Closed Ending",
+    "Timed Investigation"
+  ],
+  "material": "parchment",
+  "cover": "assets/scenes/intro.webp",
+  "locale": "en",
+  "mode": "closed",
+  "clock": {
+    "path": "world/tide.md",
+    "key": "left",
+    "start": 8,
+    "label": "Before the Tide Returns",
+    "time": {
+      "start": "23:00",
+      "end": "01:00"
+    }
+  },
+  "endings": [
+    {
+      "id": "exposed",
+      "title": "Exposed",
+      "path": "endings/exposed/README.md"
+    },
+    {
+      "id": "lost",
+      "title": "Lost",
+      "path": "endings/lost/README.md",
+      "when": "clock <= 0"
+    },
+    {
+      "id": "swallowed",
+      "title": "Swallowed",
+      "path": "endings/swallowed/README.md"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "too-hurt",
+      "label": "Too Hurt to Move",
+      "kind": "state",
+      "when": "player.hp <= 0",
+      "do": "hurt-out"
+    }
+  ],
+  "extensions": [
+    {
+      "id": "airp:letter",
+      "version": ">=1.0.0",
+      "optional": false
+    },
+    {
+      "id": "airp:note",
+      "version": ">=1.0.0",
+      "optional": false
+    }
+  ],
+  "characters": [
+    {
+      "id": "vera",
+      "home": "map",
+      "role": "companion",
+      "avatar": "assets/motion/seedance/characters/viola-transparent.webp",
+      "description": "A mechanic whose prosthetic hand glows purple. She has a personal stake in the rudder clasp. Quick with a quip, but she won't vouch for anything she didn't see.",
+      "avatarVideo": "assets/motion/seedance/characters/viola-transparent.webm",
+      "name": "Vera"
+    },
+    {
+      "id": "silver-kite",
+      "home": "world/harbor-chart/seventh-berth",
+      "role": "npc",
+      "avatar": "assets/motion/seedance/characters/silverkite-transparent.webp",
+      "description": "An elven knight guarding the empty crates and the gangway. Speaks only to what the evidence shows.",
+      "avatarVideo": "assets/motion/seedance/characters/silverkite-transparent.webm",
+      "name": "Silver Kite"
+    },
+    {
+      "id": "old-mo",
+      "home": "world/harbor-chart/old-lighthouse",
+      "role": "npc",
+      "avatar": "assets/characters/old-mo.webp",
+      "description": "A scarred lighthouse keeper. He admits the twelve dark minutes were his doing, but knows nothing of the second ship that used them.",
+      "name": "Old Mo"
+    }
+  ],
+  "opening": {
+    "greeter": "vera"
+  },
+  "player": {
+    "id": "player",
+    "name": "Harbor Investigator",
+    "avatar": "assets/characters/investigator.webp"
+  },
+  "entry": "map",
+  "rules": {
+    "system": "coc",
+    "characterChecks": true
+  },
+  "createdAt": "2026-09-26T00:00:00Z",
+  "updatedAt": "2026-09-26T00:00:00Z",
+  "mysteries": [
+    {
+      "id": "decoy",
+      "question": "What really happened with that unmanned ship at Berth 7?",
+      "hint": "Think about what was in the cargo hold.",
+      "options": [
+        {
+          "id": "storm",
+          "label": "It hit a storm, the crew abandoned ship, and it drifted back into the harbor on its own",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "decoy",
+          "label": "It was deliberately sent out empty as a decoy, so everyone would stare at Berth 7",
+          "tier": "surface",
+          "clues": [
+            "player/decoy-ship.md"
+          ],
+          "epilogue": "The Harbor Office removed the seal from Berth 7. The empty ship was towed into dry dock, and no one ever called it a ghost ship again."
+        },
+        {
+          "id": "one-wake",
+          "label": "The decoy and the tunnel were one plan: the Second Wake came out of the tunnel mouth and grazed right past the Decoy Ship",
+          "tier": "hidden",
+          "clues": [
+            "player/second-wake.md"
+          ],
+          "title": "The Same Wake",
+          "epilogue": "The two wakes were drawn side by side onto the Harbor Office's chart. From then on, whenever fog fell over Fogwharf, someone was posted to watch the Old Customs Tunnel mouth; the decoy could never blind everyone again."
+        },
+        {
+          "id": "smugglers",
+          "label": "Smugglers, wrecked when the lighthouse went dark, came ashore under cover of night",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "ledger",
+      "question": "Who paid for that ship in the fog?",
+      "hint": "What was hidden under the rudder clasp?",
+      "options": [
+        {
+          "id": "vera",
+          "label": "Vera: the clasp was her own keepsake",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "lord",
+          "label": "The Lord's household: the ship that is not in the registry is charged to the Lord's ledger",
+          "tier": "surface",
+          "clues": [
+            "player/ledger-page.md"
+          ],
+          "epilogue": "The Lord's accountant was summoned to the Harbor Office for questioning. They said it was just an ordinary order, but after that no one in town trusted the word “ordinary” again."
+        },
+        {
+          "id": "harbor-office",
+          "label": "The Harbor Office: they wanted to cheat an insurance payout",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "tunnel",
+      "question": "When and from where did that ship leave the harbor?",
+      "hint": "The lighthouse log and the silt at the tunnel mouth.",
+      "options": [
+        {
+          "id": "daylight",
+          "label": "It sailed out openly from Berth 7 in broad daylight",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "tunnel",
+          "label": "It left through the Old Customs Tunnel mouth during the lighthouse's twelve dark minutes",
+          "tier": "surface",
+          "clues": [
+            "player/customs-tunnel.md"
+          ],
+          "epilogue": "The Old Customs Tunnel mouth was boarded shut with a wooden fence. Old Mo said that from then on, every time the lighthouse went dark, he would look toward the tunnel mouth first."
+        },
+        {
+          "id": "drift",
+          "label": "There was no one aboard at all; it drifted out with the rising tide",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "old-mo",
+      "question": "Why did Old Mo put out the light that night?",
+      "hint": "Ask him yourself, and look at what he does not know.",
+      "options": [
+        {
+          "id": "bribed",
+          "label": "He took the Lord's money and put out the light just for that ship",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "his-own",
+          "label": "He put out the light for reasons of his own; he did not know a ship used that darkness to leave the harbor",
+          "tier": "surface",
+          "clues": [
+            "player/customs-tunnel.md",
+            "player/customs-tunnel-half.md"
+          ],
+          "epilogue": "When Old Mo heard that those twelve minutes had been used, he did not sleep all night. The next day he added a line to his logbook: When the light is out, watch the tunnel mouth."
+        },
+        {
+          "id": "no-oil",
+          "label": "The lamp oil ran out, and he didn't have time to refill it",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    }
+  ],
+  "reckoning": {
+    "epilogues": {
+      "all": "All four secrets are laid open. By the time the tide returns, Fogwharf already knows what happened that night, and Vera has finally agreed to say where the clasp came from.",
+      "most": "You saw most of it clearly. As for the rest, the people of Fogwharf each have their own account; but at least no one calls that unmanned ship a ghost ship anymore.",
+      "few": "The tide is back in, yet far too much about that night is still unclear. Perhaps when the fog comes again, you will return to Berth 7."
+    }
+  },
+  "view": {
+    "default": "map"
+  }
+}

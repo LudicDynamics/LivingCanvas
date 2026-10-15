@@ -1,0 +1,8 @@
+name: "Character tick: Zhou Zihang glances at seat 17"
+desc: "Zhou Zihang takes off an earbud and looks at seat 17: nothing is touched."
+do:
+- action: set_status
+  with:
+    path: world/seated-car/zhou-zihang.md
+    values:
+      looked_at_seat: 'yes'

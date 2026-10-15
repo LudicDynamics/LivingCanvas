@@ -1,0 +1,10 @@
+name: Time Moves Forward
+desc: Each investigation check brings departure one step closer. If the check fails, it costs one more step
+do:
+  - action: tick
+    with:
+      by: "-1"
+  - action: tick
+    when: roll.passed == false
+    with:
+      by: "-1"

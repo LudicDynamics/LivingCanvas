@@ -1,0 +1,11 @@
+name: Help Ren in his field
+desc: Two hours' work in Ren's field next door
+do:
+  - action: add_state
+    with:
+      target: characters/ren
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "120"

@@ -1,0 +1,8 @@
+---
+type: readme
+name: 모 영감
+voice: rustic-storyteller
+avatar: assets/characters/old-mo.webp
+---
+
+흉터를 지닌 등대지기. 그 십이 분의 소등이 자신의 짓임을 인정하지만, 자신이 모르는 추적선에 대해서는 말하지 못한다.

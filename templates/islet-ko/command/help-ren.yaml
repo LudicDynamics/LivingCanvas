@@ -1,0 +1,11 @@
+name: 렌 돕기
+desc: 옆 렌의 밭에서 두 시간 돕는다
+do:
+  - action: add_state
+    with:
+      target: characters/ren
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "120"

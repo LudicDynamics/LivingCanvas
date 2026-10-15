@@ -1,0 +1,8 @@
+name: 3번 객실을 다 뒤지지 못함
+desc: 객실 수색이 61–100에 떨어졌다. 약판의 모서리만 보았다. "돌아가기"(05-long-way.md)를 연다
+do:
+  - action: set_status
+    with:
+      path: world/sleeper/05-long-way.md
+      values:
+        open: yes

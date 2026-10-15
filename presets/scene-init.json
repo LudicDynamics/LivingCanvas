@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "scene-init",
+  "name": "Scene Initializer",
+  "description": "Generates the scene skeleton, object cards, and opening for a blank or stub layer of the world; shared by writer delegation and direct engine invocation",
+  "delegatable": true,
+  "inheritHistory": 0,
+  "tools": {
+    "deny": [
+      "bash",
+      "recall",
+      "retrieve",
+      "memorize",
+      "revise",
+      "forget",
+      "relocate",
+      "associate",
+      "trigger",
+      "consolidate",
+      "retrace",
+      "set_time",
+      "awaken",
+      "get_state",
+      "state_update"
+    ]
+  },
+  "items": [
+    {
+      "kind": "slot",
+      "id": "scene-init-instruction",
+      "slot": "scene-init-instruction"
+    },
+    {
+      "kind": "slot",
+      "id": "skills",
+      "slot": "skills"
+    }
+  ]
+}

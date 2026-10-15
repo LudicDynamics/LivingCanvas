@@ -1,0 +1,11 @@
+name: 跟凪补网
+desc: 坐在沙滩上跟凪一起补网
+do:
+  - action: add_state
+    with:
+      target: characters/nagi
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "60"

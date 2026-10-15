@@ -1,0 +1,8 @@
+name: "角色回合：周子航看了看17号座"
+desc: "周子航摘下耳机看了一眼17号座：什么也不动。"
+do:
+- action: set_status
+  with:
+    path: world/seated-car/zhou-zihang.md
+    values:
+      looked_at_seat: 'yes'

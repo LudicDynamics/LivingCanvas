@@ -1,0 +1,148 @@
+{
+  "name": "@airp/shared",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./guest-trial": {
+      "types": "./dist/rules/guest-trial.d.ts",
+      "import": "./dist/rules/guest-trial.js"
+    },
+    "./experience": {
+      "types": "./dist/rules/experience.d.ts",
+      "import": "./dist/rules/experience.js"
+    },
+    "./frontmatter": {
+      "types": "./dist/schemas/frontmatter.d.ts",
+      "import": "./dist/schemas/frontmatter.js"
+    },
+    "./forms": {
+      "types": "./dist/schemas/forms.d.ts",
+      "import": "./dist/schemas/forms.js"
+    },
+    "./deploy-mode": {
+      "types": "./dist/deploy-mode/index.d.ts",
+      "import": "./dist/deploy-mode/index.js"
+    },
+    "./deploy-mode/node": {
+      "types": "./dist/deploy-mode/node.d.ts",
+      "import": "./dist/deploy-mode/node.js"
+    },
+    "./world-settings": {
+      "types": "./dist/schemas/world-settings.d.ts",
+      "import": "./dist/schemas/world-settings.js"
+    },
+    "./viewpoint": {
+      "types": "./dist/render/viewpoint.d.ts",
+      "import": "./dist/render/viewpoint.js"
+    },
+    "./performances": {
+      "types": "./dist/components/performances.d.ts",
+      "import": "./dist/components/performances.js"
+    },
+    "./layout": {
+      "types": "./dist/layout/flow-columns.d.ts",
+      "import": "./dist/layout/flow-columns.js"
+    },
+    "./tts-text": {
+      "types": "./dist/rules/tts-text.d.ts",
+      "import": "./dist/rules/tts-text.js"
+    },
+    "./appearance-registry": {
+      "types": "./dist/components/appearance-registry.d.ts",
+      "import": "./dist/components/appearance-registry.js"
+    },
+    "./appearance-schema": {
+      "types": "./dist/schemas/appearance.d.ts",
+      "import": "./dist/schemas/appearance.js"
+    },
+    "./characters": {
+      "types": "./dist/rules/characters.d.ts",
+      "import": "./dist/rules/characters.js"
+    },
+    "./dice": {
+      "types": "./dist/rules/dice.d.ts",
+      "import": "./dist/rules/dice.js"
+    },
+    "./states": {
+      "types": "./dist/rules/states.d.ts",
+      "import": "./dist/rules/states.js"
+    },
+    "./tick": {
+      "types": "./dist/rules/tick.d.ts",
+      "import": "./dist/rules/tick.js"
+    },
+    "./option-state": {
+      "types": "./dist/rules/option-state.d.ts",
+      "import": "./dist/rules/option-state.js"
+    },
+    "./hints": {
+      "types": "./dist/rules/hints.d.ts",
+      "import": "./dist/rules/hints.js"
+    },
+    "./npc": {
+      "types": "./dist/rules/npc.d.ts",
+      "import": "./dist/rules/npc.js"
+    },
+    "./stream-history": {
+      "types": "./dist/rules/stream-history.d.ts",
+      "import": "./dist/rules/stream-history.js"
+    },
+    "./music": {
+      "types": "./dist/rules/music.d.ts",
+      "import": "./dist/rules/music.js"
+    },
+    "./themes": {
+      "types": "./dist/rules/themes.d.ts",
+      "import": "./dist/rules/themes.js"
+    },
+    "./skills": {
+      "types": "./dist/rules/skills.d.ts",
+      "import": "./dist/rules/skills.js"
+    },
+    "./tutorial-cues": {
+      "types": "./dist/rules/tutorial-cues.d.ts",
+      "import": "./dist/rules/tutorial-cues.js"
+    },
+    "./html-head": {
+      "types": "./dist/rules/html-head.d.ts",
+      "import": "./dist/rules/html-head.js"
+    },
+    "./protocol": {
+      "types": "./dist/protocol/ws.d.ts",
+      "import": "./dist/protocol/ws.js"
+    },
+    "./images": {
+      "types": "./dist/media/index.d.ts",
+      "import": "./dist/media/index.js"
+    },
+    "./world-intro": {
+      "types": "./dist/schemas/world-intro.d.ts",
+      "import": "./dist/schemas/world-intro.js"
+    },
+    "./outcome-tiers": {
+      "types": "./dist/rules/outcome-tiers.d.ts",
+      "import": "./dist/rules/outcome-tiers.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "tsc -b -w"
+  },
+  "dependencies": {
+    "yaml": "2.9.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.0",
+    "typescript": "^5.7.3"
+  },
+  "optionalDependencies": {
+    "sharp": "^0.35.5"
+  }
+}

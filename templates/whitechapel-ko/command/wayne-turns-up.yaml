@@ -1,0 +1,19 @@
+name: 웨인 등장
+desc: "충분히 입증되었다: 웨인은 가만히 앉아 있지 못하고 붉은 봉투로 홈즈를 막아선다"
+do:
+  - action: set_status
+    with:
+      path: world/london-map/03-before-noon.md
+      values:
+        arrived: yes
+  - action: edit
+    with:
+      path: world/london-map/03-before-noon.md
+      frontmatter:
+        title: 웨인 등장
+      append_body: 열두 시 이십 분 전. 웨인이 붉은 봉투를 겨드랑이에 끼고 당신 앞에 서서 물러나지 않는다. 뒤에서 왓슨이 조용히 말한다. “이십 분이오.”
+  - action: event
+    with:
+      target: characters/wayne
+      title: 웨인 등장
+      text: 열두 시 이십 분 전, 아서 웨인이 221B로 가는 길에 당신을 막아선다. 붉은 봉투가 겨드랑이에 끼워져 있고, 오른쪽 손목에는 아직 붕대가 감겨 있다. “네 번째 삽화의 교정본입니다 — 제가 직접 위어 양에게 건네야 합니다. 그녀가 주소를 바꿨는데, 그 거리를 찾을 수가 없습니다.” 그는 완벽하게 예의 바르지만, 눈은 계속 베이커 가 쪽으로 향한다. 왓슨이 목소리를 낮춘다. “홈즈, 정오까지 이십 분이오. 이디스는 아직 응접실에 있소. 지금 결정해야 하오.”

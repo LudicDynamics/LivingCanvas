@@ -1,0 +1,11 @@
+name: 미오와 놀기
+desc: 미오와 한참 뛰어논다
+do:
+  - action: add_state
+    with:
+      target: characters/mio
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "60"

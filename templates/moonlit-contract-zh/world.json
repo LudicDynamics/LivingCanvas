@@ -1,0 +1,80 @@
+{
+  "id": "moonlit-contract-zh",
+  "name": "月下之誓 · 中文",
+  "version": "1.2.0",
+  "schema": 1,
+  "description": "月下召唤。面对伸来的手，你将如何回应？从一个誓约出发，走向尚未讲述的夜晚。",
+  "intro": {
+    "status": "in-development",
+    "category": "story",
+    "rank": 8,
+    "hook": "海边废弃的天文台里，你召唤出一位黑铜铠甲的女骑士。她递来一份契约——答不答应，由你。",
+    "genres": [
+      "fantasy",
+      "romance"
+    ],
+    "loop": [
+      "听莉拉讲契约：接受、追问条件，或者拒绝",
+      "之后每往前走一步，新的场景由 AI 当场写出",
+      "和她对话，决定这段誓约走向哪里"
+    ],
+    "minutes": [
+      15,
+      30
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "free-explore",
+      "voice"
+    ],
+    "endings": 0,
+    "characters": [
+      {
+        "id": "lyra",
+        "line": "被淡紫色的光召唤来的骑士，没有你亲口应允，绝不会握你的手"
+      }
+    ],
+    "for": [
+      "喜欢奇幻恋爱",
+      "喜欢和角色慢慢聊"
+    ],
+    "unfinished": "开发中：契约之后是自由生成，还没有目标、倒计时和结局。"
+  },
+  "author": "AIRP",
+  "genre": "生成式视觉小说",
+  "tags": [
+    "短篇故事",
+    "生成世界"
+  ],
+  "locale": "zh-CN",
+  "material": "parchment",
+  "entry": "map",
+  "rules": {
+    "system": "dnd",
+    "proficiency": 2,
+    "characterChecks": true
+  },
+  "cover": "assets/backgrounds/opening.webp",
+  "player": {
+    "id": "you",
+    "name": "你"
+  },
+  "characters": [
+    {
+      "id": "lyra",
+      "name": "莉拉",
+      "home": "map",
+      "role": "companion",
+      "description": "莉拉，身披黑铜铠甲的骑士，被海边旧天文台那片淡紫色的光召唤而来。她为守护你而来，向你递出契约，但没有你亲口应允，她绝不会握住你的手。证明契约的蓝丝带系在她的护手上。"
+    }
+  ],
+  "opening": {
+    "greeter": "lyra"
+  },
+  "extensions": [],
+  "audio": {
+    "theme": "emberglass"
+  },
+  "createdAt": "2026-09-14T00:00:00Z",
+  "updatedAt": "2026-09-14T00:00:00Z"
+}

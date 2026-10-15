@@ -1,0 +1,293 @@
+.declared-action-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--depth-entity-reading, 100);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: color-mix(in srgb, var(--ink) 34%, transparent);
+}
+
+.declared-action-dialog {
+  width: min(680px, 100%);
+  max-height: 78dvh;
+  overflow: auto;
+  overscroll-behavior: contain;
+  box-sizing: border-box;
+  padding: clamp(20px, 4vw, 36px);
+  background: var(--appearance-surface, var(--paper));
+  color: var(--appearance-ink, var(--ink));
+  border: 1px solid var(--appearance-border, var(--line));
+  border-radius: var(--appearance-radius, 5px);
+  box-shadow: var(--airp-device-appearance-shadow, var(--appearance-shadow, 0 18px 45px color-mix(in srgb, var(--ink) 42%, transparent)));
+  font: 18px/1.85 Georgia, 'Noto Serif JP', serif;
+  text-shadow: none;
+}
+
+.declared-action-dialog article {
+  margin-top: 20px;
+  padding-top: 8px;
+  border-top: 1px solid color-mix(in srgb, var(--ink) 26%, transparent);
+}
+
+.declared-action-dialog button {
+  margin: 6px 0;
+  padding: 8px 14px;
+  color: inherit;
+  background: color-mix(in srgb, var(--appearance-surface, var(--paper)) 72%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ink) 36%, transparent);
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+}
+
+.declared-action-dialog button:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+.declared-action-dialog button:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 3px;
+}
+
+.declared-action-dialog__text,
+.declared-action-dialog__body {
+  white-space: pre-wrap;
+}
+
+.declared-action-dialog [role='alert'] {
+  color: var(--rust);
+}
+
+.material-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+  padding: 0;
+  border: 0;
+}
+
+.material-slot {
+  min-width: 0;
+  padding: 14px;
+  background: color-mix(in srgb, var(--cream) 58%, transparent);
+  border: 1px dashed color-mix(in srgb, var(--ink) 36%, transparent);
+  border-radius: 10px;
+}
+
+.material-slot.is-active {
+  outline: 2px solid var(--rust);
+  outline-offset: 2px;
+}
+
+.material-slot small {
+  display: block;
+  margin-top: 8px;
+}
+
+.material-slot__target {
+  width: 100%;
+  min-height: 95px;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+.declared-review-draft {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid color-mix(in srgb, var(--ink) 26%, transparent);
+}
+
+.declared-review-draft label {
+  display: grid;
+  gap: 6px;
+}
+
+.declared-review-draft textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  color: inherit;
+  background: color-mix(in srgb, var(--cream) 68%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ink) 36%, transparent);
+  border-radius: 4px;
+  font: 15px/1.55 inherit;
+  resize: vertical;
+}
+
+.material-slot strong {
+  display: block;
+}
+
+.material-slot details {
+  margin-top: 10px;
+}
+
+.material-slot details p {
+  max-height: 220px;
+  overflow: auto;
+  font-weight: 400;
+}
+
+.material-pool {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  padding: 18px;
+  background: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: inset 0 2px 12px color-mix(in srgb, var(--ink) 64%, transparent);
+}
+
+.material-pool button {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  text-align: left;
+  box-shadow: 0 3px 6px color-mix(in srgb, var(--ink) 28%, transparent);
+  cursor: grab;
+}
+
+.material-pool button[aria-pressed='true'] {
+  opacity: .65;
+  outline: 2px solid var(--rust);
+}
+
+.material-pool span,
+.material-pool strong {
+  display: block;
+}
+
+.material-pool span {
+  font-size: 28px;
+}
+
+.material-pool small {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 12px;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.dice-help,
+.dice-outcome-letter {
+  padding: 12px 16px;
+  color: var(--ink);
+  background: var(--surface-paper, var(--paper));
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  text-shadow: none;
+}
+
+.dice-help {
+  max-width: 360px;
+  font: 14px/1.7 Georgia, 'Noto Serif JP', serif;
+}
+
+.dice-help > div {
+  max-height: 240px;
+  overflow: auto;
+}
+
+.dice-outcome-letter {
+  font: 17px/1.85 Georgia, 'Noto Serif JP', serif;
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--ink) 28%, transparent);
+}
+
+.dice-outcome-letter summary {
+  cursor: pointer;
+}
+
+/* Tone variants for the command receipt. The envelope
+   skeleton above is reused verbatim — only the border and the title colour
+   change, so a failure reads as a failure without a second style sheet. */
+.dice-outcome-letter--error {
+  border-color: color-mix(in srgb, var(--rust) 55%, var(--line));
+}
+
+.dice-outcome-letter--error > summary {
+  color: var(--rust);
+}
+
+.dice-outcome-letter--log > summary {
+  color: var(--ink);
+  opacity: 0.75;
+}
+
+.dice-outcome-letter[open] > div {
+  max-height: 320px;
+  overflow: auto;
+  margin-top: 16px;
+}
+
+/* A dice check wears the launcher's dark glass, matching
+   the dice ceremony it opens into. Other declared actions keep the world's
+   paper appearance above. */
+.declared-action-backdrop--dice {
+  background: var(--ux-glass-scrim);
+}
+
+.declared-action-dialog.declared-action-dialog--dice {
+  --ink: var(--ux-glass-ink);
+  background: var(--ux-glass-panel);
+  color: var(--ux-glass-ink);
+  border: 1px solid var(--ux-glass-line);
+  border-radius: 28px;
+  box-shadow: var(--ux-glass-shadow);
+  backdrop-filter: var(--ux-glass-blur);
+  -webkit-backdrop-filter: var(--ux-glass-blur);
+}
+
+.declared-action-dialog--dice article {
+  border-top-color: var(--ux-glass-line-soft);
+}
+
+.declared-action-dialog--dice button {
+  padding: 9px 16px;
+  color: var(--ux-glass-ink);
+  background: var(--ux-glass-fill);
+  border: 1px solid var(--ux-glass-line);
+  border-radius: 999px;
+  box-shadow: var(--ux-glass-highlight);
+  font: 500 12px/1.3 var(--ux-font-glass-label);
+  letter-spacing: .12em;
+}
+
+.declared-action-dialog--dice button:hover:not(:disabled) {
+  background: var(--ux-glass-hover);
+}
+
+.declared-action-dialog--dice button:focus-visible {
+  outline-color: var(--ux-glass-accent);
+}
+
+.declared-action-dialog--dice [role='alert'] {
+  color: var(--ux-glass-fail);
+}
+
+/* The outcome record keeps its paper letter; re-pin its ink so the glass
+   dialog's light --ink does not leak into it. */
+.declared-action-dialog--dice .dice-outcome-letter {
+  --ink: var(--ux-color-ink);
+  color: var(--ux-color-ink);
+}
+
+.declared-action-dialog--dice .dice-outcome-letter button {
+  color: var(--ux-color-ink);
+  background: transparent;
+  border-color: var(--ux-color-line);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .declared-action-dialog button {
+    transition: none;
+  }
+}

@@ -1,0 +1,29 @@
+name: 뒤쪽 문
+desc: 승객에게 물어본 뒤, 여덟 번째 턴, 또는 시간이 촉박할 때 2호차 끝에 5호차로 가는 문이 나타난다(서장에서는 열쇠가 필요 없다).
+do:
+- action: give
+  with:
+    path: world/seated-car/freight-door.md
+    title: 5호차 · 화물차
+    frontmatter:
+      type: gate
+      target: world/freight-car
+      choice:
+        options:
+        - id: go
+          label: 5호차로 간다
+        - id: together
+          label: 샤청과 함께 간다
+      choice_actions:
+        go:
+          kind: enter
+          target: world/freight-car
+        together:
+          kind: enter
+          target: world/freight-car
+    body: 칸 끝, 화물차로 통하는 문은 잠겨 있지 않고 걸려 있을 뿐이다. 틈으로 찬 공기가 스며 나온다.
+- action: event
+  with:
+    target: characters/xia-cheng
+    title: 뒤쪽에서 소리가
+    text: 샤청이 갑자기 고개를 든다. "들어 봐요 — 5호차 쪽에서 소리가 났어요. 그 문은 늘 잠겨 있는데… 조금 열린 것 같아요."

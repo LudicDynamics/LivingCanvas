@@ -1,0 +1,11 @@
+{
+  "name": "@worldlines/identity-client",
+  "version": "0.1.0",
+  "description": "Verify Worldlines identity tokens (JWKS), introspect PATs, and sign users in (PKCE, loopback). Zero dependencies.",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "exports": { ".": "./index.mjs" },
+  "files": ["index.mjs", "index.d.mts"],
+  "license": "Apache-2.0",
+  "private": true
+}

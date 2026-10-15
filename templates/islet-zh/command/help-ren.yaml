@@ -1,0 +1,11 @@
+name: 帮莲干活
+desc: 在隔壁田里帮莲干上两个钟头
+do:
+  - action: add_state
+    with:
+      target: characters/ren
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "120"

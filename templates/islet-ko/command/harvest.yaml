@@ -1,0 +1,18 @@
+name: 수확
+desc: 익은 작물을 거두고 다시 씨를 뿌린다
+do:
+  - action: set_state
+    with:
+      target: world
+      state: farm_growth
+      value: "1"
+  - action: add_state
+    with:
+      target: characters/ren
+      state: bond
+      by: "1"
+  - action: event
+    with:
+      target: world/farm
+      title: 수확
+      text: 이랑마다 순무를 뽑자 밭둑이 하얗게 뒤덮였다. 렌이 낮은 담 너머로 고개를 내밀고 웃으며 바구니 채우기를 돕고, 다음 씨 뿌리기도 도와준다.

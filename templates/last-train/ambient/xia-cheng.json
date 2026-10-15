@@ -1,0 +1,54 @@
+{
+  "barks": [
+    "I keep counting heads. Habit.",
+    "I know every door on this train.",
+    "We have until five. That's all.",
+    "Mind the step, the floor dips here.",
+    "Two years on this run. Hands still cold."
+  ],
+  "emotes": [
+    "dots",
+    "question",
+    "exclaim",
+    "sigh"
+  ],
+  "when": [
+    {
+      "layer": "world/cab",
+      "barks": [
+        "The cab always smells of diesel."
+      ]
+    },
+    {
+      "layer": "world/sleeper",
+      "barks": [
+        "Quiet, people are sleeping here."
+      ]
+    }
+  ],
+  "chats": [
+    {
+      "with": "lao-qin",
+      "barks": [
+        "Old Qin, holding up?",
+        "Ask me again at five.",
+        "I'll bring you hot water."
+      ]
+    },
+    {
+      "with": "zhou-zihang",
+      "barks": [
+        "Still awake?",
+        "Can't sleep on trains.",
+        "Nobody can, tonight."
+      ]
+    },
+    {
+      "with": "lao-he",
+      "barks": [
+        "Old He, boiler still on?",
+        "Always is. Want a cup?"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+name: 공방을 다 못 살폈다
+desc: 공방의 판정은 61–100에 떨어진다. 61–95은 반쪽 실마리(문장 탁본)만 얻는다; 96–100는 고정쇠의 핀을 부러뜨린다(캐릭터에 떨어지는 사건). 둘 다 돌아가야 이 실마리를 못 박을 수 있다
+do:
+  - action: give
+    when: roll.rank >= 2
+    with:
+      path: player/ledger-page-half.md
+      title: 반쪽 실마리 · 문장의 탁본
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        고정쇠는 열렸지만, 문장 아래의 주문 인장은 녹이 덮고 있었다. 너는 영주가의 문장과 읽을 수 없는 인장 하나만 탁본했다.
+
+        문장은 어느 집안인지 알려 주지만, 어느 배인지는 알려 주지 못한다. 이 실마리를 못 박으려면 돌아가야 한다: 베라에게 공방의 주문 장부를 뒤져 달라 청한다.
+  - action: event
+    when: roll.rank == 1
+    with:
+      target: characters/vera
+      title: 고정쇠의 핀이 부러졌다
+      text: 바이스가 조여지자 고정쇠의 핀이 부러졌고, 그 새로 난 흔적도 부러진 한 토막과 함께 사라졌다. 그것은 베라가 오래 쫓던 것이었다. 그녀는 부러진 자리를 한참 들여다보았다. 농담은 없었다.
+  - action: set_status
+    with:
+      path: world/harbor-chart/workshop/05-long-way.md
+      values:
+        open: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: "✗ 공방의 실마리는 아직 못 박지 못했다: 주문 인장을 읽어 내지 못했다. 돌아가야 한다, 베라에게 주문 장부를 뒤져 달라 청해서."

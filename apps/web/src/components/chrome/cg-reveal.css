@@ -1,0 +1,67 @@
+/* CG reveal (components/chrome/CgReveal.tsx, the design notes).
+   Depth: the registered --depth-cg-reveal token (tools/ux-contract.json). */
+
+.cg-reveal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--depth-cg-reveal);
+  display: grid;
+  place-items: center;
+  padding: max(24px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
+  background: color-mix(in srgb, var(--ux-color-ink) 88%, transparent);
+  cursor: pointer;
+  outline: none;
+}
+.cg-reveal[data-blur='full'] { backdrop-filter: blur(calc(12px * var(--airp-blur-scale, 1))); -webkit-backdrop-filter: blur(calc(12px * var(--airp-blur-scale, 1))); }
+.cg-reveal[data-blur='reduced'] { backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.cg-reveal[data-blur='off'] { background: color-mix(in srgb, var(--ux-color-ink) 94%, transparent); }
+
+.cg-reveal__frame {
+  margin: 0;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  max-width: 100%;
+  max-height: 100%;
+  opacity: 0;
+  transition: opacity var(--cg-fade-ms, 700ms) ease-out;
+}
+.cg-reveal[data-shown='true'] .cg-reveal__frame { opacity: 1; }
+
+.cg-reveal__image {
+  display: block;
+  max-width: min(100%, 1600px);
+  max-height: calc(100dvh - 140px);
+  object-fit: contain;
+  border-radius: var(--ux-radius-panel);
+  box-shadow: var(--ux-shadow-halo);
+  user-select: none;
+}
+
+.cg-reveal__caption,
+.cg-reveal__missing {
+  max-width: min(720px, calc(100vw - 48px));
+  margin: 0;
+  color: var(--ux-color-paper);
+  font: 17px/1.7 var(--ux-font-human);
+  text-align: center;
+}
+
+.cg-reveal__close {
+  position: absolute;
+  right: max(24px, calc(env(safe-area-inset-right) + 16px));
+  bottom: max(22px, calc(env(safe-area-inset-bottom) + 16px));
+  min-height: 44px;
+  padding: 10px 20px;
+  border: 1px solid color-mix(in srgb, var(--ux-color-paper) 45%, transparent);
+  border-radius: var(--ux-radius-toolbar);
+  background: transparent;
+  color: var(--ux-color-paper);
+  font: 14px var(--ux-font-ui);
+  cursor: pointer;
+}
+.cg-reveal__close:focus-visible { outline: 2px solid var(--ux-color-paper); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cg-reveal__frame { transition: none; }
+}

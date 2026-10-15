@@ -1,0 +1,31 @@
+.cabin-prop{width:100%;display:flex;flex-direction:column;align-items:center;gap:12px;border:0;background:none;color:inherit;cursor:pointer;padding:12px;text-align:center}
+.cabin-prop img{width:100%;height:auto;max-height:250px;object-fit:contain;border-radius:var(--ux-radius-touch)}
+.cabin-prop__label{font-family:var(--ux-font-human);font-size:21px;letter-spacing:.03em}
+.cabin-prop__hint{font:9px var(--ux-font-machine);letter-spacing:.22em;opacity:.65}
+.cabin-prop__shape{position:relative;display:block;width:100%;filter:drop-shadow(0 12px 18px #0005);transition:transform var(--ux-motion-fast)}
+.cabin-prop:hover .cabin-prop__shape{transform:translateY(-4px)}
+.cabin-prop--envelope .cabin-prop__shape{aspect-ratio:1.65;background:linear-gradient(145deg,#e9dcc0,#cbb690);border:1px solid #907c54;border-radius:3px}
+.cabin-prop--envelope .cabin-prop__shape:before{content:'';position:absolute;inset:0;background:#f2e6c9;clip-path:polygon(0 0,100% 0,50% 62%);filter:drop-shadow(0 2px 1px #59472b)}
+.cabin-prop--envelope i{position:absolute;width:22px;height:22px;left:calc(50% - 11px);top:52%;border-radius:50%;background:#735344;box-shadow:inset 0 0 0 3px #ffffff18}
+.cabin-prop--phone .cabin-prop__shape{width:65%;aspect-ratio:.52;background:linear-gradient(145deg,#2d343b,#0d1218);border:6px solid #28292d;border-radius:22px;box-shadow:inset 0 0 0 1px #6d7581}
+.cabin-prop--phone i{position:absolute;top:8px;width:30%;height:7px;left:35%;background:#050708;border-radius:9px}
+.cabin-prop--phone b{position:absolute;bottom:13px;width:25%;height:3px;left:37.5%;background:#a3aaba;border-radius:2px}
+.cabin-prop--door .cabin-prop__shape{width:68%;aspect-ratio:.53;background:repeating-linear-gradient(90deg,#62462f 0,#6d5136 22%,#453323 23%,#684b32 24%);border:9px solid #382a20;border-bottom:0;box-shadow:inset 0 0 25px #0007}
+.cabin-prop--door i{position:absolute;right:9%;top:53%;width:18%;height:7px;border-radius:4px;background:linear-gradient(#c2b9a3,#6c6b65);box-shadow:0 3px 3px #0008}
+.paper-reading{--paper-ink:var(--ux-color-ink);position:relative;box-sizing:border-box;width:100%;padding:26px 30px 22px;background:var(--ux-surface-paper) url('/materials/ivory-paper-v1.webp') repeat;background-size:384px;color:var(--paper-ink);border:1px solid var(--ux-color-line);border-radius:var(--ux-radius-panel);box-shadow:var(--ux-shadow-soft);font:18px/1.85 var(--ux-font-human);letter-spacing:.018em;overflow-wrap:anywhere;text-align:left;text-shadow:none}
+.paper-reading--inline{position:absolute;top:0;left:0;width:min(500px,calc(100vw - 32px));max-width:none}
+/* Inside the hover panel the paper stays in flow: absolute, it gave the scrolling
+   panel no height and was clipped to a single line. */
+.entity-interactions .paper-reading--inline{position:relative;width:100%}
+.paper-reading--carried{position:fixed;z-index:var(--depth-chrome-carried-reader);left:clamp(16px,6vw,100px);bottom:100px;width:min(460px,calc(100vw - 32px));transform:rotate(-.5deg)}
+.paper-reading header{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px;border-bottom:1px solid var(--ux-color-line);padding-bottom:12px}
+.paper-reading h2{flex:1;margin:0;font:500 23px/1.45 var(--ux-font-human);letter-spacing:.03em}
+.paper-reading h2 button{text-align:left;font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.paper-reading__fold{font:20px/1 var(--ux-font-ui);padding:5px;color:var(--ux-color-muted);background:transparent;border:0;cursor:pointer}
+.paper-reading__fold:focus-visible{outline:1px solid var(--ux-color-rust);outline-offset:2px}
+.paper-reading .paper-reading__content h3{font-family:inherit;font-size:19px;line-height:1.5;font-weight:600;margin:1em 0 .6em}
+.paper-reading__content{max-height:min(48vh,440px);overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--ux-color-muted) transparent;padding-right:6px}
+.paper-reading p{margin:0 0 1em}.paper-reading strong{font-weight:600}.paper-reading h3{font:600 19px/1.5 inherit;margin:1em 0 .6em}.paper-reading fieldset{border:0;padding:0;margin-top:20px}.paper-reading fieldset>button{border:1px solid var(--ux-color-line);border-radius:var(--ux-radius-touch);padding:6px 14px;font:14px var(--ux-font-ui);cursor:pointer}
+.paper-reading .fm-block{--ink:var(--ux-color-ink);background:transparent;color:var(--ux-color-ink)}.paper-reading .fm-head{font:12px var(--ux-font-ui);color:var(--ux-color-muted)}.paper-reading .fm-body button{border-radius:var(--ux-radius-touch);background:color-mix(in srgb, var(--ux-color-ink) 5%, transparent);color:var(--ux-color-ink)}
+.object:has(.paper-reading){z-index:var(--depth-entity-reading)!important}
+@media(max-width:700px){.paper-reading{padding:18px 20px;font-size:17px}.paper-reading h2{font-size:21px}.paper-reading--carried{bottom:88px}.paper-reading__content{max-height:42vh}}

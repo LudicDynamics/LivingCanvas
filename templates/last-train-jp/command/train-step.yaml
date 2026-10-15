@@ -1,0 +1,10 @@
+name: 時間が進む
+desc: 調査判定を一度行うごとに、発車に一歩近づく。うまくいかなければ（判定失敗）、さらに一手を消費する
+do:
+  - action: tick
+    with:
+      by: "-1"
+  - action: tick
+    when: roll.passed == false
+    with:
+      by: "-1"

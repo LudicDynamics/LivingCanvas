@@ -1,0 +1,11 @@
+name: 陪鈴婆婆看天
+desc: 爬上灯塔，陪她看一会儿云和海
+do:
+  - action: add_state
+    with:
+      target: characters/suzu
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "60"

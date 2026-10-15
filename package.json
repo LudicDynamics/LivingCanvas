@@ -1,0 +1,41 @@
+{
+  "name": "airp-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @airp/server --filter @airp/web dev",
+    "dev:server": "pnpm --filter @airp/server dev",
+    "dev:web": "pnpm --filter @airp/web dev",
+    "preview:local": "bash tools/preview-local.sh",
+    "build": "pnpm --filter @airp/shared build && pnpm --filter @airp/server build && pnpm --filter @airp/web build",
+    "scaffold": "node tools/scaffold.mjs",
+    "motion": "node tools/motion-clip.mjs",
+    "gen:openai-image": "node tools/openai-image-gen.mjs",
+    "test": "AIRP_AI_ACCOUNT=0 node --test packages/shared/test/*.test.mjs apps/server/test/*.test.mjs apps/web/test/*.test.mjs tools/*.test.mjs",
+    "probe": "node tools/probe-writer.mjs",
+    "probe:image": "node tools/probe-image.mjs",
+    "probe:tools": "node tools/probe-tools.mjs && node tools/probe-tools-engine.mjs",
+    "probe:inject": "node tools/probe-inject.mjs",
+    "probe:init": "node tools/probe-init.mjs",
+    "probe:prompt": "node tools/probe-prompt.mjs && node tools/probe-prompt-character.mjs",
+    "probe:skeleton": "node tools/probe-skeleton.mjs",
+    "check:skills": "node tools/check-skills.mjs",
+    "check:effects": "node tools/check-command-effects.mjs",
+    "check:worlds": "node tools/check-world-editions.mjs",
+    "typecheck:extensions": "tsc -p extensions/tsconfig.json",
+    "check:ux": "node tools/check-ux-contract.mjs",
+    "check:bodies": "node tools/check-request-bodies.mjs",
+    "check:voices": "node tools/check-voices.mjs",
+    "check:live-voices": "node tools/check-live-voices.mjs",
+    "check:i18n": "node tools/check-i18n.mjs",
+    "check:emotions": "node tools/verify-emotions.mjs",
+    "pi": "node tools/pi-rp.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.0",
+    "typescript": "^5.7.3",
+    "typescript-language-server": "^6.0.1"
+  },
+  "license": "Apache-2.0"
+}

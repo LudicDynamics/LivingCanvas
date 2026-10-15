@@ -1,0 +1,8 @@
+name: '線を一本留める：彼の手が現場にあった'
+desc: '第三現場か画室の捜索：現場の群青とぶつけた跡が、画家の袖口と手首に合う'
+do:
+  - action: set_status
+    with:
+      path: world/london-map/03-before-noon.md
+      values:
+        hand: "yes"

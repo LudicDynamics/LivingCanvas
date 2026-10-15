@@ -1,0 +1,27 @@
+name: 序章快进
+desc: 从序章过来的玩家跳过第一幕：笔记本和周子航的证词进包，钟走一格（问学生那一次），直接到整列车地图
+do:
+  - action: move
+    when: 'has("world/seated-car/su-he-notebook.md")'
+    with:
+      from: world/seated-car/su-he-notebook.md
+      to: player/su-he-notebook.md
+  - action: give
+    with:
+      path: player/witness-account.md
+      title: 周子航的证词
+      frontmatter:
+        type: note
+        portable: true
+      body: 学生周子航（2车20号）：大约零点五十分，一个穿灰呢大衣、头发花白的老人扶着苏禾往车尾方向走，说她“晕车，带她去后面透透气”。苏禾脚步发飘，像没睡醒。老人的脸他没看清。
+  - action: set_status
+    with:
+      path: world/seated-car/01-opening.md
+      values:
+        skipped: "yes"
+  - action: tick
+    with:
+      by: "-1"
+  - action: enter
+    with:
+      layer: map

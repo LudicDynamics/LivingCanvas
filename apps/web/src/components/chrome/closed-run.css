@@ -1,0 +1,459 @@
+/* Closed worlds. */
+
+.closed-clock,
+.closed-strip {
+  position: fixed;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--depth-chrome-badge);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  border-radius: var(--ux-radius-pill);
+  background: color-mix(in srgb, var(--ux-color-ink) 72%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ux-color-cream) 30%, transparent);
+  backdrop-filter: blur(8px);
+  color: var(--ux-color-cream);
+  font-family: var(--ux-font-ui);
+  font-size: 13px;
+}
+
+.closed-clock__left { font-variant-numeric: tabular-nums; opacity: 0.85; }
+.closed-clock__now { font-variant-numeric: tabular-nums; font-weight: 600; letter-spacing: 0.04em; }
+.closed-clock[data-urgent='true'] { border-color: var(--ux-color-rust); }
+.closed-clock[data-urgent='true'] .closed-clock__left { color: var(--ux-color-rust); opacity: 1; }
+
+.closed-strip button {
+  border: 0;
+  border-radius: var(--ux-radius-pill);
+  padding: 3px 12px;
+  background: color-mix(in srgb, var(--ux-color-cream) 16%, transparent);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.closed-strip button:last-child { background: var(--ux-color-rust); }
+
+
+:root[data-airp-blur="reduced"] .closed-clock,
+:root[data-airp-blur="reduced"] .closed-strip { backdrop-filter: blur(4px); }
+:root[data-airp-blur="off"] .closed-clock,
+:root[data-airp-blur="off"] .closed-strip {
+  background: var(--ux-color-ink);
+  backdrop-filter: none;
+}
+
+/* ── The finale ─────────────────────────────
+   A full-bleed stage (the ending CG, scrim, title veil, vignette, grain) under
+   a scrolling column of glass panels. Beats (lib/finale.ts) reveal sections by
+   `data-shown`; every transition and animation here is opacity / transform on
+   its own layer — nothing repaints the full screen per frame. `data-animated
+   ="false"` (reduced motion, or effects off) is the same page, static. */
+
+.closed-ending {
+  --finale-ease: cubic-bezier(.2, .7, .2, 1);
+  --finale-fade: 700ms;
+  position: fixed;
+  inset: 0;
+  z-index: var(--depth-modal);
+  overflow: hidden;
+  background: var(--ux-glass-pressed-ink);
+  color: var(--ux-glass-ink);
+  outline: none;
+  isolation: isolate;
+}
+
+.closed-ending__stage { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.closed-ending__stage > * { position: absolute; inset: 0; }
+.closed-ending__picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.02);
+  transform-origin: 50% 40%;
+  will-change: transform;
+  opacity: 0;
+  transition: opacity 900ms var(--finale-ease);
+}
+.closed-ending[data-picture='ready'] .closed-ending__picture,
+.closed-ending[data-animated='false'] .closed-ending__picture { opacity: 1; }
+/* The slow push: starts as the veil lifts, settles before the panels' glass blurs over it. */
+.closed-ending[data-animated='true']:not([data-beat='title']) .closed-ending__picture {
+  animation: closed-ending-push 7s var(--finale-ease) both;
+}
+@keyframes closed-ending-push {
+  from { transform: scale(1.02); }
+  to { transform: scale(1.1); }
+}
+/* Legibility: darker toward the bottom (and the left on wide screens), where the text sits. */
+.closed-ending__scrim {
+  background:
+    linear-gradient(180deg, rgba(4, 5, 12, .25) 0%, rgba(4, 5, 12, .05) 30%, rgba(4, 5, 12, .72) 72%, rgba(4, 5, 12, .9) 100%);
+}
+.closed-ending[data-picture='none'] .closed-ending__scrim {
+  background: radial-gradient(120% 90% at 30% 20%, rgba(201, 111, 76, .22), transparent 60%), var(--ux-glass-pressed-ink);
+}
+/* The title card's veil: opaque at beat 0, lifts once (opacity only). */
+.closed-ending__veil {
+  background: var(--ux-glass-pressed-ink);
+  opacity: 0;
+  will-change: opacity;
+  transition: opacity 1400ms var(--finale-ease);
+}
+.closed-ending[data-animated='true'][data-beat='title'] .closed-ending__veil { opacity: .9; }
+.closed-ending__vignette {
+  background: radial-gradient(130% 100% at 50% 45%, transparent 55%, rgba(0, 0, 0, .55) 100%);
+}
+/* Static film grain: one tiled SVG noise, drawn once — never animated. */
+.closed-ending[data-grain='true'] .closed-ending__vignette::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: .09;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 160px 160px;
+}
+
+.closed-ending__scroll {
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+.closed-ending__card {
+  width: min(1120px, 100%);
+  min-height: 100%;
+  margin: 0 auto;
+  padding: clamp(24px, 9vh, 96px) clamp(16px, 4vw, 48px) 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 18px;
+}
+.closed-ending__card--quiz { justify-content: center; }
+.closed-ending__card--quiz .closed-debrief { width: min(680px, 100%); margin: 0 auto; }
+
+/* Beat reveals: opacity + transform only. */
+.closed-ending [data-beat] {
+  transition: opacity var(--finale-fade) var(--finale-ease), transform var(--finale-fade) var(--finale-ease);
+}
+.closed-ending[data-animated='true'] [data-beat]:not([data-shown]) {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  pointer-events: none;
+}
+.closed-ending[data-animated='false'] [data-beat] { transition: none; }
+
+/* The hero: the ending's name, large, in the story's own typeface. On the title
+   card it sits lower and larger (transform), then settles above the panels. */
+.closed-ending__hero { padding: 0 4px; transform-origin: 0 100%; }
+.closed-ending[data-animated='true'][data-beat='title'] .closed-ending__hero[data-shown] {
+  transform: translate3d(0, -14vh, 0) scale(1.04);
+}
+.closed-ending__kicker {
+  margin: 0;
+  font-family: var(--ux-font-glass-label);
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--ux-glass-accent);
+}
+.closed-ending__world { color: var(--ux-glass-muted); letter-spacing: .12em; }
+.closed-ending__title {
+  margin: 10px 0 0;
+  max-width: 18em;
+  font-family: var(--ux-font-human);
+  font-weight: 600;
+  font-size: clamp(34px, 6.2vw, 76px);
+  line-height: 1.08;
+  letter-spacing: .01em;
+  text-wrap: balance;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, .55);
+}
+
+/* Glass panels, the launcher's material (index.css --ux-glass-*). */
+.closed-ending__panel {
+  min-width: 0;
+  padding: 18px 20px;
+  border-radius: var(--ux-radius-panel);
+  border: 1px solid var(--ux-glass-line-soft);
+  background: var(--ux-glass-fill);
+  box-shadow: var(--ux-glass-shadow);
+  backdrop-filter: var(--ux-glass-blur);
+  -webkit-backdrop-filter: var(--ux-glass-blur);
+}
+.closed-ending__columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+/* Settled: the epilogue and what remains on the left, the settlement down the right. */
+.closed-ending__columns[data-settled='true'] {
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  grid-template-areas: 'text settle' 'remains settle';
+  grid-template-rows: auto 1fr;
+}
+.closed-ending__columns[data-settled='true'] > .closed-ending__text { grid-area: text; }
+.closed-ending__columns[data-settled='true'] > .closed-settle { grid-area: settle; }
+.closed-ending__columns[data-settled='true'] > .closed-remains { grid-area: remains; }
+.closed-ending__columns:not([data-settled='true']) .closed-ending__text { max-width: 720px; }
+.closed-ending__body { margin: 0 0 10px; font-family: var(--ux-font-human); font-size: 16px; line-height: 1.8; color: var(--ux-glass-ink); }
+.closed-ending__body:last-child { margin-bottom: 0; }
+
+/* The companion's closing line. */
+.closed-ending__companion {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--ux-glass-line-soft);
+}
+.closed-ending__companion-face { flex: none; width: 44px; height: 44px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; border: 1px solid var(--ux-glass-line); }
+.closed-ending__companion-line { margin: 4px 0 0; font-family: var(--ux-font-human); font-size: 15px; line-height: 1.7; color: var(--ux-glass-muted); font-style: italic; }
+.closed-ending__companion-line::before { content: '“'; }
+.closed-ending__companion-line::after { content: '”'; }
+
+/* The settlement panel. */
+.closed-settle { font-family: var(--ux-font-glass); font-size: 13px; color: var(--ux-glass-muted); }
+.closed-settle__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: 8px;
+  margin: 10px 0 6px;
+}
+.closed-settle__stats div {
+  padding: 8px 10px;
+  border-radius: var(--ux-radius-touch);
+  background: var(--ux-glass-well);
+  border: 1px solid var(--ux-glass-line-soft);
+}
+.closed-settle__stats dt { font-size: 11px; letter-spacing: .04em; color: var(--ux-glass-faint); }
+.closed-settle__stats dd { margin: 2px 0 0; font-size: 15px; font-weight: 600; color: var(--ux-glass-ink); font-variant-numeric: tabular-nums; }
+.closed-settle__heading { margin: 14px 0 6px; font-size: 12px; font-weight: 600; letter-spacing: .04em; color: var(--ux-glass-ink); }
+.closed-settle__chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.closed-settle__chips li {
+  padding: 2px 10px;
+  border-radius: var(--ux-radius-pill);
+  border: 1px solid var(--ux-glass-line);
+  line-height: 1.6;
+  color: var(--ux-glass-ink);
+}
+.closed-settle__chips li[data-state='now'] { background: var(--ux-glass-pressed); border-color: var(--ux-glass-pressed); color: var(--ux-glass-pressed-ink); }
+/* Unknown things are silhouettes: present, unnamed. */
+.closed-settle__chips li[data-state='unknown'] { color: var(--ux-glass-faint); border-style: dashed; background: var(--ux-glass-well); letter-spacing: .1em; }
+.closed-settle__secrets { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.closed-settle__secrets li { display: flex; gap: 8px; line-height: 1.5; color: var(--ux-glass-ink); }
+.closed-settle__secret { display: grid; gap: 2px; min-width: 0; }
+.closed-settle__proof { font-size: 11px; color: var(--ux-glass-pass); }
+.closed-settle__mark { flex: none; width: 2.2em; text-align: center; }
+.closed-settle__secrets li[data-verdict='hidden'] .closed-settle__mark { color: var(--ux-glass-crit); font-weight: 700; }
+.closed-settle__secrets li[data-verdict='surface'] .closed-settle__mark { color: var(--ux-glass-pass); font-weight: 700; }
+.closed-settle__secrets li[data-verdict='wrong'],
+.closed-settle__secrets li[data-verdict='unanswered'] { color: var(--ux-glass-faint); }
+.closed-settle__secrets li[data-verdict='guessed'] .closed-settle__mark { color: var(--ux-glass-crit); }
+
+/* Scenes seen: the save's CGs as thumbnails; a click shows one again. */
+.closed-settle__cgs { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 6px; margin: 0; padding: 0; list-style: none; }
+.closed-settle__cgs button { display: block; width: 100%; aspect-ratio: 16 / 10; padding: 0; border: 1px solid var(--ux-glass-line); border-radius: var(--ux-radius-touch); overflow: hidden; background: var(--ux-glass-pressed-ink); cursor: zoom-in; }
+.closed-settle__cgs img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.closed-settle__cgs button:focus-visible { outline: 2px solid var(--ux-glass-accent); outline-offset: 2px; }
+
+/* What remains: silhouettes and counts, never names. */
+.closed-remains { font-family: var(--ux-font-glass); font-size: 13px; }
+.closed-remains__rows { display: grid; gap: 10px; margin: 10px 0 0; padding: 0; list-style: none; }
+.closed-remains__rows li { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; color: var(--ux-glass-muted); }
+.closed-remains__silhouettes { display: inline-flex; gap: 5px; align-items: center; }
+.closed-remains__silhouette {
+  width: 22px;
+  height: 22px;
+  border: 1px dashed var(--ux-glass-line);
+  background: var(--ux-glass-well);
+}
+[data-shape='place'] .closed-remains__silhouette { border-radius: 6px 6px 2px 2px; }
+[data-shape='ending'] .closed-remains__silhouette { width: 16px; height: 24px; border-radius: 3px; }
+[data-shape='secret'] .closed-remains__silhouette { border-radius: 50%; }
+.closed-remains__more { font-size: 11px; color: var(--ux-glass-faint); }
+.closed-remains__hint { font-size: 12px; color: var(--ux-glass-crit); }
+.closed-remains__done { margin: 8px 0 0; color: var(--ux-glass-pass); }
+
+/* Actions: always in reach at the bottom of the scroll, over a soft fade. */
+.closed-ending__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; padding: 4px 0 0; }
+.closed-ending__card > .closed-ending__actions {
+  position: sticky;
+  bottom: 0;
+  margin: 0 calc(-1 * clamp(16px, 4vw, 48px));
+  padding: 18px clamp(16px, 4vw, 48px) calc(18px + env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, transparent, rgba(4, 5, 12, .78) 45%);
+}
+.closed-ending__actions button,
+.closed-ending__actions a {
+  border: 1px solid var(--ux-glass-line);
+  border-radius: var(--ux-radius-pill);
+  padding: 9px 18px;
+  font-family: var(--ux-font-glass);
+  font-size: 14px;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+.closed-ending__secondary { background: var(--ux-glass-fill); color: var(--ux-glass-ink); backdrop-filter: var(--ux-glass-blur-pill); }
+.closed-ending__secondary:hover { background: var(--ux-glass-hover); }
+.closed-ending__primary { background: var(--ux-glass-pressed); border-color: var(--ux-glass-pressed); color: var(--ux-glass-pressed-ink); font-weight: 600; }
+.closed-ending__actions button:focus-visible,
+.closed-ending__actions a:focus-visible { outline: 2px solid var(--ux-glass-accent); outline-offset: 2px; }
+.closed-ending__actions button:disabled { opacity: .55; cursor: default; }
+
+.closed-ending__skip {
+  position: absolute;
+  right: 18px;
+  bottom: 14px;
+  margin: 0;
+  font-family: var(--ux-font-glass-label);
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: var(--ux-glass-faint);
+  pointer-events: none;
+}
+
+/* The 复盘 / debrief: inside the finale, over the ending picture. */
+.closed-debrief {
+  padding: 22px 24px 18px;
+  border-radius: var(--ux-radius-panel);
+  border: 1px solid var(--ux-glass-line-soft);
+  background: var(--ux-glass-panel);
+  box-shadow: var(--ux-glass-shadow);
+  backdrop-filter: var(--ux-glass-blur);
+  -webkit-backdrop-filter: var(--ux-glass-blur);
+}
+.closed-debrief__step { margin: 6px 0 0; font-family: var(--ux-font-glass); font-size: 12px; color: var(--ux-glass-faint); font-variant-numeric: tabular-nums; }
+.closed-debrief__question { margin: 6px 0 12px; font-family: var(--ux-font-human); font-size: 22px; line-height: 1.5; }
+.closed-debrief__hint { margin: 0 0 12px; font-family: var(--ux-font-glass); font-size: 13px; color: var(--ux-glass-muted); }
+.closed-debrief__error { margin: 0 0 12px; font-family: var(--ux-font-glass); font-size: 13px; color: var(--ux-glass-fail); }
+.closed-debrief__options { display: grid; gap: 8px; margin: 0 0 8px; }
+.closed-debrief__options button {
+  text-align: left;
+  border: 1px solid var(--ux-glass-line);
+  border-radius: var(--ux-radius-touch);
+  padding: 10px 14px;
+  background: var(--ux-glass-well);
+  color: var(--ux-glass-ink);
+  font-family: var(--ux-font-human);
+  font-size: 15px;
+  line-height: 1.6;
+  cursor: pointer;
+}
+.closed-debrief__options button:hover { background: var(--ux-glass-hover); }
+.closed-debrief__options button[data-chosen='true'] { border-color: var(--ux-glass-accent); box-shadow: inset 0 0 0 1px var(--ux-glass-accent); }
+.closed-debrief .closed-ending__actions { padding-top: 12px; }
+.closed-debrief__epilogues { margin-top: 0; }
+.closed-debrief__epilogues > .closed-ending__kicker { margin-bottom: 8px; }
+.closed-debrief__hidden {
+  margin: 12px 0 0;
+  padding: 12px 14px;
+  border-radius: var(--ux-radius-touch);
+  border: 1px solid var(--ux-glass-crit);
+  background: var(--ux-glass-well);
+}
+.closed-debrief__hidden-title { margin: 4px 0 8px; font-family: var(--ux-font-human); font-size: 18px; }
+
+/* 「分享结果」: the result card sheet. */
+.closed-share {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: var(--ux-glass-scrim);
+}
+.closed-share__panel { width: min(520px, 100%); max-height: 100%; overflow: auto; background: var(--ux-glass-panel); outline: none; }
+.closed-share__status { margin: 18px 0; color: var(--ux-glass-muted); font-family: var(--ux-font-glass); }
+.closed-share__image { display: block; width: 100%; margin: 12px 0 4px; border-radius: var(--ux-radius-touch); }
+.closed-share__card {
+  position: relative;
+  margin: 12px 0 4px;
+  aspect-ratio: 1200 / 630;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-radius: var(--ux-radius-touch);
+  overflow: hidden;
+  background: radial-gradient(120% 90% at 30% 20%, rgba(201, 111, 76, .28), transparent 60%), var(--ux-glass-pressed-ink);
+}
+.closed-share__card[data-has-picture='true'] {
+  background: linear-gradient(180deg, transparent 30%, rgba(4, 5, 12, .86)), var(--share-picture) center / cover no-repeat;
+}
+.closed-share__world { margin: 0; font-family: var(--ux-font-glass-label); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--ux-glass-accent); }
+.closed-share__ending { margin: 4px 0 6px; font-family: var(--ux-font-human); font-size: 26px; font-weight: 600; line-height: 1.15; }
+.closed-share__facts { margin: 0; font-family: var(--ux-font-glass); font-size: 12px; color: var(--ux-glass-muted); }
+.closed-share__actions { padding-top: 12px; }
+
+/* Blur settings: reduced halves, off falls back to solid glass. */
+:root[data-airp-blur="reduced"] .closed-ending__panel,
+:root[data-airp-blur="reduced"] .closed-debrief { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+:root[data-airp-blur="off"] .closed-ending__panel,
+:root[data-airp-blur="off"] .closed-debrief,
+:root[data-airp-blur="off"] .closed-ending__secondary {
+  background: var(--ux-glass-panel);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Wide: the epilogue and the settlement side by side; the remains and actions below. */
+@media (max-width: 860px) {
+  .closed-ending__columns[data-settled='true'] {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'text' 'settle' 'remains';
+    grid-template-rows: auto;
+  }
+}
+
+/* Phone (390): one column; the actions stay in reach at the bottom. */
+@media (max-width: 560px) {
+  .closed-ending__card { padding: 28vh 16px 0; gap: 14px; }
+  .closed-ending__card--quiz { padding-top: 24px; }
+  .closed-ending__title { font-size: clamp(30px, 9vw, 44px); }
+  .closed-ending__panel { padding: 14px 16px; }
+  .closed-ending__body { font-size: 15px; line-height: 1.75; }
+  .closed-settle__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .closed-ending__card > .closed-ending__actions {
+    margin: 0 -16px;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: linear-gradient(180deg, transparent, rgba(4, 5, 12, .92) 28%);
+  }
+  .closed-ending__card > .closed-ending__actions .closed-ending__primary { grid-column: 1 / -1; order: -1; }
+  .closed-ending__actions button,
+  .closed-ending__actions a { padding: 11px 12px; text-align: center; }
+  .closed-ending__skip { bottom: auto; top: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .closed-ending__picture,
+  .closed-ending__veil,
+  .closed-ending [data-beat] { transition: none; animation: none; }
+}
+
+/* Dice tiers in the settlement. */
+.closed-settle__crits {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.closed-settle__crits li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.closed-settle__crit-name { font-size: 13px; opacity: 0.85; }

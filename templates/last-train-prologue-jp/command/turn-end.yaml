@@ -1,0 +1,8 @@
+name: ターン終了
+desc: 序章のターン数：プレイヤーのターンが終わるたびに一つ増える（world.json の experience.turnEnd）。
+do:
+- action: add_state
+  with:
+    target: world
+    state: turns
+    by: '1'

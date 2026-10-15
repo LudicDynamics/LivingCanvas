@@ -1,0 +1,48 @@
+.frame-probe {
+  position: fixed;
+  left: 12px;
+  bottom: 12px;
+  z-index: var(--depth-diagnostics);
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(10, 12, 20, .88);
+  color: #e8eaf2;
+  font: 500 12px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .45), 0 0 0 1px rgba(255, 255, 255, .14);
+  pointer-events: auto;
+  user-select: text;
+}
+
+.frame-probe__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.frame-probe__row--primary {
+  font-size: 14px;
+}
+
+.frame-probe__fps--ok { color: #7ce38b; }
+.frame-probe__fps--bad { color: #ff9c7a; }
+
+.frame-probe__row--actions {
+  margin-top: 2px;
+}
+
+.frame-probe__button {
+  padding: 3px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, .22);
+  background: rgba(255, 255, 255, .08);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.frame-probe__button:hover {
+  background: rgba(255, 255, 255, .16);
+}

@@ -1,0 +1,12 @@
+name: 第一次收成
+desc: 第一次收成，留下一颗最好的萝卜做纪念
+do:
+  - action: give
+    with:
+      path: player/first-turnip.md
+      title: 第一颗萝卜
+      body: 你的田里收上来的第一颗萝卜，又白又圆，叶子还带着露水。莲说第一颗不能吃，要留着。
+  - action: show_cg
+    with:
+      path: assets/cg/first-harvest.webp
+      caption: 你的田里收上来的第一筐。

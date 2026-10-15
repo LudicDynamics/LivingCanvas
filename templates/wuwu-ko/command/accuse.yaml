@@ -1,0 +1,12 @@
+name: 해도 위에서 지목하기
+desc: 네 가닥 실마리의 증거가 모두 가방에 있어야 폭로한다. 실마리가 다 못 박히지 않았을 때는 끝내지 않고, 카드에 아직 모자란 실마리 안내만 남긴다
+do:
+  - action: end
+    when: has("player/decoy-ship.md") && has("player/customs-tunnel.md") && has("player/ledger-page.md") && has("player/second-wake.md")
+    with:
+      ending: exposed
+  - action: edit
+    when: status.decoy != "yes" || status.tunnel != "yes" || status.ledger != "yes" || status.wake != "yes"
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: "대조해 보았다: 해도에는 아직 못 박히지 않은 실마리가 있다. 어디가 아직 ✓가 안 찍혔는지 보고, 그곳에서 조사 판정을 한 번 굴려라—조수는 기다리지 않는다."

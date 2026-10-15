@@ -1,0 +1,115 @@
+/* 公告 / 社区 (components/CommunityBoard.tsx): a side sheet under the launcher's top bar; full width on phones. */
+.community-board {
+  position: fixed;
+  top: 64px;
+  right: 16px;
+  bottom: 16px;
+  z-index: var(--depth-ui);
+  display: flex;
+  flex-direction: column;
+  width: min(420px, calc(100vw - 32px));
+  border-radius: 16px;
+  border: 1px solid var(--glass-line, rgba(255, 255, 255, .28));
+  background: rgba(10, 11, 18, .96);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  color: #f5f3ee;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .45);
+  outline: none;
+  text-transform: none;
+  letter-spacing: normal;
+}
+.community-board__head { display: flex; align-items: center; gap: 8px; padding: 10px 10px 0 14px; }
+.community-board__tabs { display: flex; gap: 4px; flex: 1; }
+.community-board__tabs button {
+  position: relative;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: rgba(245, 243, 238, .65);
+  padding: 8px 10px;
+  font: 600 13px/1.2 system-ui, sans-serif;
+  cursor: pointer;
+}
+.community-board__tabs button[aria-selected="true"] { color: #f5f3ee; border-bottom-color: var(--accent, #e8b86b); }
+.community-board__tabs .launcher-notices__dot { position: static; display: inline-block; margin-left: 6px; vertical-align: middle; }
+.community-board__close { border: 0; background: none; color: inherit; font-size: 16px; padding: 8px 10px; cursor: pointer; }
+.community-board__list { flex: 1; overflow: auto; display: grid; align-content: start; gap: 10px; padding: 12px 14px; overscroll-behavior: contain; }
+.community-board__card {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, .1);
+  background: rgba(255, 255, 255, .04);
+}
+.community-board__card header { display: flex; align-items: center; gap: 8px; }
+.community-board__card time { margin-left: auto; font: 500 11px/1 ui-monospace, monospace; opacity: .6; white-space: nowrap; }
+.community-board__card h3 { margin: 0; font: 600 14px/1.4 system-ui, sans-serif; overflow-wrap: anywhere; }
+.community-board__card img { width: 100%; max-height: 180px; object-fit: cover; border-radius: 8px; }
+.community-board__card footer { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 2px; }
+.community-board__tag { font: 500 10px/1 ui-monospace, "SFMono-Regular", monospace; letter-spacing: .12em; text-transform: uppercase; opacity: .75; }
+.community-board__card.is-important .community-board__tag { color: #ff9b85; opacity: 1; }
+.community-board__card.is-maintenance .community-board__tag { color: var(--accent, #e8b86b); opacity: 1; }
+.community-board__chip { font: 500 10px/1 ui-monospace, "SFMono-Regular", monospace; letter-spacing: .08em; padding: 4px 8px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .22); opacity: .85; white-space: nowrap; }
+.community-board__card.is-incident .community-board__chip { border-color: #ff9b85; color: #ff9b85; opacity: 1; }
+.community-board__card.is-maintenance .community-board__chip { border-color: var(--accent, #e8b86b); color: var(--accent, #e8b86b); opacity: 1; }
+.community-board__card.is-log .community-board__body { white-space: normal; }
+.community-board__body > p,
+.community-board__body > ul { margin: 0 0 6px; }
+.community-board__body > ul { padding-left: 18px; list-style: disc; }
+.community-board__body > figure { margin: 4px 0 8px; }
+.community-board__body a { color: var(--accent, #e8b86b); }
+.community-board__more { justify-self: center; }
+.community-board__new { width: 7px; height: 7px; border-radius: 50%; background: var(--accent, #e8b86b); }
+.community-board__body { margin: 0; font: 400 13px/1.55 system-ui, sans-serif; opacity: .9; overflow-wrap: anywhere; white-space: pre-line; }
+.community-board__muted { margin: 0; font: 400 12px/1.5 system-ui, sans-serif; opacity: .6; }
+.community-board__note { display: block; font: 400 12px/1.4 system-ui, sans-serif; color: var(--accent, #e8b86b); }
+.community-board__action {
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: 999px;
+  background: none;
+  color: inherit;
+  padding: 6px 12px;
+  min-height: 32px;
+  font: 500 12px/1.2 system-ui, sans-serif;
+  text-decoration: none;
+  cursor: pointer;
+}
+.community-board__action.is-primary { border-color: var(--accent, #e8b86b); color: var(--accent, #e8b86b); }
+.community-board__thread { flex-basis: 100%; display: grid; gap: 8px; padding-top: 6px; border-top: 1px solid rgba(255, 255, 255, .08); }
+.community-board__thread ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.community-board__comment p { margin: 0 0 2px; font: 400 13px/1.5 system-ui, sans-serif; overflow-wrap: anywhere; white-space: pre-line; }
+.community-board__comment small { font: 400 11px/1.4 system-ui, sans-serif; opacity: .7; }
+.community-board__comment small button,
+.community-board__report button { border: 0; background: none; color: inherit; text-decoration: underline; font: inherit; padding: 2px 6px; cursor: pointer; }
+.community-board__report { display: flex; flex-wrap: wrap; gap: 2px; font-size: 11px; }
+.community-board__thread textarea,
+.community-board__post-form textarea,
+.community-board__post-form input {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, .2);
+  background: rgba(0, 0, 0, .3);
+  color: inherit;
+  padding: 8px;
+  font: 400 14px/1.45 system-ui, sans-serif;
+  resize: vertical;
+}
+.community-board__post-form { display: grid; gap: 8px; }
+.community-board__compose-row { display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-top: 4px; }
+.community-board__compose-row small { margin-right: auto; font: 500 11px/1 ui-monospace, monospace; opacity: .6; }
+.community-board__compose-row button { border: 1px solid rgba(255, 255, 255, .3); border-radius: 999px; background: none; color: inherit; padding: 6px 14px; min-height: 32px; font: 500 12px/1.2 system-ui, sans-serif; cursor: pointer; }
+.community-board__compose-row button[type="submit"] { border-color: var(--accent, #e8b86b); color: var(--accent, #e8b86b); }
+.community-board__compose-row button:disabled { opacity: .45; cursor: default; }
+.community-board__foot { margin: 0; padding: 8px 14px 12px; font: 400 11px/1.4 system-ui, sans-serif; opacity: .5; }
+@media (max-width: 640px) {
+  .community-board { top: auto; left: 0; right: 0; bottom: 0; width: auto; max-height: 86dvh; height: 86dvh; border-radius: 16px 16px 0 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .community-board { animation: community-board-in .18s ease-out; }
+  @keyframes community-board-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+}
+/* While the board is open its own list carries the announcements: the slim banner would cover the sheet on phones. */
+:root[data-airp-board] .launcher-notices__banner { display: none; }

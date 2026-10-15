@@ -1,0 +1,30 @@
+name: 7番埠頭を調べ切れなかった
+desc: 7番埠頭の判定が61–100に落ちた。61–95は半本の糸（漆片）しか得られない。96–100は銀鳶に見つかる（キャラクターに降りかかるイベント）。どちらも遠回りをしないとこの糸は留められない
+do:
+  - action: give
+    when: roll.rank >= 2
+    with:
+      path: player/decoy-ship-half.md
+      title: 半本の糸・別の船が残した漆片
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        あなたは船倉を開ける間もなく、満潮線より高い擦り傷からタール色の黒漆を一片削り取っただけだった。それは無人船の船殻とは合わない——別の船がそれに擦り寄るように通り過ぎたのだ。
+
+        これだけでは第二の船がいたことしか証明できず、無人船が囮だとは証明できない。この糸を留めるには遠回りが必要だ：銀鳶に面と向かって船倉を開けてもらう。
+  - action: event
+    when: roll.rank == 1
+    with:
+      target: characters/silver-kite
+      title: 銀鳶に見つかった
+      text: 君が舷梯の上に手をかけた途端、銀鳶が君の襟首をつかんだ。彼は何も言わず、舷梯を君に対して閉ざした。船倉に何があるか知りたければ、直接彼に会いに行き、なぜ密かに船に乗ったのかを説明しなければならない。
+  - action: set_status
+    with:
+      path: world/harbor-chart/seventh-berth/05-long-way.md
+      values:
+        open: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: ✗ 7番埠頭の糸はまだ留められていない：船倉が開いていない。遠回りして、銀鳶に直接船倉を開けてもらう必要がある。

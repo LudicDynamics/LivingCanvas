@@ -1,0 +1,19 @@
+name: '韦恩找上门来'
+desc: '查实的事够多了：韦恩坐不住，拿着红信封拦住了福尔摩斯'
+do:
+  - action: set_status
+    with:
+      path: world/london-map/03-before-noon.md
+      values:
+        arrived: "yes"
+  - action: edit
+    with:
+      path: world/london-map/03-before-noon.md
+      frontmatter:
+        title: '韦恩找上门来'
+      append_body: '十一点四十分。韦恩就站在你面前，腋下夹着那个红信封，不肯走。华生在你身后低声说：“只剩二十分钟了。”'
+  - action: event
+    with:
+      target: characters/wayne
+      title: '韦恩找上门来'
+      text: '十一点四十分，亚瑟·韦恩在去221B的路上拦住了你。他腋下夹着一个红色信封，右手腕还缠着绷带。“第四幅画的校样，我得亲手交给韦尔小姐。她把地址改了，我找不到那条街。”他说得很客气，眼睛却一直往贝克街的方向看。华生压低声音：“福尔摩斯，离正午只剩二十分钟。伊迪丝还在客厅里——现在就得决定。”'

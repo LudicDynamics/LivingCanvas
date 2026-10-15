@@ -1,0 +1,106 @@
+{
+  "id": "magic-academy-jp",
+  "name": "魔法学院 · 日本語",
+  "version": "1.2.0",
+  "schema": 1,
+  "description": "言葉と物と代価を組み合わせる。あなたが名付けた小さな魔法が、閉じた空間を変える。",
+  "intro": {
+    "status": "in-development",
+    "category": "story",
+    "experimental": true,
+    "rank": 9,
+    "hook": "言葉と品物と代価を組み合わせ、小さな魔法に名前をつける——それがこの閉ざされた部屋を変える。",
+    "genres": [
+      "fantasy"
+    ],
+    "loop": [
+      "言葉の欠片と品物を集め、呪文図譜の上で組み合わせる",
+      "代価を確かめ、呪文に名前をつけて唱える",
+      "先輩や司書と、その呪文が何を意味するのか話し合う"
+    ],
+    "minutes": [
+      15,
+      30
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "voice",
+      "live-image",
+      "free-explore"
+    ],
+    "endings": 0,
+    "characters": [
+      {
+        "id": "seraphina",
+        "line": "学院の先輩。言葉と品物の関係を問い返し、代価を隠さない"
+      },
+      {
+        "id": "librarian",
+        "line": "貸し出しと返却をすべて覚えている司書"
+      }
+    ],
+    "for": [
+      "ファンタジー設定が好きな人",
+      "作ること・名づけることが好きな人"
+    ],
+    "unfinished": "開発中：今は部屋が一つだけで、代価の仕組みと結末はまだできていません。"
+  },
+  "author": "Mingyue",
+  "genre": "物語体験",
+  "tags": [
+    "短い物語",
+    "生成する世界"
+  ],
+  "material": "parchment",
+  "audio": {
+    "theme": "emberglass"
+  },
+  "extensions": [
+    {
+      "id": "airp:letter",
+      "version": ">=1.0.0",
+      "optional": false
+    },
+    {
+      "id": "airp:note",
+      "version": ">=1.0.0",
+      "optional": false
+    }
+  ],
+  "characters": [
+    {
+      "id": "seraphina",
+      "home": "map",
+      "role": "companion",
+      "avatarVideo": "assets/motion/seedance/characters/seraphina-transparent.webm",
+      "avatar": "assets/motion/seedance/characters/seraphina-transparent.webp",
+      "name": "セラフィナ",
+      "description": "学院の先輩。言葉と物の関係を問い返す。答えを代わりに決めず、代価を隠さない。"
+    },
+    {
+      "id": "librarian",
+      "home": "world/spell-atlas",
+      "role": "npc",
+      "name": "司書",
+      "description": "図書館の貸出と返却を覚える司書。知らない感情や未来の結果を断定しない。",
+      "avatar": "assets/motion/seedance/characters/librarian-transparent.webp",
+      "avatarVideo": "assets/motion/seedance/characters/librarian-transparent.webm"
+    }
+  ],
+  "opening": {
+    "greeter": "seraphina"
+  },
+  "createdAt": "2026-09-11T00:00:00Z",
+  "updatedAt": "2026-09-11T00:00:00Z",
+  "locale": "ja",
+  "entry": "map",
+  "rules": {
+    "system": "dnd",
+    "proficiency": 2,
+    "characterChecks": true
+  },
+  "player": {
+    "id": "player",
+    "name": "学院の新入生"
+  }
+}

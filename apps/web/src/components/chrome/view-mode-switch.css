@@ -1,0 +1,48 @@
+/* Canvas ⇄ map, top right beside the immersion toggle (scene-shell.css places
+   that one at right: 22px, 44px wide). Same glass as the edge controls. */
+.view-mode-switch {
+  position: absolute;
+  z-index: var(--depth-writer);
+  top: max(22px, calc(env(safe-area-inset-top) + 12px));
+  right: max(76px, calc(env(safe-area-inset-right) + 66px));
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--ux-radius-pill);
+  border: 1px solid var(--ux-color-line);
+  background: color-mix(in srgb, var(--ux-color-ink) 72%, transparent);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--ux-shadow-soft);
+}
+
+.view-mode-switch__option {
+  min-width: 52px;
+  height: 36px;
+  padding: 0 12px;
+  border: none;
+  border-radius: var(--ux-radius-pill);
+  background: transparent;
+  color: color-mix(in srgb, var(--ux-color-paper) 78%, transparent);
+  font-family: var(--ux-font-ui);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.view-mode-switch__option[aria-pressed='true'] {
+  background: var(--ux-color-paper);
+  color: var(--ux-color-ink);
+}
+
+.view-mode-switch__option:hover:not([aria-pressed='true']),
+.view-mode-switch__option:focus-visible {
+  color: var(--ux-color-paper);
+  outline: none;
+  background: color-mix(in srgb, var(--ux-color-paper) 14%, transparent);
+}
+
+.is-immersive .view-mode-switch { opacity: 0; pointer-events: none; }
+:root[data-airp-blur="reduced"] .view-mode-switch { backdrop-filter: blur(7px); }
+:root[data-airp-blur="off"] .view-mode-switch {
+  background: rgba(41, 40, 32, .96);
+  backdrop-filter: none;
+}

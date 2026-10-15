@@ -1,0 +1,10 @@
+name: 그를 추궁한다
+desc: 그림이 먼저였고 그의 손이 현장에 있었다는 점을 늘어놓는다. 새 주소를 읽었다는 말을 더하면 그에게 남은 말은 없다
+do:
+  - action: end
+    when: status.address == "yes"
+    with:
+      ending: caught
+  - action: end
+    with:
+      ending: half-truth

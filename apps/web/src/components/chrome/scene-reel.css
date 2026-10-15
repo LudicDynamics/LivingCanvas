@@ -1,0 +1,42 @@
+/* The scenes' animated pictures inside the opened bag (components/chrome/SceneReel.tsx,
+   the design notes). Lives in the drawer's own flow: no
+   position, no depth of its own. */
+
+.scene-reel { margin-top: 14px; }
+
+.scene-reel__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.scene-reel__tile {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--ux-color-line);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--ux-color-paper) 10%, transparent);
+  color: var(--ux-color-paper);
+  cursor: pointer;
+}
+.scene-reel__tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.scene-reel__name {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 10px 6px 4px;
+  background: linear-gradient(transparent, color-mix(in srgb, var(--ux-color-ink) 85%, transparent));
+  font: 11px/1.3 var(--ux-font-ui);
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.scene-reel__tile:hover { border-color: var(--ux-color-paper); }
+.scene-reel__tile:focus-visible { outline: 2px solid var(--ux-color-rust); outline-offset: 2px; }

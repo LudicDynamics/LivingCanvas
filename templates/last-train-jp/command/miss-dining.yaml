@@ -1,0 +1,8 @@
+name: 食堂車を調べきれなかった
+desc: 食堂車の捜索が61–100に落ちた。かき回された石炭の灰に気づいただけ。「遠回り」（05-long-way.md）を開く
+do:
+  - action: set_status
+    with:
+      path: world/dining-car/05-long-way.md
+      values:
+        open: yes

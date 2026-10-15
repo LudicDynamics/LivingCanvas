@@ -1,0 +1,11 @@
+{
+  "sourceRepository": "worldlines-assets",
+  "assets": [
+    {
+      "source": "unwritten-door-demo/backgrounds/intro.webm",
+      "target": "assets/motion/seedance/backgrounds/intro.webm",
+      "bytes": 544709,
+      "sha256": "e311e9aea33c87075274c41976dbb1123b0e6b929e1ffea6856144020cd6a403"
+    }
+  ]
+}

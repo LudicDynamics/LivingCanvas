@@ -1,0 +1,11 @@
+name: Too Hurt to Continue
+desc: "Hidden health reaches zero (world.json trigger too-hurt): Xia Cheng helps you back to Car 2, you can no longer walk, and the train departs at five as scheduled"
+do:
+  - action: event
+    with:
+      target: characters/xia-cheng
+      title: Xia Cheng helped you back
+      text: You brace yourself against the car wall, your legs give way, and you sit down. Xia Cheng comes over with a flashlight, lifts your arm onto her shoulder, and helps you back to Car 2 one car at a time. She lays you on seat 18 and covers you with her own padded coat. You want to say that the matter of seat 17 is not finished, but your eyelids will not stay open. What remains tonight will not be investigated by you.
+  - action: end
+    with:
+      ending: departed

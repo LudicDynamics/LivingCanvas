@@ -1,0 +1,11 @@
+name: 伤得撑不住了
+desc: 隐藏生命值归零（world.json 触发器 too-hurt）：夏澄把你扶回2车，你再也走不动，列车五点照常开走
+do:
+  - action: event
+    with:
+      target: characters/xia-cheng
+      title: 夏澄把你扶了回去
+      text: 你扶着车厢壁，腿一软就坐了下去。夏澄提着手电找过来，把你的胳膊架到她肩上，一节一节扶回2车，让你躺在18号座上，把自己的棉大衣盖在你身上。你想说17号的事还没完，可眼皮怎么也撑不开了。今晚剩下的事，不会由你去查了。
+  - action: end
+    with:
+      ending: departed

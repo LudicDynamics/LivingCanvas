@@ -1,0 +1,16 @@
+name: 流木を拾って船小屋へ
+desc: 流木をひと運びするごとに古い漁船が進水に近づく
+do:
+  - action: add_state
+    with:
+      target: world
+      state: boat_progress
+      by: "1"
+  - action: add_state
+    with:
+      target: characters/kenta
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "90"

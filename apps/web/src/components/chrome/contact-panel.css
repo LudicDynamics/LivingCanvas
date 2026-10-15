@@ -1,0 +1,217 @@
+/* Contact / community panel.
+   Same glass vocabulary as the launcher tiles and the companion rails: a
+   translucent sheet over whatever is behind it, hairline borders, no opaque
+   slab. The tokens fall back to the launcher's literals so the panel looks
+   right in the world header too, where `--glass-*` is not in scope. */
+
+.contact-panel {
+  position: relative;
+  display: inline-flex;
+}
+
+/* In the launcher the trigger borrows `world-launcher__pill`, so it inherits
+   that top bar's size and rhythm instead of introducing a second pill shape.
+   In the world header it is icon-only — the play chrome is already a dense row
+   and a fifth worded pill there costs more than it explains — sized to match
+   the round controls it sits beside (MuteButton is 36px). */
+.contact-panel__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--ux-color-line, rgba(41, 40, 32, .15));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ux-color-paper, #f4f0e8) 80%, transparent);
+  color: color-mix(in srgb, var(--ux-color-ink, #292820) 70%, transparent);
+  cursor: pointer;
+  transition: background var(--ux-motion-fast, 220ms), color var(--ux-motion-fast, 220ms);
+}
+
+.contact-panel__icon svg { width: 16px; height: 16px; }
+
+.contact-panel__icon:hover,
+.contact-panel__icon[aria-expanded='true'] {
+  background: var(--ux-color-ink, #292820);
+  color: #fff;
+}
+
+.contact-panel__sheet {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: var(--depth-modal, 50);
+  width: min(320px, calc(100vw - 32px));
+  max-height: min(70vh, 560px);
+  overflow-y: auto;
+  padding: 16px;
+  border: 1px solid var(--glass-line, rgba(255, 255, 255, .22));
+  border-radius: 18px;
+  background: var(--glass-fill, rgba(16, 17, 27, .62));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), var(--ux-shadow-deep, 0 22px 50px rgba(35, 28, 20, .32));
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  color: var(--ux-color-cream, #fbf8f1);
+  text-align: left;
+}
+
+.contact-panel__sheet--portaled {
+  /* Portaled to <body> from the launcher: above every lobby layer, under nothing. */
+  z-index: var(--depth-modal-dialogue, 51);
+}
+
+.contact-panel__sheet h2 {
+  margin: 0 0 2px;
+  font: 600 13px/1.3 var(--ux-font-ui, system-ui, sans-serif);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.contact-panel__region {
+  margin: 0 0 12px;
+  font-size: 12px;
+  opacity: .72;
+}
+
+.contact-panel__channels {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-panel__channel {
+  padding-bottom: 12px;
+  /* A hairline between channels rather than a card each: the sheet is already
+     one surface, and boxing every row would re-introduce the slab. */
+  border-bottom: 1px solid color-mix(in srgb, var(--glass-line, rgba(255, 255, 255, .22)) 60%, transparent);
+}
+
+.contact-panel__channel:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.contact-panel__channel.is-pending { opacity: .58; }
+
+.contact-panel__channel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.contact-panel__channel-label {
+  font: 500 13px/1.4 var(--ux-font-ui, system-ui, sans-serif);
+}
+
+.contact-panel__pending {
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  opacity: .8;
+}
+
+/* Quieter than the channel itself: a caveat, not a warning. */
+.contact-panel__expires {
+  margin: 4px 0 0;
+  font-size: 11px;
+  line-height: 1.5;
+  opacity: .62;
+}
+
+.contact-panel__qr {
+  display: block;
+  width: 132px;
+  height: 132px;
+  margin: 10px 0 8px;
+  border-radius: 10px;
+  /* The QR itself needs a light ground to stay scannable — this is the one
+     place in the panel where a solid fill is the functional choice. */
+  background: #fff;
+  padding: 6px;
+  box-sizing: border-box;
+}
+
+.contact-panel__channel-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 12.5px;
+}
+
+.contact-panel__channel-value code,
+.contact-panel__channel-value a {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-family: var(--ux-font-machine, ui-monospace, monospace);
+  color: inherit;
+}
+
+.contact-panel__channel-value a { text-decoration: underline; text-underline-offset: 3px; }
+
+.contact-panel__channel-value button,
+.contact-panel__switch button {
+  padding: 5px 10px;
+  border: 1px solid var(--glass-line, rgba(255, 255, 255, .22));
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font-size: 11.5px;
+  cursor: pointer;
+}
+
+.contact-panel__channel-value button:hover,
+.contact-panel__switch button:hover { background: rgba(255, 255, 255, .14); }
+
+.contact-panel__switch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid color-mix(in srgb, var(--glass-line, rgba(255, 255, 255, .22)) 60%, transparent);
+  font-size: 11.5px;
+  opacity: .85;
+}
+
+/* Narrow screens: the sheet would overflow the right edge of a phone header. */
+@media (max-width: 520px) {
+  .contact-panel__sheet {
+    position: fixed;
+    top: auto;
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+    width: auto;
+  }
+}
+:root[data-airp-blur="reduced"] .contact-panel__sheet {
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+}
+:root[data-airp-blur="off"] .contact-panel__sheet {
+  background: rgba(16, 17, 27, .96);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* The entry inside the 联系我们 panel (ContactPanel.tsx): opens the 「报告问题 / 卡住了」 sheet, the design notes */
+.contact-panel__report {
+  width: 100%;
+  margin: 0 0 14px;
+  padding: 8px 12px;
+  border: 1px solid var(--glass-line, rgba(255, 255, 255, .22));
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .1);
+  color: inherit;
+  font: 600 13px/1.3 var(--ux-font-ui, system-ui, sans-serif);
+  text-align: left;
+  cursor: pointer;
+}
+.contact-panel__report:hover { background: rgba(255, 255, 255, .18); }

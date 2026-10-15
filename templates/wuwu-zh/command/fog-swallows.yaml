@@ -1,0 +1,6 @@
+name: 被雾吞掉
+desc: 决定性判定落在 96–100，而手里已经没有能点的灯油
+do:
+  - action: end
+    with:
+      ending: swallowed

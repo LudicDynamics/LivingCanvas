@@ -1,0 +1,19 @@
+name: 등유가 다 타 버렸다
+desc: 판정이 96–100에 떨어지면, 손에 있던 등유 한 몫을 당황한 사이 다 태워 버리고 빈 병만 남는다
+do:
+  - action: move
+    with:
+      from: player/lamp-oil.md
+      to: player/empty-oil-flask.md
+  - action: edit
+    with:
+      path: player/empty-oil-flask.md
+      frontmatter:
+        title: 빈 기름병 · 등유가 다 타 버렸다
+        status:
+          data:
+            oil: empty
+      body: |
+        병바닥에는 검게 그을은 기름때만 한 줄 남았다. 방금 당황한 사이에 켠 불빛이 한 번 분량을 전부 태워 버렸다.
+
+        안개 속에서 또 일이 터지면 불을 켤 등유가 없다.

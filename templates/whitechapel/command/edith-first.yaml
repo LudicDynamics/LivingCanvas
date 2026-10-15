@@ -1,0 +1,6 @@
+name: 'Edith first'
+desc: 'Watson takes Edith out the back door: she is safe, and Wayne smells it'
+do:
+  - action: end
+    with:
+      ending: half-truth

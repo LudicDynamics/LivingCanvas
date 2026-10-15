@@ -1,0 +1,11 @@
+name: 'Let him go and follow'
+desc: 'He is waiting for you in the fog: you take a heavy blow, and the fourth picture comes true'
+do:
+  - action: add_state
+    with:
+      target: player
+      state: hp
+      by: "-5"
+  - action: end
+    with:
+      ending: fourth-picture

@@ -1,0 +1,23 @@
+name: "첫 번째 실마리 못 박기: 미끼 배"
+desc: 7번 부두의 판정 성공(60 이하) 또는 돌아가기 후, '무인선은 미끼다'를 증거로 가방에 넣고 해도에 ✓를 찍는다
+do:
+  - action: give
+    with:
+      path: player/decoy-ship.md
+      title: 증거 · 그 배는 미끼다
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        무인선의 화물칸에는 밸러스트와 못 박힌 빈 상자뿐이고, 뱃전의 긁힌 자국은 만조선보다 높다—다른 배가 붙어서 지나가며 남긴 것이다.
+
+        이 배는 사고가 나서 항구로 떠내려온 것이 아니다. 모든 사람의 시선을 7번 부두에 묶어 두려고 일부러 풀어 놓은 것이다.
+  - action: set_status
+    with:
+      path: world/harbor-chart/05-accuse.md
+      values:
+        decoy: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: "✓ 7번 부두의 실마리가 못 박혔다: 그 무인선은 일부러 풀어 놓은 것이다."

@@ -1,0 +1,8 @@
+name: "한 박자 끝"
+desc: "박자마다 하나 더한다(world.json의 experience.turnEnd): 네 번째 박자 뒤 2호차에 출구가 나온다."
+do:
+- action: add_state
+  with:
+    target: world
+    state: turns
+    by: '1'

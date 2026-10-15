@@ -1,0 +1,11 @@
+name: 蓮の手伝いをする
+desc: 隣の蓮の畑で二時間ほど手伝う
+do:
+  - action: add_state
+    with:
+      target: characters/ren
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "120"

@@ -1,0 +1,6 @@
+name: 새벽까지 자기
+desc: 오두막에서 자고 다음 날 새벽에 깬다
+do:
+  - action: pass_time
+    with:
+      until: dawn

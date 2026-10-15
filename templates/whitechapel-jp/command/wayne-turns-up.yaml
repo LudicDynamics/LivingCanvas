@@ -1,0 +1,19 @@
+name: 'ウェインが現れる'
+desc: '確かめたことが十分に揃った：ウェインはじっとしていられず、赤い封筒を手にホームズを呼び止める'
+do:
+  - action: set_status
+    with:
+      path: world/london-map/03-before-noon.md
+      values:
+        arrived: "yes"
+  - action: edit
+    with:
+      path: world/london-map/03-before-noon.md
+      frontmatter:
+        title: 'ウェインが現れる'
+      append_body: '十一時四十分。ウェインは赤い封筒を脇に抱えたまま、あなたの前から動こうとしない。背後でワトソンが小声で言う。「あと二十分だ」'
+  - action: event
+    with:
+      target: characters/wayne
+      title: 'ウェインが現れる'
+      text: '十一時四十分、221Bへ向かう途中で、アーサー・ウェインがあなたを呼び止めた。脇には赤い封筒、右の手首にはまだ包帯。「第四の絵の校正刷りです。ウェアさんに直接お渡ししないと。住所が書き換えられていて、その通りが見つからないんです」口調は丁寧だが、目はずっとベーカー街の方を見ている。ワトソンが声を落とす。「ホームズ、正午まであと二十分だ。イーディスはまだ客間にいる――今決めないと」'

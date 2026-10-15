@@ -1,0 +1,80 @@
+{
+  "id": "moonlit-contract",
+  "name": "The Moonlit Pact · English",
+  "version": "1.2.0",
+  "schema": 1,
+  "description": "A moonlit summoning. How will you answer the hand she offers? One promise, and the untold nights that follow.",
+  "intro": {
+    "status": "in-development",
+    "category": "story",
+    "rank": 8,
+    "hook": "In an abandoned seaside observatory you summon a knight in black-bronze armor. She offers you a pact — whether to accept is up to you.",
+    "genres": [
+      "fantasy",
+      "romance"
+    ],
+    "loop": [
+      "Hear Lyra’s pact: accept, ask her terms, or refuse",
+      "From then on, every step forward is a new scene the AI writes on the spot",
+      "Talk with her and decide where the vow leads"
+    ],
+    "minutes": [
+      15,
+      30
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "free-explore",
+      "voice"
+    ],
+    "endings": 0,
+    "characters": [
+      {
+        "id": "lyra",
+        "line": "A knight called by a pale violet light; she will never take your hand without your spoken yes"
+      }
+    ],
+    "for": [
+      "Fantasy romance",
+      "Long talks with a character"
+    ],
+    "unfinished": "In development: after the pact it is free generation, with no goal, countdown or ending yet."
+  },
+  "author": "AIRP",
+  "genre": "Generative Visual Novel",
+  "tags": [
+    "short story",
+    "generative world"
+  ],
+  "locale": "en",
+  "material": "parchment",
+  "entry": "map",
+  "rules": {
+    "system": "dnd",
+    "proficiency": 2,
+    "characterChecks": true
+  },
+  "cover": "assets/backgrounds/opening.webp",
+  "player": {
+    "id": "you",
+    "name": "You"
+  },
+  "characters": [
+    {
+      "id": "lyra",
+      "name": "Lyra",
+      "home": "map",
+      "role": "companion",
+      "description": "Lyra, a knight in black-bronze armor, summoned by the pale violet light of the old seaside observatory. She came to protect you and offers a pact, but she will not take your hand without your word. The blue ribbon that would seal it hangs from her gauntlet."
+    }
+  ],
+  "opening": {
+    "greeter": "lyra"
+  },
+  "extensions": [],
+  "audio": {
+    "theme": "emberglass"
+  },
+  "createdAt": "2026-09-14T00:00:00Z",
+  "updatedAt": "2026-09-14T00:00:00Z"
+}

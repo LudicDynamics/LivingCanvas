@@ -1,0 +1,11 @@
+name: 보내고 뒤따른다
+desc: 그가 안개 속에서 당신을 기다린다. 당신은 강한 타격을 입고, 네 번째 그림이 현실이 된다
+do:
+  - action: add_state
+    with:
+      target: player
+      state: hp
+      by: "-5"
+  - action: end
+    with:
+      ending: fourth-picture

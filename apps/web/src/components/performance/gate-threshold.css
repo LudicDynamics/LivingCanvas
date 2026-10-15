@@ -1,0 +1,12 @@
+.gate-threshold { position: fixed; z-index: var(--depth-chrome-gate-threshold); left: 50%; bottom: max(120px, 16vh); transform: translateX(-50%); width: min(540px, calc(100vw - 32px)); padding: 26px 30px 18px; color: #fff4df; background: linear-gradient(130deg, rgba(33,30,39,.97), rgba(49,43,50,.96)); border-block: 1px solid #d4b89170; box-shadow: 0 18px 70px #0007; border-radius: 3px 18px 3px 18px; animation: threshold-arrive .5s ease-out both; font-family: Georgia, 'Yu Mincho', serif; }
+.gate-threshold__ink { animation: threshold-ink .8s ease-out both; }
+.gate-threshold__place { color: #d8bc94; font-size: 11px; letter-spacing: .18em; }
+.gate-threshold p { margin: 12px 0; white-space: pre-wrap; line-height: 1.85; font-size: 17px; }
+.gate-threshold p.gate-threshold__items { font-size: 12px; color: #dbc6ab; }
+.gate-threshold button { display: block; margin-left: auto; background: transparent; color: #eddbbe; border: 0; padding: 10px 0 4px 15px; cursor: pointer; font: inherit; font-size: 12px; }
+.gate-threshold button:focus-visible { outline: 2px solid #eddbbe; outline-offset: 4px; }
+.threshold-cue { outline: 2px solid #e8caa2; outline-offset: 7px; animation: threshold-cue 1.6s ease-in-out 2; }
+@keyframes threshold-arrive { from { opacity: 0; transform: translate(-50%, 14px); } to { opacity: 1; transform: translate(-50%, 0); } }
+@keyframes threshold-ink { from { opacity: 0; filter: blur(2px); } to { opacity: 1; filter: blur(0); } }
+@keyframes threshold-cue { 50% { outline-color: #e8caa244; } }
+@media (prefers-reduced-motion: reduce) { .gate-threshold, .gate-threshold__ink, .threshold-cue { animation: none; } }

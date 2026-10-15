@@ -1,0 +1,11 @@
+name: 畑の世話をする
+desc: 耕して水をやり草を抜く。作物が少し育つ
+do:
+  - action: add_state
+    with:
+      target: world
+      state: farm_growth
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "90"

@@ -1,0 +1,73 @@
+.d10-stage {
+  width: min(480px, 76vw);
+  position: relative;
+  overflow: hidden;
+  color: var(--ux-glass-ink);
+  border-radius: 18px;
+  contain: layout paint;
+}
+
+.d10-stage__canvas,
+.d10-stage__fallback {
+  width: 100%;
+  height: 260px;
+}
+
+.d10-stage__canvas canvas {
+  display: block;
+  max-width: 100%;
+}
+
+.d10-stage__fallback {
+  display: grid;
+  place-items: center;
+  color: var(--ux-glass-ink);
+  font: 700 clamp(28px, 7vw, 40px)/1.2 'DM Mono', monospace;
+  text-align: center;
+}
+
+.d10-stage__labels {
+  display: flex;
+  justify-content: space-around;
+  gap: 12px;
+  padding: 8px 18px;
+  /* Was --muted (#777468): ~3.6:1 on the dark glass. */
+  color: var(--ux-glass-muted);
+  font: 600 16px/1.5 'DM Mono', monospace;
+  letter-spacing: .12em;
+  text-align: center;
+}
+
+.d10-stage__labels span {
+  min-width: 0;
+}
+
+.d10-stage__reading {
+  display: block;
+  padding: 0 12px 14px;
+  color: var(--ux-glass-ink);
+  font: 18px/1.5 'DM Mono', monospace;
+  text-align: center;
+}
+
+.d10-stage__sr-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .d10-stage__canvas {
+    display: none;
+  }
+  .d10-stage__fallback {
+    height: auto;
+    min-height: 96px;
+  }
+}

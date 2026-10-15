@@ -1,0 +1,226 @@
+/* html.css — the page card's two readings.
+   Self-contained, like `components/photo/photo.css`: nothing lands in
+   `index.css`. Without JavaScript and without a frame, the card face still
+   reads as a panel with a title. */
+
+.html-card {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: var(--html-card-space, 0.4rem);
+  color: var(--appearance-ink, var(--ink));
+  background: var(--appearance-surface, var(--cream));
+  border: 1px solid var(--appearance-border, var(--line));
+  border-radius: var(--appearance-radius, 0.2rem);
+  box-shadow: var(--airp-device-appearance-shadow, var(--appearance-shadow, 0 0.45rem 1.1rem rgba(41, 40, 32, 0.14)));
+  text-align: left;
+  overflow: hidden;
+}
+
+.html-card:focus-within {
+  outline: 2px solid var(--rust);
+  outline-offset: 3px;
+}
+
+.html-card__face {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.html-media {
+  position: relative;
+  box-sizing: border-box;
+  min-width: 0;
+  color: var(--appearance-ink, var(--ink));
+}
+
+/* The clip box. Its height is pinned by the SAME 16:9 ratio the card face
+   scales to, so it is independent of the `design` tier: the frame is
+   `designWidth × designWidth·9/16`, scaled by `cardWidth / designWidth`. */
+.html-media__viewport {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ---------- card: a read-only thumbnail ---------- */
+
+.html-media--card .html-media__viewport {
+  background: color-mix(in srgb, var(--appearance-ink, var(--ink)) 6%, var(--appearance-surface, var(--paper)));
+  border: 1px solid var(--appearance-border, var(--line));
+  border-radius: var(--appearance-radius, 0.15rem);
+}
+
+.html-media--card .html-media__frame {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 0;
+  /* The whole point of the card face: the page never receives a pointer event,
+     so dragging, clicking, hovering and double-clicking stay the card shell's
+     (`CanvasObject.tsx:277-290`). No new canvas state is invented for this. */
+  pointer-events: none;
+  background: var(--appearance-surface, var(--cream));
+}
+
+/* The degraded face — over budget, out of view, or no observer. It MUST paint
+   the same surface as the frame, so a late `ready` is a same-colour repaint
+   rather than a white flash. */
+.html-media__degraded {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem 0.6rem;
+  overflow: hidden;
+  background: var(--appearance-surface, var(--cream));
+}
+
+.html-media__title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font: 600 0.85rem/1.3 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  overflow-wrap: anywhere;
+}
+
+.html-media__preview {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--appearance-muted, var(--muted));
+  font: 0.72rem/1.4 'DM Mono', ui-monospace, monospace;
+  overflow-wrap: anywhere;
+}
+
+/* A degraded card is still a live card: it opens the second layer on click,
+   and its panel is centered inside the viewport rather than stretched. */
+.html-media--card .html-media__degraded {
+  position: absolute;
+  inset: 0;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* ---------- detail: the live page ---------- */
+
+.html-media--detail {
+  width: 100%;
+}
+
+.html-media--detail .html-media__viewport {
+  display: grid;
+  place-items: center;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.html-media--detail .html-media__frame {
+  display: block;
+  box-sizing: border-box;
+  height: min(78vh, 46rem);
+  border: 1px solid var(--appearance-border, var(--line));
+  border-radius: var(--appearance-radius, 0.15rem);
+  background: #fff;
+  /* Interactive and scrollable: the second layer is where the page is live. */
+}
+
+/* ---------- the second layer's modal chrome ---------- */
+
+.html-detail {
+  position: fixed;
+  inset: 0;
+  z-index: var(--depth-entity-reading);
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  padding: 1rem;
+  background: color-mix(in srgb, var(--ink) 38%, transparent);
+  backdrop-filter: blur(0.2rem);
+}
+
+.html-detail__panel {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: min(64rem, 100%);
+  max-height: min(92vh, 58rem);
+  color: var(--appearance-ink, var(--ink));
+  background: var(--appearance-surface, var(--cream));
+  border: 1px solid var(--appearance-border, var(--line));
+  border-radius: var(--appearance-radius, 0.25rem);
+  box-shadow: var(--airp-device-appearance-shadow, var(--appearance-shadow, 0 1.5rem 4rem rgba(41, 40, 32, 0.3)));
+  text-align: left;
+  overflow: hidden;
+}
+
+.html-detail__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex: 0 0 auto;
+  padding: 0.9rem 1.2rem 0.75rem;
+  border-block-end: 1px solid var(--line);
+}
+
+.html-detail__header h2 {
+  order: 1;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font: 600 clamp(1.05rem, 1.8vw, 1.4rem)/1.3 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  overflow-wrap: anywhere;
+}
+
+.html-detail__close {
+  order: 2;
+  flex: 0 0 auto;
+  min-height: 2rem;
+  padding: 0.35rem 0.6rem;
+  color: inherit;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: var(--appearance-radius, 0.2rem);
+  font: 0.7rem/1.2 'DM Mono', ui-monospace, monospace;
+  cursor: pointer;
+}
+
+.html-detail__close:hover,
+.html-detail__close:focus-visible {
+  color: var(--paper);
+  background: var(--rust);
+  border-color: var(--rust);
+  outline: 2px solid var(--rust);
+  outline-offset: 2px;
+}
+
+.html-detail__scroll {
+  min-height: 0;
+  padding: 0.9rem 1.2rem 1.1rem;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+@media (max-width: 38rem) {
+  .html-detail { padding: 0.55rem; }
+  .html-detail__header { padding-inline: 0.85rem; }
+  .html-detail__scroll { padding-inline: 0.85rem; }
+  .html-media--detail .html-media__frame { height: min(72vh, 40rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .html-media__frame { transition: none; }
+}
+:root[data-airp-blur="reduced"] .html-detail { backdrop-filter: blur(0.1rem); }
+:root[data-airp-blur="off"] .html-detail {
+  background: rgba(41, 40, 32, .88);
+  backdrop-filter: none;
+}

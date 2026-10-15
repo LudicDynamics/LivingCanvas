@@ -1,0 +1,10 @@
+name: '正面から突きつける'
+desc: '絵が事件より先だったこと、彼の手が現場にあったことを並べる。新しい住所を読んだことまで揃えば、彼に言うことは残らない'
+do:
+  - action: end
+    when: 'status.address == "yes"'
+    with:
+      ending: caught
+  - action: end
+    with:
+      ending: half-truth

@@ -1,0 +1,32 @@
+name: The notebook on seat 17
+desc: After the first turn, the notebook Su He left behind drops onto Car 2's canvas (trigger notebook).
+do:
+- action: give
+  with:
+    path: world/seated-car/su-he-notebook.md
+    title: The Notebook Su He Left Behind
+    frontmatter:
+      type: note
+      image: assets/items/su-he-notebook.webp
+      portable: true
+      choice:
+        options:
+        - id: take
+          label: Pick up the notebook
+      choice_actions:
+        take:
+          kind: take
+          paths:
+          - world/seated-car/su-he-notebook.md
+    body: 'The open page is written hard enough to dent the paper:
+
+
+      "He is on this train tonight. Twelve years, and I have carried Dad''s log with me all along. At Lingkou I will make him admit it in front of everyone."
+
+
+      It does not say who he is.'
+- action: event
+  with:
+    target: characters/xia-cheng
+    title: The notebook on seat 17
+    text: 'Xia Cheng shines her flashlight on seat 17: under the canvas bag lies an open notebook. "This is hers... take a look. What does it say?"'

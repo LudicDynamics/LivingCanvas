@@ -1,0 +1,17 @@
+name: 遠回り：7番埠頭
+desc: 7番埠頭の調査ダイスを全部振り切らなかった後、銀鳶に面と向かって船倉を開けてもらう。潮を一段余分に使う。手元の半本の糸（漆片）が完全な証拠になる
+do:
+  - action: edit
+    when: has("player/decoy-ship-half.md")
+    with:
+      path: player/decoy-ship-half.md
+      frontmatter:
+        title: 半本の糸・補完済み（鞄の中の証拠を参照）
+  - action: set_status
+    with:
+      path: world/harbor-chart/seventh-berth/05-long-way.md
+      values:
+        done: yes
+  - action: tick
+    with:
+      by: "-1"

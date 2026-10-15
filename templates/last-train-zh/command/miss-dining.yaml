@@ -1,0 +1,8 @@
+name: 餐车没搜成
+desc: 餐车搜查落在 61–100：只注意到被翻过的煤灰。打开“绕远路”（05-long-way.md）
+do:
+  - action: set_status
+    with:
+      path: world/dining-car/05-long-way.md
+      values:
+        open: yes

@@ -1,0 +1,75 @@
+{
+  "logical_faces": 10,
+  "vertices": 12,
+  "edges": 20,
+  "closed_manifold": true,
+  "convex": true,
+  "all_kites_planar": true,
+  "face_areas": [
+    1.198783230057447,
+    1.1987832735632808,
+    1.1987832487028056,
+    1.1987832735632808,
+    1.198783230057447,
+    1.1987832078729534,
+    1.1987832260035127,
+    1.1987831880453508,
+    1.1987832621025083,
+    1.1987832662286086
+  ],
+  "congruent_area_error": 8.551793007072206e-08,
+  "number_by_face": [
+    0,
+    7,
+    4,
+    1,
+    6,
+    8,
+    3,
+    9,
+    2,
+    5
+  ],
+  "opposite_face_pairs": [
+    [
+      0,
+      7
+    ],
+    [
+      1,
+      8
+    ],
+    [
+      2,
+      9
+    ],
+    [
+      3,
+      5
+    ],
+    [
+      4,
+      6
+    ]
+  ],
+  "opposites_sum": 9,
+  "labels_6_9_underlined": true,
+  "gpu": [
+    "NVIDIA GeForce RTX 4090"
+  ],
+  "base_tip_to_tip_mm": 27,
+  "base_ring_diameter_mm": 22,
+  "scene": "NOCTILUCA | D10 Atelier",
+  "note": "Decorative digital model. Physical roll balance and print preparation are not validated.",
+  "edge_and_diagonal_congruence_error": 6.064142588080301e-08,
+  "export_triangles": 64304,
+  "portable_color_texture": "enamel-basecolor.png (embedded in GLB and packed in blend)",
+  "export_meshes": 1,
+  "glb_roundtrip_valid": true,
+  "glb_roundtrip_dimensions_mm": [
+    21.766653060913086,
+    20.74989080429077,
+    26.43742561340332
+  ],
+  "glb_units": "meters; independently reimported into centimeter scene"
+}

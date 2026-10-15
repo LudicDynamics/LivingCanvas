@@ -1,0 +1,16 @@
+name: Leave your catch with Hana
+desc: Your basket is emptied into Hana's ledger, and you get to know her better
+do:
+  - action: set_state
+    with:
+      target: player
+      state: fish
+      value: "0"
+  - action: add_state
+    with:
+      target: characters/hana
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "30"

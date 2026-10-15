@@ -1,0 +1,6 @@
+name: 夜明けまで眠る
+desc: 小屋で眠り、翌朝の明け方に目を覚ます
+do:
+  - action: pass_time
+    with:
+      until: dawn

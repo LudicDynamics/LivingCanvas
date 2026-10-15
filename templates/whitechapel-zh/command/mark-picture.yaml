@@ -1,0 +1,8 @@
+name: '钉上一条线：画在事件之前'
+desc: '印刷所或验尸室的搜查：插图比事件先到了印刷所'
+do:
+  - action: set_status
+    with:
+      path: world/london-map/03-before-noon.md
+      values:
+        picture: "yes"

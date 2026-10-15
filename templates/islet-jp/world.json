@@ -1,0 +1,1006 @@
+{
+  "id": "islet-jp",
+  "name": "潮見島",
+  "version": "0.1.0",
+  "schema": 1,
+  "description": "週に一度の渡し船だけで外とつながる小さな島。荒れた畑を継ぎに越してきたあなたの知らないところでも、島の人たちはそれぞれの日々を過ごしている。",
+  "intro": {
+    "status": "in-development",
+    "category": "free",
+    "experimental": true,
+    "rank": 20,
+    "hook": "週に一便の渡し船、七人の島民、荒れた畑がひとつ。あなたがいない間も、島の日々は進んでいく。",
+    "genres": [
+      "slice-of-life"
+    ],
+    "loop": [
+      "釣り、畑仕事、流木拾いで健太の船の修理を手伝う",
+      "島民の一日を追いかけて会いに行き、少しずつ仲良くなる",
+      "渡し船を待ち、祭りを過ごし、留守の間の出来事を聞く"
+    ],
+    "minutes": [
+      20,
+      120
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "free-explore",
+      "voice"
+    ],
+    "endings": 0,
+    "characters": [
+      {
+        "id": "toma",
+        "line": "渡し船の無線を預かる桟橋の主。何でも見ていて、口数は少なく、情に厚い"
+      },
+      {
+        "id": "nagi",
+        "line": "漁師の娘。口は悪いがじっとしていられない。たぶん最初に打ち解ける相手"
+      },
+      {
+        "id": "hana",
+        "line": "雑貨屋の店主。世話好きで噂好き、島の話はみんな彼女を通る"
+      },
+      {
+        "id": "kenta",
+        "line": "大工で船大工。無口で頼れる、手で語る男"
+      }
+    ],
+    "for": [
+      "スターデューや『どうぶつの森』のようなのんびりした日々が好き",
+      "キャラクターと少しずつ仲良くなりたい"
+    ],
+    "unfinished": "実験中：エンディングはなく、節目は船の修理、初めての収穫、新しい住人だけ。"
+  },
+  "author": "AIRP",
+  "genre": "生活シミュレーション",
+  "tags": [
+    "生きている世界",
+    "島",
+    "癒やし"
+  ],
+  "locale": "ja",
+  "material": "parchment",
+  "entry": "map",
+  "cover": "assets/scenes/cover.webp",
+  "audio": {
+    "theme": "canvas-divergence"
+  },
+  "player": {
+    "id": "player",
+    "name": "あなた"
+  },
+  "characters": [
+    {
+      "id": "toma",
+      "name": "灯真",
+      "home": "world/dock",
+      "role": "companion",
+      "avatar": "assets/characters/toma.webp",
+      "description": "潮見島の桟橋の主、六十八歳。渡し船の無線を預かる。何でも見ていて、口数は少なく、情に厚い。"
+    },
+    {
+      "id": "nagi",
+      "name": "凪",
+      "home": "map",
+      "role": "npc",
+      "avatar": "assets/characters/nagi.webp",
+      "description": "十七歳の漁師の娘。日に焼けて、そばかすだらけ。口が悪く、じっとしていられず、夜明け前に海に出る。たぶん最初に打ち解ける相手。"
+    },
+    {
+      "id": "hana",
+      "name": "花",
+      "home": "world/store",
+      "role": "npc",
+      "avatar": "assets/characters/hana.webp",
+      "description": "雑貨屋の店主、三十四歳。丸眼鏡に、耳には鉛筆。世話好きで噂好き、島の話はみんな彼女を通る。"
+    },
+    {
+      "id": "kenta",
+      "name": "健太",
+      "home": "world/dock",
+      "role": "npc",
+      "avatar": "assets/characters/kenta.webp",
+      "description": "島の大工で船大工、四十二歳。大柄で、坊主頭に手ぬぐいを巻いている。無口で頼れる、手で語る男。古い漁船を直しているが、木材が足りない。"
+    },
+    {
+      "id": "suzu",
+      "name": "鈴",
+      "home": "world/lighthouse",
+      "role": "npc",
+      "avatar": "assets/characters/suzu.webp",
+      "description": "灯台守のおばあさん、七十六歳。銀髪をまとめ、首には双眼鏡。毒舌だが空を読むのは確かで、島の天気は彼女が決める。"
+    },
+    {
+      "id": "ren",
+      "name": "蓮",
+      "home": "world/farm",
+      "role": "npc",
+      "avatar": "assets/characters/ren.webp",
+      "description": "隣に住む若い農夫、二十四歳。背が高くひょろりとして、破れた麦わら帽子をかぶっている。話すと赤くなるほどの恥ずかしがりだが、畑仕事は名人で、あなたの師匠のようなもの。"
+    },
+    {
+      "id": "mio",
+      "name": "澪",
+      "home": "map",
+      "role": "npc",
+      "avatar": "assets/characters/mio.webp",
+      "description": "島でただひとりの子ども、九歳。黒いツインテールに大きすぎる黄色いレインコートと赤い長靴、自分より背の高い虫取り網。いたずら好きで、島じゅうの隅々を案内してくれる。"
+    },
+    {
+      "id": "kai",
+      "name": "海",
+      "home": "world/ferry",
+      "role": "npc",
+      "avatar": "assets/characters/kai.webp",
+      "description": "渡し船で来た旅人、二十八歳。灰色の髪を低く束ね、麻のシャツに着古したロングコート、古いギターケースを背負っている。穏やかで、自分の過去の話はいつもはぐらかす。"
+    }
+  ],
+  "opening": {
+    "greeter": "toma"
+  },
+  "extensions": [],
+  "living": {
+    "start": {
+      "day": 1,
+      "time": "07:00"
+    },
+    "phases": [
+      {
+        "id": "dawn",
+        "from": "05:00",
+        "label": "明け方"
+      },
+      {
+        "id": "morning",
+        "from": "07:00",
+        "label": "朝"
+      },
+      {
+        "id": "noon",
+        "from": "11:00",
+        "label": "昼"
+      },
+      {
+        "id": "afternoon",
+        "from": "14:00",
+        "label": "午後"
+      },
+      {
+        "id": "evening",
+        "from": "18:00",
+        "label": "夕方"
+      },
+      {
+        "id": "night",
+        "from": "21:00",
+        "label": "夜"
+      }
+    ],
+    "seasons": [
+      {
+        "id": "spring",
+        "label": "春"
+      },
+      {
+        "id": "summer",
+        "label": "夏"
+      },
+      {
+        "id": "autumn",
+        "label": "秋"
+      },
+      {
+        "id": "winter",
+        "label": "冬"
+      }
+    ],
+    "daysPerSeason": 7,
+    "weekdays": [
+      {
+        "id": "mon",
+        "label": "月曜"
+      },
+      {
+        "id": "tue",
+        "label": "火曜"
+      },
+      {
+        "id": "wed",
+        "label": "水曜"
+      },
+      {
+        "id": "thu",
+        "label": "木曜"
+      },
+      {
+        "id": "fri",
+        "label": "金曜"
+      },
+      {
+        "id": "sat",
+        "label": "土曜"
+      },
+      {
+        "id": "sun",
+        "label": "日曜"
+      }
+    ],
+    "weather": [
+      {
+        "id": "sunny",
+        "label": "晴れ",
+        "weight": 5
+      },
+      {
+        "id": "cloudy",
+        "label": "くもり",
+        "weight": 3
+      },
+      {
+        "id": "rain",
+        "label": "雨",
+        "weight": 2
+      },
+      {
+        "id": "storm",
+        "label": "嵐",
+        "weight": 1,
+        "seasons": [
+          "summer",
+          "autumn"
+        ]
+      },
+      {
+        "id": "snow",
+        "label": "雪",
+        "weight": 3,
+        "seasons": [
+          "winter"
+        ]
+      }
+    ],
+    "pace": {
+      "perAction": 20
+    },
+    "catchUp": {
+      "ratio": 1,
+      "maxDays": 3,
+      "minMinutes": 30
+    },
+    "digest": {
+      "title": "留守のあいだに",
+      "writer": true,
+      "minHours": 6
+    },
+    "display": {
+      "label": "島の時間",
+      "text": "{season}・{day}日目・{weekday}・{phase}・{weather}"
+    },
+    "residents": {
+      "toma": {
+        "schedule": [
+          {
+            "at": "world/dock",
+            "phases": [
+              "dawn",
+              "morning",
+              "noon",
+              "afternoon",
+              "evening"
+            ],
+            "weather": [
+              "storm"
+            ],
+            "text": "嵐の中で縄を締め直している"
+          },
+          {
+            "at": "world/dock",
+            "phases": [
+              "dawn",
+              "morning",
+              "noon",
+              "afternoon"
+            ],
+            "text": "桟橋を守り、渡し船の無線を聞いている"
+          },
+          {
+            "at": "world/square",
+            "phases": [
+              "evening"
+            ],
+            "text": "広場のベンチでパイプをふかし、夕焼けを見ている"
+          },
+          {
+            "at": "map",
+            "text": "家に帰って寝ている"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "calm": 5,
+              "cheerful": 2,
+              "tired": 2,
+              "grumpy": 1
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "灯真は無線で本土の天気が崩れると聞き、前もって桟橋の縄を全部締め直した。"
+          },
+          {
+            "text": "灯真は桟橋で澪に、遠洋で鯨に出会った話をした。"
+          }
+        ]
+      },
+      "nagi": {
+        "schedule": [
+          {
+            "at": "world/dock",
+            "phases": [
+              "dawn"
+            ],
+            "weather": [
+              "sunny",
+              "cloudy"
+            ],
+            "text": "舫いを解いて漁に出るところ"
+          },
+          {
+            "at": "world/beach",
+            "phases": [
+              "dawn",
+              "morning"
+            ],
+            "text": "浜で網を繕い、魚をより分けている"
+          },
+          {
+            "at": "world/store",
+            "phases": [
+              "noon"
+            ],
+            "text": "今朝の魚を花の店に届けている"
+          },
+          {
+            "at": "world/dock",
+            "phases": [
+              "afternoon"
+            ],
+            "if": "world.boat_fixed == true",
+            "text": "直った船で沖を走り回っている"
+          },
+          {
+            "at": "world/beach",
+            "phases": [
+              "afternoon"
+            ],
+            "text": "岩に座ってぼんやり海を見ている"
+          },
+          {
+            "at": "world/square",
+            "phases": [
+              "evening"
+            ],
+            "text": "広場で澪と言い合いをしている"
+          },
+          {
+            "at": "map",
+            "text": "家にいる"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "cheerful": 5,
+              "tired": 2,
+              "grumpy": 2,
+              "calm": 1
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "凪は大きなスズキを釣り上げ、会う人みんなに一人でやったと言いふらした。"
+          },
+          {
+            "text": "凪は澪とブイまで競泳して負け、認めなかった。"
+          },
+          {
+            "text": "凪は岩場で流れ着いたガラスの浮き玉を拾い、自分の箱にしまった。"
+          }
+        ]
+      },
+      "hana": {
+        "schedule": [
+          {
+            "at": "world/square",
+            "phases": [
+              "evening"
+            ],
+            "weekdays": [
+              "fri",
+              "sat"
+            ],
+            "text": "広場の小さな屋台でラムネを売っている"
+          },
+          {
+            "at": "world/store",
+            "phases": [
+              "morning",
+              "noon",
+              "afternoon",
+              "evening"
+            ],
+            "text": "店番をして帳簿をつけ、噂を集めている"
+          },
+          {
+            "at": "world/store",
+            "text": "店の奥の部屋で休んでいる"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "cheerful": 6,
+              "calm": 2,
+              "tired": 2
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "花は店の棚を全部並べ替え、種をいちばん目立つところに移した。"
+          },
+          {
+            "text": "花は澪に新しい字を二十教え、ご褒美に梅干しをひとつあげた。"
+          }
+        ]
+      },
+      "kenta": {
+        "schedule": [
+          {
+            "at": "world/store",
+            "phases": [
+              "morning",
+              "noon",
+              "afternoon"
+            ],
+            "weather": [
+              "rain",
+              "storm"
+            ],
+            "text": "雨の日は花の店で木釘を削っている"
+          },
+          {
+            "at": "world/dock",
+            "phases": [
+              "morning",
+              "noon",
+              "afternoon"
+            ],
+            "text": "船小屋で古い漁船を直している"
+          },
+          {
+            "at": "world/square",
+            "phases": [
+              "evening"
+            ],
+            "text": "仕事を終えて広場でお茶を飲んでいる"
+          },
+          {
+            "at": "map",
+            "text": "家に帰った"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "calm": 6,
+              "tired": 3,
+              "cheerful": 1
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "健太は乾いた流木を削って板にし、何度もなでてからようやく置いた。"
+          },
+          {
+            "text": "健太は広場のベンチのぐらつく脚を直し、誰にも言わなかった。"
+          }
+        ]
+      },
+      "suzu": {
+        "schedule": [
+          {
+            "at": "world/square",
+            "phases": [
+              "morning"
+            ],
+            "weekdays": [
+              "wed"
+            ],
+            "text": "水曜の買い物で山を下りてきている"
+          },
+          {
+            "at": "world/lighthouse",
+            "text": "灯台で空を見て、灯を磨いている"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "calm": 4,
+              "grumpy": 3,
+              "cheerful": 2,
+              "tired": 1
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "鈴ばあちゃんが霧が出ると言ったら、翌朝は桟橋が見えないほど濃い霧になった。"
+          },
+          {
+            "text": "鈴ばあちゃんは今年最初に戻ってきたウミツバメを帳面に書きとめた。"
+          }
+        ]
+      },
+      "ren": {
+        "schedule": [
+          {
+            "at": "world/store",
+            "phases": [
+              "morning",
+              "noon",
+              "afternoon"
+            ],
+            "weather": [
+              "rain",
+              "storm"
+            ],
+            "text": "雨の日は花の店で種のカタログをめくっている"
+          },
+          {
+            "at": "world/farm",
+            "phases": [
+              "dawn",
+              "morning",
+              "noon",
+              "afternoon"
+            ],
+            "text": "畑で働いている"
+          },
+          {
+            "at": "world/square",
+            "phases": [
+              "evening"
+            ],
+            "weekdays": [
+              "sat",
+              "sun"
+            ],
+            "text": "週末の夕方、広場で荷運びを手伝っている"
+          },
+          {
+            "at": "world/farm",
+            "text": "畑のそばの家で早めに寝ている"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "calm": 4,
+              "cheerful": 3,
+              "tired": 3
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "蓮はあなたの畑の畦にこっそり竹の支柱を一列立てた。豆がつるを伸ばすためだという。"
+          },
+          {
+            "text": "蓮は午後いっぱい花の荷運びを手伝い、畑に戻ってから水やりを忘れていたことに気づいた。"
+          }
+        ]
+      },
+      "mio": {
+        "schedule": [
+          {
+            "at": "world/lighthouse",
+            "phases": [
+              "morning",
+              "noon",
+              "afternoon"
+            ],
+            "weekdays": [
+              "sat",
+              "sun"
+            ],
+            "text": "週末なので鈴ばあちゃんに話をせがんでいる"
+          },
+          {
+            "at": "world/beach",
+            "phases": [
+              "morning"
+            ],
+            "text": "潮だまりで蟹をとっている"
+          },
+          {
+            "at": "world/store",
+            "phases": [
+              "noon"
+            ],
+            "text": "花の店で宿題をしている"
+          },
+          {
+            "at": "world/farm",
+            "phases": [
+              "afternoon"
+            ],
+            "text": "蓮にきゅうりをねだっている"
+          },
+          {
+            "at": "world/square",
+            "phases": [
+              "evening"
+            ],
+            "text": "広場で猫を追いかけている"
+          },
+          {
+            "at": "map",
+            "text": "おばあちゃんに呼ばれて家で寝ている"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "cheerful": 7,
+              "tired": 2,
+              "grumpy": 1
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "澪は灯台の裏の草むらで生まれたばかりの子猫を見つけ、こっそりミルクを運んだ。"
+          },
+          {
+            "text": "澪は虫取り網で珍しい青いアゲハをつかまえ、逃がす前にみんなに見せて回った。"
+          },
+          {
+            "text": "澪は浜に貝殻で大きな「ようこそ」を並べたが、潮で半分流された。"
+          }
+        ]
+      },
+      "kai": {
+        "schedule": [
+          {
+            "at": "world/ferry",
+            "if": "world.kai_arrived == false",
+            "text": "渡し船の甲板でギターを抱えて座っている"
+          },
+          {
+            "at": "world/beach",
+            "phases": [
+              "dawn",
+              "morning"
+            ],
+            "text": "海辺でひとり歌を書いている"
+          },
+          {
+            "at": "world/square",
+            "phases": [
+              "noon",
+              "afternoon"
+            ],
+            "text": "広場の木陰でギターを弾いている"
+          },
+          {
+            "at": "world/store",
+            "phases": [
+              "evening"
+            ],
+            "text": "花の店で店じまいを手伝っている"
+          },
+          {
+            "at": "world/store",
+            "text": "店の二階に借りた部屋にいる"
+          }
+        ],
+        "daily": [
+          {
+            "state": "mood",
+            "pick": {
+              "calm": 5,
+              "cheerful": 2,
+              "tired": 2,
+              "grumpy": 1
+            }
+          }
+        ],
+        "away": [
+          {
+            "text": "夕方、湾の向こうから誰も知らないギターの曲が流れてきて、途中で止まった。"
+          },
+          {
+            "text": "灯真によると、ギターを抱えた旅人がまた会釈してきたという。島に挨拶するみたいに。"
+          }
+        ]
+      }
+    },
+    "events": [
+      {
+        "id": "ferry",
+        "label": "渡し船の日",
+        "on": {
+          "weekdays": [
+            "mon"
+          ]
+        },
+        "phases": [
+          "morning",
+          "noon"
+        ],
+        "weather": [
+          "sunny",
+          "cloudy",
+          "rain",
+          "snow"
+        ],
+        "at": "world/dock",
+        "gather": [
+          "toma"
+        ]
+      },
+      {
+        "id": "market",
+        "label": "日曜市",
+        "on": {
+          "weekdays": [
+            "sun"
+          ]
+        },
+        "phases": [
+          "morning",
+          "noon"
+        ],
+        "at": "world/square",
+        "gather": [
+          "hana",
+          "nagi",
+          "ren"
+        ]
+      },
+      {
+        "id": "spring-tide",
+        "label": "春潮の貝拾い",
+        "on": {
+          "seasons": [
+            "spring"
+          ],
+          "days": [
+            5
+          ]
+        },
+        "phases": [
+          "morning",
+          "noon",
+          "afternoon"
+        ],
+        "at": "world/beach",
+        "gather": "all"
+      },
+      {
+        "id": "lantern-festival",
+        "label": "夏の灯籠祭り",
+        "on": {
+          "seasons": [
+            "summer"
+          ],
+          "days": [
+            5
+          ]
+        },
+        "phases": [
+          "evening",
+          "night"
+        ],
+        "at": "world/square",
+        "gather": "all"
+      },
+      {
+        "id": "harvest-supper",
+        "label": "秋の収穫の宴",
+        "on": {
+          "seasons": [
+            "autumn"
+          ],
+          "days": [
+            5
+          ]
+        },
+        "phases": [
+          "evening"
+        ],
+        "at": "world/square",
+        "gather": "all"
+      },
+      {
+        "id": "year-end-tea",
+        "label": "灯台の年越し茶",
+        "on": {
+          "seasons": [
+            "winter"
+          ],
+          "days": [
+            7
+          ]
+        },
+        "phases": [
+          "evening",
+          "night"
+        ],
+        "at": "world/lighthouse",
+        "gather": "all"
+      }
+    ],
+    "variants": {
+      "world/farm": {
+        "base": "assets/scenes/farm.webp",
+        "when": [
+          {
+            "seasons": [
+              "summer"
+            ],
+            "bg": "assets/scenes/farm-summer.webp"
+          },
+          {
+            "seasons": [
+              "autumn"
+            ],
+            "bg": "assets/scenes/farm-autumn.webp"
+          },
+          {
+            "seasons": [
+              "winter"
+            ],
+            "bg": "assets/scenes/farm-winter.webp"
+          }
+        ]
+      },
+      "world/square": {
+        "base": "assets/scenes/square.webp",
+        "when": [
+          {
+            "events": [
+              "lantern-festival"
+            ],
+            "bg": "assets/scenes/square-festival.webp"
+          }
+        ]
+      },
+      "world/dock": {
+        "base": "assets/scenes/dock.webp",
+        "when": [
+          {
+            "weather": [
+              "storm"
+            ],
+            "bg": "assets/scenes/dock-storm.webp"
+          }
+        ]
+      },
+      "world/beach": {
+        "base": "assets/scenes/beach.webp",
+        "when": [
+          {
+            "phases": [
+              "evening",
+              "night"
+            ],
+            "bg": "assets/scenes/beach-dusk.webp"
+          }
+        ]
+      }
+    }
+  },
+  "triggers": [
+    {
+      "id": "first-harvest",
+      "label": "はじめての収穫",
+      "kind": "state",
+      "when": "world.farm_growth >= 4",
+      "do": "first-harvest"
+    },
+    {
+      "id": "harvest",
+      "label": "収穫",
+      "kind": "state",
+      "when": "world.farm_growth >= 4",
+      "once": false,
+      "do": "harvest"
+    },
+    {
+      "id": "boat-mended",
+      "label": "直した船が海へ",
+      "kind": "state",
+      "when": "world.boat_progress >= 3",
+      "do": "boat-mended"
+    },
+    {
+      "id": "kai-arrives",
+      "label": "渡し船が新しい人を連れてくる",
+      "kind": "state",
+      "when": "events.ferry == true && time.day >= 8 || time.day >= 9",
+      "do": "kai-arrives"
+    },
+    {
+      "id": "ferry-horn",
+      "label": "渡し船の日",
+      "kind": "state",
+      "when": "events.ferry == true",
+      "once": false,
+      "fallback": "海の向こうから汽笛が鳴る——週に一度の渡し船が桟橋に着いた。灯真が船に向かって手を挙げる。"
+    },
+    {
+      "id": "storm-day",
+      "label": "嵐",
+      "kind": "state",
+      "when": "time.weather == \"storm\"",
+      "once": false,
+      "fallback": "空が急に暗くなり、波が桟橋を叩く。鈴ばあちゃんは今日は風が出ると言っていた。この天気では船は出ない。"
+    },
+    {
+      "id": "spring-tide",
+      "label": "春潮の貝拾い",
+      "kind": "state",
+      "when": "events.spring_tide == true",
+      "once": false,
+      "fallback": "大潮が遠くまで引いて、干潟が一面に現れた。島じゅうの人がバケツを提げて浜に来ている——今日は貝拾いの日だ。"
+    },
+    {
+      "id": "lantern-festival",
+      "label": "夏の灯籠祭り",
+      "kind": "state",
+      "when": "events.lantern_festival == true",
+      "once": false,
+      "fallback": "日が暮れると、広場の灯籠がひとつ、またひとつと灯る。花は屋台でラムネを配り、澪は自分より大きな灯籠を提げて走り回る。",
+      "assets": [
+        {
+          "kind": "cg",
+          "path": "assets/cg/lantern-festival.webp",
+          "prompt": "Anime-painterly slice-of-life illustration in the style of a LivingCanvas world cover, soft cel shading with painterly light, a small island village on a calm sea, warm golden sunlight against sea-glass blues, fine film grain, no text, no lettering. The summer lantern festival in the village square at night, all the islanders in light yukata under strings of paper lanterns, Hana at a stall, Toma drumming, Mio with a candy apple, everyone looking up at small fireworks. Same characters as the references. Wide 16:9."
+        }
+      ]
+    },
+    {
+      "id": "harvest-supper",
+      "label": "秋の収穫の宴",
+      "kind": "state",
+      "when": "events.harvest_supper == true",
+      "once": false,
+      "fallback": "広場の真ん中に長机が並び、どの家も一品ずつ持ち寄る。蓮が赤い顔でかぶの籠を置き、灯真が最初に杯を上げた。"
+    },
+    {
+      "id": "year-end-tea",
+      "label": "灯台の年越し茶",
+      "kind": "state",
+      "when": "events.year_end_tea == true",
+      "once": false,
+      "fallback": "一年の最後の夜、みんなが灯台の下の小屋に集まる。鈴ばあちゃんは大きな急須でお茶を淹れ、来年最初の風は東から来ると言った。"
+    }
+  ],
+  "createdAt": "2026-10-08T00:00:00Z",
+  "updatedAt": "2026-10-08T00:00:00Z"
+}

@@ -1,0 +1,10 @@
+name: '当面摊牌'
+desc: '把画在事件之前、他的手在现场的证据摆出来；再加上他读过新地址，他就无话可说'
+do:
+  - action: end
+    when: 'status.address == "yes"'
+    with:
+      ending: caught
+  - action: end
+    with:
+      ending: half-truth

@@ -1,0 +1,19 @@
+name: Lamp Oil Burned Out
+desc: When the check lands on 96–100, the flask of lamp oil in hand is lit up in the panic and burns away, leaving only an empty flask
+do:
+  - action: move
+    with:
+      from: player/lamp-oil.md
+      to: player/empty-oil-flask.md
+  - action: edit
+    with:
+      path: player/empty-oil-flask.md
+      frontmatter:
+        title: Empty Oil Flask · The lamp oil has burned out
+        status:
+          data:
+            oil: empty
+      body: |
+        Only a black ring of oil stain is left at the bottom. That one light struck in the panic burned the whole measure.
+
+        If something else happens in the fog, there'll be no lamp left to light.

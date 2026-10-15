@@ -1,0 +1,11 @@
+name: 凪と網を繕う
+desc: 浜に座って凪と一緒に網を繕う
+do:
+  - action: add_state
+    with:
+      target: characters/nagi
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "60"

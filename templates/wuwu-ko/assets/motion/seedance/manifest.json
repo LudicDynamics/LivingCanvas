@@ -1,0 +1,53 @@
+{
+  "sourceRepository": "worldlines-assets",
+  "assets": [
+    {
+      "source": "wuwu-demo/backgrounds/intro.webm",
+      "target": "assets/motion/seedance/backgrounds/intro.webm",
+      "bytes": 1122582,
+      "sha256": "6660b6ff4b458bc85be3465f749650051f679933d9626b2fc604db10bc6f40ec"
+    },
+    {
+      "source": "wuwu-demo/backgrounds/map.webm",
+      "target": "assets/motion/seedance/backgrounds/map.webm",
+      "bytes": 1784055,
+      "sha256": "a141e44b90ff6a3dc3d51e0be05beed7ef66bd31207ac5231e4d6233f3ac0ed5"
+    },
+    {
+      "source": "wuwu-demo/backgrounds/dock.webm",
+      "target": "assets/motion/seedance/backgrounds/dock.webm",
+      "bytes": 1773512,
+      "sha256": "365dd5ce722b162bda045cbd394b41f11009aea4e6832867a963f0b6cf68fc89"
+    },
+    {
+      "source": "wuwu-demo/backgrounds/workshop.webm",
+      "target": "assets/motion/seedance/backgrounds/workshop.webm",
+      "bytes": 1285571,
+      "sha256": "3de7613d907cd04c38dd78c42e8e36fcfb262a86bdf8c2b2941af6466847d252"
+    },
+    {
+      "source": "wuwu-demo/backgrounds/lighthouse.webm",
+      "target": "assets/motion/seedance/backgrounds/lighthouse.webm",
+      "bytes": 2536304,
+      "sha256": "8e603dcf05d1e92562e3d790b9f66e55626f8b0730153c86c07eff6121d9544a"
+    },
+    {
+      "source": "wuwu-demo/backgrounds/beyond.webm",
+      "target": "assets/motion/seedance/backgrounds/beyond.webm",
+      "bytes": 1964055,
+      "sha256": "54a8fd2adccac20a766a30a8959acdcb757f6adc96ed895bbb4bb12d93323e76"
+    },
+    {
+      "source": "wuwu-demo/characters/viola/base-transparent.webm",
+      "target": "assets/motion/seedance/characters/viola-transparent.webm",
+      "bytes": 2472032,
+      "sha256": "637e08a55e32d0542e709c82c1763b5e72acfbd5c59bcfd1efa5cbbae5cf6185"
+    },
+    {
+      "source": "wuwu-demo/characters/silverkite/base-transparent.webm",
+      "target": "assets/motion/seedance/characters/silverkite-transparent.webm",
+      "bytes": 2333335,
+      "sha256": "0ef4e9ec4a7ba72aa25ea2d51eaef16c565a35543e69ea54739e5eca880a2390"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "sourceRepository": "worldlines-assets",
+  "assets": [
+    {
+      "source": "whitechapel-demo/backgrounds/intro.webm",
+      "target": "assets/motion/seedance/backgrounds/intro.webm",
+      "bytes": 1386079,
+      "sha256": "dab2e1b655671bb89658fd77ee5fe528025b2b5c29cbd3cb5f08752170112fbe"
+    },
+    {
+      "source": "whitechapel-demo/backgrounds/map.webm",
+      "target": "assets/motion/seedance/backgrounds/map.webm",
+      "bytes": 949271,
+      "sha256": "3a0012f85c0bea139c28472b6664109dbe28cd705cdcd39846de33965fa22cc8"
+    },
+    {
+      "source": "whitechapel-demo/backgrounds/scene3.webm",
+      "target": "assets/motion/seedance/backgrounds/scene3.webm",
+      "bytes": 824250,
+      "sha256": "15443ff302dfd14196ac33ffa0df5ebffaf8e1bf89d81cfa4d1c11586aac5843"
+    },
+    {
+      "source": "whitechapel-demo/backgrounds/press.webm",
+      "target": "assets/motion/seedance/backgrounds/press.webm",
+      "bytes": 827389,
+      "sha256": "1c42e1ba083f34de3d60970829dd7d34e87ec6cf3ff881dc43dac6954c5621b6"
+    },
+    {
+      "source": "whitechapel-demo/backgrounds/morgue.webm",
+      "target": "assets/motion/seedance/backgrounds/morgue.webm",
+      "bytes": 680174,
+      "sha256": "d3396b9e08d53d0f6eb4d567fd9a8126f20dc717453ec545fcf0c2f059631a6f"
+    },
+    {
+      "source": "whitechapel-demo/backgrounds/fourth.webm",
+      "target": "assets/motion/seedance/backgrounds/fourth.webm",
+      "bytes": 1125866,
+      "sha256": "aa572b579cf2908b255a71f4c01b5f72900addc3dfa1bbf581ae8ed3df57216a"
+    },
+    {
+      "source": "whitechapel-demo/characters/watson/base-transparent.webm",
+      "target": "assets/motion/seedance/characters/watson-transparent.webm",
+      "bytes": 2676633,
+      "sha256": "d58d43ae27c22e6522e810619eae409fd86645b4bd24aab33f5284acdd6848e9"
+    }
+  ]
+}

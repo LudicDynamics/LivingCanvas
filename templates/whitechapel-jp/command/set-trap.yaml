@@ -1,0 +1,19 @@
+name: '計略に乗ったふりをする'
+desc: '正午に印刷所の中庭で待つ。動いた彼に突き飛ばされる。ほかの証拠を握っていてこそ、レストレードは彼を押さえられる'
+do:
+  - action: add_state
+    with:
+      target: player
+      state: hp
+      by: "-2"
+  - action: end
+    when: 'status.picture == "yes"'
+    with:
+      ending: caught
+  - action: end
+    when: 'status.hand == "yes"'
+    with:
+      ending: caught
+  - action: end
+    with:
+      ending: half-truth

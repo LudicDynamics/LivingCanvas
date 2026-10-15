@@ -1,0 +1,17 @@
+name: 遠回り：海図
+desc: 海図上の決定的判定を見切れなかった後、岸沿いに航跡を追う。潮を一段余分に使う。手元の半本の糸（航跡）が完全な証拠になる
+do:
+  - action: edit
+    when: has("player/second-wake-half.md")
+    with:
+      path: player/second-wake-half.md
+      frontmatter:
+        title: 半本の糸・補完済み（鞄の中の証拠を参照）
+  - action: set_status
+    with:
+      path: world/harbor-chart/06-long-way.md
+      values:
+        done: yes
+  - action: tick
+    with:
+      by: "-1"

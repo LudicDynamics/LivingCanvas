@@ -1,0 +1,370 @@
+{
+  "id": "whitechapel-ko",
+  "audio": {
+    "theme": "canvas-whitechapel"
+  },
+  "name": "홈즈: 네 번째 사건 · 한국어",
+  "version": "1.2.0",
+  "schema": 1,
+  "description": "당신은 홈즈다. 소설 같은 사건을 실제 범죄로 만드는 사람이 누구인지 조사하고 오늘 네 번째 사건을 막아라.",
+  "intro": {
+    "status": "playable",
+    "category": "trpg",
+    "recommended": true,
+    "rank": 2,
+    "hook": "당신은 셜록 홈즈. 누군가 연재소설의 삽화대로 범죄를 하나씩 현실로 만들고 있다 — 정오 전에 네 번째 그림을 막아라.",
+    "genres": [
+      "mystery",
+      "historical"
+    ],
+    "loop": [
+      "런던 지도에서 인쇄소, 편집부, 증인의 집을 찾아간다",
+      "현장을 수색하고 주사위로 단서를 찾으며 모두를 심문한다",
+      "단서가 모이면 소설을 범죄로 바꾼 사람을 밝혀낸다"
+    ],
+    "minutes": [
+      40,
+      60
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "dice",
+      "endings",
+      "clock",
+      "voice",
+      "live-image"
+    ],
+    "endings": 3,
+    "characters": [
+      {
+        "id": "watson",
+        "line": "오랜 친구. 이디스를 지키겠다고 약속했다"
+      },
+      {
+        "id": "edith",
+        "line": "4장의 주소를 직접 고친 소설가. 두렵지만 제 말로 똑똑히 말하고 싶어 한다"
+      },
+      {
+        "id": "tom",
+        "line": "인쇄소 식자공. 당번 일지대로 날짜와 시간을 말한다"
+      }
+    ],
+    "for": [
+      "처음 하는 사람",
+      "추리 좋아하는 사람",
+      "셜록 홈즈 팬"
+    ]
+  },
+  "author": "Worldlines Canvas / AIRP",
+  "genre": "스토리 체험",
+  "tags": [
+    "단편 소설",
+    "생성형 세계"
+  ],
+  "material": "kraft",
+  "cover": "assets/scenes/intro.webp",
+  "extensions": [
+    {
+      "id": "airp:letter",
+      "version": ">=1.0.0",
+      "optional": false
+    },
+    {
+      "id": "airp:note",
+      "version": ">=1.0.0",
+      "optional": false
+    }
+  ],
+  "characters": [
+    {
+      "id": "watson",
+      "home": "map",
+      "role": "companion",
+      "avatar": "assets/motion/seedance/characters/watson-transparent.webp",
+      "description": "의사이자 홈즈의 친구. 이디스를 지키겠다고 약속했다. 오늘 아침 세 번째 사건이 삽화와 일치함을 확인했고, 오늘 네 번째를 막아 달라고 요청했다. 의학적·인간적 우려를 제공하며, 홈즈의 추리를 존중한다.",
+      "avatarVideo": "assets/motion/seedance/characters/watson-transparent.webm",
+      "name": "왓슨"
+    },
+    {
+      "id": "edith",
+      "home": "world/london-map/edith-room",
+      "role": "npc",
+      "description": "왓슨의 환자이자 소설가. 네 번째 장에서 주소를 바로잡은 사람. 두렵지만 자기 말로 분명히 설명하고 싶어 한다.",
+      "avatar": "assets/characters/edith.webp",
+      "name": "이디스 베일"
+    },
+    {
+      "id": "tom",
+      "home": "world/london-map/print-shop",
+      "role": "npc",
+      "description": "인쇄소의 식자공. 검게 물든 손가락과 근무 일지. 솔직하고 기록된 대로 날짜를 말한다.",
+      "avatar": "assets/characters/tom.webp",
+      "name": "톰 헤일"
+    },
+    {
+      "id": "blackburn",
+      "home": "world/london-map/print-shop/editor-office",
+      "role": "npc",
+      "description": "원고와 교정지를 관리하는 편집자로, 날짜와 시간에 정확하고 신문의 신뢰도에 신경 쓴다.",
+      "avatar": "assets/characters/blackburn.webp",
+      "name": "블랙번 편집장"
+    },
+    {
+      "id": "wayne",
+      "home": "world/london-map/print-shop/illustration-room",
+      "role": "npc",
+      "description": "연재 소설 삽화가로 소매에 군청 얼룩이 있고 오른쪽 손목을 보호하며 비판에 예민하다.",
+      "avatar": "assets/characters/wayne.webp",
+      "name": "아서 웨인"
+    }
+  ],
+  "opening": {
+    "greeter": "watson"
+  },
+  "createdAt": "2026-09-12T00:00:00Z",
+  "updatedAt": "2026-09-12T00:00:00Z",
+  "player": {
+    "id": "player",
+    "name": "셜록 홈즈",
+    "avatar": "assets/characters/sherlock-holmes.webp"
+  },
+  "locale": "ko",
+  "entry": "map",
+  "rules": {
+    "system": "coc",
+    "characterChecks": true
+  },
+  "mode": "semi",
+  "clock": {
+    "path": "world/london-map/03-before-noon.md",
+    "key": "left",
+    "start": 10,
+    "label": "정오까지",
+    "time": {
+      "start": "10:00",
+      "end": "12:00"
+    }
+  },
+  "endings": [
+    {
+      "id": "caught",
+      "title": "네 번째 그림에 없는 사람",
+      "path": "endings/caught/README.md"
+    },
+    {
+      "id": "half-truth",
+      "title": "지킨 것과 놓친 것",
+      "path": "endings/half-truth/README.md"
+    },
+    {
+      "id": "fourth-picture",
+      "title": "네 번째 그림",
+      "path": "endings/fourth-picture/README.md",
+      "when": "clock <= 0"
+    }
+  ],
+  "mysteries": [
+    {
+      "id": "culprit",
+      "question": "누가 이디스의 소설을 실제 사건으로 하나씩 옮겼는가?",
+      "hint": "그 그림들에 누구의 손이 먼저 닿았는가?",
+      "options": [
+        {
+          "id": "edith",
+          "label": "이디스 자신 — 소설을 유명하게 만들려고",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "wayne",
+          "label": "아서 웨인, 그 삽화가",
+          "tier": "surface",
+          "clues": [
+            "world/london-map/print-shop/illustration-room/visible-details.md",
+            "world/london-map/third-crime-scene/pigment-record.md",
+            "world/london-map/print-shop/illustration-room/visible-details-half.md",
+            "world/london-map/third-crime-scene/pigment-record-half.md"
+          ],
+          "epilogue": "웨인의 이름은 연재물의 크레딧에서 지워졌다. 인쇄소에서는 그의 소맷단에서 빠지지 않는 군청색 얼룩으로만 그를 기억한다."
+        },
+        {
+          "id": "unseen",
+          "label": "웨인 — 신문이 그의 삽화를 빼려 하자, 런던 전체가 자기 그림을 먼저 보게 하고 싶었다",
+          "tier": "hidden",
+          "clues": [
+            "world/london-map/print-shop/illustration-room/returned-proofs.md"
+          ],
+          "title": "반송된 교정지",
+          "epilogue": "반송된 교정지 더미는 스코틀랜드 야드 증거 봉투에 들어갔다. 그 위에 남은 자신의 붉은 연필 메모를 읽은 블랙번 편집장은 처음으로 마음을 바꿨다. 이제부터 연재물은 삽화를 싣고, 화가의 이름도 밝힌다."
+        },
+        {
+          "id": "blackburn",
+          "label": "블랙번 편집장 — 신문을 더 팔려고",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "order",
+      "question": "세 사건은 무엇을 뒤따라 연출되었는가?",
+      "hint": "배달 전표의 시각과 사건 시각을 비교한다.",
+      "options": [
+        {
+          "id": "reader",
+          "label": "소설의 본문 — 범인은 집착한 독자다",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "picture",
+          "label": "삽화 — 각 그림이 해당 사건보다 먼저 인쇄소에 도착했다",
+          "tier": "surface",
+          "clues": [
+            "world/london-map/print-shop/receipt.md",
+            "world/london-map/morgue/time-record.md",
+            "world/london-map/print-shop/receipt-half.md",
+            "world/london-map/morgue/time-record-half.md"
+          ],
+          "epilogue": "모닝 포스트에 공고가 실렸다. 연재 삽화는 이제 인쇄 당일에 배달된다. 식자공 톰은 자신이 본 규칙 변경 중 가장 느리고 가장 옳은 것이라고 말한다."
+        },
+        {
+          "id": "hat",
+          "label": "웨인 자신의 그림 — 장면들에는 소설이 언급하지 않은 것들이 있었다",
+          "tier": "hidden",
+          "clues": [
+            "world/london-map/edith-room/margin-note.md"
+          ],
+          "title": "소설에는 모자가 없다",
+          "epilogue": "이디스는 세 사건의 원고를 삽화 옆에 놓고 그림이 덧붙인 것들 — 모자, 의자 — 에 붉은 동그라미를 쳤다. 이제야 자기 이야기가 아니라는 확신이 들었다고 그녀는 말했다."
+        },
+        {
+          "id": "chance",
+          "label": "순전한 우연",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "address",
+      "question": "이디스는 왜 네 번째 장의 주소를 존재하지 않는 거리로 바꾸었는가?",
+      "hint": "지도에서 그 거리를 찾아본다.",
+      "options": [
+        {
+          "id": "ambush",
+          "label": "범인을 그 거리로 유인해 잠복하려고",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "test",
+          "label": "새 주소를 누가 읽는지 보려고 — 거리를 찾지 못해 스스로 드러내게 하려고",
+          "tier": "surface",
+          "clues": [
+            "world/london-map/edith-room/address-correction.md",
+            "world/london-map/unnamed-street/revision-scrap.md",
+            "world/london-map/edith-room/address-correction-half.md",
+            "world/london-map/unnamed-street/revision-scrap-half.md"
+          ],
+          "epilogue": "이디스는 마지막 네 번째 장에 존재하지 않는 거리를 남겼다. 독자들은 소설가의 공상으로 여기지만, 그것이 자기 문에 채운 빗장이라는 걸 아는 사람은 왓슨뿐이다."
+        },
+        {
+          "id": "typo",
+          "label": "그저 필사 실수였다",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "leak",
+      "question": "주소가 바뀐 원고는 어떻게 범인에게 전달되었는가?",
+      "hint": "편집장의 배포 기록에는 누구의 이름이 서명되어 있는가?",
+      "options": [
+        {
+          "id": "tom",
+          "label": "톰이 식자하다 몰래 훔쳐보았다",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "forwarded",
+          "label": "블랙번 편집장이 평소처럼 8:15에서 웨인에게 건넸다",
+          "tier": "surface",
+          "clues": [
+            "world/london-map/print-shop/editor-office/correction-log.md",
+            "world/london-map/print-shop/editor-office/correction-log-half.md"
+          ],
+          "epilogue": "블랙번은 사무실 규칙을 바꿨다. 이제 교정은 작가와 편집자 사이에서만 오가고, 보고 싶은 사람은 그의 책상에서 읽는다."
+        },
+        {
+          "id": "asked",
+          "label": "웨인은 그걸 손에 넣자마자 그 거리를 찾아 나섰다 — 가짜 주소가 그날 아침 그를 낚아챈 것이다",
+          "tier": "hidden",
+          "clues": [
+            "world/london-map/unnamed-street/asked-the-way.md"
+          ],
+          "title": "길을 물은 남자",
+          "epilogue": "길모퉁이의 늙은 지도상은 사진 속 얼굴을 알아보았다. “그 사람이야. 소맷단에 파란 얼룩이 있고, 그 거리가 어디냐고 세 번이나 물었어.” 이디스의 시험은 누구도 예상한 것보다 빨리 성과를 냈다."
+        },
+        {
+          "id": "edith-gave",
+          "label": "이디스가 직접 그에게 건넸다",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    }
+  ],
+  "reckoning": {
+    "epilogues": {
+      "all": "네 가지 비밀이 모두 드러났다. 베이커 가에서 그 정오를 이야기할 때면, 누군가 늘 소설에 없던 모자와, 자기만의 주소로 네 번째 장을 끝낸 이디스를 꺼낸다.",
+      "most": "당신은 대부분을 보았다. 나머지는 웨인만이 알지만, 적어도 이제 아무도 이디스의 소설을 범죄의 대본으로 여기지 않는다.",
+      "few": "정오는 지났지만, 세 사건 뒤에 남은 이야기는 아직 너무 많다. 어쩌면 다음 연재가 실릴 때, 당신은 다시 인쇄소를 찾아가 보게 될 것이다."
+    }
+  },
+  "triggers": [
+    {
+      "id": "wayne-turns-up",
+      "label": "증거 충분: 웨인 등장",
+      "kind": "state",
+      "when": "clues.held >= 3",
+      "clues": [
+        "world/london-map/third-crime-scene/pigment-record.md",
+        "world/london-map/print-shop/receipt.md",
+        "world/london-map/morgue/time-record.md",
+        "world/london-map/print-shop/editor-office/correction-log.md",
+        "world/london-map/print-shop/illustration-room/visible-details.md",
+        "world/london-map/edith-room/address-correction.md",
+        "world/london-map/unnamed-street/revision-scrap.md"
+      ],
+      "do": "wayne-turns-up",
+      "fallback": "구석에서 누군가 당신을 부른다. 아서 웨인이 안개 속에 붉은 봉투를 들고 서 있다. “홈즈 씨 — 마침 위어 양에게 가던 길이었습니다.”"
+    },
+    {
+      "id": "wayne-turns-up-anyway",
+      "label": "모든 곳을 뒤졌지만 얻은 게 적다: 그래도 웨인이 나타난다",
+      "kind": "state",
+      "when": "clues.held >= 5",
+      "clues": [
+        "world/london-map/third-crime-scene/pigment-record-half.md",
+        "world/london-map/print-shop/receipt-half.md",
+        "world/london-map/morgue/time-record-half.md",
+        "world/london-map/print-shop/editor-office/correction-log-half.md",
+        "world/london-map/print-shop/illustration-room/visible-details-half.md",
+        "world/london-map/edith-room/address-correction-half.md",
+        "world/london-map/unnamed-street/revision-scrap-half.md"
+      ],
+      "do": "wayne-turns-up",
+      "fallback": "구석에서 누군가 당신을 부른다. 아서 웨인이 안개 속에 붉은 봉투를 들고 서 있다. “홈즈 씨 — 마침 위어 양에게 가던 길이었습니다.”"
+    },
+    {
+      "id": "too-hurt",
+      "label": "중상: 홈즈 쓰러짐",
+      "kind": "state",
+      "when": "player.hp <= 0",
+      "do": "hurt-out"
+    }
+  ]
+}

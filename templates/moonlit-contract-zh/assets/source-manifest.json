@@ -1,0 +1,18 @@
+{
+  "opening": {
+    "file": "assets/backgrounds/opening.webp",
+    "sha256": "3615e4c39849324bab6ec6a0f4e1eda0d99761cf23a8d3754c11dab10424d6b1",
+    "generator": "built-in image_gen",
+    "role": "dark-haired traveler left, silver-haired female knight Lyra right; ruined coastal observatory",
+    "note": "Earlier franchise-character CGs are excluded from this repository.",
+    "sourceFilename": "exec-fddfa9a6-6149-4071-82d3-19a25a29f730.png"
+  },
+  "bgm": {
+    "key": "emberglass",
+    "file": "assets/audio/themes/emberglass.mp3",
+    "title": "Mystical/fantasy loop",
+    "creator": "nicorico_120",
+    "license": "CC0 1.0",
+    "credits": "assets/audio/CREDITS.md"
+  }
+}

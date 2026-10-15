@@ -1,0 +1,32 @@
+name: 17번 좌석의 수첩
+desc: 첫 턴이 끝나면 쑤허가 남긴 수첩이 2호차 캔버스에 놓인다(트리거 notebook).
+do:
+- action: give
+  with:
+    path: world/seated-car/su-he-notebook.md
+    title: 쑤허가 남긴 수첩
+    frontmatter:
+      type: note
+      image: assets/items/su-he-notebook.webp
+      portable: true
+      choice:
+        options:
+        - id: take
+          label: 수첩을 줍는다
+      choice_actions:
+        take:
+          kind: take
+          paths:
+          - world/seated-car/su-he-notebook.md
+    body: '펼쳐진 페이지에는 종이가 패일 만큼 꾹꾹 눌러 쓴 글씨가 있다.
+
+
+      "오늘 밤 이 열차에 그 사람이 있다. 12년 동안 아빠의 일지를 계속 지니고 다녔다. 링커우에 도착하면 모두 앞에서 인정하게 만들 거다."
+
+
+      그 사람이 누구인지는 쓰여 있지 않다.'
+- action: event
+  with:
+    target: characters/xia-cheng
+    title: 17번 좌석의 수첩
+    text: 샤청이 손전등을 17번 좌석에 비춘다. 캔버스 가방 밑에 펼쳐진 수첩이 깔려 있다. "이거 그 사람 거예요… 한번 봐요. 뭐라고 쓰여 있어요?"

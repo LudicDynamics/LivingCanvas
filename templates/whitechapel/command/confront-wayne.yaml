@@ -1,0 +1,10 @@
+name: 'Confront him'
+desc: 'Lay out that the picture came first and that his hand was at the scene; add that he read the new address, and he has nothing left to say'
+do:
+  - action: end
+    when: 'status.address == "yes"'
+    with:
+      ending: caught
+  - action: end
+    with:
+      ending: half-truth

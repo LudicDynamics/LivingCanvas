@@ -1,0 +1,32 @@
+name: 老モーの日誌を盗み見る
+desc: 振っても振らなくてもよい一つのダイス。成功すれば、日誌に鉛筆の一行が増える（物品に落ちるイベント）。失敗すれば、老モーに見られた（キャラクターに落ちるイベント）となり、以降の会話で彼はあなたを警戒する
+do:
+  - action: edit
+    when: roll.passed == true
+    with:
+      path: world/harbor-chart/old-lighthouse/lighthouse-logbook.md
+      append_body: 日誌の挟み込みにもう一行、とても薄い鉛筆の字がある。消灯の直前、老モーは霧埠港に属さない灯信号——短三つ、長一つ——を書き留めていた。
+  - action: event
+    when: roll.passed == true
+    with:
+      target: world/harbor-chart/old-lighthouse/lighthouse-logbook.md
+      title: 日誌の挟み込みの鉛筆の字
+      text: 老モーが背を向けて油を足す隙に、あなたは日誌の挟み込みをめくる。消灯の直前、彼は霧埠港に属さない灯信号——短三つ、長一つ——を書き留めていた。
+  - action: event
+    when: roll.passed == false
+    with:
+      target: characters/old-mo
+      title: 老モーに見られた
+      text: 老モーが振り返ったとき、あなたの手はまだ彼の日誌の上にあった。彼は本をぱたりと閉じ、顔を曇らせた。これから彼の口から何かを聞き出すには、まず謝らなければならない。
+  - action: give
+    when: roll.rank == 4
+    with:
+      path: player/lamp-signal.md
+      title: 書き写した灯信号
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        老モーは一度も振り返らなかったので、あなたは鉛筆の一行を紙切れに書き写す時間があった。消灯の直前、霧埠港に属さない灯信号——短三つ、長一つ。
+
+        告発の証拠ではない。日誌に書いてあることが、今はあなたのポケットにもあるというだけだ。

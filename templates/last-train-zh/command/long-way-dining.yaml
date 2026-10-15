@@ -1,0 +1,20 @@
+name: 绕远路：餐车
+desc: 餐车没搜成之后，和老贺把煤斗倒出来，找到5车钥匙。多耗一步时间
+do:
+  - action: give
+    with:
+      path: player/freight-key.md
+      title: 挂红牌的5车钥匙
+      frontmatter:
+        type: note
+        image: assets/items/freight-key.webp
+        portable: true
+      body: 在餐车开水炉旁的煤斗里找到的钥匙，红牌上写着“5车 行李车”。有人不敢把它挂回驾驶室，就扔在了这里。拿着它，就能打开车尾的行李车。
+  - action: set_status
+    with:
+      path: world/dining-car/05-long-way.md
+      values:
+        done: yes
+  - action: tick
+    with:
+      by: "-1"

@@ -1,0 +1,20 @@
+name: 遠回り：3号個室
+desc: 個室の捜索がうまくいかなかったあと、夏澄が鐘懐礼を検札で呼び出し、あなたは枕の下から薬のシートを取る。時間を一歩余計に使う
+do:
+  - action: give
+    with:
+      path: player/pill-strip.md
+      title: 二錠減った睡眠薬のシート
+      frontmatter:
+        type: note
+        image: assets/items/pill-strip.webp
+        portable: true
+      body: 鐘懐礼の枕の下にあった睡眠薬のシートで、処方箋には彼の名前が印刷されている。十錠入りで二錠減っており、銀紙は新しく破かれている。彼は十一時半に薬を飲んで寝たと言う——だが睡眠薬を二錠飲んだ人間の眠りは、こんなに浅いはずがない。
+  - action: set_status
+    with:
+      path: world/sleeper/05-long-way.md
+      values:
+        done: yes
+  - action: tick
+    with:
+      by: "-1"

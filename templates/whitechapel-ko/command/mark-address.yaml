@@ -1,0 +1,8 @@
+name: "한 줄을 못 박는다: 새 주소를 읽은 사람"
+desc: "응접실, 편집장실 또는 이름 없는 거리 수색: 바뀐 주소는 시험이었고, 누군가 그것을 읽었다"
+do:
+  - action: set_status
+    with:
+      path: world/london-map/03-before-noon.md
+      values:
+        address: yes

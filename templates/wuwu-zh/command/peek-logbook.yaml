@@ -1,0 +1,32 @@
+name: 偷看老莫的日志
+desc: 可骰可不骰的一颗骰子。中了，日志里多出一行铅笔字（落在物品上的事件）；没中，老莫看见了（落在角色上的事件），之后对话里他会防着你
+do:
+  - action: edit
+    when: 'roll.passed == true'
+    with:
+      path: world/harbor-chart/old-lighthouse/lighthouse-logbook.md
+      append_body: 日志夹层里还有一行很淡的铅笔字：熄灯前一刻，老莫记下了一盏不属于雾坞港的灯号——三短一长。
+  - action: event
+    when: 'roll.passed == true'
+    with:
+      target: world/harbor-chart/old-lighthouse/lighthouse-logbook.md
+      title: 日志夹层里的铅笔字
+      text: 趁老莫转身添油，你翻到日志夹层：熄灯前一刻，他记下一盏不属于雾坞港的灯号——三短一长。
+  - action: event
+    when: 'roll.passed == false'
+    with:
+      target: characters/old-mo
+      title: 被老莫看见了
+      text: 老莫回头时，你的手还压在他的日志上。他一把合上本子，脸沉了下来。接下来想从他嘴里问出东西，得先赔个不是。
+  - action: give
+    when: roll.rank == 4
+    with:
+      path: player/lamp-signal.md
+      title: 抄下来的灯号
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        老莫一直没回头，你来得及把那行铅笔字抄在一张纸片上：熄灯前一刻，一盏不属于雾坞港的灯号——三短一长。
+
+        这不是指认用的证据，只是日志里写的东西，现在你兜里也有一份。

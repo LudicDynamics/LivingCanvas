@@ -1,0 +1,23 @@
+name: "세 번째 실마리 못 박기: 영주가의 장부"
+desc: 공방의 판정 성공(60 이하) 또는 돌아가기 후, '고정쇠가 영주가의 장부와 맞는다'를 증거로 가방에 넣고 해도에 ✓를 찍는다
+do:
+  - action: give
+    with:
+      path: player/ledger-page.md
+      title: 증거 · 영주가의 장부 한 장
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        베라는 이 키 고정쇠를 알아본다. 주문서는 영주가의 장부에 기록돼 있지만, 지급란에는 항구 선박 명부에 없는 배가 적혀 있다.
+
+        고정쇠에 새로 난 긁힘의 높이는 7번 부두 무인선 뱃전의 긁힘과 맞는다. 장부에 있는 '존재하지 않는 배'는 그날 밤 항구에 있었다.
+  - action: set_status
+    with:
+      path: world/harbor-chart/05-accuse.md
+      values:
+        ledger: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: "✓ 공방의 실마리가 못 박혔다: 고정쇠는 영주가의 장부에 기록돼 있다."

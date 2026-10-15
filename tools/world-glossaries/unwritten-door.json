@@ -1,0 +1,218 @@
+{
+  "world": "unwritten-door",
+  "names": {
+    "en": "The Unwritten Door",
+    "ja": "未書の扉",
+    "zh": "未写之门",
+    "ko": "쓰이지 않은 문"
+  },
+  "koReview": "ko names seeded by hand 2026-10-03 (Korean editions) — TO REVIEW; the rest are filled by `localize-from-zh.mjs glossary --to ko`",
+  "terms": [
+    {
+      "en": "The Unwritten Door",
+      "ja": "未書の扉",
+      "zh": "未写之门",
+      "ko": "쓰이지 않은 문",
+      "note": "world title"
+    },
+    {
+      "en": "Iris",
+      "ja": "アイリス",
+      "zh": "艾莉丝",
+      "ko": "아이리스",
+      "note": "character"
+    },
+    {
+      "en": "The Cabin",
+      "ja": "小屋",
+      "zh": "小屋",
+      "ko": "오두막",
+      "note": "location"
+    },
+    {
+      "en": "The sealed envelope",
+      "ko": "봉인된 봉투",
+      "note": "ko: model"
+    },
+    {
+      "en": "The phone",
+      "ko": "전화기",
+      "note": "ko: model"
+    },
+    {
+      "en": "The door",
+      "ko": "문",
+      "note": "ko: model"
+    },
+    {
+      "en": "world/outside",
+      "ko": "바깥 세계",
+      "note": "ko: model"
+    },
+    {
+      "en": "resident.md",
+      "ko": "주민 문서",
+      "note": "ko: model"
+    },
+    {
+      "en": "found-object.md",
+      "ko": "발견품 문서",
+      "note": "ko: model"
+    },
+    {
+      "en": "return.md",
+      "ko": "귀환 문서",
+      "note": "ko: model"
+    },
+    {
+      "en": "01-arrival.md",
+      "ko": "도착 기록",
+      "note": "ko: model"
+    },
+    {
+      "en": "01-first-sight.md",
+      "ko": "첫눈에 보인 것",
+      "note": "ko: model"
+    },
+    {
+      "en": "Chalk",
+      "ko": "초크",
+      "note": "ko: model"
+    },
+    {
+      "en": "Writer",
+      "ko": "작가",
+      "note": "ko: model"
+    },
+    {
+      "en": "README",
+      "ko": "안내문",
+      "note": "ko: model"
+    },
+    {
+      "en": "Context",
+      "ko": "맥락",
+      "note": "ko: model"
+    },
+    {
+      "en": "map",
+      "ko": "지도",
+      "note": "ko: model"
+    },
+    {
+      "en": "return gate",
+      "ko": "귀환문",
+      "note": "ko: model"
+    },
+    {
+      "en": "choice_actions",
+      "ko": "선택 행동",
+      "note": "ko: model"
+    },
+    {
+      "en": "read(paths)",
+      "ko": "읽기(경로)",
+      "note": "ko: model"
+    },
+    {
+      "en": "take(paths)",
+      "ko": "줍기(경로)",
+      "note": "ko: model"
+    },
+    {
+      "en": "stage(paths)",
+      "ko": "준비(경로)",
+      "note": "ko: model"
+    },
+    {
+      "en": "enter(target)",
+      "ko": "들어가기(대상)",
+      "note": "ko: model"
+    },
+    {
+      "en": "character(character)",
+      "ko": "인물(캐릭터)",
+      "note": "ko: model"
+    },
+    {
+      "en": "reply(text)",
+      "ko": "답장(문장)",
+      "note": "ko: model"
+    },
+    {
+      "en": "writer(prompt)",
+      "ko": "작가(지시)",
+      "note": "ko: model"
+    },
+    {
+      "en": "generate_image",
+      "ko": "이미지 생성",
+      "note": "ko: model"
+    },
+    {
+      "en": "bg",
+      "ko": "배경",
+      "note": "ko: model"
+    },
+    {
+      "en": "bgVideo",
+      "ko": "배경 영상",
+      "note": "ko: model"
+    },
+    {
+      "en": "status.data",
+      "ko": "상태 데이터",
+      "note": "ko: model"
+    },
+    {
+      "en": "diary.md",
+      "ko": "일기 문서",
+      "note": "ko: model"
+    },
+    {
+      "en": "identity.md",
+      "ko": "정체성 문서",
+      "note": "ko: model"
+    },
+    {
+      "en": "likes-and-fears.md",
+      "ko": "좋아함과 두려움",
+      "note": "ko: model"
+    },
+    {
+      "en": "long-term.md",
+      "ko": "장기 바람",
+      "note": "ko: model"
+    },
+    {
+      "en": "memory.md",
+      "ko": "기억",
+      "note": "ko: model"
+    },
+    {
+      "en": "near-term.md",
+      "ko": "단기 바람",
+      "note": "ko: model"
+    },
+    {
+      "en": "personality.md",
+      "ko": "성격",
+      "note": "ko: model"
+    },
+    {
+      "en": "preset.json",
+      "ko": "프리셋",
+      "note": "ko: model"
+    },
+    {
+      "en": "relationships.md",
+      "ko": "인간관계",
+      "note": "ko: model"
+    },
+    {
+      "en": "unspoken.md",
+      "ko": "말하지 못한 것",
+      "note": "ko: model"
+    }
+  ]
+}

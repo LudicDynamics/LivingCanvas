@@ -1,0 +1,23 @@
+name: 钉上第三条线：领主家的账簿
+desc: 工坊的判定成功（60以下）或绕远路之后，把“扣件对上领主家账簿”作为证据放进包里，并在海图上打钩
+do:
+  - action: give
+    with:
+      path: player/ledger-page.md
+      title: 证据 · 领主家账簿的一页
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        薇拉认得这种舵扣件：订货单记在领主家的账簿上，付款的那一栏写的却是一艘不在港口船册里的船。
+
+        扣件上那道新擦痕的高度，和7号码头无人船舷侧的擦痕对得上。账簿上那艘“不存在的船”，那天夜里就在港里。
+  - action: set_status
+    with:
+      path: world/harbor-chart/05-accuse.md
+      values:
+        ledger: "yes"
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: ✓ 工坊的线钉上了：扣件记在领主家的账簿上。

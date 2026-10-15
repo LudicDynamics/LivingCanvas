@@ -1,0 +1,18 @@
+name: 収穫
+desc: 実った作物を収穫し、また種をまく
+do:
+  - action: set_state
+    with:
+      target: world
+      state: farm_growth
+      value: "1"
+  - action: add_state
+    with:
+      target: characters/ren
+      state: bond
+      by: "1"
+  - action: event
+    with:
+      target: world/farm
+      title: 収穫
+      text: 畝ごとにかぶを抜くと、畦の上が白く埋まった。蓮が低い石垣越しに顔を出し、笑いながら籠に詰めるのを手伝い、次の種まきも手伝ってくれた。

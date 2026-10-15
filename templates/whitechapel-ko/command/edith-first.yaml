@@ -1,0 +1,6 @@
+name: 이디스를 먼저
+desc: 왓슨이 이디스를 뒷문으로 데리고 나간다. 그녀는 안전하고, 웨인은 그 냄새를 맡는다
+do:
+  - action: end
+    with:
+      ending: half-truth

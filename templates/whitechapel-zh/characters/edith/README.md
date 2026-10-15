@@ -1,0 +1,8 @@
+---
+type: readme
+name: 伊迪丝·韦尔
+voice: shy-sweet
+avatar: assets/characters/edith.webp
+---
+
+华生的病人，小说家。亲手订正了第四章地址的人。虽然害怕，但想用自己的话说明。

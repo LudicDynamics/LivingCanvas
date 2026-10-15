@@ -1,0 +1,370 @@
+{
+  "id": "whitechapel",
+  "audio": {
+    "theme": "canvas-whitechapel"
+  },
+  "name": "Holmes: The Fourth Case · English",
+  "version": "1.2.0",
+  "schema": 1,
+  "description": "You are Holmes. Someone is turning the scenes of a serial novel into real crimes — find out who, and stop the fourth before it happens today.",
+  "intro": {
+    "status": "playable",
+    "category": "trpg",
+    "recommended": true,
+    "rank": 2,
+    "hook": "You are Sherlock Holmes. Someone is staging a serial novel’s illustrations as real crimes, one by one — stop the fourth picture before noon.",
+    "genres": [
+      "mystery",
+      "historical"
+    ],
+    "loop": [
+      "Visit the print shop, the editor’s office and the witnesses on the London map",
+      "Search the scenes, roll for clues and question everyone",
+      "With enough clues, unmask who turned a novel into a crime"
+    ],
+    "minutes": [
+      40,
+      60
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "dice",
+      "endings",
+      "clock",
+      "voice",
+      "live-image"
+    ],
+    "endings": 3,
+    "characters": [
+      {
+        "id": "watson",
+        "line": "Your old friend, who promised to protect Edith"
+      },
+      {
+        "id": "edith",
+        "line": "The novelist who corrected chapter four’s address herself; frightened, but set on telling it plainly"
+      },
+      {
+        "id": "tom",
+        "line": "The print shop’s typesetter, who reads dates and times straight from the duty log"
+      }
+    ],
+    "for": [
+      "First-time players",
+      "Mystery fans",
+      "Sherlock Holmes fans"
+    ]
+  },
+  "author": "Worldlines Canvas / AIRP",
+  "genre": "Story experience",
+  "tags": [
+    "short story",
+    "generative world"
+  ],
+  "material": "kraft",
+  "cover": "assets/scenes/intro.webp",
+  "extensions": [
+    {
+      "id": "airp:letter",
+      "version": ">=1.0.0",
+      "optional": false
+    },
+    {
+      "id": "airp:note",
+      "version": ">=1.0.0",
+      "optional": false
+    }
+  ],
+  "characters": [
+    {
+      "id": "watson",
+      "home": "map",
+      "role": "companion",
+      "avatar": "assets/motion/seedance/characters/watson-transparent.webp",
+      "description": "A physician and Holmes's friend, who has promised to protect Edith. This morning he confirmed that the third incident matched its illustration, and he wants today's fourth stopped. He brings a doctor's eye and a human conscience, and leaves the final deduction to Holmes.",
+      "avatarVideo": "assets/motion/seedance/characters/watson-transparent.webm",
+      "name": "Watson"
+    },
+    {
+      "id": "edith",
+      "home": "world/london-map/edith-room",
+      "role": "npc",
+      "description": "Watson's patient, a novelist. She is the one who changed the address in chapter four. Frightened, but determined to explain in her own words.",
+      "avatar": "assets/characters/edith.webp",
+      "name": "Edith Vale"
+    },
+    {
+      "id": "tom",
+      "home": "world/london-map/print-shop",
+      "role": "npc",
+      "description": "The print shop's typesetter: ink-blackened fingers and a duty log. Plain-spoken, he reads out dates and times exactly as recorded.",
+      "avatar": "assets/characters/tom.webp",
+      "name": "Tom Hale"
+    },
+    {
+      "id": "blackburn",
+      "home": "world/london-map/print-shop/editor-office",
+      "role": "npc",
+      "description": "An editor who handles manuscripts and proofs, precise about dates and times and anxious for the paper's reputation.",
+      "avatar": "assets/characters/blackburn.webp",
+      "name": "Editor Blackburn"
+    },
+    {
+      "id": "wayne",
+      "home": "world/london-map/print-shop/illustration-room",
+      "role": "npc",
+      "description": "An illustrator for serialized novels, with ultramarine-stained cuffs and a right wrist he keeps guarding. Touchy about criticism of his work.",
+      "avatar": "assets/characters/wayne.webp",
+      "name": "Arthur Wayne"
+    }
+  ],
+  "opening": {
+    "greeter": "watson"
+  },
+  "createdAt": "2026-09-12T00:00:00Z",
+  "updatedAt": "2026-09-12T00:00:00Z",
+  "player": {
+    "id": "player",
+    "name": "Sherlock Holmes",
+    "avatar": "assets/characters/sherlock-holmes.webp"
+  },
+  "locale": "en",
+  "entry": "map",
+  "rules": {
+    "system": "coc",
+    "characterChecks": true
+  },
+  "mode": "semi",
+  "clock": {
+    "path": "world/london-map/03-before-noon.md",
+    "key": "left",
+    "start": 10,
+    "label": "Until Noon",
+    "time": {
+      "start": "10:00",
+      "end": "12:00"
+    }
+  },
+  "endings": [
+    {
+      "id": "caught",
+      "title": "The One Not in the Fourth Picture",
+      "path": "endings/caught/README.md"
+    },
+    {
+      "id": "half-truth",
+      "title": "What Was Kept, What Was Missed",
+      "path": "endings/half-truth/README.md"
+    },
+    {
+      "id": "fourth-picture",
+      "title": "The Fourth Picture",
+      "path": "endings/fourth-picture/README.md",
+      "when": "clock <= 0"
+    }
+  ],
+  "mysteries": [
+    {
+      "id": "culprit",
+      "question": "Who turned Edith’s novel into real events, one by one?",
+      "hint": "Whose hands touched those pictures first?",
+      "options": [
+        {
+          "id": "edith",
+          "label": "Edith herself — to make the novel famous",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "wayne",
+          "label": "Arthur Wayne, the illustrator",
+          "tier": "surface",
+          "clues": [
+            "world/london-map/print-shop/illustration-room/visible-details.md",
+            "world/london-map/third-crime-scene/pigment-record.md",
+            "world/london-map/print-shop/illustration-room/visible-details-half.md",
+            "world/london-map/third-crime-scene/pigment-record-half.md"
+          ],
+          "epilogue": "Wayne’s name was struck from the serial’s credit line. At the print shop they remember him only by the streak of ultramarine that never washed out of his cuff."
+        },
+        {
+          "id": "unseen",
+          "label": "Wayne — the paper was dropping his illustrations, and he wanted all London to see his pictures first",
+          "tier": "hidden",
+          "clues": [
+            "world/london-map/print-shop/illustration-room/returned-proofs.md"
+          ],
+          "title": "The Returned Proofs",
+          "epilogue": "The stack of returned proofs went into a Scotland Yard evidence bag. Reading his own red-pencil notes on them, Editor Blackburn changed his mind for the first time: from now on the serial prints its illustrations, with the artist’s name."
+        },
+        {
+          "id": "blackburn",
+          "label": "Editor Blackburn — to sell more papers",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "order",
+      "question": "What were the three incidents staged after?",
+      "hint": "Compare the time on the delivery slip with the time of the incident.",
+      "options": [
+        {
+          "id": "reader",
+          "label": "The novel’s text — the culprit is an obsessed reader",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "picture",
+          "label": "The illustrations — each picture reached the print shop before its incident",
+          "tier": "surface",
+          "clues": [
+            "world/london-map/print-shop/receipt.md",
+            "world/london-map/morgue/time-record.md",
+            "world/london-map/print-shop/receipt-half.md",
+            "world/london-map/morgue/time-record-half.md"
+          ],
+          "epilogue": "The Morning Post ran a notice: serial illustrations are now delivered on the day of printing. Tom the typesetter says it is the slowest rule change he has ever seen, and the most sensible."
+        },
+        {
+          "id": "hat",
+          "label": "Wayne’s own pictures — the scenes held things the novel never mentions",
+          "tier": "hidden",
+          "clues": [
+            "world/london-map/edith-room/margin-note.md"
+          ],
+          "title": "There Is No Hat in the Novel",
+          "epilogue": "Edith laid the manuscripts of the three incidents beside the illustrations and circled in red what the pictures added: the hat, the chair. At last, she said, she could be sure it was not her story."
+        },
+        {
+          "id": "chance",
+          "label": "Pure coincidence",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "address",
+      "question": "Why did Edith change the fourth chapter’s address to a street that doesn’t exist?",
+      "hint": "Look for that street on the map.",
+      "options": [
+        {
+          "id": "ambush",
+          "label": "To lure the culprit to that street and lie in wait",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "test",
+          "label": "To see who read the new address — and gave himself away when he couldn’t find the street",
+          "tier": "surface",
+          "clues": [
+            "world/london-map/edith-room/address-correction.md",
+            "world/london-map/unnamed-street/revision-scrap.md",
+            "world/london-map/edith-room/address-correction-half.md",
+            "world/london-map/unnamed-street/revision-scrap-half.md"
+          ],
+          "epilogue": "Edith kept the street that doesn’t exist in the final fourth chapter. Readers take it for a novelist’s fancy; only Watson knows it was the bolt she put on her own door."
+        },
+        {
+          "id": "typo",
+          "label": "It was just a slip of the pen",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "leak",
+      "question": "How did the manuscript with the changed address reach the culprit?",
+      "hint": "Whose name is signed on the editor’s circulation log?",
+      "options": [
+        {
+          "id": "tom",
+          "label": "Tom peeked at it while setting type",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "forwarded",
+          "label": "Editor Blackburn passed it to Wayne at 8:15, as usual",
+          "tier": "surface",
+          "clues": [
+            "world/london-map/print-shop/editor-office/correction-log.md",
+            "world/london-map/print-shop/editor-office/correction-log-half.md"
+          ],
+          "epilogue": "Blackburn changed the rules of his office: corrections now pass only between author and editor, and anyone who wants to see one reads it at his desk."
+        },
+        {
+          "id": "asked",
+          "label": "Wayne went asking for the street the moment he had it — the fake address hooked him that very morning",
+          "tier": "hidden",
+          "clues": [
+            "world/london-map/unnamed-street/asked-the-way.md"
+          ],
+          "title": "The Man Who Asked the Way",
+          "epilogue": "The old map-seller on the corner knew the face in the photograph: “That’s him. Blue on his cuff, asked three times where that street was.” Edith’s test had worked sooner than anyone thought."
+        },
+        {
+          "id": "edith-gave",
+          "label": "Edith handed it to him herself",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    }
+  ],
+  "reckoning": {
+    "epilogues": {
+      "all": "All four secrets are out. When Baker Street talks about that noon, someone always mentions the hat that was never in the novel — and Edith, who finished her fourth chapter with an address of her own.",
+      "most": "You saw most of it. The rest only Wayne knows; but at least no one treats Edith’s novel as a script for crime anymore.",
+      "few": "Noon has passed, but too much behind the three incidents is still unsaid. Perhaps when the next installment runs, you will go and look at the print shop again."
+    }
+  },
+  "triggers": [
+    {
+      "id": "wayne-turns-up",
+      "label": "Enough evidence: Wayne turns up",
+      "kind": "state",
+      "when": "clues.held >= 3",
+      "clues": [
+        "world/london-map/third-crime-scene/pigment-record.md",
+        "world/london-map/print-shop/receipt.md",
+        "world/london-map/morgue/time-record.md",
+        "world/london-map/print-shop/editor-office/correction-log.md",
+        "world/london-map/print-shop/illustration-room/visible-details.md",
+        "world/london-map/edith-room/address-correction.md",
+        "world/london-map/unnamed-street/revision-scrap.md"
+      ],
+      "do": "wayne-turns-up",
+      "fallback": "Someone calls to you from the corner. Arthur Wayne stands in the fog with a red envelope: “Mr. Holmes — I was just on my way to Miss Vale.”"
+    },
+    {
+      "id": "wayne-turns-up-anyway",
+      "label": "Every place searched, too little found: Wayne turns up anyway",
+      "kind": "state",
+      "when": "clues.held >= 5",
+      "clues": [
+        "world/london-map/third-crime-scene/pigment-record-half.md",
+        "world/london-map/print-shop/receipt-half.md",
+        "world/london-map/morgue/time-record-half.md",
+        "world/london-map/print-shop/editor-office/correction-log-half.md",
+        "world/london-map/print-shop/illustration-room/visible-details-half.md",
+        "world/london-map/edith-room/address-correction-half.md",
+        "world/london-map/unnamed-street/revision-scrap-half.md"
+      ],
+      "do": "wayne-turns-up",
+      "fallback": "Someone calls to you from the corner. Arthur Wayne stands in the fog with a red envelope: “Mr. Holmes — I was just on my way to Miss Vale.”"
+    },
+    {
+      "id": "too-hurt",
+      "label": "Too hurt: Holmes goes down",
+      "kind": "state",
+      "when": "player.hp <= 0",
+      "do": "hurt-out"
+    }
+  ]
+}

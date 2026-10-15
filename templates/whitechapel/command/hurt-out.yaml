@@ -1,0 +1,11 @@
+name: 'Too hurt to go on'
+desc: 'Hidden hp at zero (world.json trigger too-hurt): Watson helps you back to 221B; noon cannot be reached in time'
+do:
+  - action: event
+    with:
+      target: characters/watson
+      title: 'Watson brings you back'
+      text: 'You lean on the wall and cannot take another step. Watson finds you, puts your arm over his shoulder and walks you all the way back to Baker Street, saying only, “Don’t talk, Holmes.” Whatever happens before noon, you will not be the one to stop it.'
+  - action: end
+    with:
+      ending: fourth-picture

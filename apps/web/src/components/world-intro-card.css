@@ -1,0 +1,195 @@
+/* WorldIntroCard: the lobby's "what is this world" card.
+   Same dark glass as the launcher; a centred card on wide screens, a bottom
+   sheet on phones, a full-height scroll on a phone held sideways. */
+.world-intro-card {
+  --accent: #c9f27a;
+  --card-line: rgba(255, 255, 255, .2);
+  --card-text: #f5f3ee;
+  --card-dim: rgba(245, 243, 238, .66);
+  position: fixed;
+  inset: 0;
+  z-index: var(--depth-ui); /* after the top bar in the launcher, so above it */
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  background: rgba(4, 5, 12, .62);
+  color: var(--card-text);
+  font-family: "Helvetica Neue", Inter, var(--ux-font-ui, system-ui), sans-serif;
+  animation: world-intro-card-in .18s ease-out;
+}
+@keyframes world-intro-card-in { from { opacity: 0; } }
+.world-intro-card button { font: inherit; color: inherit; cursor: pointer; }
+
+.world-intro-card__panel {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: min(680px, 100%);
+  max-height: calc(100dvh - 48px);
+  overflow: hidden;
+  border: 1px solid var(--card-line);
+  border-radius: 24px;
+  background: rgba(14, 15, 24, .94);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), 0 40px 80px -30px rgba(0, 0, 0, .9);
+}
+
+.world-intro-card__hero { position: relative; flex: none; min-height: 168px; display: flex; align-items: flex-end; }
+.world-intro-card__hero > img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: var(--depth-background);
+  -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent);
+  mask-image: linear-gradient(to bottom, #000 35%, transparent);
+  opacity: .9;
+}
+.world-intro-card__heading { position: relative; z-index: var(--depth-world); padding: 64px 24px 6px; display: grid; gap: 6px; }
+.world-intro-card__heading h2 {
+  margin: 0;
+  font: 700 clamp(24px, 4.4vw, 34px)/1.1 "Helvetica Neue", Inter, var(--ux-font-ui, system-ui), sans-serif;
+  letter-spacing: -.02em;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, .6);
+}
+.world-intro-card__hook { margin: 0; font-size: 15px; line-height: 1.55; color: rgba(245, 243, 238, .92); text-shadow: 0 1px 10px rgba(0, 0, 0, .6); }
+.world-intro-card__close {
+  position: absolute; top: 12px; right: 12px; z-index: var(--depth-entity);
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--card-line); background: rgba(10, 11, 18, .7);
+  font-size: 20px; line-height: 1;
+}
+.world-intro-card__ribbon {
+  position: absolute; top: 14px; left: 16px; z-index: var(--depth-entity);
+  padding: 5px 10px; border-radius: 999px;
+  background: var(--accent); color: #11130b;
+  font: 700 11px/1.2 ui-monospace, "SFMono-Regular", monospace; letter-spacing: .08em;
+}
+
+.world-intro-card__status,
+.world-launcher__status {
+  justify-self: start;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font: 600 11px/1.2 ui-monospace, "SFMono-Regular", monospace;
+  letter-spacing: .08em;
+}
+.world-intro-card__status.is-playable, .world-launcher__status.is-playable { color: #c9f27a; }
+.world-intro-card__status.is-in-development, .world-launcher__status.is-in-development { color: #ffc46b; }
+.world-intro-card__status.is-experimental, .world-launcher__status.is-experimental { color: #9fc7ff; }
+/* The world's category (WORLD_CATEGORIES) and its side marks: 实验, 制作中. */
+.world-intro-card__status.is-trpg, .world-launcher__status.is-trpg { color: #ffab85; }
+.world-intro-card__status.is-story, .world-launcher__status.is-story { color: #f3b2dd; }
+.world-intro-card__status.is-free, .world-launcher__status.is-free { color: #9fe3c8; }
+.world-intro-card__status.is-unfinished, .world-launcher__status.is-unfinished { color: #ffc46b; border-style: dashed; font-weight: 500; }
+.world-intro-card__marks { display: flex; flex-wrap: wrap; gap: 6px; }
+.world-intro-card__category { margin: 0; display: grid; gap: 2px; font-size: 13px; line-height: 1.5; color: var(--card-dim); }
+.world-intro-card__category b { color: rgba(245, 243, 238, .92); font-size: 12px; letter-spacing: .06em; }
+
+.world-intro-card__body { flex: 1 1 auto; min-height: 0; overflow: auto; padding: 10px 24px 8px; display: grid; gap: 14px; overscroll-behavior: contain; }
+.world-intro-card__body h3 {
+  margin: 0 0 8px;
+  font: 500 11px/1 ui-monospace, "SFMono-Regular", monospace; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--card-dim);
+}
+.world-intro-card__facts, .world-intro-card__mechanics { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.world-intro-card__facts li, .world-intro-card__mechanics li {
+  padding: 4px 10px; border-radius: 999px; border: 1px solid var(--card-line);
+  font-size: 12px; line-height: 1.4; color: rgba(245, 243, 238, .85);
+}
+.world-intro-card__facts li.is-genre { border-color: rgba(201, 242, 122, .5); color: var(--accent); }
+.world-intro-card__mechanics li { display: inline-flex; gap: 6px; align-items: center; background: rgba(255, 255, 255, .05); }
+.world-intro-card__mechanics li span { color: var(--accent); }
+.world-intro-card__unfinished {
+  margin: 0; padding: 10px 12px; border-radius: 12px;
+  border: 1px solid rgba(255, 196, 107, .45); background: rgba(255, 196, 107, .08);
+  font-size: 13px; line-height: 1.5; color: #ffdca6;
+}
+.world-intro-card__tick b { display: block; margin-bottom: 2px; }
+.world-intro-card__loop { margin: 0; padding-left: 1.4em; display: grid; gap: 4px; font-size: 14px; line-height: 1.5; }
+.world-intro-card__loop li::marker { color: var(--accent); font-family: ui-monospace, monospace; }
+.world-intro-card__cast { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin: 0; padding: 0; list-style: none; }
+.world-intro-card__cast li { display: flex; gap: 10px; align-items: flex-start; }
+.world-intro-card__cast img, .world-intro-card__initial {
+  flex: none; width: 44px; height: 44px; border-radius: 50%;
+  object-fit: cover; object-position: top; background: rgba(255, 255, 255, .08);
+  border: 1px solid var(--card-line);
+}
+.world-intro-card__initial { display: grid; place-items: center; font-weight: 700; color: var(--card-dim); }
+.world-intro-card__cast b { display: block; font-size: 14px; }
+.world-intro-card__cast small { display: block; font-size: 12px; line-height: 1.45; color: var(--card-dim); }
+.world-intro-card__for { margin: 0; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 13px; }
+.world-intro-card__for span { color: var(--card-dim); margin-right: 2px; }
+.world-intro-card__for span::after { content: ':'; }
+/* Full-width colon only in Chinese and Japanese (html[lang] follows the interface language). */
+:lang(zh-CN) .world-intro-card__for span::after, :lang(ja) .world-intro-card__for span::after { content: '：'; }
+.world-intro-card__updates ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.world-intro-card__updates li { display: grid; gap: 2px; padding-left: 12px; border-left: 2px solid rgba(255, 255, 255, .18); font-size: 13px; }
+.world-intro-card__updates time { color: var(--card-dim); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+.world-intro-card__updates p { margin: 0; color: var(--card-dim); white-space: pre-line; }
+.world-intro-card__for em { font-style: normal; padding: 2px 8px; border-radius: 6px; background: rgba(255, 255, 255, .07); }
+.world-intro-card__social { margin: 0; }
+
+.world-intro-card__actions {
+  flex: none; display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 10px;
+  padding: 12px 24px 18px; border-top: 1px solid rgba(255, 255, 255, .08);
+}
+.world-intro-card__actions small { margin-right: auto; font-size: 12px; color: var(--card-dim); }
+.world-intro-card__actions button {
+  padding: 11px 18px; border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, .3); background: rgba(255, 255, 255, .06);
+  font: 600 13px/1.2 ui-monospace, "SFMono-Regular", monospace; letter-spacing: .08em;
+}
+.world-intro-card__actions .world-intro-card__start { background: var(--accent); border-color: var(--accent); color: #11130b; }
+.world-intro-card__actions button:disabled { opacity: .5; cursor: wait; }
+/* 「5 分钟序章」: a quiet text link beside the main buttons, not a third pill. */
+.world-intro-card__actions .world-intro-card__prologue {
+  margin-right: auto; padding: 8px 4px; border: 0; background: none; color: var(--card-dim);
+  text-decoration: underline; text-underline-offset: 3px; letter-spacing: .04em;
+}
+.world-intro-card__actions .world-intro-card__prologue:hover { color: var(--accent); }
+
+/* The brick's own marks: status badge and the 新手推荐 ribbon. */
+.world-launcher__status { font-size: clamp(8px, 2.1cqw, 11px); background: rgba(10, 11, 18, .55); }
+.world-launcher__tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.world-launcher__ribbon {
+  padding: 3px 8px; border-radius: 999px; border: 1px solid #c9f27a;
+  background: #c9f27a; color: #11130b;
+  font: 700 clamp(8px, 2.1cqw, 11px)/1.2 ui-monospace, "SFMono-Regular", monospace; letter-spacing: .06em;
+}
+/* The guest trial: signed out, the one playable world, and the lock on every other. */
+.world-launcher__ribbon.is-trial { background: transparent; color: #c9f27a; }
+.world-launcher__lock {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 8px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .3);
+  background: rgba(10, 11, 18, .55);
+  font: 600 clamp(8px, 2.1cqw, 11px)/1.2 ui-monospace, "SFMono-Regular", monospace; letter-spacing: .04em;
+}
+.world-launcher__tile.is-locked .world-launcher__image { filter: grayscale(.6) brightness(.75); }
+
+/* Phones, upright: a bottom sheet. */
+@media (max-width: 640px) {
+  .world-intro-card { place-items: end stretch; padding: 0; }
+  .world-intro-card__panel { width: 100%; max-height: 90dvh; border-radius: 22px 22px 0 0; border-bottom: 0; animation: world-intro-card-up .22s ease-out; }
+  .world-intro-card__hero { min-height: 136px; }
+  .world-intro-card__heading { padding: 52px 16px 4px; }
+  .world-intro-card__body { padding: 8px 16px 6px; }
+  .world-intro-card__actions { padding: 10px 16px calc(14px + env(safe-area-inset-bottom)); }
+  .world-intro-card__actions button { flex: 1 1 auto; }
+  .world-intro-card__actions .world-intro-card__prologue { flex: 0 0 100%; order: 9; margin: 0; }
+  .world-intro-card__cast { grid-template-columns: 1fr; }
+}
+@keyframes world-intro-card-up { from { transform: translateY(24px); opacity: 0; } }
+
+/* Phones, sideways: no room for a tall hero — the whole card scrolls, the buttons stay. */
+@media (max-height: 500px) and (min-width: 641px) {
+  .world-intro-card { padding: 8px 16px; }
+  .world-intro-card__panel { max-height: calc(100dvh - 16px); width: min(760px, 100%); }
+  .world-intro-card__hero { min-height: 96px; }
+  .world-intro-card__heading { padding: 34px 20px 2px; }
+  .world-intro-card__heading h2 { font-size: 22px; }
+  .world-intro-card__hook { font-size: 13px; }
+  .world-intro-card__actions { padding: 8px 20px 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .world-intro-card, .world-intro-card__panel { animation: none; }
+}
+
+.world-intro-card .world-intro-card__panel button:focus-visible { outline: 2px solid rgba(255, 255, 255, .85); outline-offset: 2px; box-shadow: none; }

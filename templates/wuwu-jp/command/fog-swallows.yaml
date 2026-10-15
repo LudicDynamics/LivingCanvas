@@ -1,0 +1,6 @@
+name: 霧に呑まれる
+desc: 決定的判定が96–100に落ち、しかも点せる灯油がもう手元にない
+do:
+  - action: end
+    with:
+      ending: swallowed

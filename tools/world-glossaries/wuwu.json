@@ -1,0 +1,771 @@
+{
+  "world": "wuwu",
+  "names": {
+    "en": "Fogwharf: Before the Tide",
+    "ja": "霧埠の町・潮の前",
+    "zh": "雾坞镇·潮前",
+    "ko": "안개부두 마을: 밀물 전"
+  },
+  "koReview": "ko names seeded by hand 2026-10-03 (Korean editions) — TO REVIEW; the rest are filled by `localize-from-zh.mjs glossary --to ko`",
+  "terms": [
+    {
+      "zh": "雾坞镇·潮前",
+      "en": "Fogwharf: Before the Tide",
+      "ja": "霧埠の町・潮の前",
+      "note": "world title",
+      "ko": "안개부두 마을: 밀물 전"
+    },
+    {
+      "zh": "雾坞镇",
+      "en": "Fogwharf",
+      "ja": "霧埠の町",
+      "note": "town name",
+      "ko": "안개부두 마을"
+    },
+    {
+      "zh": "薇拉",
+      "en": "Vera",
+      "ja": "ヴェラ",
+      "note": "character",
+      "ko": "베라"
+    },
+    {
+      "zh": "银鸢",
+      "en": "Silver Kite",
+      "ja": "銀鳶",
+      "note": "character",
+      "ko": "은솔개"
+    },
+    {
+      "zh": "老莫",
+      "en": "Old Mo",
+      "ja": "老モー",
+      "note": "character",
+      "ko": "모 영감"
+    },
+    {
+      "zh": "港务所",
+      "en": "Harbor Office",
+      "ja": "港務所",
+      "note": "starting location",
+      "ko": "항무소"
+    },
+    {
+      "zh": "港口海图",
+      "en": "Harbor Map",
+      "ja": "港の地図",
+      "note": "location",
+      "ko": "항구 해도"
+    },
+    {
+      "zh": "7号码头",
+      "en": "Seventh Berth",
+      "ja": "七番埠頭",
+      "note": "location",
+      "ko": "7번 부두"
+    },
+    {
+      "zh": "工坊",
+      "en": "Workshop",
+      "ja": "工房",
+      "note": "location",
+      "ko": "공방"
+    },
+    {
+      "zh": "旧灯塔",
+      "en": "Old Lighthouse",
+      "ja": "古い灯台",
+      "note": "location",
+      "ko": "옛 등대"
+    },
+    {
+      "zh": "旧海关隧道",
+      "en": "Old Customs Tunnel",
+      "ja": "旧税関隧道",
+      "note": "evidence",
+      "ko": "옛 세관 터널"
+    },
+    {
+      "zh": "诱饵船",
+      "en": "Decoy Ship",
+      "ja": "囮船",
+      "note": "evidence",
+      "ko": "미끼 배"
+    },
+    {
+      "zh": "领主家的账簿",
+      "en": "Lord's Ledger",
+      "ja": "領主家の帳簿",
+      "note": "evidence",
+      "ko": "영주가의 장부"
+    },
+    {
+      "zh": "第二道航迹",
+      "en": "Second Wake",
+      "ja": "第二の航跡",
+      "note": "evidence",
+      "ko": "두 번째 항적"
+    },
+    {
+      "zh": "半条线",
+      "en": "Half a Thread",
+      "ja": "半本の糸",
+      "note": "partial evidence",
+      "ko": "반쪽 실마리"
+    },
+    {
+      "zh": "指认",
+      "en": "Accuse",
+      "ja": "告発",
+      "note": "command",
+      "ko": "지목"
+    },
+    {
+      "zh": "在海图上指认",
+      "en": "Accuse on the Chart",
+      "ja": "海図の上で告発する",
+      "note": "command",
+      "ko": "해도 위에서 지목하기"
+    },
+    {
+      "zh": "绕远路",
+      "en": "Long Way Around",
+      "ja": "遠回り",
+      "note": "command",
+      "ko": "돌아가기"
+    },
+    {
+      "zh": "潮水涨一步",
+      "en": "Tide Rises One Step",
+      "ja": "潮が一歩満ちる",
+      "note": "command",
+      "ko": "조수가 한 걸음 밀려온다"
+    },
+    {
+      "zh": "动静惊动了人",
+      "en": "Someone Was Alarmed",
+      "ja": "物音が人を驚かせた",
+      "note": "command",
+      "ko": "인기척에 사람이 놀라다"
+    },
+    {
+      "zh": "灯油烧光了",
+      "en": "Lamp Oil Burned Out",
+      "ja": "灯油が燃え尽きた",
+      "note": "command",
+      "ko": "등유가 다 타 버렸다"
+    },
+    {
+      "zh": "被雾吞掉",
+      "en": "Swallowed by Fog",
+      "ja": "霧に呑まれる",
+      "note": "command",
+      "ko": "안개에 삼켜지다"
+    },
+    {
+      "zh": "伤得走不动了",
+      "en": "Too Hurt to Move",
+      "ja": "傷で動けない",
+      "note": "command",
+      "ko": "다쳐서 움직일 수 없다"
+    },
+    {
+      "zh": "偷看老莫的日志",
+      "en": "Peek at Old Mo's Logbook",
+      "ja": "老莫の日誌を盗み見る",
+      "note": "command",
+      "ko": "모 영감의 일지를 몰래 보기"
+    },
+    {
+      "zh": "揭穿",
+      "en": "Exposed",
+      "ja": "暴く",
+      "note": "ending",
+      "ko": "폭로"
+    },
+    {
+      "zh": "追丢",
+      "en": "Lost",
+      "ja": "見失う",
+      "note": "ending",
+      "ko": "놓침"
+    },
+    {
+      "zh": "被雾吞",
+      "en": "Swallowed",
+      "ja": "霧に呑まれる",
+      "note": "ending",
+      "ko": "안개에 삼켜짐"
+    },
+    {
+      "zh": "调查员徽章",
+      "en": "Investigator's Badge",
+      "ja": "調査員の徽章",
+      "note": "item",
+      "ko": "조사원 휘장"
+    },
+    {
+      "zh": "港口许可证",
+      "en": "Harbor Permit",
+      "ja": "港の許可証",
+      "note": "item",
+      "ko": "항구 허가증"
+    },
+    {
+      "zh": "港口调查委托",
+      "en": "Harbor Investigation Commission",
+      "ja": "港の調査依頼",
+      "note": "document",
+      "ko": "항구 조사 의뢰"
+    },
+    {
+      "zh": "探照灯用灯油",
+      "en": "Searchlight Lamp Oil",
+      "ja": "探照灯の灯油",
+      "note": "item",
+      "ko": "탐조등용 등유"
+    },
+    {
+      "zh": "空油瓶",
+      "en": "Empty Oil Flask",
+      "ja": "空の油瓶",
+      "note": "item",
+      "ko": "빈 기름병"
+    },
+    {
+      "zh": "灯塔熄灭的十二分钟",
+      "en": "The Lighthouse's Twelve Dark Minutes",
+      "ja": "灯台が消えた十二分",
+      "note": "document",
+      "ko": "등대가 꺼진 십이 분"
+    },
+    {
+      "zh": "留在船侧的伤痕",
+      "en": "Scar on the Hull",
+      "ja": "船腹に残る傷",
+      "note": "document",
+      "ko": "뱃전에 남은 흔적"
+    },
+    {
+      "zh": "带有领主纹章的船零件",
+      "en": "Ship Part with the Lord's Crest",
+      "ja": "領主の紋章付き船部品",
+      "note": "item",
+      "ko": "영주 문장이 찍힌 배 부품"
+    },
+    {
+      "zh": "舵扣件",
+      "en": "Rudder Clasp",
+      "ja": "舵の留め金",
+      "note": "item",
+      "ko": "키 고정쇠"
+    },
+    {
+      "zh": "订货簿",
+      "en": "Order Book",
+      "ja": "注文帳",
+      "note": "document",
+      "ko": "주문 장부"
+    },
+    {
+      "zh": "潮位",
+      "en": "Tide Level",
+      "ja": "潮位",
+      "note": "world term",
+      "ko": "조위"
+    },
+    {
+      "zh": "潮水回涨前",
+      "en": "Before the Tide Returns",
+      "ja": "潮が戻る前に",
+      "note": "world term",
+      "ko": "조수가 다시 밀려오기 전"
+    },
+    {
+      "zh": "搜查",
+      "en": "Search",
+      "ja": "捜索",
+      "note": "world term",
+      "ko": "수색"
+    },
+    {
+      "zh": "判定",
+      "en": "Check",
+      "ja": "判定",
+      "note": "world term",
+      "ko": "판정"
+    },
+    {
+      "zh": "伤势",
+      "en": "Injury",
+      "ja": "怪我",
+      "note": "world term",
+      "ko": "부상"
+    },
+    {
+      "zh": "毫发无伤",
+      "en": "Unharmed",
+      "ja": "無傷",
+      "note": "status",
+      "ko": "무사하다"
+    },
+    {
+      "zh": "受了伤",
+      "en": "Injured",
+      "ja": "負傷",
+      "note": "status",
+      "ko": "다쳤다"
+    },
+    {
+      "zh": "伤得很重",
+      "en": "Badly Hurt",
+      "ja": "重傷",
+      "note": "status",
+      "ko": "크게 다쳤다"
+    },
+    {
+      "zh": "奄奄一息",
+      "en": "At Death's Door",
+      "ja": "瀕死",
+      "note": "status",
+      "ko": "죽음의 문턱"
+    },
+    {
+      "zh": "今天的日记",
+      "en": "Today's Diary",
+      "ja": "今日の日記",
+      "note": "file title",
+      "ko": "오늘의 일기"
+    },
+    {
+      "zh": "关于我",
+      "en": "About Me",
+      "ja": "私について",
+      "note": "file title",
+      "ko": "나에 대하여"
+    },
+    {
+      "zh": "喜欢的事，害怕的事",
+      "en": "Likes and Fears",
+      "ja": "好きなこと、怖いこと",
+      "note": "file title",
+      "ko": "좋아하는 것, 무서운 것"
+    },
+    {
+      "zh": "将来想成为的人",
+      "en": "Who I Want to Become",
+      "ja": "将来なりたい人",
+      "note": "file title",
+      "ko": "장래에 되고 싶은 사람"
+    },
+    {
+      "zh": "我的所见所闻",
+      "en": "What I've Seen and Heard",
+      "ja": "私の見聞き",
+      "note": "file title",
+      "ko": "내가 보고 들은 것"
+    },
+    {
+      "zh": "现在想做的事",
+      "en": "What I Want to Do Now",
+      "ja": "今したいこと",
+      "note": "file title",
+      "ko": "지금 하고 싶은 것"
+    },
+    {
+      "zh": "我身边的人",
+      "en": "People Around Me",
+      "ja": "私の周りの人",
+      "note": "file title",
+      "ko": "내 곁의 사람들"
+    },
+    {
+      "zh": "还说不出口的事",
+      "en": "Things I Can't Say Yet",
+      "ja": "まだ言えないこと",
+      "note": "file title",
+      "ko": "아직 말할 수 없는 것"
+    },
+    {
+      "zh": "你",
+      "en": "You",
+      "ja": "あなた",
+      "note": "player",
+      "ko": "당신"
+    },
+    {
+      "zh": "港务所 · 开始调查",
+      "en": "Harbor Office: Begin the Investigation",
+      "ja": "港務所・調査開始",
+      "note": "scene title",
+      "ko": "항무소 · 조사 시작"
+    },
+    {
+      "zh": "港口地图 · 调查那艘船",
+      "en": "Harbor Map · Investigate the Ship",
+      "ja": "港の地図 · 船を調べよう",
+      "note": "scene title",
+      "ko": "항구 해도 · 그 배를 조사하기"
+    },
+    {
+      "zh": "寻找另一艘船",
+      "en": "Find the Other Ship",
+      "ja": "もう一つの船を探す",
+      "note": "scene title",
+      "ko": "또 다른 배를 찾기"
+    },
+    {
+      "zh": "指认 · 把线钉在海图上",
+      "en": "Accuse: Pin the Thread to the Chart",
+      "ja": "告発・糸を海図に留める",
+      "note": "scene title",
+      "ko": "지목 · 실마리를 해도에 못 박기"
+    },
+    {
+      "zh": "绕远路 · 沿着岸边追水痕",
+      "en": "Long Way: Follow the Wake Alongshore",
+      "ja": "遠回り・岸沿いに航跡を追う",
+      "note": "scene title",
+      "ko": "돌아가기 · 물자국을 따라 물가를 걷기"
+    },
+    {
+      "zh": "旧灯塔 · 熄灭的灯光",
+      "en": "Old Lighthouse: The Light That Went Out",
+      "ja": "旧灯台・消えた灯",
+      "note": "scene title",
+      "ko": "옛 등대 · 꺼진 불빛"
+    },
+    {
+      "zh": "7号码头 · 船上的伤痕",
+      "en": "Seventh Berth: Scars on the Ship",
+      "ja": "第七埠頭・船の傷",
+      "note": "scene title",
+      "ko": "7번 부두 · 배에 남은 흔적"
+    },
+    {
+      "zh": "工坊 · 从船上脱落的零件",
+      "en": "Workshop: A Part Fallen from the Ship",
+      "ja": "工房・船から外れた部品",
+      "note": "scene title",
+      "ko": "공방 · 배에서 떨어져 나온 부품"
+    },
+    {
+      "zh": "雾的另一边",
+      "en": "Beyond the Fog",
+      "ja": "霧の向こう",
+      "note": "world term",
+      "ko": "안개 너머"
+    },
+    {
+      "zh": "再来一局",
+      "en": "Play Again",
+      "ja": "もう一局",
+      "note": "UI",
+      "ko": "한 판 더"
+    },
+    {
+      "zh": "复盘",
+      "en": "Debrief",
+      "ja": "振り返り",
+      "note": "world term",
+      "ko": "되짚어 보기"
+    },
+    {
+      "zh": "领主",
+      "en": "The Lord",
+      "ja": "領主",
+      "note": "world term",
+      "ko": "영주"
+    },
+    {
+      "zh": "换岗",
+      "en": "Shift Change",
+      "ja": "交代",
+      "note": "world term",
+      "ko": "교대"
+    },
+    {
+      "zh": "货舱",
+      "en": "Cargo Hold",
+      "ja": "船倉",
+      "note": "world term",
+      "ko": "화물칸"
+    },
+    {
+      "zh": "台钳",
+      "en": "Vise",
+      "ja": "万力",
+      "note": "world term",
+      "ko": "바이스"
+    },
+    {
+      "zh": "望远镜",
+      "en": "Telescope",
+      "ja": "望遠鏡",
+      "note": "item",
+      "ko": "망원경"
+    },
+    {
+      "zh": "日志",
+      "en": "Logbook",
+      "ja": "日誌",
+      "note": "item",
+      "ko": "일지"
+    },
+    {
+      "zh": "灯号",
+      "en": "Lamp Signal",
+      "ja": "灯信号",
+      "note": "world term",
+      "ko": "등불 신호"
+    },
+    {
+      "zh": "三短一长",
+      "en": "Three Short, One Long",
+      "ja": "短三つ、長一つ",
+      "note": "signal",
+      "ko": "짧게 셋, 길게 하나"
+    },
+    {
+      "zh": "封闭的一局",
+      "en": "A Closed Game",
+      "ja": "閉じた一局",
+      "note": "world term",
+      "ko": "닫힌 한 판"
+    },
+    {
+      "zh": "港口调查员",
+      "en": "Harbor Investigator",
+      "ja": "港の調査員",
+      "ko": "항구 조사원"
+    },
+    {
+      "zh": "钉上第一条线：诱饵船",
+      "en": "Pin the First Thread: Decoy Ship",
+      "ko": "첫 번째 실마리 못 박기: 미끼 배",
+      "note": "ko: model"
+    },
+    {
+      "zh": "钉上第二条线：旧海关隧道",
+      "en": "Pin the Second Thread: Old Customs Tunnel",
+      "ko": "두 번째 실마리 못 박기: 옛 세관 터널",
+      "note": "ko: model"
+    },
+    {
+      "zh": "钉上第三条线：领主家的账簿",
+      "en": "Pin the Third Thread: Lord's Ledger",
+      "ko": "세 번째 실마리 못 박기: 영주가의 장부",
+      "note": "ko: model"
+    },
+    {
+      "zh": "钉上第四条线：第二道航迹",
+      "en": "Pin the Fourth Thread: Second Wake",
+      "ko": "네 번째 실마리 못 박기: 두 번째 항적",
+      "note": "ko: model"
+    },
+    {
+      "zh": "绕远路：7号码头",
+      "en": "Long Way: Seventh Berth",
+      "ko": "돌아가기: 7번 부두",
+      "note": "ko: model"
+    },
+    {
+      "zh": "绕远路：海图",
+      "en": "Long Way: Chart",
+      "ko": "돌아가기: 해도",
+      "note": "ko: model"
+    },
+    {
+      "zh": "绕远路：旧灯塔",
+      "en": "Long Way: Old Lighthouse",
+      "ko": "돌아가기: 옛 등대",
+      "note": "ko: model"
+    },
+    {
+      "zh": "绕远路：工坊",
+      "en": "Long Way: Workshop",
+      "ko": "돌아가기: 공방",
+      "note": "ko: model"
+    },
+    {
+      "zh": "7号码头没查全",
+      "en": "Seventh Berth Not Fully Searched",
+      "ko": "7번 부두를 다 못 살폈다",
+      "note": "ko: model"
+    },
+    {
+      "zh": "雾里没看清",
+      "en": "Couldn't See Through the Fog",
+      "ko": "안개 속에서 제대로 못 봤다",
+      "note": "ko: model"
+    },
+    {
+      "zh": "旧灯塔没查全",
+      "en": "Old Lighthouse Not Fully Searched",
+      "ko": "옛 등대를 다 못 살폈다",
+      "note": "ko: model"
+    },
+    {
+      "zh": "工坊没查全",
+      "en": "Workshop Not Fully Searched",
+      "ko": "공방을 다 못 살폈다",
+      "note": "ko: model"
+    },
+    {
+      "zh": "借一份灯油",
+      "en": "Borrow a Portion of Lamp Oil",
+      "ko": "등유 한 몫 빌리기",
+      "note": "ko: model"
+    },
+    {
+      "zh": "对照海图",
+      "en": "Compare with the Chart",
+      "ko": "해도와 대조하기",
+      "note": "ko: model"
+    },
+    {
+      "zh": "趁老莫不注意，翻他的日志",
+      "en": "Peek at Old Mo's Logbook",
+      "ko": "모 영감이 눈치채기 전에 일지를 넘겨 보기",
+      "note": "ko: model"
+    },
+    {
+      "zh": "请老莫拿日志一分一分对",
+      "en": "Ask Old Mo to Check the Log Minute by Minute",
+      "ko": "모 영감에게 일지를 일 분씩 대조해 달라 청하기",
+      "note": "ko: model"
+    },
+    {
+      "zh": "当面请银鸢打开货舱",
+      "en": "Ask Silver Kite to Open the Hold",
+      "ko": "은솔개에게 직접 화물칸을 열어 달라 청하기",
+      "note": "ko: model"
+    },
+    {
+      "zh": "请薇拉去翻订货簿",
+      "en": "Ask Vera to Check the Order Book",
+      "ko": "베라에게 주문 장부를 뒤져 달라 청하기",
+      "note": "ko: model"
+    },
+    {
+      "zh": "无人船是诱饵",
+      "en": "The Unmanned Ship Is a Decoy",
+      "ko": "무인선은 미끼다",
+      "note": "ko: model"
+    },
+    {
+      "zh": "熄灯的十二分钟对着旧海关隧道出口",
+      "en": "The Twelve Dark Minutes Face the Old Customs Tunnel Exit",
+      "ko": "꺼진 십이 분은 옛 세관 터널 출구를 향한다",
+      "note": "ko: model"
+    },
+    {
+      "zh": "扣件记在领主家的账簿上",
+      "en": "The Clasp Is Recorded in the Lord's Ledger",
+      "ko": "고정쇠는 영주가의 장부에 기록돼 있다",
+      "note": "ko: model"
+    },
+    {
+      "zh": "雾里的第二道航迹",
+      "en": "The Second Wake in the Fog",
+      "ko": "안개 속의 두 번째 항적",
+      "note": "ko: model"
+    },
+    {
+      "zh": "夹层里的铅笔字",
+      "en": "Pencil Marks in the Lining",
+      "ko": "안감 속 연필 글씨",
+      "note": "ko: model"
+    },
+    {
+      "zh": "销子崩断",
+      "en": "The Pin Snapped",
+      "ko": "핀이 부러졌다",
+      "note": "ko: model"
+    },
+    {
+      "zh": "望远镜摔裂",
+      "en": "The Telescope Cracked",
+      "ko": "망원경이 깨졌다",
+      "note": "ko: model"
+    },
+    {
+      "zh": "银鸢撞见你",
+      "en": "Silver Kite Caught You",
+      "ko": "은솔개가 당신을 들켰다",
+      "note": "ko: model"
+    },
+    {
+      "zh": "礁石",
+      "en": "Reef",
+      "ko": "암초",
+      "note": "ko: model"
+    },
+    {
+      "zh": "舷梯",
+      "en": "Gangway",
+      "ko": "현문 사다리",
+      "note": "ko: model"
+    },
+    {
+      "zh": "湿滑的楼梯",
+      "en": "Slippery Stairs",
+      "ko": "미끄러운 계단",
+      "note": "ko: model"
+    },
+    {
+      "zh": "潮水夜里十一点开始",
+      "en": "The Tide Begins at Eleven at Night",
+      "ko": "조수는 밤 열한 시에 시작된다",
+      "note": "ko: model"
+    },
+    {
+      "zh": "凌晨一点回涨",
+      "en": "The Tide Returns at One in the Morning",
+      "ko": "새벽 한 시에 다시 밀려온다",
+      "note": "ko: model"
+    },
+    {
+      "zh": "成功>=11",
+      "en": "Success >= 11",
+      "ko": "성공 11 이상",
+      "note": "ko: model"
+    },
+    {
+      "zh": "大成功",
+      "en": "Critical Success",
+      "ko": "대성공",
+      "note": "ko: model"
+    },
+    {
+      "zh": "失败",
+      "en": "Failure",
+      "ko": "실패",
+      "note": "ko: model"
+    },
+    {
+      "zh": "角色事件",
+      "en": "Character Event",
+      "ko": "캐릭터 사건",
+      "note": "ko: model"
+    },
+    {
+      "zh": "物品事件",
+      "en": "Item Event",
+      "ko": "물품 사건",
+      "note": "ko: model"
+    },
+    {
+      "zh": "尾声",
+      "en": "Epilogue",
+      "ko": "에필로그",
+      "note": "ko: model"
+    },
+    {
+      "zh": "自由 RP",
+      "en": "Free RP",
+      "ko": "자유 롤플레이",
+      "note": "ko: model"
+    }
+  ]
+}

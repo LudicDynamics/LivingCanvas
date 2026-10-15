@@ -1,0 +1,8 @@
+name: "캐릭터 턴: 저우쯔항이 17번 좌석을 본다"
+desc: "저우쯔항이 이어폰을 빼고 17번 좌석을 본다: 아무것도 건드리지 않는다."
+do:
+- action: set_status
+  with:
+    path: world/seated-car/zhou-zihang.md
+    values:
+      looked_at_seat: 'yes'

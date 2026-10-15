@@ -1,0 +1,8 @@
+name: 한 턴 끝
+desc: '서장의 턴 수: 플레이어의 턴이 끝날 때마다 하나 늘어난다(world.json의 experience.turnEnd).'
+do:
+- action: add_state
+  with:
+    target: world
+    state: turns
+    by: '1'

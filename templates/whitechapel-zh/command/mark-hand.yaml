@@ -1,0 +1,8 @@
+name: '钉上一条线：他的手在现场'
+desc: '第三现场或画室的搜查：现场的群青和撞伤，对上了画师的袖口和手腕'
+do:
+  - action: set_status
+    with:
+      path: world/london-map/03-before-noon.md
+      values:
+        hand: "yes"

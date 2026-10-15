@@ -1,0 +1,288 @@
+{
+  "world": "whitechapel",
+  "names": {
+    "en": "Holmes: The Fourth Case",
+    "ja": "ホームズ：四つ目の事件",
+    "zh": "福尔摩斯：第四件案子",
+    "ko": "홈즈: 네 번째 사건"
+  },
+  "koReview": "ko names seeded by hand 2026-10-03 (Korean editions) — TO REVIEW; the rest are filled by `localize-from-zh.mjs glossary --to ko`",
+  "terms": [
+    {
+      "en": "Holmes: The Fourth Case",
+      "ja": "ホームズ：四つ目の事件",
+      "zh": "福尔摩斯：第四件案子",
+      "ko": "홈즈: 네 번째 사건",
+      "note": "world title"
+    },
+    {
+      "en": "Holmes",
+      "ja": "ホームズ",
+      "zh": "福尔摩斯",
+      "ko": "홈즈",
+      "note": "the player"
+    },
+    {
+      "en": "Watson",
+      "ja": "ワトソン",
+      "zh": "华生",
+      "ko": "왓슨",
+      "note": "character"
+    },
+    {
+      "en": "Edith Vale",
+      "ja": "イーディス・ヴェイル",
+      "zh": "伊迪丝·韦尔",
+      "ko": "이디스 베일",
+      "note": "character"
+    },
+    {
+      "en": "Tom Hale",
+      "ja": "トム・ヘイル",
+      "zh": "汤姆·黑尔",
+      "ko": "톰 헤일",
+      "note": "character"
+    },
+    {
+      "en": "Editor Blackburn",
+      "ja": "ブラックバーン編集長",
+      "zh": "布莱克本主编",
+      "ko": "블랙번 편집장",
+      "note": "character"
+    },
+    {
+      "en": "Arthur Wayne",
+      "ja": "アーサー・ウェイン",
+      "zh": "亚瑟·韦恩",
+      "ko": "아서 웨인",
+      "note": "character"
+    },
+    {
+      "en": "Whitechapel",
+      "ja": "ホワイトチャペル",
+      "zh": "白教堂",
+      "ko": "화이트채플",
+      "note": "district"
+    },
+    {
+      "en": "221B",
+      "ja": "221B",
+      "zh": "221B",
+      "ko": "221B",
+      "note": "Baker Street address"
+    },
+    {
+      "en": "Morgue",
+      "ja": "検視室",
+      "zh": "验尸房",
+      "ko": "검시실",
+      "note": "location"
+    },
+    {
+      "en": "Print shop",
+      "ja": "印刷所",
+      "zh": "印刷所",
+      "ko": "인쇄소",
+      "note": "location"
+    },
+    {
+      "en": "London",
+      "ja": "ロンドン",
+      "zh": "伦敦",
+      "ko": "런던",
+      "note": "location"
+    },
+    {
+      "en": "Unnamed Street",
+      "ja": "名もない通り",
+      "zh": "无名街",
+      "ko": "이름 없는 거리",
+      "note": "location"
+    },
+    {
+      "en": "Whitechapel Play",
+      "ko": "화이트채플 극장",
+      "note": "world rule name (ko: model)"
+    },
+    {
+      "en": "Chalk",
+      "ko": "초크",
+      "note": "choice display (ko: model)"
+    },
+    {
+      "en": "choice_actions",
+      "ko": "선택 행동",
+      "note": "UI operation key (ko: model)"
+    },
+    {
+      "en": "roll_dice",
+      "ko": "주사위 굴리기",
+      "note": "engine command (ko: model)"
+    },
+    {
+      "en": "move_to",
+      "ko": "이동",
+      "note": "engine command (ko: model)"
+    },
+    {
+      "en": "generate_image",
+      "ko": "이미지 생성",
+      "note": "engine command (ko: model)"
+    },
+    {
+      "en": "bgVideo",
+      "ko": "배경 영상",
+      "note": "asset field (ko: model)"
+    },
+    {
+      "en": "hp",
+      "ko": "체력",
+      "note": "hidden wound stat (ko: model)"
+    },
+    {
+      "en": "Unhurt",
+      "ko": "멀쩡함",
+      "note": "hp state (ko: model)"
+    },
+    {
+      "en": "Hurt",
+      "ko": "부상",
+      "note": "hp state (ko: model)"
+    },
+    {
+      "en": "Badly hurt",
+      "ko": "중상",
+      "note": "hp state (ko: model)"
+    },
+    {
+      "en": "Barely alive",
+      "ko": "빈사",
+      "note": "hp state (ko: model)"
+    },
+    {
+      "en": "too-hurt",
+      "ko": "중상 처리",
+      "note": "engine trigger (ko: model)"
+    },
+    {
+      "en": "wayne-turns-up",
+      "ko": "웨인 등장",
+      "note": "world trigger (ko: model)"
+    },
+    {
+      "en": "semi",
+      "ko": "세미",
+      "note": "world type (ko: model)"
+    },
+    {
+      "en": "The One Not in the Fourth Picture",
+      "ko": "네 번째 그림에 없는 사람",
+      "note": "ending (ko: model)"
+    },
+    {
+      "en": "The Fourth Picture",
+      "ko": "네 번째 그림",
+      "note": "ending (ko: model)"
+    },
+    {
+      "en": "What Was Kept, What Was Missed",
+      "ko": "지킨 것과 놓친 것",
+      "note": "ending (ko: model)"
+    },
+    {
+      "en": "Third scene",
+      "ko": "세 번째 현장",
+      "note": "location (ko: model)"
+    },
+    {
+      "en": "Illustration room",
+      "ko": "삽화실",
+      "note": "location (ko: model)"
+    },
+    {
+      "en": "Editor's office",
+      "ko": "편집장실",
+      "note": "location (ko: model)"
+    },
+    {
+      "en": "221B Parlor",
+      "ko": "221B 응접실",
+      "note": "location (ko: model)"
+    },
+    {
+      "en": "London map",
+      "ko": "런던 지도",
+      "note": "location (ko: model)"
+    },
+    {
+      "en": "Before Noon",
+      "ko": "정오 전",
+      "note": "scene title (ko: model)"
+    },
+    {
+      "en": "Letter from Watson",
+      "ko": "왓슨의 편지",
+      "note": "file title (ko: model)"
+    },
+    {
+      "en": "Today's Diary",
+      "ko": "오늘의 일기",
+      "note": "file title (ko: model)"
+    },
+    {
+      "en": "Who I Am",
+      "ko": "나는 누구인가",
+      "note": "file title (ko: model)"
+    },
+    {
+      "en": "Likes and Fears",
+      "ko": "좋아하는 것과 두려운 것",
+      "note": "file title (ko: model)"
+    },
+    {
+      "en": "What I Hope to Become Someday",
+      "ko": "언젠가 되고 싶은 모습",
+      "note": "file title (ko: model)"
+    },
+    {
+      "en": "What I've Seen and Heard",
+      "ko": "보고 들은 것",
+      "note": "file title (ko: model)"
+    },
+    {
+      "en": "What I Want to Do Now",
+      "ko": "지금 하고 싶은 것",
+      "note": "file title (ko: model)"
+    },
+    {
+      "en": "People Around Me",
+      "ko": "내 주변 사람들",
+      "note": "file title (ko: model)"
+    },
+    {
+      "en": "Things I Can't Say Yet",
+      "ko": "아직 말할 수 없는 것",
+      "note": "file title (ko: model)"
+    },
+    {
+      "en": "You",
+      "ko": "당신",
+      "note": "player title (ko: model)"
+    },
+    {
+      "en": "Confront him",
+      "ko": "그를 추궁한다",
+      "note": "command (ko: model)"
+    },
+    {
+      "en": "Edith first",
+      "ko": "에디스를 먼저",
+      "note": "command (ko: model)"
+    },
+    {
+      "en": "Let him go and follow",
+      "ko": "보내고 뒤따른다",
+      "note": "command (ko: model)"
+    }
+  ]
+}

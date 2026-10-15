@@ -1,0 +1,2 @@
+/* lib/keyboard-lift.ts: the fixed box around a focused field, lifted above the iOS keyboard. */
+[data-kb-lift] { translate: 0 calc(-1 * var(--kb-lift, 0px)); transition: translate 160ms ease-out; }

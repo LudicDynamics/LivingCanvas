@@ -1,0 +1,420 @@
+@import './decoration.css';
+/* Worldlines Canvas material shell: the scene remains edge-to-edge. */
+/* Depth surface classes are the CSS half of lib/depth-surface.ts. They are
+   intentionally declarative: ownership/admission stays with the host module. */
+.depth-surface--background { z-index: var(--depth-background); }
+.depth-surface--world { z-index: var(--depth-world); }
+.depth-surface--entity { z-index: var(--depth-entity); }
+/* The overlay only holds presentational ghosts/phantoms; it sits above the
+   entity surface, so it must not swallow hover/clicks meant for the cards. */
+.depth-surface--overlay { z-index: var(--depth-overlay); pointer-events: none; }
+/* Atmospheric particles are mounted after the world layer and paint above it;
+   they are decorative and must let pointer events through to the cards. */
+[data-depth-surface="background"] { pointer-events: none; }
+.depth-surface--writer { z-index: var(--depth-writer); }
+.depth-surface--modal { z-index: var(--depth-modal); }
+.depth-surface--ui { z-index: var(--depth-ui); }
+
+/* Same-parent ordering is explicit; no DOM-order tie decides a ceremony. */
+.depth-layer--phantom { z-index: var(--depth-overlay); }
+.depth-layer--performance { z-index: var(--depth-overlay-performance); }
+.depth-layer--character { z-index: var(--depth-modal); }
+.depth-layer--dialogue { z-index: var(--depth-modal-dialogue); }
+
+.airp-prototype { font-size: 14px; }
+.airp-prototype button:focus-visible { outline: 2px solid var(--ux-color-rust); outline-offset: 5px; }
+.prototype-worldtop { height: 64px; min-height: 64px; padding: max(10px, env(safe-area-inset-top)) max(74px, calc(env(safe-area-inset-right) + 24px)) max(10px, env(safe-area-inset-bottom)) max(26px, calc(env(safe-area-inset-left) + 14px)); transform: translateY(-110%); visibility: hidden; background: color-mix(in srgb, var(--ux-color-paper) 96%, transparent); border-bottom: 1px solid var(--ux-color-line); color: var(--ux-color-ink); backdrop-filter: blur(18px); }
+ .prototype-worldtop button, .prototype-worldtop select { min-height: 44px; }
+ .prototype-header-close { position: sticky; right: 0; flex: none; }
+.has-header .prototype-worldtop { transform: translateY(0); visibility: visible; }
+.is-reading .prototype-worldtop { padding-left: 26px; }
+.prototype-brand { font: 24px var(--ux-font-human); letter-spacing: -1px; margin-right: 20px; }
+.prototype-brand span { color: var(--ux-color-rust); }
+.prototype-effects-toggle { display: flex; align-items: center; gap: 7px; font-size: 11px!important; white-space: nowrap; }
+.prototype-effects-toggle > span { width: 25px; height: 14px; border-radius: var(--ux-radius-toolbar); background: var(--ux-color-muted); padding: 2px; }
+.prototype-effects-toggle > span::after { content: ''; display: block; width: 10px; height: 10px; border-radius: var(--ux-radius-avatar); background: var(--ux-color-paper); transition: transform .15s var(--ux-motion-ink); }
+.prototype-effects-toggle[aria-checked="true"] > span { background: var(--ux-color-rust); }
+.prototype-effects-toggle[aria-checked="true"] > span::after { transform: translateX(11px); }
+.prototype-worldtop button { background: transparent; border-color: var(--ux-color-line); }
+.prototype-edge-controls { position: absolute; top: max(22px, calc(env(safe-area-inset-top) + 12px)); left: max(22px, calc(env(safe-area-inset-left) + 12px)); z-index: var(--depth-writer); display: flex; gap: 8px; }
+.has-header .prototype-edge-controls { top: max(78px, calc(env(safe-area-inset-top) + 68px)); }
+/* Everything else pinned to the top edge steps below the header too — the view
+   switch, the full-screen toggle, the closed-world clock/strip and the event
+   cards used to sit on top of it. */
+.has-header .prototype-immersion-toggle,
+.has-header .view-mode-switch { top: max(78px, calc(env(safe-area-inset-top) + 68px)); }
+.has-header .closed-clock,
+.has-header .closed-strip { top: max(78px, calc(env(safe-area-inset-top) + 68px)); }
+.has-header .story-events { top: 130px; }
+/* The map's own caption row sits where the clock now drops to: the map yields the same band. */
+.has-header .board { top: 64px; }
+.prototype-immersion-toggle,
+.view-mode-switch,
+.closed-clock,
+.closed-strip,
+.story-events { transition: top var(--ux-motion-panel) var(--ux-motion-ink); }
+.is-reading .prototype-edge-controls { left: 330px; }
+.prototype-edge-controls button,.prototype-immersion-toggle,.prototype-action-toggle,.prototype-bag-toggle { display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--ux-color-paper); border: 1px solid var(--ux-color-line); background: color-mix(in srgb, var(--ux-color-ink) 72%, transparent); backdrop-filter: blur(14px); box-shadow: var(--ux-shadow-soft); }
+.prototype-edge-controls button { width: 44px; height: 44px; border-radius: var(--ux-radius-avatar); }
+.prototype-immersion-toggle { position: absolute; z-index: var(--depth-writer); top: max(22px, calc(env(safe-area-inset-top) + 12px)); right: max(22px, calc(env(safe-area-inset-right) + 12px)); width: 44px; height: 44px; border-radius: var(--ux-radius-avatar); opacity: .65; }
+.is-immersive .prototype-immersion-toggle { opacity: 0; }
+.prototype-immersion-toggle:hover,.prototype-immersion-toggle:focus-visible { opacity: 1; }
+.prototype-world-meta,.is-reading .prototype-world-meta { top: 24px; right: 80px; left: auto; max-width: 350px; text-align: right; }
+.has-header .prototype-world-meta { top: 84px; }
+/* One line: a long place name ellipsizes instead of wrapping and shifting the header. */
+.prototype-world-meta h1 { font-size: 18px; letter-spacing: .015em; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.prototype-world-meta p { font: 10px/1.6 var(--ux-font-machine); letter-spacing: .05em; }
+.prototype-world-meta .prototype-eyebrow { font-size: 9px; letter-spacing: .22em; margin-bottom: 4px; }
+.prototype-world-meta .writer-result { position:static; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; overflow:hidden; max-width:100%; }
+.prototype-stat { font-size: 10px; margin-left: 10px; }
+.prototype-tools { top: 50%; left: 20px; opacity: 0; transition: opacity .2s var(--ux-motion-ink); }
+.prototype-tools:hover,.prototype-tools:focus-within { opacity: 1; }
+/* Touch has no hover to reveal the rail, and touch players do not need it
+   : it is not rendered there at all. While it was merely
+   invisible it swallowed taps meant for the cards under it ("Return to
+   scene" fired instead of the card opening). Desktop keeps the hover rail. */
+@media (hover: none) { .prototype-tools { display: none; } }
+.prototype-tools button { width: auto; min-width: 112px; min-height: 44px; padding: 8px 12px; justify-content: flex-start; text-align: left; }
+.prototype-tools__label { font: 11px var(--ux-font-machine); letter-spacing: .08em; }
+.prototype-player-orb { left: 24px; bottom: 24px; width: 56px; height: 56px; border: 1px solid var(--ux-color-line); background: var(--ux-color-ink); }
+
+/* Quiet presence markers retain identity without a generic character drawing. */
+.presence-orb { width: 72px; height: 72px; display: grid; place-items: center; overflow: hidden; border-radius: var(--ux-radius-avatar); color: var(--ux-color-paper); border: 1px solid var(--ux-color-line); background: radial-gradient(circle at 30% 24%, var(--ux-color-sage), var(--ux-color-ink)); box-shadow: var(--ux-shadow-soft); }
+.presence-orb img { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
+.object:hover, .object:focus-within { z-index: var(--depth-entity-focus) !important; }
+.entity-interactions:empty { display: none; }
+.entity-interactions { position: absolute; left: 100%; top: 0; width: max-content; min-width: 140px; max-width: 250px; padding-left: 14px; font: 13px/1.6 var(--ux-font-ui); color: var(--ux-color-ink); visibility: hidden; pointer-events: none; overflow-y: auto; scrollbar-width: thin; background: transparent; border: 0; box-shadow: none; }
+.entity-interactions:has(.fm-block) { width: 240px; }
+.entity-interactions:has(.paper-reading) { width: min(420px, calc(100vw - 32px)); max-width: none; }
+.entity-interactions { scrollbar-color: color-mix(in srgb, var(--ux-color-muted) 60%, transparent) transparent; }
+.entity-interactions--left { left: auto; right: 100%; padding-left: 0; padding-right: 14px; }
+.entity-interactions--below { left: 0; right: auto; top: 100%; padding-left: 0; padding-top: 12px; }
+.object:hover > .entity-interactions, .object:focus-within > .entity-interactions, .entity-interactions:has(.fm-head[aria-pressed="true"]) { visibility: visible; pointer-events: auto; }
+.entity-interactions fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.entity-interactions button:disabled { opacity: .45; cursor: wait; }
+.entity-interactions .fm-head { width: 100%; padding: 7px 10px; text-align: left; font-size: 11px; color: inherit; border-bottom: 1px solid var(--ux-color-line); }
+.entity-interactions .fm-body { padding: 8px 0; background: transparent; color: inherit; text-shadow: none; border-radius: 0; }
+.entity-interactions .fm-body[hidden] { display: none; }
+.entity-action-arrows { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding-top: 8px; }
+.object:hover .entity-action-arrows, .object:focus-within .entity-action-arrows { visibility: visible; }
+.entity-action-arrows button { background: color-mix(in srgb, var(--ux-color-paper) 20%, transparent); color: inherit; border: 1px solid var(--ux-color-line); border-radius: var(--ux-radius-toolbar); padding: 5px 12px; text-align: left; }
+
+/* Moving pixels under a blur require continuous resampling. Use tinted chrome
+   while a video is present, and keep the video itself out of mouse parallax. */
+.airp-prototype:has(.scene-backdrop video) .prototype-chrome,
+.airp-prototype:has(.scene-backdrop video) .prototype-edge-controls button,
+.airp-prototype:has(.scene-backdrop video) .prototype-immersion-toggle,
+.airp-prototype:has(.scene-backdrop video) .prototype-action-toggle,
+.airp-prototype:has(.scene-backdrop video) .prototype-bag-toggle { backdrop-filter: none; }
+.entity-action-error { color: var(--ux-color-rust); display: block; overflow-wrap: anywhere; }
+.entity-interactions .fm-body > div { margin-top: 6px; }
+.entity-interactions .fm-body button { color: inherit; background: color-mix(in srgb, var(--ux-color-paper) 20%, transparent); border: 1px solid var(--ux-color-line); border-radius: var(--ux-radius-touch); padding: 7px 10px; font: inherit; }
+.entity-interactions .fm-body [class*="text-ink"] { color: inherit; }
+.entity-interactions .fm-body [class*="bg-paper"] { background: transparent; }
+.entity-action-arrows button:hover { background: var(--ux-color-rust); color: var(--ux-color-paper); }
+.chalk-anchor-thread { position: absolute; height: 0; border-top: 1px dashed var(--ux-color-blue); transform-origin: 0 0; pointer-events: none; z-index: var(--depth-entity-drag) !important; }
+.chalk-anchor-lit { outline: 1px dashed var(--ux-color-blue); outline-offset: 5px; }
+.object:hover, .object:focus-within,
+.object:hover > .chalk, .object:focus-within > .chalk { filter: none; }
+@media (hover: none) { .object:focus-within > .entity-interactions { visibility: visible; pointer-events: auto; } }
+.object:focus-visible { outline: 1px solid var(--ux-color-rust); outline-offset: 5px; }
+.character-modal-layer .modal-close { top: max(84px, calc(env(safe-area-inset-top) + 68px)); right: max(88px, calc(env(safe-area-inset-right) + 72px)); }
+@media (max-width: 640px) { .character-modal-layer .modal-close { top: max(76px, calc(env(safe-area-inset-top) + 64px)); right: 72px; } }
+.prototype-player-label { position: absolute; left: 70px; bottom: 9px; width: 160px; text-align: left; color: var(--ux-color-paper); font: 14px var(--ux-font-human); text-shadow: 0 2px 8px var(--ux-color-ink); }
+.prototype-player-label small { display: block; font: 9px/2 var(--ux-font-machine); letter-spacing: .18em; color: var(--ux-color-muted); }
+.prototype-profile { background: var(--ux-surface-paper); color: var(--ux-color-ink); }
+.prototype-hand-tray { left: 280px; bottom: 29px; max-width: calc(100% - 580px); gap: 16px; align-items: center; transform: none!important; min-height: 48px; }
+.prototype-tray-label { position: absolute; top: -18px; left: 0; font: 8px var(--ux-font-machine); letter-spacing: .17em; color: var(--ux-color-muted); white-space: nowrap; }
+.prototype-tray-empty { font: italic 13px var(--ux-font-human); color: var(--ux-color-muted); }
+.prototype-hand-orb { width: 43px; height: 43px; border: 1px solid var(--ux-color-line); }
+.prototype-hand-orb small { bottom: -16px; font-size: 9px; }
+.writer-stop-control, .writer-retry-control { left: 50%; right: auto; bottom: max(18px, calc(env(safe-area-inset-bottom) + 18px)); transform: translateX(-50%); }
+.airp-prototype .chalk { font: var(--chalk-size, 26px)/1.5 var(--ux-font-hand); letter-spacing: .01em; }
+.airp-prototype .gate__pin,.airp-prototype .note__clip { display: none; }
+.airp-prototype .gate__title,.airp-prototype .note__title { font: 19px/1.35 var(--ux-font-human); }
+.airp-prototype .gate__desc,.airp-prototype .note__body { font: 13px/1.7 var(--ux-font-human); }
+.airp-prototype .gate__meta { font-size: 9px; letter-spacing: .12em; }
+.airp-prototype .gate__title,.airp-prototype .note__title { color: var(--ux-color-ink); border-color: var(--ux-color-line); }
+.airp-prototype .chalk button { font: 13px/1.5 var(--ux-font-ui); letter-spacing: 0; border-radius: var(--ux-radius-touch); padding: 9px 12px; }
+.prototype-world-picker.world-directory{position:fixed;z-index:var(--depth-writer);left:24px;top:76px;width:min(360px,calc(100vw - 48px));max-height:calc(100dvh - 150px);padding:24px 26px;background:var(--ux-surface-paper) url('/materials/ivory-paper-v1.webp') repeat;background-size:384px;color:var(--ux-color-ink);border:1px solid var(--ux-color-line);border-radius:var(--ux-radius-panel);box-shadow:var(--ux-shadow-halo);overscroll-behavior:contain;scrollbar-width:thin}
+.world-directory__header{display:flex;align-items:center;justify-content:space-between;gap:16px;font:10px var(--ux-font-machine);letter-spacing:.2em;color:var(--ux-color-muted)}
+.world-directory__header button{font:24px/1 var(--ux-font-ui);cursor:pointer;color:inherit;padding:4px}
+.world-directory h2{font-family:var(--ux-font-human);font-size:24px;margin:10px 0 20px}
+.world-directory h3{font:12px var(--ux-font-ui);color:var(--ux-color-muted);margin-top:24px}
+.prototype-world-picker.world-directory>button{border:0;border-bottom:1px solid var(--ux-color-line);border-radius:0;background:transparent;padding:12px 0;margin:0;color:inherit;transform:none}
+.prototype-world-picker.world-directory>button:hover{background:color-mix(in srgb, var(--ux-color-ink) 5%, transparent);transform:none}
+.prototype-world-picker.world-directory>.world-directory__entry{display:flex;align-items:center;gap:16px;text-align:left}
+.world-directory__entry>small{font:10px var(--ux-font-machine);color:var(--ux-color-muted)}
+.world-directory__entry>div{flex:1}.world-directory__entry b{font-family:var(--ux-font-human)!important;font-weight:500!important}
+.world-directory .world-save-row{border:0;border-bottom:1px solid var(--ux-color-line);border-radius:0;padding:12px 0;margin:0}
+.world-directory .world-save-row>button:last-of-type{font:11px var(--ux-font-ui);color:var(--ux-color-muted);background:transparent;padding-left:8px}
+.world-directory .world-save-open b{font:15px var(--ux-font-human)}.world-directory .world-save-open span{font-size:11px}
+.world-directory .world-save-confirm{border-color:var(--ux-color-line);font-size:13px}.world-directory .world-save-confirm button{background:color-mix(in srgb, var(--ux-color-ink) 5%, transparent);margin-right:8px}
+@media (max-width: 1180px) {
+  .prototype-worldtop {
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  .prototype-crumbs {
+    flex: 0 1 clamp(180px, 28vw, 360px);
+    max-width: clamp(180px, 28vw, 360px);
+    overflow-x: auto;
+    scrollbar-width: thin;
+    overscroll-behavior-inline: contain;
+  }
+  .prototype-crumbs button {
+    flex: none;
+  }
+  .prototype-worldtop .prototype-spacer {
+    min-width: 8px;
+  }
+  .prototype-header-close {
+    margin-left: auto;
+  }
+}
+
+@media(max-width:700px){.prototype-world-picker.world-directory{left:16px;top:64px;width:min(330px,calc(100vw - 32px));max-height:calc(100dvh - 154px);padding:20px}}
+@media(max-width:700px) {
+  .is-reading .prototype-edge-controls { left: 22px; }
+  .prototype-world-meta,.is-reading .prototype-world-meta { top: 76px; left: 20px; right: 88px; max-width: none; text-align: left; }
+  .has-header .prototype-world-meta { top: 126px; }
+  .prototype-worldtop { padding: max(8px, env(safe-area-inset-top)) max(60px, calc(env(safe-area-inset-right) + 44px)) max(8px, env(safe-area-inset-bottom)) max(14px, calc(env(safe-area-inset-left) + 8px)); gap: 5px; }
+  .prototype-brand { display: none; }
+  .prototype-worldtop { overflow-x: auto; }
+  .prototype-worldtop > * { flex-shrink: 0; }
+  .prototype-worldtop .prototype-spacer { flex: 1 0 8px; }
+  .prototype-crumbs { display: none; }
+  .prototype-narrative { top: 122px; bottom: 100px; width: min(300px,calc(100% - 28px)); }
+  .prototype-residents { top: 164px; right: 18px; }
+  .prototype-residents .prototype-companion-orb { width: 44px; height: 44px; }
+  .prototype-companion-orb small { top: 50px; }
+  .prototype-player-orb { left: 16px; bottom: 20px; width: 46px; height: 46px; }
+  .prototype-player-label { left: 57px; width: 150px; font-size: 12px; }
+  .prototype-hand-tray { left: 20px; bottom: 98px; max-width: calc(100% - 100px); overflow: visible; padding: 0; }
+  .prototype-action-toggle { right: max(77px, calc(env(safe-area-inset-right) + 68px)); bottom: max(24px, calc(env(safe-area-inset-bottom) + 20px)); padding: 9px; }
+  .prototype-action-toggle span { display: none; }
+  .prototype-dock { bottom: max(163px, calc(env(safe-area-inset-bottom) + 132px)); }
+  .airp-prototype:has([data-nook-note="composer"]) .writer-stop-control,
+  .airp-prototype:has([data-nook-note="composer"]) .writer-retry-control {
+    bottom: max(112px, calc(env(safe-area-inset-bottom) + 100px));
+  }
+}
+.prototype-language select { max-width: 112px; padding: 6px 8px; border: 1px solid var(--ux-color-line); border-radius: var(--ux-radius-toolbar); color: var(--ux-color-ink); background: var(--ux-color-paper); font: inherit; font-size: 12px; }
+.prototype-language select:focus-visible { outline: 2px solid var(--ux-color-rust); outline-offset: 2px; }
+.prototype-world-loading{position:fixed;inset:0;z-index:var(--depth-writer);display:grid;place-items:center;background:color-mix(in srgb, var(--ux-color-ink) 85%, transparent);color:var(--ux-color-paper);font:20px var(--ux-font-human);cursor:progress}
+.agent-settings{position:relative}
+.agent-settings>button{font-size:13px;color:var(--ux-color-ink)}
+.agent-settings-panel{position:absolute;right:0;top:calc(100% + 16px);width:min(350px,85vw);max-height:70vh;overflow:auto;padding:20px;border:1px solid var(--ux-color-line);border-radius:var(--ux-radius-panel);background:var(--ux-surface-paper);color:var(--ux-color-ink);box-shadow:var(--ux-shadow-halo);font:14px/1.5 var(--ux-font-human);z-index:var(--depth-writer);text-align:left}
+.agent-settings-panel>div{display:flex;justify-content:space-between}.agent-settings-panel label{display:block;margin:12px 0}.agent-settings-panel select{display:block;width:100%;margin-top:4px;padding:8px;background:var(--ux-color-cream);color:var(--ux-color-ink);border:1px solid var(--ux-color-line);border-radius:var(--ux-radius-touch)}.agent-settings-panel p{font:12px/1.5 var(--ux-font-ui);opacity:.85;margin:10px 0}.agent-settings-panel button{padding:6px 10px;border:1px solid var(--ux-color-line);border-radius:var(--ux-radius-touch)}.agent-settings-panel button:disabled{opacity:.45;cursor:not-allowed}
+.prototype-nook{position:fixed;inset:max(76px,calc(env(safe-area-inset-top) + 68px)) max(24px,calc(env(safe-area-inset-right) + 20px)) max(90px,calc(env(safe-area-inset-bottom) + 78px)) max(24px,calc(env(safe-area-inset-left) + 20px));z-index:var(--depth-writer);background:var(--ux-surface-stage);border:1px solid var(--ux-color-line);border-radius:var(--ux-radius-panel);overflow:hidden}
+/* Top-right with the other notices:
+   bottom-right sat on the dock's reply box and under the tutorial's bubble. Above the
+   tutorial mask so it stays readable and closable. */
+.tts-notice { position:fixed; z-index: var(--depth-chrome-tutorial-notice); top: max(78px, calc(env(safe-area-inset-top) + 68px)); right:24px; max-width:360px; padding:14px 18px; background:var(--ux-surface-paper); color:var(--ux-color-ink); border:1px solid var(--ux-color-line); border-radius:var(--ux-radius-touch); font:14px/1.6 var(--ux-font-human); box-shadow:var(--ux-shadow-soft); }
+/* The notice's action and close buttons sit after the sentence: keep a space before them (they were glued to the last word). */
+.tts-notice button { margin-left: .6em; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.tts-notice button:last-child { text-decoration: none; }
+
+/* Activity rail — writer + functional chips under
+   the scene shell. pointer-events:none so it never intercepts canvas drags. */
+.activity-rail { position: fixed; z-index: var(--depth-writer); left: 50%; bottom: max(132px, calc(env(safe-area-inset-bottom) + 108px)); transform: translateX(-50%);
+  max-width: min(520px, 48vw); pointer-events: none; }
+.airp-prototype.is-authoring .activity-rail { bottom: max(180px, calc(env(safe-area-inset-bottom) + 156px)); }
+.activity-rail__list { display: flex; flex-direction: column; align-items: center; gap: 4px;
+  margin: 0; padding: 0; list-style: none; }
+.activity-rail__item { display: flex; align-items: center; gap: 7px; padding: 4px 12px;
+  border-radius: var(--ux-radius-toolbar); color: var(--ux-color-paper); background: color-mix(in srgb, var(--ux-color-ink) 72%, transparent); border: 1px solid var(--ux-color-line);
+  backdrop-filter: blur(10px); font: italic 12px/1.4 var(--ux-font-human); }
+.activity-rail__item[data-state='ok']    { opacity: .78; }
+.activity-rail__item[data-state='error'] { color: var(--ux-color-paper); border-color: var(--ux-color-rust); }
+.activity-rail__dot { width: 5px; height: 5px; border-radius: var(--ux-radius-avatar); background: var(--ux-color-blue); flex: none; }
+.activity-rail__item[data-state='ok'] .activity-rail__dot    { background: var(--ux-color-sage); }
+.activity-rail__item[data-state='error'] .activity-rail__dot { background: var(--ux-color-rust); }
+.activity-rail__item[data-state='running'] .activity-rail__dot { animation: activity-pulse 1.6s var(--ux-motion-ink) infinite; }
+@keyframes activity-pulse { 0%,100% { opacity: .45 } 50% { opacity: 1 } }
+@media (max-width: 700px) {
+  .activity-rail { bottom: max(190px, calc(env(safe-area-inset-bottom) + 156px)); max-width: calc(100% - 40px); }
+  .airp-prototype.is-authoring .activity-rail { bottom: max(260px, calc(env(safe-area-inset-bottom) + 236px)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .activity-rail__item[data-state='running'] .activity-rail__dot { animation: none; opacity: .9; }
+}
+
+/* Complete activity projection. This is a control adjacent to the
+   pointer-transparent rail, never a child of it. */
+.agent-activity-log { position: fixed; z-index: var(--depth-notice); right: max(24px, calc(env(safe-area-inset-right) + 16px)); bottom: max(132px, calc(env(safe-area-inset-bottom) + 108px));
+  width: min(390px, calc(100vw - 48px)); color: var(--ux-color-paper); font: 12px/1.45 var(--ux-font-ui);
+  pointer-events: auto; }
+
+/* Character dialogue owns its activity detail inside identity/status. The
+   global rail remains fixed, but this scoped projection must not escape into
+   the speech paper or portrait stack. */
+.character-modal-layer .identity-activity .agent-activity-log,
+.character-modal-layer .character-activity-log {
+  position: relative;
+  inset: auto;
+  z-index: var(--depth-modal);
+  width: 100%;
+  max-width: 100%;
+  color: var(--ux-color-ink);
+}
+.character-modal-layer .identity-activity .agent-activity-log__toggle {
+  color: var(--ux-color-ink);
+  background: color-mix(in srgb, var(--ux-color-paper) 88%, transparent);
+}
+.character-modal-layer .identity-activity .agent-activity-log__panel {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  width: min(100%, 320px);
+  max-height: min(32dvh, 240px);
+  color: var(--ux-color-paper);
+}
+
+/* Nook keeps its identity/back topbar clear. World-event notices stay in the
+   notice lane instead of competing with that return control or the note panel. */
+.airp-prototype:has(.prototype-nook) .world-toast-region {
+  top: auto;
+  right: max(24px, calc(env(safe-area-inset-right) + 16px));
+  bottom: max(220px, calc(env(safe-area-inset-bottom) + 180px));
+  z-index: var(--depth-notice);
+}
+.airp-prototype:has([data-nook-note="composer"]) .prototype-toast {
+  bottom: max(220px, calc(env(safe-area-inset-bottom) + 180px));
+}
+
+.airp-prototype:has([data-nook-note="composer"]) .agent-activity-log {
+  right: auto;
+  left: max(24px, calc(env(safe-area-inset-left) + 16px));
+}
+.airp-prototype:has([data-nook-zone="note"]) .prototype-action-toggle {
+  display: none;
+}
+
+/* Narrow viewports cannot fit the expanded composer beside the lower-left
+   live lane, so the composer stacks above it. The collapsed pill is content
+   sized (NookNoteComposer) and needs no offset. */
+@media (max-width: 700px) {
+  .airp-prototype:has(#nook-note-form:not([hidden])) [data-nook-zone="note"] {
+    bottom: calc(env(safe-area-inset-bottom) + 4.5rem);
+  }
+}
+.agent-activity-log__toggle { display: inline-flex; align-items: center; gap: 8px; min-height: 34px;
+  padding: 7px 12px; border: 1px solid var(--ux-color-line); border-radius: var(--ux-radius-toolbar); color: var(--ux-color-paper);
+  background: color-mix(in srgb, var(--ux-color-ink) 90%, transparent); box-shadow: var(--ux-shadow-soft); cursor: pointer; }
+.agent-activity-log__toggle-mark { font-size: 17px; line-height: 1; }
+.agent-activity-log__count { min-width: 1.35em; padding: 1px 5px; border-radius: var(--ux-radius-toolbar);
+  color: var(--ux-color-ink); background: var(--ux-color-cream); text-align: center; }
+.agent-activity-log__panel { position: absolute; right: 0; bottom: calc(100% + 8px);
+  width: 100%; max-height: min(62vh, 500px); overflow: auto; padding: 12px;
+  border: 1px solid var(--ux-color-line); border-radius: var(--ux-radius-panel); background: var(--ux-color-ink);
+  box-shadow: var(--ux-shadow-halo); overscroll-behavior: contain; }
+.agent-activity-log__header { display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; padding: 0 2px 9px; border-bottom: 1px solid var(--ux-color-line); }
+.agent-activity-log__actions { display: flex; align-items: center; gap: 6px; }
+.agent-activity-log__actions button { padding: 3px 5px; border: 0; color: var(--ux-color-cream);
+  background: transparent; font-size: 11px; cursor: pointer; }
+.agent-activity-log__actions button:last-child { padding: 0 3px; color: var(--ux-color-paper); font-size: 19px; line-height: 1; }
+.agent-activity-log__turns, .agent-activity-log__entries { margin: 0; padding: 0; list-style: none; }
+.agent-activity-log__turn { border-bottom: 1px solid var(--ux-color-line); }
+.agent-activity-log__turn-toggle { display: flex; align-items: flex-start; gap: 7px; width: 100%;
+  padding: 9px 2px; border: 0; color: var(--ux-color-paper); background: transparent; text-align: left; cursor: pointer; }
+.agent-activity-log__chevron { width: 10px; color: var(--ux-color-blue); }
+.agent-activity-log__turn[data-state='error'] .agent-activity-log__chevron { color: var(--ux-color-rust); }
+.agent-activity-log__entry { display: flex; align-items: flex-start; gap: 8px; padding: 5px 8px 7px 19px;
+  color: var(--ux-color-paper); }
+.agent-activity-log__entry[data-state='ok'] { color: var(--ux-color-sage); }
+.agent-activity-log__entry[data-state='error'] { color: var(--ux-color-rust); }
+.agent-activity-log__entry-dot { width: 5px; height: 5px; margin-top: .48em; border-radius: var(--ux-radius-avatar);
+  flex: none; background: var(--ux-color-blue); }
+.agent-activity-log__entry[data-state='ok'] .agent-activity-log__entry-dot { background: var(--ux-color-sage); }
+.agent-activity-log__entry[data-state='error'] .agent-activity-log__entry-dot { background: var(--ux-color-rust); }
+.agent-activity-log button:focus-visible { outline: 2px solid var(--ux-color-rust); outline-offset: 2px; }
+.speech-paper .agent-activity-log { position: absolute; right: 0; bottom: 100%; width: min(360px, calc(100vw - 32px));
+  margin-bottom: .55rem; }
+@media (max-width: 700px) {
+  .agent-activity-log { right: max(16px, calc(env(safe-area-inset-right) + 12px)); bottom: max(190px, calc(env(safe-area-inset-bottom) + 156px)); width: calc(100vw - 32px); }
+  .agent-activity-log__panel { max-height: min(65vh, 520px); }
+  .agent-activity-log__actions button:not(:last-child) { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .agent-activity-log__panel, .agent-activity-log__toggle { transition: none; }
+}
+:root[data-airp-blur="reduced"] .prototype-worldtop { backdrop-filter: blur(9px); }
+:root[data-airp-blur="off"] .prototype-worldtop { backdrop-filter: none; }
+:root[data-airp-blur="reduced"] .prototype-edge-controls button,
+:root[data-airp-blur="reduced"] .prototype-immersion-toggle,
+:root[data-airp-blur="reduced"] .prototype-action-toggle,
+:root[data-airp-blur="reduced"] .prototype-bag-toggle { backdrop-filter: blur(7px); }
+:root[data-airp-blur="off"] .prototype-edge-controls button,
+:root[data-airp-blur="off"] .prototype-immersion-toggle,
+:root[data-airp-blur="off"] .prototype-action-toggle,
+:root[data-airp-blur="off"] .prototype-bag-toggle {
+  background: rgba(41, 40, 32, .96);
+  backdrop-filter: none;
+}
+:root[data-airp-blur="reduced"] .activity-rail__item { backdrop-filter: blur(5px); }
+:root[data-airp-blur="off"] .activity-rail__item {
+  background: var(--ux-color-ink);
+  backdrop-filter: none;
+}
+
+/* Narrow header (≤1180px, where it scrolls sideways). Two phone/tablet faults:
+   1. Its pills shrank to fit and wrapped ("World / launcher", "Voice / & /
+      connections"), spilling over their neighbours. A scrolling row has room
+      to the side, so nothing in it shrinks or wraps.
+   2. The sheets hung off its pills (contact, account, agent models) are
+      absolute inside the scroller, so the scroller clipped them: tapping
+      Account or Agents showed nothing. Pinned to the viewport instead — which
+      only works once the header stops being their containing block, so it
+      drops its transform when shown and its backdrop blur (it is near-opaque
+      paper here; the blur bought nothing a phone could see). */
+@media (max-width: 1180px) {
+  .prototype-worldtop > * { flex-shrink: 0; }
+  .prototype-worldtop button { white-space: nowrap; }
+  .has-header .prototype-worldtop { transform: none; }
+  /* The close chevron is sticky at the row's end; transparent, the pill
+     scrolling under it showed through ("Voi^ce & connections"). */
+  .prototype-worldtop .prototype-header-close { background: var(--ux-color-paper); }
+  .prototype-worldtop,
+  :root[data-airp-blur] .prototype-worldtop {
+    background: var(--ux-color-paper);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .prototype-worldtop .contact-panel__sheet,
+  .prototype-worldtop .agent-settings-panel {
+    position: fixed;
+    top: max(72px, calc(env(safe-area-inset-top) + 64px));
+    right: max(12px, env(safe-area-inset-right));
+    left: auto;
+    width: min(350px, calc(100vw - 24px));
+    max-height: calc(100dvh - 160px);
+  }
+  /* The sheet still paints inside the header's stacking context, so while one
+     is open the header lifts above the option row and the people rail it now
+     overlaps (the same step the world panel uses). */
+  .prototype-worldtop:has(.contact-panel__sheet, .agent-settings-panel) { z-index: var(--depth-chrome-world-panel); }
+}
+
+/* Phones: iOS zooms the page into any form control under 16px when it takes
+   focus and does not zoom back out — the header's language select and the
+   settings selects / fields all did it. Touch screens only, so desktop type
+   keeps its sizes. */
+@media (max-width: 700px) and (pointer: coarse) {
+  .airp-prototype select,
+  .airp-prototype textarea,
+  .airp-prototype input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']),
+  .create-world select,
+  .create-world textarea,
+  .create-world input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']),
+  .prototype-dialog-backdrop select,
+  .prototype-dialog-backdrop textarea,
+  .prototype-dialog-backdrop input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']) {
+    font-size: max(16px, 1em);
+  }
+}
+/* The writer sheet floats over the character rail only when nothing else is
+   free (a phone held upright): the rail keeps the room above the sheet and
+   scrolls, instead of sliding under it (lib/floating-layout.ts, soft obstacle). */
+.airp-prototype[data-writer-over-rail='true'] .prototype-residents { max-height: var(--airp-rail-limit); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }

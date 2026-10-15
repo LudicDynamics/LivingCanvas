@@ -1,0 +1,11 @@
+name: 중상 처리
+desc: "숨겨진 체력이 0 (world.json 중상 처리 발동): 왓슨이 당신을 221B로 부축해 돌아간다. 정오까지는 제때 도달할 수 없다"
+do:
+  - action: event
+    with:
+      target: characters/watson
+      title: 왓슨이 당신을 데리고 돌아간다
+      text: 당신은 벽에 기대고 더는 한 발짝도 떼지 못한다. 왓슨이 당신을 발견하고, 당신의 팔을 자기 어깨에 걸쳐 베이커 가까지 데려간다. 그러면서 한마디만 한다. "말하지 마, 홈즈." 정오 전에 무슨 일이 벌어지든, 그것을 막는 사람은 당신이 아니다.
+  - action: end
+    with:
+      ending: fourth-picture

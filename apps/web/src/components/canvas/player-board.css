@@ -1,0 +1,258 @@
+/* The player's sticky notes, clue-board lines and marks
+   .
+
+   A note is a slip of the SAME paper the canvas cards are cut from (the ivory
+   texture of .paper-reading, the hairline border, the soft shadow, the
+   card face font) so it sits with the world's material — and still reads as
+   the player's: a strip of tape, a slight tilt, a faint ruled memo, and the
+   small 「你的便签」 line at its foot. The four stored colours
+   (yellow / pink / blue / green) are paper tones mixed from the canvas
+   tokens: parchment, rose, mist, sage. */
+
+.sticky,
+.sticky-swatch,
+.sticky-editor {
+  --sticky-tone: color-mix(in srgb, var(--ux-color-cream) 66%, #e3c483);
+}
+.sticky--pink, .sticky-swatch--pink, .sticky-editor[data-sticky-color='pink'] { --sticky-tone: color-mix(in srgb, var(--ux-color-cream) 70%, var(--ux-color-rust)); }
+.sticky--blue, .sticky-swatch--blue, .sticky-editor[data-sticky-color='blue'] { --sticky-tone: color-mix(in srgb, var(--ux-color-cream) 62%, var(--ux-color-blue)); }
+.sticky--green, .sticky-swatch--green, .sticky-editor[data-sticky-color='green'] { --sticky-tone: color-mix(in srgb, var(--ux-color-cream) 58%, var(--ux-color-sage)); }
+
+.sticky {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 150px;
+  padding: 20px 16px 30px;
+  background-color: var(--sticky-tone);
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 25px, var(--ux-color-line) 25px 26px),
+    url('/materials/ivory-paper-v1.webp');
+  background-size: auto, 384px;
+  background-position: 0 19px, 0 0;
+  background-blend-mode: normal, multiply;
+  color: var(--ux-color-ink);
+  font: 15px/26px var(--ux-font-human);
+  letter-spacing: 0.015em;
+  border: 1px solid var(--ux-color-line);
+  border-radius: 2px;
+  box-shadow: var(--ux-shadow-soft);
+  transform: rotate(-0.7deg);
+  transition: transform var(--ux-motion-fast) var(--ux-motion-ink), box-shadow var(--ux-motion-fast) var(--ux-motion-ink);
+}
+.object:hover .sticky,
+.object:focus-within .sticky { transform: rotate(0deg) translateY(-2px); box-shadow: var(--ux-shadow-halo); }
+.sticky--size-s { min-height: 112px; font-size: 14px; }
+.sticky--size-l { min-height: 220px; font-size: 18px; line-height: 26px; }
+.sticky--editing { min-height: 0; transform: none; padding-bottom: 14px; }
+
+/* A strip of the same paper, a touch translucent, holding the slip up. */
+.sticky__tape {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 64px;
+  height: 18px;
+  transform: translateX(-50%) rotate(-2.5deg);
+  background: color-mix(in srgb, var(--ux-color-paper) 72%, transparent);
+  border-left: 1px dashed var(--ux-color-line);
+  border-right: 1px dashed var(--ux-color-line);
+  box-shadow: 0 1px 2px var(--ux-color-line);
+}
+/* The foot line, like a card's meta row: whose it is. */
+.sticky__stamp {
+  position: absolute;
+  left: 16px;
+  right: 44px;
+  bottom: 8px;
+  font: 9px/1 var(--ux-font-machine);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ux-color-muted);
+}
+.sticky__text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.sticky__edit {
+  position: absolute;
+  right: 8px;
+  bottom: 4px;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--ux-color-line);
+  border-radius: var(--ux-radius-avatar);
+  background: color-mix(in srgb, var(--ux-color-cream) 80%, transparent);
+  color: var(--ux-color-ink);
+  font: 13px/1 var(--ux-font-ui);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--ux-motion-fast);
+}
+.sticky:hover .sticky__edit,
+.object:focus-within .sticky__edit { opacity: 1; }
+@media (hover: none) { .sticky__edit { opacity: 0.8; } }
+
+.sticky-editor { display: grid; gap: 8px; font: 13px/1.4 var(--ux-font-ui); color: var(--ux-color-ink); }
+.sticky-editor__text {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 96px;
+  resize: vertical;
+  padding: 6px 10px;
+  border: 1px solid var(--ux-color-line);
+  border-radius: 2px;
+  background-color: var(--sticky-tone);
+  background-image: url('/materials/ivory-paper-v1.webp');
+  background-size: 384px;
+  background-blend-mode: multiply;
+  color: var(--ux-color-ink);
+  font: 15px/26px var(--ux-font-human);
+}
+.sticky-editor__text:focus { outline: none; border-color: var(--ux-color-rust); }
+.sticky-editor__row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.sticky-editor__gap { flex: 1; }
+.sticky-editor__error { color: var(--ux-color-rust); font-size: 12px; }
+.sticky-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--ux-radius-avatar);
+  border: 1px solid var(--ux-color-line);
+  background-color: var(--sticky-tone);
+  background-image: url('/materials/ivory-paper-v1.webp');
+  background-size: 192px;
+  background-blend-mode: multiply;
+  cursor: pointer;
+}
+.sticky-swatch[aria-pressed='true'] { outline: 1.5px solid var(--ux-color-ink); outline-offset: 2px; }
+.sticky-size, .sticky-btn {
+  min-width: 28px;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--ux-color-line);
+  border-radius: var(--ux-radius-pill);
+  background: color-mix(in srgb, var(--ux-color-cream) 85%, transparent);
+  color: var(--ux-color-ink);
+  font: 12px/1 var(--ux-font-ui);
+  cursor: pointer;
+}
+.sticky-size[aria-pressed='true'] { background: var(--ux-color-ink); color: var(--ux-color-cream); border-color: var(--ux-color-ink); }
+.sticky-btn--primary { background: var(--ux-color-ink); color: var(--ux-color-cream); border-color: var(--ux-color-ink); }
+.sticky-btn--danger { color: var(--ux-color-rust); }
+.sticky-btn:disabled { opacity: 0.5; cursor: default; }
+
+/* ---- marks (可疑 / 已确认 / 无关) ---- */
+.player-tag {
+  position: absolute;
+  top: -12px;
+  right: -10px;
+  z-index: var(--depth-entity-control);
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-family: var(--ux-font-ui, system-ui, sans-serif);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 18px;
+  letter-spacing: 0.02em;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  transform: rotate(4deg);
+  pointer-events: none;
+}
+.player-tag--suspect { background: #b3261e; }
+.player-tag--confirmed { background: #2e6b3a; }
+.player-tag--irrelevant { background: #7d7468; }
+.object:has(.player-tag--irrelevant) > :not(.player-tag) { opacity: 0.55; }
+
+/* ---- the player's lines: red thread + a pinned label ---- */
+.thread-line.thread-clue { stroke-dasharray: none; filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.25)); }
+.clue-label {
+  font-family: var(--ux-font-hand, 'Caveat', cursive);
+  font-size: 17px;
+  font-weight: 700;
+  fill: #8a1f14;
+  paint-order: stroke;
+  stroke: rgba(255, 252, 240, 0.92);
+  stroke-width: 5px;
+  stroke-linejoin: round;
+  cursor: pointer;
+}
+
+/* ---- board mode chrome ---- */
+.clue-board-mode .object { cursor: crosshair; }
+.clue-rubber {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 3px;
+  background: #b3261e;
+  transform-origin: 0 50%;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: var(--depth-ui);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+.clue-hint {
+  position: fixed;
+  left: 16px;
+  bottom: 140px;
+  z-index: var(--depth-chrome-hint);
+  max-width: min(360px, calc(100vw - 32px));
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: rgba(43, 33, 23, 0.85);
+  color: #fff;
+  font: 12px/1.4 var(--ux-font-ui, system-ui, sans-serif);
+}
+.clue-pop {
+  position: fixed;
+  z-index: var(--depth-ui);
+  width: min(280px, calc(100vw - 32px));
+  padding: 12px;
+  border-radius: 10px;
+  background: #fffcf4;
+  color: #2b2117;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+  font: 13px/1.4 var(--ux-font-ui, system-ui, sans-serif);
+}
+.clue-pop--note {
+  background: var(--ux-surface-paper) url('/materials/ivory-paper-v1.webp') repeat;
+  background-size: 384px;
+  border: 1px solid var(--ux-color-line);
+  border-radius: 2px;
+  color: var(--ux-color-ink);
+}
+.clue-pop.clue-pop--note h3 { font: 16px/1.3 var(--ux-font-human); font-weight: 500; }
+.clue-pop h3 { margin: 0 0 8px; font-size: 13px; font-weight: 700; }
+.clue-pop__chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.clue-pop__chips button, .clue-pop__actions button {
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.clue-pop__chips button[aria-pressed='true'] { background: #2b2117; color: #fff; }
+.clue-pop input {
+  width: 100%;
+  height: 32px;
+  padding: 0 8px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 6px;
+  font: inherit;
+}
+.clue-pop__actions { display: flex; gap: 6px; justify-content: flex-end; }
+.clue-pop__actions .is-primary { background: #2b2117; color: #fff; }
+.clue-pop__tag--suspect[aria-pressed='true'] { background: #b3261e !important; }
+.clue-pop__tag--confirmed[aria-pressed='true'] { background: #2e6b3a !important; }
+.clue-pop__tag--irrelevant[aria-pressed='true'] { background: #7d7468 !important; }
+
+/* Phones (portrait and landscape): up out of the composer's way, under the
+   top-left chrome. */
+@media (max-width: 700px), (max-height: 500px) {
+  .clue-hint { top: 104px; bottom: auto; left: 10px; }
+}

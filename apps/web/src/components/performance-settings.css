@@ -1,0 +1,282 @@
+.performance-settings-trigger {
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--ux-color-line, rgba(41, 40, 32, .2));
+  border-radius: 999px;
+  background: var(--ux-color-paper, #f4f0e8);
+  color: var(--ux-color-ink, #292820);
+  font: 600 13px/1.2 var(--ux-font-ui, system-ui, sans-serif);
+  cursor: pointer;
+}
+
+.performance-settings-trigger:hover,
+.performance-settings-trigger[aria-expanded='true'] {
+  border-color: var(--ux-color-rust, #a9573c);
+  background: var(--ux-color-cream, #fbf8f1);
+}
+
+.performance-settings-trigger:focus-visible {
+  outline: 3px solid var(--ux-color-rust, #a9573c);
+  outline-offset: 3px;
+}
+
+/* The window wears the world launcher's glass: near-black
+   translucent panel, cream text, hairline white borders, monospace labels.
+   Tokens live in index.css (--ux-glass-*) and follow data-airp-blur/shadow. */
+.performance-settings-panel button:focus-visible,
+.performance-settings-panel select:focus-visible,
+.performance-settings-panel input:focus-visible,
+.performance-settings-panel summary:focus-visible,
+.performance-settings-panel h2:focus-visible {
+  outline: 2px solid var(--ux-glass-accent);
+  outline-offset: 3px;
+}
+
+.performance-settings-backdrop {
+  position: fixed;
+  z-index: var(--depth-ui);
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: max(12px, env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) max(12px, env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));
+  background: var(--ux-glass-scrim);
+}
+
+.performance-settings-panel {
+  display: flex;
+  flex-direction: column;
+  width: min(480px, calc(100vw - 24px));
+  max-height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 24px);
+  overflow: hidden;
+  border: 1px solid var(--ux-glass-line);
+  border-radius: 28px;
+  background: var(--ux-glass-panel);
+  color: var(--ux-glass-ink);
+  box-shadow: var(--ux-glass-shadow);
+  backdrop-filter: var(--ux-glass-blur);
+  -webkit-backdrop-filter: var(--ux-glass-blur);
+  font-family: var(--ux-font-glass);
+  color-scheme: dark;
+}
+
+:root[data-airp-shadow='reduced'] .performance-settings-panel,
+:root[data-airp-shadow='off'] .performance-settings-panel {
+  box-shadow: var(--ux-glass-highlight);
+}
+
+.performance-settings-panel__header {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 22px 24px 14px;
+  border-bottom: 1px solid var(--ux-glass-line-soft);
+}
+
+.performance-settings-panel h2 {
+  margin: 0;
+  font: 600 clamp(20px, 5vw, 24px)/1.15 var(--ux-font-human, Georgia, serif);
+  letter-spacing: .03em;
+}
+
+.performance-settings-panel__close {
+  flex: 0 0 auto;
+  min-width: 72px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--ux-glass-line);
+  border-radius: 999px;
+  background: var(--ux-glass-fill);
+  box-shadow: var(--ux-glass-highlight);
+  color: var(--ux-glass-ink);
+  font: 500 12px/1 var(--ux-font-glass-label);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.performance-settings-panel__close:hover { background: var(--ux-glass-hover); }
+
+.performance-settings-panel__scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 18px 24px max(22px, env(safe-area-inset-bottom, 0px));
+}
+
+.performance-settings-panel__scope,
+.performance-settings-panel__immediate,
+.performance-settings-panel__ambient {
+  margin-top: 12px;
+  padding: 6px 14px;
+  border: 1px solid var(--ux-glass-line-soft);
+  border-radius: 14px;
+}
+
+.performance-settings-panel__ambient small {
+  display: block;
+  margin-top: 2px;
+  color: var(--ux-glass-faint);
+  font-size: 12px;
+}
+
+.performance-settings-panel__storage {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.performance-settings-panel__scope { color: var(--ux-glass-muted); }
+
+.performance-settings-panel__immediate {
+  margin-top: 5px;
+  color: var(--ux-glass-accent);
+  font-weight: 600;
+}
+
+.performance-settings-panel__profiles {
+  min-width: 0;
+  margin: 20px 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.performance-settings-panel__profiles legend,
+.performance-settings-panel__details summary {
+  font: 500 11px/1.2 var(--ux-font-glass-label);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--ux-glass-muted);
+}
+
+.performance-settings-panel__profiles legend { margin-bottom: 10px; }
+
+.performance-settings-panel__profile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.performance-settings-panel__profile {
+  min-width: 0;
+  min-height: 116px;
+  padding: 12px 11px;
+  border: 1px solid var(--ux-glass-line);
+  border-radius: 18px;
+  background: var(--ux-glass-well);
+  box-shadow: var(--ux-glass-highlight);
+  color: var(--ux-glass-ink);
+  text-align: left;
+  cursor: pointer;
+  transition: background .18s ease, border-color .18s ease;
+}
+
+.performance-settings-panel__profile:hover { background: var(--ux-glass-hover); }
+
+/* Selected profile: the launcher's pressed pill (light glass, dark ink). */
+.performance-settings-panel__profile[aria-pressed='true'] {
+  border-color: var(--ux-glass-pressed);
+  background: var(--ux-glass-pressed);
+  color: var(--ux-glass-pressed-ink);
+}
+
+.performance-settings-panel__profile-name,
+.performance-settings-panel__profile-description {
+  display: block;
+}
+
+.performance-settings-panel__profile-name {
+  margin-bottom: 7px;
+  font: 600 12px/1.2 var(--ux-font-glass-label);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.performance-settings-panel__profile-description {
+  color: var(--ux-glass-muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.performance-settings-panel__profile[aria-pressed='true'] .performance-settings-panel__profile-description {
+  color: color-mix(in srgb, var(--ux-glass-pressed-ink) 78%, transparent);
+}
+
+.performance-settings-panel__status {
+  margin: 12px 0 16px;
+  color: var(--ux-glass-ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.performance-settings-panel__details {
+  border: 1px solid var(--ux-glass-line);
+  border-radius: 18px;
+  background: var(--ux-glass-well);
+}
+
+.performance-settings-panel__details summary {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  padding: 0 14px;
+  cursor: pointer;
+}
+
+.performance-settings-panel__controls {
+  display: grid;
+  gap: 0;
+  padding: 0 14px 8px;
+}
+
+.performance-settings-panel__control,
+.performance-settings-panel__check {
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid var(--ux-glass-line-soft);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.performance-settings-panel__control select {
+  width: min(56%, 210px);
+  min-height: 44px;
+  padding: 0 9px;
+  border: 1px solid var(--ux-glass-line);
+  border-radius: 12px;
+  background: var(--ux-glass-fill);
+  color: var(--ux-glass-ink);
+  font: inherit;
+}
+
+.performance-settings-panel__control option {
+  background: var(--ux-glass-pressed-ink);
+  color: var(--ux-glass-ink);
+}
+
+.performance-settings-panel__check input {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  accent-color: var(--ux-glass-accent);
+}
+
+.performance-settings-panel__storage {
+  margin-top: 16px;
+  color: var(--ux-glass-faint);
+  font-size: 12px;
+}
+
+@media (max-width: 480px) {
+  .performance-settings-panel__header { padding: 16px 16px 12px; }
+  .performance-settings-panel__scroll { padding: 15px 16px max(18px, env(safe-area-inset-bottom, 0px)); }
+  .performance-settings-panel__profile-grid { grid-template-columns: 1fr; }
+  .performance-settings-panel__profile { min-height: 72px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .performance-settings-panel *, .performance-settings-trigger { scroll-behavior: auto; transition: none; }
+}

@@ -1,0 +1,11 @@
+name: Go fishing
+desc: Two hours of fishing puts a few more fish in your basket
+do:
+  - action: add_state
+    with:
+      target: player
+      state: fish
+      by: "2"
+  - action: pass_time
+    with:
+      minutes: "120"

@@ -1,0 +1,147 @@
+{
+  "id": "last-train-prologue-jp",
+  "audio": {
+    "theme": "canvas-mistport"
+  },
+  "name": "終電・序章",
+  "version": "1.0.0",
+  "schema": 1,
+  "description": "山の終電がトンネルの真ん中で止まり、隣の17番席の乗客がいなくなった。五分の序章：ひと言話し、ひとつ拾い、一度サイコロを振り、扉をひとつ開ける。",
+  "intro": {
+    "status": "playable",
+    "category": "trpg",
+    "hidden": true,
+    "rank": 0,
+    "hook": "終電がトンネルの真ん中で止まり、隣の17番席の乗客が消えた。五分で彼女を見つけよう。",
+    "genres": [
+      "mystery"
+    ],
+    "loop": [
+      "車掌の夏澄にワンタップで答える",
+      "彼女が残したものを拾い、一度サイコロを振って起きている人に尋ねる",
+      "車尾の扉を押し開けて、彼女を見つける"
+    ],
+    "minutes": [
+      5,
+      10
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "dice",
+      "clock"
+    ],
+    "endings": 1,
+    "characters": [
+      {
+        "id": "xia-cheng",
+        "line": "17番席が空だと気づいた二十四歳の車掌"
+      }
+    ],
+    "for": [
+      "はじめて遊ぶ",
+      "五分だけ遊びたい"
+    ]
+  },
+  "author": "Worldlines Canvas / AIRP",
+  "genre": "物語体験",
+  "tags": [
+    "短編物語",
+    "序章",
+    "はじめて"
+  ],
+  "locale": "ja",
+  "material": "parchment",
+  "extensions": [
+    {
+      "id": "airp:note",
+      "version": ">=1.0.0",
+      "optional": false
+    }
+  ],
+  "mode": "closed",
+  "clock": {
+    "path": "world/departure-clock.md",
+    "key": "left",
+    "start": 4,
+    "label": "発車まで",
+    "time": {
+      "start": "01:10",
+      "end": "05:00"
+    }
+  },
+  "endings": [
+    {
+      "id": "found-her",
+      "title": "彼女を見つけた",
+      "path": "endings/found-her/README.md"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "notebook",
+      "label": "最初のターンのあと：17番席のノート",
+      "kind": "state",
+      "when": "world.turns >= 1",
+      "do": "drop-notebook"
+    },
+    {
+      "id": "door",
+      "label": "車尾の扉",
+      "kind": "state",
+      "when": "has(\"world/seated-car/witness-account.md\") || has(\"world/seated-car/witness-half.md\") || has(\"player/witness-account.md\") || has(\"player/witness-half.md\") || world.turns >= 8 || clock.left <= 1",
+      "do": "open-door"
+    },
+    {
+      "id": "found",
+      "label": "5号車に入る",
+      "kind": "place",
+      "when": {
+        "layer": "world/freight-car"
+      },
+      "ending": "found-her"
+    }
+  ],
+  "characters": [
+    {
+      "id": "xia-cheng",
+      "name": "夏澄",
+      "home": "world/seated-car",
+      "role": "companion",
+      "description": "この終電の車掌、二十四歳。点呼のときに17番席が空だと気づいた。どの車両にも詳しいが、自分の目で見たことしか言わない。",
+      "avatar": "assets/characters/xia-cheng.webp"
+    }
+  ],
+  "opening": {
+    "greeter": "xia-cheng",
+    "replies": [
+      "寝てて、何も見てない",
+      "いなくなる前に何か言ってた？",
+      "落ち着いて。一緒に探すよ"
+    ]
+  },
+  "experience": {
+    "kind": "prologue",
+    "next": "last-train",
+    "maxTurns": 10,
+    "turnEnd": "turn-end"
+  },
+  "models": {
+    "character": [
+      { "model": "deepseek-v4-pro", "thinking": "off" },
+      { "model": "deepseek-v4-flash", "thinking": "off" }
+    ]
+  },
+  "player": {
+    "id": "player",
+    "name": "2号車18番の乗客",
+    "avatar": "assets/characters/player.webp"
+  },
+  "entry": "world/seated-car",
+  "rules": {
+    "system": "coc",
+    "characterChecks": true
+  },
+  "createdAt": "2026-10-10T00:00:00Z",
+  "updatedAt": "2026-10-10T00:00:00Z",
+  "cover": "assets/scenes/tunnel-train.webp"
+}

@@ -1,0 +1,16 @@
+name: 하나에게 생선 맡기기
+desc: 바구니를 비워 하나의 장부에 달고, 조금 더 친해진다
+do:
+  - action: set_state
+    with:
+      target: player
+      state: fish
+      value: "0"
+  - action: add_state
+    with:
+      target: characters/hana
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "30"

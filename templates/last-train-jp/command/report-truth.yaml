@@ -1,0 +1,10 @@
+name: 無線で真実を報告
+desc: 蘇禾を見つけ、さらに証拠を出せるなら、鐘懐礼を嶺口の指令に通報する。証拠が足りなければ、この電話は無駄に一手を消費する
+do:
+  - action: end
+    when: has("player/su-he-testimony.md") && has("player/logbook-page.md") || has("player/su-he-testimony.md") && has("player/pill-strip.md") && has("player/tea-bill.md")
+    with:
+      ending: found
+  - action: tick
+    with:
+      by: "-1"

@@ -1,0 +1,10 @@
+name: Time moves on a step
+desc: Every check brings departure one step closer; a check that goes badly costs one more.
+do:
+- action: tick
+  with:
+    by: '-1'
+- action: tick
+  when: roll.passed == false
+  with:
+    by: '-1'

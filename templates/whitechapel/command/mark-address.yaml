@@ -1,0 +1,8 @@
+name: 'Pin a line: who read the new address'
+desc: 'Sitting room, editor’s office or unnamed street search: the changed address was a test, and someone read it'
+do:
+  - action: set_status
+    with:
+      path: world/london-map/03-before-noon.md
+      values:
+        address: "yes"

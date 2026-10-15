@@ -1,0 +1,6 @@
+name: Sleep until dawn
+desc: Sleep in your cottage and wake at the next dawn
+do:
+  - action: pass_time
+    with:
+      until: dawn

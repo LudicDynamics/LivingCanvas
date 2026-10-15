@@ -1,0 +1,16 @@
+name: 捡漂流木送去船坞
+desc: 一趟漂流木让旧渔船离下水近一步
+do:
+  - action: add_state
+    with:
+      target: world
+      state: boat_progress
+      by: "1"
+  - action: add_state
+    with:
+      target: characters/kenta
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "90"

@@ -1,0 +1,57 @@
+---
+type: gate
+name: 1호차 · 운전실
+bg: assets/scenes/cab.webp
+title: 1호차 · 운전실
+intent: '제2막의 한 갈래(운전실: 복구 통지와 무전기). 기관사 친 영감이 무전기를 지킨다. 친 영감은 NPC 카드
+  lao-qin.md(그를 클릭해 "대화"): 그가 아는 것은 0시 42분에 등불을 들고 내려 산사태를 살폈고 1시 5분에 돌아왔다는 것,
+  내리기 전에는 5호차 열쇠가 아직 판에 걸려 있었고 지금은 고리가 비어 있다는 것뿐이다. 02-radio-report.md 파일이 유일한
+  수렴점이다(5호차의 06-radio-relay.md도 같은 명령을 실행한다): command/report-truth.yaml의 end만이 이
+  판을 끝낼 수 있으며, 작가가 대신 결말을 선언하지 말 것.'
+choice:
+  options:
+    - id: read-notice
+      label: 복구 통지 읽기
+      once: true
+    - id: radio
+      label: 무전기로 링커우 관제사에게 보고
+    - id: talk-laoqin
+      label: 친 영감과 이야기한다
+    - id: ask-proof
+      label: 관제사는 증거만 믿어요……우리가 가진 걸로 될까요?
+      to: companion
+      say: 관제사는 증거만 믿어요. 우리가 가진 것으로 충분할까요?
+  allow_free: true
+choice_actions:
+  read-notice:
+    kind: read
+    paths:
+      - world/cab/repair-notice.md
+  radio:
+    kind: read
+    paths:
+      - world/cab/02-radio-report.md
+  talk-laoqin:
+    kind: talk
+    npc: world/cab/lao-qin.md
+map:
+  plan:
+    picture: assets/maps/cab.webp
+    pins:
+      lao-qin:
+        - 0.66
+        - 0.46
+      repair-notice:
+        - 0.3
+        - 0.25
+      02-radio-report:
+        - 0.51
+        - 0.21
+      player:
+        - 0.5
+        - 0.87
+view: canvas
+---
+운전실 안은 조금 따뜻하고, 계기판 위에는 무전기의 작은 초록 불만 켜져 있다. 기관사 친 영감은 막 터널 앞쪽에서 돌아와 장화가 돌가루투성이다.
+
+벽에는 열쇠판이 걸려 있고, 열쇠마다 빨간 꼬리표가 묶여 있다. "5호차 화물차" 고리는 비어 있다. 무전기는 링커우 관제사에게 바로 연결된다 — 하지만 관제사는 증거만 믿는다.

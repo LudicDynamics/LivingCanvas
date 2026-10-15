@@ -1,0 +1,106 @@
+{
+  "id": "magic-academy-zh",
+  "name": "魔法学院 · 中文",
+  "version": "1.2.0",
+  "schema": 1,
+  "description": "把言语、物品和代价组合起来。你亲自命名的小小魔法，将会改变封闭的空间。",
+  "intro": {
+    "status": "in-development",
+    "category": "story",
+    "experimental": true,
+    "rank": 9,
+    "hook": "把一个词、一件物品和一份代价组合起来，给你的小魔法起个名字——它会改变这间封闭的房间。",
+    "genres": [
+      "fantasy"
+    ],
+    "loop": [
+      "收集词语碎片和物件，在咒语图谱上组合",
+      "预览代价，给咒语命名，然后施放",
+      "和学姐、图书管理员讨论这个咒语意味着什么"
+    ],
+    "minutes": [
+      15,
+      30
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "voice",
+      "live-image",
+      "free-explore"
+    ],
+    "endings": 0,
+    "characters": [
+      {
+        "id": "seraphina",
+        "line": "学院的学姐，会反问词语和物品的关系，从不隐瞒代价"
+      },
+      {
+        "id": "librarian",
+        "line": "记得每一本书借出与归还的图书管理员"
+      }
+    ],
+    "for": [
+      "喜欢奇幻设定",
+      "喜欢创造和命名"
+    ],
+    "unfinished": "开发中：目前只有一个房间，代价系统和结局都还没做完。"
+  },
+  "author": "Mingyue",
+  "genre": "故事体验",
+  "tags": [
+    "短篇故事",
+    "生成世界"
+  ],
+  "material": "parchment",
+  "audio": {
+    "theme": "emberglass"
+  },
+  "extensions": [
+    {
+      "id": "airp:letter",
+      "version": ">=1.0.0",
+      "optional": false
+    },
+    {
+      "id": "airp:note",
+      "version": ">=1.0.0",
+      "optional": false
+    }
+  ],
+  "characters": [
+    {
+      "id": "seraphina",
+      "home": "map",
+      "role": "companion",
+      "avatarVideo": "assets/motion/seedance/characters/seraphina-transparent.webm",
+      "avatar": "assets/motion/seedance/characters/seraphina-transparent.webp",
+      "name": "塞拉菲娜",
+      "description": "学院的学姐。会反问言语与物品之间的关系。不替别人决定答案，也不隐瞒代价。"
+    },
+    {
+      "id": "librarian",
+      "home": "world/spell-atlas",
+      "role": "npc",
+      "name": "图书管理员",
+      "description": "记得图书馆每一笔借出与归还的图书管理员。不对未知的心情或未来的结果妄下断言。",
+      "avatar": "assets/motion/seedance/characters/librarian-transparent.webp",
+      "avatarVideo": "assets/motion/seedance/characters/librarian-transparent.webm"
+    }
+  ],
+  "opening": {
+    "greeter": "seraphina"
+  },
+  "createdAt": "2026-09-11T00:00:00Z",
+  "updatedAt": "2026-09-11T00:00:00Z",
+  "locale": "zh-CN",
+  "entry": "map",
+  "rules": {
+    "system": "dnd",
+    "proficiency": 2,
+    "characterChecks": true
+  },
+  "player": {
+    "id": "player",
+    "name": "学院新生"
+  }
+}

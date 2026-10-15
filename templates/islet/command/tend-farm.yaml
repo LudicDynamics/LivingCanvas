@@ -1,0 +1,11 @@
+name: Tend your field
+desc: Dig, water and weed; the crop grows a little
+do:
+  - action: add_state
+    with:
+      target: world
+      state: farm_growth
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "90"

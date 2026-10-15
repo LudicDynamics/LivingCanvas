@@ -1,0 +1,19 @@
+name: 맞장구친다
+desc: 정오에 인쇄소 안뜰에서 그를 만난다. 그가 움직일 때 당신을 밀친다. 다른 증거를 손에 쥐고 있어야만 레스트레이드가 그를 붙잡을 수 있다
+do:
+  - action: add_state
+    with:
+      target: player
+      state: hp
+      by: "-2"
+  - action: end
+    when: status.picture == "yes"
+    with:
+      ending: caught
+  - action: end
+    when: status.hand == "yes"
+    with:
+      ending: caught
+  - action: end
+    with:
+      ending: half-truth

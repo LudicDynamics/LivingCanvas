@@ -1,0 +1,30 @@
+name: 工房を調べ尽くしていない
+desc: 工房の判定は61–100に落ちる。61–95は半本の糸（紋章の拓本）しか手に入らない。96–100は留め金のピンを折る（キャラクターに降りかかる事件）。どちらも遠回りしないとこの糸は留められない
+do:
+  - action: give
+    when: roll.rank >= 2
+    with:
+      path: player/ledger-page-half.md
+      title: 半本の糸・紋章の拓本
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        留め金は開いたが、紋章の下の注文印は錆に覆われていた。君は領主家の紋章と、読み取れない印だけを拓本にした。
+
+        紋章はどの家かを示すが、どの船かを示すことはできない。この糸を留めるには、遠回りしなければならない：ヴェラに工房の注文帳を調べてもらう。
+  - action: event
+    when: roll.rank == 1
+    with:
+      target: characters/vera
+      title: 留め金のピンが折れた
+      text: 万力を締めると、留め金のピンが折れ、その新しい擦り傷も折れた一節と一緒に消えた。それはヴェラが長く追い続けていたものだった。彼女は折れた断面をしばらくじっと見て、冗談を言わなかった。
+  - action: set_status
+    with:
+      path: world/harbor-chart/workshop/05-long-way.md
+      values:
+        open: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: ✗ 工房の糸はまだ留められていない：注文印が読み取れなかった。遠回りして、ヴェラに注文帳を調べてもらう必要がある。

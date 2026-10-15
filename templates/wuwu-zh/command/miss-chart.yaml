@@ -1,0 +1,24 @@
+name: 雾里没看清
+desc: 海图上的决定性判定落在 61–100（手里有灯油的 96–100 也算）。61–95 只看见半条线（一道水痕）；两种都要绕远路才能钉上这条线
+do:
+  - action: give
+    when: 'roll.rank >= 2'
+    with:
+      path: player/second-wake-half.md
+      title: 半条线 · 雾里的一道水痕
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        你没看见船，只看见雾里一道翻起的水痕，从旧海关隧道口那边拐出来，又没入雾里。
+
+        有东西刚刚经过，但看不出是什么。要钉上这条线，得绕远路：沿着岸边追着水痕走。
+  - action: set_status
+    with:
+      path: world/harbor-chart/06-long-way.md
+      values:
+        open: "yes"
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: ✗ 海图上的线还没钉上：雾里没看清。得绕远路，沿着岸边追水痕。

@@ -1,0 +1,488 @@
+/* CharacterDock — the right rail's two states.
+   The collapsed state is `CharacterRail`'s own stylesheet; this file only adds
+   the expanded state stacked under the same column.
+
+   The expanded state is NOT a card. A panel around the
+   portrait reads as a UI window that happens to contain a person; the cut-out
+   standing directly on the scene reads as a person standing next to you, which
+   is the entire premise of this layout. So: no background, no border, no
+   shadow box — the words earn their legibility from a glyph halo, the same way
+   chalk does on a photo backdrop (`--ux-shadow-chalk-glow*`, index.css).
+
+   Colours come from the canonical `--ux-*` tokens (check:ux visual rule). */
+
+.character-dock {
+  display: contents;
+}
+
+/* The stage IS the right-hand column
+
+
+
+   It used to hang off the avatar it was opened from — `top: 150px`, matched to
+   `.prototype-residents` — inside a box whose height was whatever the text
+   happened to need. The cut-out was bottom-aligned in THAT box and taller than
+   it, so the figure grew upward past the top of the screen and the head was the
+   first thing to go. The column is now the viewport's full height, top to
+   bottom, at a fixed width; the figure is bottom-aligned inside it and scaled
+   to it, so there is no window height at which the head is out of frame.
+
+   Fixed, not absolute: the height this column means is the WINDOW's, not that
+   of whichever ancestor happens to be positioned. `.agent-activity-log` in this
+   same chrome band is fixed for the same reason.
+
+   It stays transparent to the pointer except where a control sits, so dragging
+   the canvas near the right edge still drags the canvas. */
+.character-dock__stage {
+  --character-dock-column: var(--ux-companion-column);
+  /* Room above the words for the header chrome; the cut-out ignores it, since
+     absolute insets resolve against the padding box. */
+  --character-dock-head-room: 150px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 14px;
+  width: var(--character-dock-column);
+  padding: var(--character-dock-head-room) 0 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  box-sizing: border-box;
+  color: var(--ux-color-cream);
+  z-index: var(--depth-chrome-carried-reader);
+  pointer-events: none;
+}
+
+/* The cut-out: the whole column, bottom-aligned behind the words, person-sized
+   rather than thumbnail-sized. `-transparent.webm` / `.webp` is what the worlds
+   ship. No height of its own — a fixed height is what cropped the head. */
+.character-dock__portrait {
+  position: absolute;
+  right: -10px;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  pointer-events: none;
+  /* Grounds the figure against a bright scene without drawing a box. */
+  filter: drop-shadow(0 6px 18px color-mix(in srgb, var(--ux-color-ink) 55%, transparent));
+  z-index: -1;
+}
+
+/* `contain` is the guarantee: the whole figure is fitted into the column and
+   nothing is ever cropped off the top. `bottom` is where the extra room goes,
+   so the character stands on the floor of the screen rather than floating. */
+.character-dock__portrait img,
+.character-dock__portrait video,
+.character-dock__still {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+}
+
+.character-dock__monogram {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  border-radius: var(--ux-radius-avatar);
+  background: color-mix(in srgb, var(--ux-color-ink) 55%, transparent);
+  color: var(--ux-color-cream);
+  font-family: var(--ux-font-human);
+  font-size: 32px;
+}
+
+.character-dock__head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.character-dock__name {
+  margin: 0;
+  font-family: var(--ux-font-human);
+  font-size: 19px;
+  font-weight: 600;
+  flex: 1;
+  text-shadow: var(--ux-shadow-chalk-glow-dark);
+}
+
+/* A real button, not a glyph floating on the portrait
+   36px round, a solid plate, visible on any scene. */
+.character-dock__collapse {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--ux-color-cream) 45%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ux-color-ink) 72%, transparent);
+  backdrop-filter: blur(8px);
+  color: var(--ux-color-cream);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: var(--ux-shadow-soft);
+}
+
+.character-dock__collapse:hover,
+.character-dock__collapse:focus-visible {
+  background: var(--ux-color-cream);
+  color: var(--ux-color-ink);
+}
+
+/* The scrollback floats: legibility is the halo, not a slab behind it. The
+   player's own lines stay dimmer so the character's voice leads. */
+.character-dock__lines {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 2px;
+  font-family: var(--ux-font-human);
+  font-size: 15px;
+  line-height: 1.5;
+  pointer-events: auto;
+  /* Older lines fade out rather than hitting a hard cut over the scene.
+     `black` here is a mask alpha, not a palette colour. */
+  mask-image: linear-gradient(to bottom, transparent, black 14%);
+}
+
+.character-dock__line {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  text-shadow: var(--ux-shadow-chalk-glow-dark);
+}
+
+.character-dock__line--player {
+  align-self: flex-end;
+  max-width: 88%;
+  text-align: right;
+  color: color-mix(in srgb, var(--ux-color-cream) 78%, transparent);
+}
+
+.character-dock__line[data-pending='true'] {
+  opacity: 0.85;
+}
+
+/* Earlier lines live in the message drawer: one quiet link. */
+.character-dock__earlier {
+  align-self: flex-start;
+  padding: 2px 10px;
+  border: 1px solid color-mix(in srgb, var(--ux-color-cream) 24%, transparent);
+  border-radius: var(--ux-radius-pill);
+  background: color-mix(in srgb, var(--ux-color-ink) 40%, transparent);
+  color: color-mix(in srgb, var(--ux-color-cream) 82%, transparent);
+  font-family: var(--ux-font-ui);
+  font-size: 11.5px;
+  cursor: pointer;
+}
+
+.character-dock__earlier:hover { color: var(--ux-color-cream); }
+
+.character-dock__hint,
+.character-dock__thinking {
+  margin: 0;
+  color: color-mix(in srgb, var(--ux-color-cream) 72%, transparent);
+  font-size: 13px;
+  font-style: italic;
+  text-shadow: var(--ux-shadow-chalk-glow-dark);
+}
+
+/* The entire tutorial: one sentence sitting on the reply box
+   it is about. No sheet, no dimming, no step counter — the first scene has to
+   feel like a scene, and a spotlight tour made it feel like a manual. */
+.character-dock__coach {
+  margin: 0 0 2px 12px;
+  color: color-mix(in srgb, var(--ux-color-rust) 92%, var(--ux-color-cream));
+  font-family: var(--ux-font-ui);
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+  text-shadow: var(--ux-shadow-chalk-glow-dark);
+  animation: character-dock-coach var(--ux-duration-pulse) var(--ux-motion-ink) 3;
+}
+
+.character-dock__coach::after {
+  content: ' ↓';
+}
+
+@keyframes character-dock-coach {
+  0%, 100% { opacity: 0.72; }
+  50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .character-dock__coach { animation: none; }
+}
+
+/* The chips and the reply box: one block, the same 8px rhythm the stage uses. */
+.character-dock__reply {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.character-dock__input-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: auto;
+}
+
+/* The one place that keeps a surface: a text field with no field is unusable.
+   Glass, not paper — it must not read as a panel around the character. */
+.character-dock__input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 11px;
+  border-radius: var(--ux-radius-pill);
+  border: 1px solid color-mix(in srgb, var(--ux-color-cream) 40%, transparent);
+  background: color-mix(in srgb, var(--ux-color-ink) 42%, transparent);
+  backdrop-filter: blur(10px);
+  color: var(--ux-color-cream);
+  font-family: var(--ux-font-human);
+  font-size: 14px;
+}
+
+.character-dock__input::placeholder {
+  color: color-mix(in srgb, var(--ux-color-cream) 60%, transparent);
+}
+
+.character-dock__input:focus-visible {
+  outline: none;
+  border-color: color-mix(in srgb, var(--ux-color-cream) 75%, transparent);
+}
+
+.character-dock__input:disabled {
+  opacity: 0.6;
+}
+
+/* The send pill (SendButton) over the dark stage: the writer bar's ink pill
+   vanished against the ink glass, so here it is cream with an ink arrow — a
+   visible ↑ beside the field, not just the Enter key. */
+.character-dock__input-row .writer-bar__send {
+  background: var(--ux-color-cream);
+  color: var(--ux-color-ink);
+  border-color: color-mix(in srgb, var(--ux-color-cream) 40%, transparent);
+  font-weight: 700;
+}
+
+/* Narrow screens: the stage becomes a bottom band, the cut-out shrinks out of
+   the way of the words. */
+@media (max-width: 1100px) {
+  .character-dock__stage {
+    --character-dock-head-room: 0px;
+    top: auto;
+    bottom: 12px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-height: 46dvh;
+  }
+
+  /* The writer's round ✎ button keeps the bottom-right corner on narrow screens
+     (writer-fab.css): the reply row stops short of it, so the ↑ send pill is
+     never under the pencil. */
+  .character-dock__input-row {
+    padding-right: var(--character-dock-fab-room, 64px);
+  }
+
+  /* No longer a full column, so the cut-out takes a corner of it — but still
+     bottom-anchored and still `contain`, so the head keeps its whole self. */
+  .character-dock__portrait {
+    left: auto;
+    top: auto;
+    width: 180px;
+    height: 240px;
+    right: -6px;
+  }
+}
+
+/* ---- The first act ------------------------------------- */
+
+/* A world with nobody to speak opens in the narrator's voice: above the
+   avatars, no portrait, no reply box. Glass like the input — it is the one
+   other thing here the player reads rather than looks past. */
+.character-dock__narration {
+  margin: 0 0 8px;
+  padding: 10px 12px;
+  border-radius: var(--ux-radius-panel);
+  background: color-mix(in srgb, var(--ux-color-ink) 38%, transparent);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  border: 1px solid color-mix(in srgb, var(--ux-color-cream) 18%, transparent);
+  color: var(--ux-color-cream);
+  font-family: var(--ux-font-human);
+  font-size: 14px;
+  line-height: 1.6;
+  font-style: italic;
+  text-shadow: var(--ux-shadow-chalk-glow-dark);
+  pointer-events: auto;
+}
+
+/* The follow invitation. No surface of its own — it IS the character still
+   speaking, so it lives in the scrollback and keeps the halo the other lines
+   use; only its two controls opt back into the pointer. */
+.character-dock__invite {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.character-dock__invite-actions {
+  display: flex;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.character-dock__invite-actions button {
+  padding: 6px 14px;
+  border-radius: var(--ux-radius-pill);
+  font-family: var(--ux-font-ui);
+  font-size: 13px;
+  cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--ux-color-cream) 28%, transparent);
+  background: transparent;
+  color: var(--ux-color-cream);
+  transition: background var(--ux-motion-fast) var(--ux-motion-ink);
+}
+
+.character-dock__invite-actions button:hover {
+  background: color-mix(in srgb, var(--ux-color-cream) 14%, transparent);
+}
+
+/* "Come with me" is the default, so it is the one with weight. Declining is a
+   real answer, not a dismissal, so it stays a peer rather than a link. */
+.character-dock__invite-accept {
+  background: color-mix(in srgb, var(--ux-color-rust) 82%, transparent);
+  border-color: transparent;
+}
+
+/* The call button, beside the reply box
+   It sits in the input row, the same
+   size and shape as the dictation button next to it, because the two are peers:
+   one is your voice typed, the other is your voice spoken. */
+.character-dock__call {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--ux-color-cream) 40%, transparent);
+  border-radius: var(--ux-radius-pill);
+  background: color-mix(in srgb, var(--ux-color-ink) 42%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--ux-color-cream);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background var(--ux-motion-fast) var(--ux-motion-ink),
+    border-color var(--ux-motion-fast) var(--ux-motion-ink);
+}
+
+.character-dock__call svg {
+  width: 16px;
+  height: 16px;
+}
+
+.character-dock__call:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--ux-color-cream) 18%, transparent);
+  border-color: color-mix(in srgb, var(--ux-color-cream) 62%, transparent);
+}
+
+.character-dock__call:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* On a call the button is the hang-up, so it stops looking like an invitation. */
+.character-dock__call.is-connecting,
+.character-dock__call.is-live {
+  background: color-mix(in srgb, var(--ux-color-rust) 82%, transparent);
+  border-color: transparent;
+}
+
+/* Connecting is not yet talking; the pulse says the difference without text. */
+.character-dock__call.is-connecting {
+  animation: character-dock-call-pulse var(--ux-duration-spin) ease-in-out infinite;
+}
+
+@keyframes character-dock-call-pulse {
+  50% { opacity: 0.55; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .character-dock__call.is-connecting { animation: none; opacity: 0.8; }
+}
+:root[data-airp-blur="reduced"] .character-dock__collapse { backdrop-filter: blur(4px); }
+:root[data-airp-blur="reduced"] .character-dock__input,
+:root[data-airp-blur="reduced"] .character-dock__call { backdrop-filter: blur(5px); }
+:root[data-airp-blur="reduced"] .character-dock__narration {
+  backdrop-filter: blur(7px) saturate(1.2);
+  -webkit-backdrop-filter: blur(7px) saturate(1.2);
+}
+:root[data-airp-blur="off"] .character-dock__collapse,
+:root[data-airp-blur="off"] .character-dock__input,
+:root[data-airp-blur="off"] .character-dock__call,
+:root[data-airp-blur="off"] .character-dock__narration {
+  background: rgba(41, 40, 32, .96);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* ── The character's bubble ─────────────────────────────────────
+   Lines to SAY, as speech bubbles leaning toward the portrait; the last chip asks for a fresh batch. */
+.line-chips { pointer-events: auto; }
+.line-chip.reply-chip { border-radius: 16px 16px 16px 4px; }
+.line-chip--regen.reply-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  border-style: dashed;
+  background: transparent;
+  color: var(--ux-color-muted);
+  box-shadow: none;
+  border-radius: var(--ux-radius-pill);
+  font-size: 13px;
+}
+.line-chip--regen.reply-chip[data-state='locked'] { cursor: not-allowed; }
+.line-chip__why {
+  flex-basis: 100%;
+  font-size: 11px;
+  color: var(--ux-color-muted);
+}
+.line-chip__spin { animation: line-chip-spin var(--ux-duration-spin) linear infinite; }
+@keyframes line-chip-spin { to { transform: rotate(360deg); } }
+
+/* The companion's written hint: a quiet ✦ line, in their voice, under the conversation. */
+.character-dock__nudge-mark {
+  margin-right: 6px;
+  color: var(--ux-color-rust);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .line-chip__spin { animation: none; }
+}
+
+/* The rail's hover bubble (CharacterRail, the design notes D1) rides the avatar orb's own depth token
+   (prototype.css `.prototype-companion-orb`); the rail stylesheet itself declares no depth (presence contract §4.3).
+   Without it the canvas's entity surface paints over the bubble. */
+.character-dock .character-rail__lines { z-index: var(--depth-writer); }

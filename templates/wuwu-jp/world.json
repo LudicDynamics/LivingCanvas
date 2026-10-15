@@ -1,0 +1,295 @@
+{
+  "id": "wuwu-jp",
+  "audio": {
+    "theme": "canvas-wuwu"
+  },
+  "name": "霧埠の町・潮の前 · 日本語",
+  "version": "2.0.0",
+  "schema": 1,
+  "description": "潮が満ちる前に、囮船、旧税関隧道、領主家の帳簿を一本の線で結べ。潮は八歩しか待たない——告発、見失う、あるいは霧に呑まれる。",
+  "intro": {
+    "status": "playable",
+    "category": "trpg",
+    "recommended": true,
+    "rank": 1,
+    "hook": "霧の夜の港に、誰も乗っていない「幽霊船」が流れ着く。潮が戻るまであと八手——霧に紛れて何が運ばれたのかを突き止めよう。",
+    "genres": [
+      "mystery",
+      "adventure"
+    ],
+    "loop": [
+      "港の海図から場所を選んで捜索し、ダイスで手がかりを探す",
+      "捜索するたびに潮が一つ満ちる。失敗しても手がかりの半分は手に入る",
+      "証拠を揃え、港務所で犯人を名指しする"
+    ],
+    "minutes": [
+      30,
+      45
+    ],
+    "difficulty": "intro",
+    "mechanics": [
+      "dice",
+      "clock",
+      "endings",
+      "voice"
+    ],
+    "endings": 3,
+    "characters": [
+      {
+        "id": "vera",
+        "line": "紫に光る義手の技師。口の減らない相棒"
+      },
+      {
+        "id": "silver-kite",
+        "line": "空き船の舷門を守るエルフの騎士。証拠でしか動かない"
+      },
+      {
+        "id": "old-mo",
+        "line": "灯台守。十二分間灯りを消したのは自分だと認めている"
+      }
+    ],
+    "for": [
+      "はじめての人",
+      "推理好き",
+      "一回で遊び切りたい人"
+    ]
+  },
+  "author": "Worldlines Canvas / AIRP",
+  "genre": "物語体験",
+  "tags": [
+    "短編物語",
+    "閉じた結末",
+    "時間制限調査"
+  ],
+  "material": "parchment",
+  "cover": "assets/scenes/intro.webp",
+  "locale": "ja",
+  "mode": "closed",
+  "clock": {
+    "path": "world/tide.md",
+    "key": "left",
+    "start": 8,
+    "label": "潮が戻る前に",
+    "time": {
+      "start": "23:00",
+      "end": "01:00"
+    }
+  },
+  "endings": [
+    {
+      "id": "exposed",
+      "title": "暴く",
+      "path": "endings/exposed/README.md"
+    },
+    {
+      "id": "lost",
+      "title": "見失う",
+      "path": "endings/lost/README.md",
+      "when": "clock <= 0"
+    },
+    {
+      "id": "swallowed",
+      "title": "霧に呑まれる",
+      "path": "endings/swallowed/README.md"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "too-hurt",
+      "label": "傷が重すぎて、動けない",
+      "kind": "state",
+      "when": "player.hp <= 0",
+      "do": "hurt-out"
+    }
+  ],
+  "extensions": [
+    {
+      "id": "airp:letter",
+      "version": ">=1.0.0",
+      "optional": false
+    },
+    {
+      "id": "airp:note",
+      "version": ">=1.0.0",
+      "optional": false
+    }
+  ],
+  "characters": [
+    {
+      "id": "vera",
+      "home": "map",
+      "role": "companion",
+      "avatar": "assets/motion/seedance/characters/viola-transparent.webp",
+      "description": "義手が紫に光る技師。舵の留め金に私的な関心がある。冗談は好きだが、自分が見ていない罪は語らない。",
+      "avatarVideo": "assets/motion/seedance/characters/viola-transparent.webm",
+      "name": "ヴェラ"
+    },
+    {
+      "id": "silver-kite",
+      "home": "world/harbor-chart/seventh-berth",
+      "role": "npc",
+      "avatar": "assets/motion/seedance/characters/silverkite-transparent.webp",
+      "description": "空箱と舷門を守る精霊騎士。証拠に応じて言葉を選ぶ。",
+      "avatarVideo": "assets/motion/seedance/characters/silverkite-transparent.webm",
+      "name": "銀鳶"
+    },
+    {
+      "id": "old-mo",
+      "home": "world/harbor-chart/old-lighthouse",
+      "role": "npc",
+      "avatar": "assets/characters/old-mo.webp",
+      "description": "傷跡のある灯台守。あの十二分の消灯は自分の仕業だと認めるが、自分が知らない追跡船については語れない。",
+      "name": "老モー"
+    }
+  ],
+  "opening": {
+    "greeter": "vera"
+  },
+  "player": {
+    "id": "player",
+    "name": "港の調査員",
+    "avatar": "assets/characters/investigator.webp"
+  },
+  "entry": "map",
+  "rules": {
+    "system": "coc",
+    "characterChecks": true
+  },
+  "createdAt": "2026-09-26T00:00:00Z",
+  "updatedAt": "2026-09-26T00:00:00Z",
+  "mysteries": [
+    {
+      "id": "decoy",
+      "question": "7番埠頭のあの無人船は、いったいどういうことだ？",
+      "hint": "船倉に何が積まれているか考えてみる。",
+      "options": [
+        {
+          "id": "storm",
+          "label": "嵐に遭い、乗員は船を捨てて逃げ、船はひとりで港に漂い戻った",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "decoy",
+          "label": "わざと空にして放たれた囮で、皆の目を7番埠頭に釘付けにするためだ",
+          "tier": "surface",
+          "clues": [
+            "player/decoy-ship.md"
+          ],
+          "epilogue": "港務所は7番埠頭の封を解いた。あの空船はドックに曳き入れられ、もう誰もそれを幽霊船とは呼ばなかった。"
+        },
+        {
+          "id": "one-wake",
+          "label": "囮と隧道は同じ計画だ。第二の航跡は隧道口から出て、ちょうど囮船をかすめて通る",
+          "tier": "hidden",
+          "clues": [
+            "player/second-wake.md"
+          ],
+          "title": "同じ一筋の航跡",
+          "epilogue": "二本の航跡は並べて港務所の海図に描き込まれた。それ以来、霧埠港は霧が出るたびに旧税関隧道口へ人をやって見張らせている——囮はもう皆の目を欺けない。"
+        },
+        {
+          "id": "smugglers",
+          "label": "密輸業者は消えた灯台のせいで座礁し、夜に乗じて上陸した",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "ledger",
+      "question": "霧の中のあの船に、誰が金を払ったのか？",
+      "hint": "あの舵の留め金の下には何が隠されている？",
+      "options": [
+        {
+          "id": "vera",
+          "label": "ヴェラ——あの留め金は彼女自身の収蔵品だ",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "lord",
+          "label": "領主家——船名簿にないあの船は、領主家の帳簿に記されている",
+          "tier": "surface",
+          "clues": [
+            "player/ledger-page.md"
+          ],
+          "epilogue": "領主家の会計係は港務所へ呼ばれて問いただされた。彼らはただの「ありふれた発注」だと言ったが、それ以来、町の誰も「ありふれた」という言葉を信じなくなった。"
+        },
+        {
+          "id": "harbor-office",
+          "label": "港務所——彼らは保険金を騙し取ろうとした",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "tunnel",
+      "question": "あの船はいつ、どこから港を出たのか？",
+      "hint": "灯台の日誌と隧道口の泥。",
+      "options": [
+        {
+          "id": "daylight",
+          "label": "真っ昼間に7番埠頭から堂々と出て行った",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "tunnel",
+          "label": "灯台が消えた十二分の間に、旧税関隧道口から港を出た",
+          "tier": "surface",
+          "clues": [
+            "player/customs-tunnel.md"
+          ],
+          "epilogue": "旧税関隧道口には木の柵が打ち付けられた。老モーは言った。これから灯台が消えるたび、まず隧道口を見る、と。"
+        },
+        {
+          "id": "drift",
+          "label": "船には誰もおらず、満ち潮に乗って漂い出た",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    },
+    {
+      "id": "old-mo",
+      "question": "老モーはあの夜、なぜ灯を消したのか？",
+      "hint": "本人に聞き、そして彼が知らないことも見てみる。",
+      "options": [
+        {
+          "id": "bribed",
+          "label": "彼は領主家の金を受け取り、あの船のためにわざと灯を消した",
+          "tier": "wrong",
+          "clues": []
+        },
+        {
+          "id": "his-own",
+          "label": "消灯は彼自身の事情で、船がその暗闇に乗じて港を出たことを彼は知らなかった",
+          "tier": "surface",
+          "clues": [
+            "player/customs-tunnel.md",
+            "player/customs-tunnel-half.md"
+          ],
+          "epilogue": "老モーはあの十二分が利用されたと聞き、一晩中眠れなかった。翌日、彼は日誌に一行書き足した。「灯が消えた時は、隧道口に気をつけよ。」"
+        },
+        {
+          "id": "no-oil",
+          "label": "灯油が燃え尽き、補充が間に合わなかった",
+          "tier": "wrong",
+          "clues": []
+        }
+      ]
+    }
+  ],
+  "reckoning": {
+    "epilogues": {
+      "all": "四つの秘密がすべて明らかになった。潮が戻るころ、霧埠の町はあの夜に何があったかを知っていた——そしてヴェラも、ついにあの留め金の由来を語ろうとした。",
+      "most": "君は大半を見抜いた。残りのわずかな点については、霧埠の町の人々がそれぞれの説を語る。だが少なくとも、もう誰もあの無人船を幽霊船とは呼ばない。",
+      "few": "潮が戻ってきたが、あの夜のことはまだ多くが語られていない。おそらく次に霧が出るとき、君は再び7番埠頭へ戻るだろう。"
+    }
+  },
+  "view": {
+    "default": "map"
+  }
+}

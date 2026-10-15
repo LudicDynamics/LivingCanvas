@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      // The interface language, before ANY stylesheet or bundle
+      // Same rule as src/lib/i18n.ts initialLocale: ?lang= (en, ja/jp, ko,
+      // zh/zh-CN/zh-TW… → zh-CN) → the stored pick (localStorage airp-ui-locale) → English. Never the browser's
+      // languages. i18n.ts stores ?lang= and takes it out of the address; the boot screen below reads
+      // window.__airpBootLocale. Tested in test/locale-first-visit.test.mjs (it runs this script).
+      (function () {
+        var l = null, s = null;
+        try {
+          var m = /[?&]lang=([^&#]*)/.exec(location.search);
+          if (m) {
+            var t = decodeURIComponent(m[1].replace(/\+/g, ' ')).trim().toLowerCase().replace(/_/g, '-');
+            l = t === 'ja' || t === 'jp' || t.indexOf('ja-') === 0 ? 'ja'
+              : t === 'ko' || t.indexOf('ko-') === 0 ? 'ko'
+              : t === 'zh' || t.indexOf('zh-') === 0 ? 'zh-CN'
+              : t === 'en' || t.indexOf('en-') === 0 ? 'en' : null;
+          }
+        } catch (e) { /* a malformed address: no flag */ }
+        if (!l) {
+          try { s = localStorage.getItem('airp-ui-locale'); } catch (e) { /* storage blocked */ }
+          if (s) l = s === 'zh-CN' || s === 'ja' || s === 'ko' ? s : 'en';
+        }
+        window.__airpBootLocale = l || 'en';
+        document.documentElement.lang = window.__airpBootLocale;
+      })();
+    </script>
+    <script>
+      // Static site (canvas.worldlines.gg, browser mode always on): start the runtime Worker and its base image
+      // NOW, while the app bundle downloads; src/lib/browser-mode.ts adopts them (adoptEarlyRuntime). Kept above
+      // every stylesheet: a pending stylesheet would hold this script back. Vite fills in the two values at build
+      // time; any other build leaves the %…% placeholders and this does nothing.
+      (function () {
+        var base = '%VITE_AIRP_RUNTIME_BASE%', mode = '%VITE_AIRP_BROWSER_MODE%';
+        if (base.charAt(0) === '%' || mode !== 'always' || /[?&]airpPerception=1/.test(location.search)) return;
+        if (typeof Worker === 'undefined' || !('serviceWorker' in navigator)) return;
+        // Too old for the runtime (src/lib/browser-support.ts tells the player): do not start a Worker that would die.
+        try { if (!new RegExp('(?<=a)b').test('ab') || typeof Intl === 'undefined' || !Intl.Segmenter) return; } catch (e) { return; }
+        try {
+          if (base.charAt(base.length - 1) !== '/') base += '/';
+          var r = { worker: new Worker(base + 'worker.js', { type: 'module' }), url: base + 'worker.js', messages: [], errors: [] };
+          r.image = fetch(base + 'image.bin').then(function (res) {
+            if (!res.ok) throw new Error('runtime image: HTTP ' + res.status);
+            return res.arrayBuffer();
+          });
+          r.image.catch(function () {});
+          r.worker.onmessage = function (e) { r.messages.push(e); };
+          r.worker.onerror = function (e) { r.errors.push(e); };
+          window.__airpEarlyRuntime = r;
+        } catch (e) { /* the bundle starts the runtime itself */ }
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LivingCanvas · Worldlines</title>
+    <meta name="description" content="Step into living stories: an AI narrative canvas where characters talk, remember and paint the world with you." />
+    <meta name="theme-color" content="#d9d0bf" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/svg+xml" href="/brand/icon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/brand/favicon-16.png" />
+    <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="canonical" href="https://canvas.worldlines.gg/" />
+    <!-- share preview (brand/og.jpg is built from the plan key visuals; the design notes) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Worldlines" />
+    <meta property="og:title" content="LivingCanvas · Worldlines" />
+    <meta property="og:description" content="Step into living stories · 物語の中へ · 走进会呼吸的故事" />
+    <meta property="og:url" content="https://canvas.worldlines.gg/" />
+    <meta property="og:image" content="https://canvas.worldlines.gg/brand/og.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LivingCanvas: three travellers from Worldlines stories, lantern-lit" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="ja_JP" />
+    <meta property="og:locale:alternate" content="zh_CN" />
+    <meta property="og:locale:alternate" content="ko_KR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="LivingCanvas · Worldlines" />
+    <meta name="twitter:description" content="Step into living stories · 物語の中へ · 走进会呼吸的故事" />
+    <meta name="twitter:image" content="https://canvas.worldlines.gg/brand/og.jpg" />
+    <meta name="twitter:image:alt" content="LivingCanvas: three travellers from Worldlines stories, lantern-lit" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=LXGW+WenKai:wght@400;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-[var(--ux-color-wall)] text-[var(--ux-color-ink)] overflow-hidden select-none">
+    <div id="root"></div>
+    <script>
+      // First paint on the static site: the boot screen in the language picked above, drawn before the bundle
+      // runs (the stylesheet in <head> is already applied). vite.config.ts fills in every language's screen from
+      // src/lib/boot-copy.ts at build time; main.tsx keeps it and writes the status lines into it.
+      (function () {
+        var mode = '%VITE_AIRP_BROWSER_MODE%', screens = /*airp:boot-screens*/null;
+        if (!screens || mode !== 'always' || /[?&]airpPerception=1/.test(location.search)) return;
+        var root = document.getElementById('root');
+        if (root && !root.firstChild) root.innerHTML = screens[window.__airpBootLocale] || screens.en;
+      })();
+    </script>
+    <noscript>
+      <p style="margin:0;min-height:100vh;display:grid;place-items:center;padding:0 16px;text-align:center;font:16px/1.6 system-ui,sans-serif">LivingCanvas needs JavaScript. Turn it on, or open this page in Safari or Chrome.</p>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

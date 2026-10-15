@@ -1,0 +1,12 @@
+name: はじめての収穫
+desc: 初めての収穫。いちばんいいかぶを記念に取っておく
+do:
+  - action: give
+    with:
+      path: player/first-turnip.md
+      title: はじめてのかぶ
+      body: あなたの畑で採れた最初のかぶ。白くて丸く、葉にはまだ露が残っている。最初のは食べずに取っておくものだと蓮は言う。
+  - action: show_cg
+    with:
+      path: assets/cg/first-harvest.webp
+      caption: あなたの畑から、はじめての一かご。

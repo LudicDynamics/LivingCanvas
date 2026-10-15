@@ -1,0 +1,146 @@
+/*
+ * Presence layer styles.
+ *
+ * Everything here is compositor-only: `transform` / `opacity`. No `left`/`top`
+ * transitions (they trigger layout), no rAF, no per-frame allocation — the damping
+ * is CSS transitions + one mount-time animation whose delay/duration/offset arrive
+ * as inline custom properties from `lib/presence-node.ts`.
+ *
+ * The thresholds are contract §4.2: slide 480ms `cubic-bezier(.22,.61,.36,1)`,
+ * exit 260ms ease-out, enter 360ms + 8px rise, stagger 60ms, and reduced-motion /
+ * hidden-page degradation to opacity-only ≤120ms.
+ *
+ * Stacking reuses the registered entity-depth tokens: no numeric
+ * z-index literal is introduced here.
+ */
+
+.presence-avatar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: var(--depth-entity-base);
+  /* Same-layer coordinate change slides; the node is never rebuilt (step 7 §3.1). */
+  transition: transform 480ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+}
+
+.presence-avatar:hover,
+.presence-avatar:focus-within {
+  z-index: var(--depth-entity-focus);
+}
+
+/* Inner anchor turns the centre-point `translate3d(x,y,0)` into an element whose
+   own centre sits on (x, y): the outer shell is the position, this is the geometry. */
+.presence-avatar__anchor {
+  transform: translate(-50%, -50%);
+  animation: presence-enter var(--presence-enter-ms, 360ms) cubic-bezier(0.22, 0.61, 0.36, 1)
+    var(--presence-delay, 0ms) both;
+}
+
+@keyframes presence-enter {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(var(--presence-offset, 8px));
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* A leaving node keeps its old world coordinate and only fades (contract §4.2).
+   `pointer-events: none` is what stops a ghost from stealing a click; the element
+   is a div, not a button, so focus cannot reach it either.
+   It uses an ANIMATION, not a transition: the node mounts already fading, so there
+   is no "from" opacity for a transition to run against. */
+.presence-avatar--exiting {
+  pointer-events: none;
+  animation: presence-exit 260ms ease-out both;
+}
+
+@keyframes presence-exit {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.presence-avatar--exiting .presence-avatar__anchor {
+  animation: none;
+  transform: translate(-50%, -50%);
+}
+
+.presence-avatar__body {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--presence-avatar-size, 104px);
+  height: var(--presence-avatar-size, 104px);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 28%, #e3b685, #9b6555 48%, #465864 50%, #222e33);
+  box-shadow: 0 0 0 14px rgba(255, 255, 255, 0.3), 0 18px 40px rgba(44, 37, 30, 0.25);
+  overflow: hidden;
+  cursor: pointer;
+  color: #f6efe6;
+}
+.presence-avatar__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.presence-avatar__initial {
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
+
+/* "Following you" status mark: an indicator, not a control (contract §1 criterion 2). */
+.presence-avatar__follow {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(34, 46, 51, 0.86);
+  color: #f6efe6;
+}
+
+
+/* Runtime degradation: JS sets `data-still` from prefers-reduced-motion + page
+   visibility (contract §4.2). The entry animation already collapses to opacity-only
+   because `--presence-offset` is 0 and `--presence-enter-ms` is 120 in that state. */
+.presence-avatar[data-still='true'] {
+  transition: none;
+}
+
+.presence-avatar[data-still='true'] .presence-avatar__anchor {
+  animation-duration: var(--presence-enter-ms, 120ms);
+  animation-delay: 0ms;
+}
+
+.presence-avatar[data-still='true'].presence-avatar--exiting {
+  animation-duration: 120ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .presence-avatar {
+    transition: none;
+  }
+
+  .presence-avatar--exiting {
+    animation-duration: 120ms;
+  }
+
+  .presence-avatar__anchor {
+    animation-duration: var(--presence-enter-ms, 120ms);
+    animation-delay: 0ms;
+  }
+}

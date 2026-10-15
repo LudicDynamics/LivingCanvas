@@ -1,0 +1,24 @@
+name: 안개 속에서 제대로 못 봤다
+desc: 해도 위의 결정적 판정이 61–100에 떨어졌다(등유가 있는 96–100도 해당). 61–95는 반쪽 실마리(물자국 하나)만 본다. 어느 쪽이든 돌아가기를 거쳐야 이 실마리를 못 박을 수 있다
+do:
+  - action: give
+    when: roll.rank >= 2
+    with:
+      path: player/second-wake-half.md
+      title: 반쪽 실마리 · 안개 속의 물자국 하나
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        배는 보이지 않았다. 안개 속에서 물결이 한 줄기 일어나는 것만 보였다. 옛 세관 터널 입구 쪽에서 휘어 나와 다시 안개 속으로 사라졌다.
+
+        방금 무언가가 지나갔지만, 그것이 무엇인지는 알 수 없다. 이 실마리를 못 박으려면 돌아가야 한다: 물가를 따라 물자국을 쫓아 걷는다.
+  - action: set_status
+    with:
+      path: world/harbor-chart/06-long-way.md
+      values:
+        open: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: "✗ 해도 위의 실마리는 아직 못 박지 못했다: 안개 속에서 제대로 못 봤다. 돌아가야 한다, 물가를 따라 물자국을 쫓아서."

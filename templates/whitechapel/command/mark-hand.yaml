@@ -1,0 +1,8 @@
+name: 'Pin a line: his hand was at the scene'
+desc: 'Third scene or studio search: the ultramarine and the bruise at the scene match the illustrator’s cuff and wrist'
+do:
+  - action: set_status
+    with:
+      path: world/london-map/03-before-noon.md
+      values:
+        hand: "yes"

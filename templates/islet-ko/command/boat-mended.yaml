@@ -1,0 +1,22 @@
+name: 고친 배의 진수
+desc: 유목이 모이자 겐타가 배를 마무리해 물에 띄우고 키 손잡이를 건넨다
+do:
+  - action: set_state
+    with:
+      target: world
+      state: boat_fixed
+      value: "true"
+  - action: give
+    with:
+      path: player/boat-tiller.md
+      title: 고친 배의 키 손잡이
+      body: 겐타가 직접 깎은 새 키 손잡이. 손잡이엔 아직 대팻밥 냄새가 남아 있다. 이게 있으면 해초섬과 새바위로 배를 몰 수 있다. 폭풍 치는 날엔 나가지 말 것.
+  - action: event
+    with:
+      target: world/dock
+      title: 고친 배가 물에 뜨다
+      text: 겐타는 마지막 널빤지를 박고 한 걸음 물러나 오래 바라보았다. 모두 함께 배를 경사로로 밀자, 배는 물에서 두 번 흔들리더니 단단히 떴다. 겐타는 갓 깎은 키 손잡이를 당신 손에 쥐여 주며 한마디만 했다. "날 좋을 때 바깥섬에 가 봐."
+  - action: show_cg
+    with:
+      path: assets/cg/boat-launch.webp
+      caption: 고친 배가 바다로 미끄러져 들어간다.

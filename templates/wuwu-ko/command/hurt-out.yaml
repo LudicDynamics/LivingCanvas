@@ -1,0 +1,11 @@
+name: 다쳐서 움직일 수 없다
+desc: "숨은 생명력이 0이 되었다(world.json 트리거 too-hurt): 모 영감이 등불을 들고 너를 찾았을 때 너는 이미 일어설 수 없었고, 조수와 안개가 단서를 함께 삼켜 버렸다"
+do:
+  - action: event
+    with:
+      target: characters/old-mo
+      title: 모 영감이 너를 찾아냈다
+      text: 너는 흠뻑 젖은 계선주에 기대앉은 채 다시는 일어서지 못했다. 모 영감이 등불을 들고 찾아와 너를 옛 등대로 부축해 갔고, 가는 내내 아무 말도 하지 않았다. 뒤에서는 조수가 한 뼘씩 밀려올랐다.
+  - action: end
+    with:
+      ending: swallowed

@@ -1,0 +1,81 @@
+{
+  "id": "unwritten-door",
+  "audio": {
+    "theme": "firstsnow"
+  },
+  "name": "The Unwritten Door · English",
+  "version": "1.2.0",
+  "schema": 1,
+  "description": "An unopened letter and a phone shape the place that waits outside. One door, and a new scene written as you go.",
+  "intro": {
+    "status": "in-development",
+    "category": "trpg",
+    "rank": 7,
+    "hook": "On a rainy night you wake in a cabin with no memory. An unopened letter and a dead phone decide what world waits beyond the door.",
+    "genres": [
+      "fantasy",
+      "adventure"
+    ],
+    "loop": [
+      "Look at the letter and the phone; decide whether to open them",
+      "Open the door — the AI writes a new place and picture from your choices, on the spot",
+      "Head out with Iris: no script — roll your way through whatever is out there"
+    ],
+    "minutes": [
+      15,
+      30
+    ],
+    "difficulty": "hardcore",
+    "mechanics": [
+      "dice",
+      "live-image",
+      "free-explore",
+      "voice"
+    ],
+    "endings": 0,
+    "characters": [
+      {
+        "id": "iris",
+        "line": "She got here before you, and speaks only of what she has seen herself"
+      }
+    ],
+    "for": [
+      "Hardcore sandbox tabletop RPG",
+      "Watching the AI improvise"
+    ],
+    "unfinished": "In development: only the opening cabin is written; beyond the door everything is generated, with no goal or ending yet."
+  },
+  "author": "AIRP",
+  "genre": "narrative experience",
+  "tags": [
+    "short story",
+    "generative world"
+  ],
+  "material": "parchment",
+  "player": {
+    "id": "you",
+    "name": "You"
+  },
+  "characters": [
+    {
+      "id": "iris",
+      "name": "Iris",
+      "home": "map",
+      "role": "companion",
+      "description": "Iris came in from the only other door, because she saw the lamp go on. She has been in this place longer than you and still cannot say what is outside; she has learned to report what she has seen and to leave the rest alone."
+    }
+  ],
+  "opening": {
+    "greeter": "iris"
+  },
+  "extensions": [],
+  "createdAt": "2026-09-12T00:00:00Z",
+  "updatedAt": "2026-09-12T00:00:00Z",
+  "locale": "en",
+  "entry": "map",
+  "rules": {
+    "system": "dnd",
+    "proficiency": 2,
+    "characterChecks": true
+  }
+}

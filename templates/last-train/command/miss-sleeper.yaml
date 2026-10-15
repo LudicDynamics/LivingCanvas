@@ -1,0 +1,8 @@
+name: Compartment 3 not fully searched
+desc: "The compartment search lands on 61–100: you only saw a corner of the pill pack. Opens the Long Way Around (05-long-way.md)"
+do:
+  - action: set_status
+    with:
+      path: world/sleeper/05-long-way.md
+      values:
+        open: yes

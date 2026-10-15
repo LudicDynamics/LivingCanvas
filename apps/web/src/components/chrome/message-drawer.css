@@ -1,0 +1,631 @@
+/* MessageDrawer — the bottom drawer holding every word of the run.
+   Glass like the dock and the writer sheet; the writer's own words are paper,
+   like the chalk they came from. Tokens only (check:ux visual rule). */
+
+.message-drawer {
+  position: absolute;
+  left: 212px;
+  bottom: max(24px, calc(env(safe-area-inset-bottom) + 18px));
+  width: min(480px, calc(100% - 212px - 460px));
+  z-index: var(--depth-chrome-writer);
+  pointer-events: none;
+  font-family: var(--ux-font-ui);
+  color: var(--ux-glass-ink);
+}
+
+.message-drawer[data-open='true'] {
+  left: max(16px, env(safe-area-inset-left));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  width: min(560px, calc(100% - 32px - var(--ux-companion-column) - 96px));
+}
+
+/* ── at rest: one line ─────────────────────────────────────────────────────── */
+
+.message-drawer__peek {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 6px 14px 6px 8px;
+  box-sizing: border-box;
+  border-radius: var(--ux-radius-pill);
+  border: 1px solid var(--ux-glass-line);
+  background: var(--ux-glass-fill);
+  backdrop-filter: var(--ux-glass-blur);
+  -webkit-backdrop-filter: var(--ux-glass-blur);
+  box-shadow: var(--ux-glass-highlight), var(--ux-shadow-halo);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--ux-motion-fast) var(--ux-motion-ink), transform var(--ux-motion-fast) var(--ux-motion-ink);
+}
+
+.message-drawer__peek:hover,
+.message-drawer__peek:focus-visible {
+  background: var(--ux-glass-panel);
+  transform: translateY(-1px);
+}
+
+.message-drawer__peek-mark {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--ux-radius-avatar);
+  background: var(--ux-color-paper);
+  color: var(--ux-color-rust);
+  font-size: 14px;
+}
+
+.message-drawer__peek-who {
+  flex: none;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ux-glass-muted);
+}
+
+.message-drawer__peek-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--ux-font-human);
+  font-size: 15px;
+}
+
+.message-drawer__peek-chevron {
+  flex: none;
+  color: var(--ux-glass-muted);
+  font-size: 13px;
+}
+
+/* ── pulled up ─────────────────────────────────────────────────────────────── */
+
+.message-drawer__panel {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  height: min(64dvh, 600px);
+  border-radius: var(--ux-radius-panel);
+  border: 1px solid var(--ux-glass-line);
+  background: var(--ux-glass-panel);
+  backdrop-filter: var(--ux-glass-blur);
+  -webkit-backdrop-filter: var(--ux-glass-blur);
+  box-shadow: var(--ux-glass-shadow);
+  overflow: hidden;
+  animation: message-drawer-rise var(--ux-motion-panel) var(--ux-motion-ink);
+}
+
+@keyframes message-drawer-rise {
+  from { transform: translateY(24px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+.message-drawer__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px 8px 14px;
+  border-bottom: 1px solid var(--ux-glass-line-soft);
+}
+
+.message-drawer__tabs {
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  border-radius: var(--ux-radius-pill);
+  background: var(--ux-glass-well);
+}
+
+.message-drawer__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 0 12px;
+  border: none;
+  border-radius: var(--ux-radius-pill);
+  background: transparent;
+  color: var(--ux-glass-muted);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.message-drawer__tab[aria-selected='true'] {
+  background: var(--ux-glass-pressed);
+  color: var(--ux-glass-pressed-ink);
+}
+
+.message-drawer__count {
+  min-width: 18px;
+  padding: 0 5px;
+  border-radius: var(--ux-radius-pill);
+  background: var(--ux-color-rust);
+  color: var(--ux-color-cream);
+  font-size: 11px;
+  line-height: 18px;
+  text-align: center;
+}
+
+.message-drawer__place {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--ux-font-glass-label);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--ux-glass-faint);
+  text-align: right;
+}
+
+.message-drawer__close {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--ux-radius-avatar);
+  border: 1px solid var(--ux-glass-line-soft);
+  background: var(--ux-glass-well);
+  color: var(--ux-glass-ink);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.message-drawer__close:hover { background: var(--ux-glass-hover); }
+
+.message-drawer__options {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 10px 12px 14px;
+}
+
+/* ── the timeline ──────────────────────────────────────────────────────────── */
+
+.message-stream {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 14px 16px;
+  scroll-behavior: smooth;
+}
+
+.message-stream__empty {
+  margin: auto;
+  color: var(--ux-glass-faint);
+  font-size: 13px;
+}
+
+.message-stream__divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0 0;
+  font-family: var(--ux-font-glass-label);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  color: var(--ux-glass-faint);
+}
+
+.message-stream__divider::before,
+.message-stream__divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--ux-glass-line-soft);
+}
+
+.message-stream__divider[data-place='true'] { color: var(--ux-glass-muted); }
+
+/* A loop reset: the world went back to its first morning; a stronger line, the rust of the writer. */
+.message-stream__loop {
+  margin: 10px 0 6px;
+  color: var(--ux-color-rust);
+  font-weight: 700;
+}
+
+.message-stream__loop::before,
+.message-stream__loop::after {
+  height: 2px;
+  background: color-mix(in srgb, var(--ux-color-rust) 45%, transparent);
+}
+
+/* The page above (the save's history): read on scrolling to the top, or by pressing this. */
+.message-stream__older {
+  display: flex;
+  justify-content: center;
+  padding: 2px 0 4px;
+  font-size: 12px;
+  color: var(--ux-glass-faint);
+}
+
+.message-stream__older button {
+  padding: 3px 12px;
+  border: 1px solid var(--ux-glass-line-soft);
+  border-radius: var(--ux-radius-pill);
+  background: transparent;
+  color: var(--ux-glass-muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+.message-stream__older button:hover,
+.message-stream__older button:focus-visible { color: var(--ux-glass-ink); border-color: var(--ux-glass-line); }
+
+/* A chat whose transcript is gone: the lines its summary kept. */
+.message-stream__recap {
+  display: inline-block;
+  margin-bottom: 2px;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--ux-glass-faint);
+}
+
+.message-stream__entry {
+  position: relative;
+  border-radius: var(--ux-radius-touch);
+  transition: box-shadow var(--ux-motion-fast) var(--ux-motion-ink);
+}
+
+.message-stream__entry[data-lit='true'] {
+  box-shadow: 0 0 0 2px var(--ux-glass-accent);
+  animation: message-stream-lit var(--ux-duration-pulse) var(--ux-motion-ink) 2;
+}
+
+@keyframes message-stream-lit {
+  50% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--ux-glass-accent) 35%, transparent); }
+}
+
+.message-stream__byline {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 4px;
+  font-size: 11.5px;
+}
+
+.message-stream__mark { color: var(--ux-color-rust); font-size: 13px; }
+.message-stream__name { font-weight: 700; letter-spacing: 0.02em; }
+.message-stream__to { color: var(--ux-glass-faint); }
+
+.message-stream__title {
+  font-family: var(--ux-font-human);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.message-stream__badge {
+  padding: 0 7px;
+  border-radius: var(--ux-radius-pill);
+  background: var(--ux-glass-pass-fill);
+  color: var(--ux-glass-pass);
+  font-size: 10.5px;
+  line-height: 17px;
+}
+
+.message-stream__link,
+.message-stream__fold {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ux-color-blue);
+  font: inherit;
+  font-size: 11.5px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.message-stream__link { margin-left: auto; }
+
+.message-stream__text {
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.message-stream__text[data-folded='true'] {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.message-stream__text p { margin: 0 0 0.4em; }
+.message-stream__text p:last-child { margin-bottom: 0; }
+
+/* The writer: paper, like the chalk it is. */
+.message-stream__writer {
+  padding: 10px 12px 10px 14px;
+  background: var(--ux-color-paper);
+  color: var(--ux-color-ink);
+  border-left: 3px solid var(--ux-color-rust);
+  box-shadow: var(--ux-shadow-halo);
+}
+
+.message-stream__writer .message-stream__text {
+  font-family: var(--ux-font-human);
+  font-size: 15px;
+  white-space: normal;
+}
+
+.message-stream__writer .message-stream__name { color: var(--ux-color-rust); }
+.message-stream__writer .message-stream__link,
+.message-stream__writer .message-stream__fold { color: var(--ux-color-muted); }
+
+/* Asked for something and got it: one line, quieter, ✓. */
+.message-stream__writer[data-compact='true'] {
+  padding-block: 7px;
+  background: color-mix(in srgb, var(--ux-color-paper) 72%, transparent);
+  border-left-color: var(--ux-color-sage);
+}
+
+.message-stream__writer[data-done='true'] .message-stream__badge {
+  background: color-mix(in srgb, var(--ux-color-sage) 26%, transparent);
+  color: var(--ux-color-ink);
+}
+
+.message-stream__compact {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ux-color-muted);
+  font-family: var(--ux-font-human);
+  font-size: 14px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+/* People: a face and a bubble; the player on the other side. */
+.message-stream__said {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: 88%;
+}
+
+.message-stream__said--you {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.message-stream__face {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--ux-radius-avatar);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: var(--ux-glass-well);
+  border: 1px solid var(--ux-glass-line);
+  color: var(--ux-glass-ink);
+  font-size: 13px;
+}
+
+.message-stream__face img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
+}
+
+.message-drawer__peek .message-stream__face { width: 28px; height: 28px; }
+
+.message-stream__bubble {
+  min-width: 0;
+  padding: 8px 12px;
+  border-radius: 4px var(--ux-radius-touch) var(--ux-radius-touch) var(--ux-radius-touch);
+  background: var(--ux-glass-well);
+  border: 1px solid var(--ux-glass-line-soft);
+}
+
+.message-stream__said .message-stream__name { color: var(--ux-glass-muted); }
+.message-stream__said .message-stream__text { font-family: var(--ux-font-human); font-size: 15px; }
+
+.message-stream__said--you .message-stream__bubble {
+  border-radius: var(--ux-radius-touch) 4px var(--ux-radius-touch) var(--ux-radius-touch);
+  background: color-mix(in srgb, var(--ux-glass-accent) 16%, transparent);
+  border-color: color-mix(in srgb, var(--ux-glass-accent) 30%, transparent);
+}
+
+.message-stream__said--you .message-stream__byline { justify-content: flex-end; }
+
+.message-stream__said[data-note='true'] .message-stream__bubble {
+  background: var(--ux-color-paper);
+  color: var(--ux-color-ink);
+}
+
+.message-stream__note-title { display: block; font-size: 13px; margin-bottom: 2px; }
+
+/* A roll: one centred line, coloured by how it came out. */
+.message-stream__dice {
+  align-self: center;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  max-width: 92%;
+  padding: 6px 14px;
+  border-radius: var(--ux-radius-pill);
+  background: var(--ux-glass-well);
+  border: 1px solid var(--ux-glass-line-soft);
+  font-size: 12.5px;
+}
+
+.message-stream__dice-score { font-family: var(--ux-font-machine); color: var(--ux-glass-muted); }
+.message-stream__dice-verdict { font-weight: 700; }
+.message-stream__dice[data-outcome='pass'] .message-stream__dice-verdict { color: var(--ux-glass-pass); }
+.message-stream__dice[data-outcome='crit'] .message-stream__dice-verdict { color: var(--ux-glass-crit); }
+.message-stream__dice[data-outcome='fail'] .message-stream__dice-verdict { color: var(--ux-glass-fail); }
+.message-stream__dice[data-outcome='fumble'] .message-stream__dice-verdict { color: var(--ux-glass-fumble); }
+
+/* A story event: narration with an address. */
+.message-stream__event {
+  padding: 8px 12px;
+  border: 1px solid var(--ux-glass-line-soft);
+  border-left: 3px solid var(--ux-color-blue);
+  background: var(--ux-glass-well);
+}
+
+.message-stream__event .message-stream__mark { color: var(--ux-color-blue); }
+
+/* The flat option rail inside the drawer (ChoiceRail variant="drawer"). */
+.message-drawer__options .choice-rail--drawer {
+  position: static;
+  width: auto;
+  max-height: none;
+  transform: none;
+  pointer-events: auto;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Dusk scenes: the paper dims so it does not glare out of a dark scene. */
+.is-dusk .message-stream__writer {
+  background: color-mix(in srgb, var(--ux-color-paper) 88%, var(--ux-color-dusk-ink));
+  box-shadow: var(--ux-color-dusk-shadow-soft) 0 6px 18px -8px;
+}
+
+/* ── on the canvas (CanvasObject) ──────────────────────────────────────────── */
+
+/* An older chalk leaving for the drawer: it fades, then the canvas drops it. */
+.object[data-chalk-retiring='true'] {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ux-motion-slow) var(--ux-motion-ink);
+}
+
+/* 「在消息里看」: a small tab on the chalk's corner, shown on hover / focus. */
+.chalk-stream-link {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: var(--ux-radius-avatar);
+  border: 1px solid var(--ux-glass-line);
+  background: var(--ux-glass-fill);
+  color: var(--ux-glass-ink);
+  font-size: 13px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--ux-motion-fast) var(--ux-motion-ink);
+}
+
+.object:hover > .chalk-stream-link,
+.object:focus-within > .chalk-stream-link,
+.chalk-stream-link:focus-visible {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .chalk-stream-link { opacity: 0.85; }
+}
+
+/* ── one layout with the people and the writer ────────────── */
+
+/* A stage that yielded to the drawer / the writer keeps its conversation, out of sight. */
+.character-dock__stage[hidden] { display: none; }
+
+/* The writer's input docks to the drawer it rose with: on wide screens beside it, bottom-aligned, so
+   the two read as one unit and never land on the people's column; on narrow screens straight above it.
+   `!important` beats the floating panel's inline left / top (lib/use-floating-panel.ts) only while the
+   drawer is up — on its own the sheet still floats and can be dragged. */
+.airp-prototype[data-stream-open='true'] .writer-fab__sheet {
+  left: calc(max(16px, env(safe-area-inset-left)) + min(560px, calc(100vw - 32px - var(--ux-companion-column) - 96px)) + 12px) !important;
+  top: auto !important;
+  bottom: max(16px, env(safe-area-inset-bottom)) !important;
+}
+
+/* What docks "above the input" on a phone sits above whichever bottom panel is up (lib/drawer-layout.ts). */
+body .tick-said--dock,
+body .tick-invite--dock {
+  bottom: calc(var(--airp-bottom-stack, 138px) + 12px);
+}
+
+body .tick-toast {
+  bottom: calc(var(--airp-bottom-stack, 84px) + 12px);
+}
+
+/* ── narrower screens ──────────────────────────────────────────────────────── */
+
+@media (max-width: 1100px) {
+  .message-drawer[data-crowded='true']:not([data-open='true']) { display: none; }
+  /* With the drawer up, an event card is already in it: the top of a narrow screen stays the writer's. */
+  .airp-prototype[data-stream-open='true'] .story-events { display: none; }
+}
+
+@media (max-width: 700px) {
+  .message-drawer {
+    left: max(12px, env(safe-area-inset-left));
+    right: max(12px, env(safe-area-inset-right));
+    width: auto;
+    bottom: calc(max(24px, env(safe-area-inset-bottom) + 16px) + 60px);
+  }
+
+  .message-drawer[data-open='true'] {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+  }
+
+  .message-drawer__panel {
+    height: 58dvh;
+    border-radius: var(--ux-radius-panel) var(--ux-radius-panel) 0 0;
+    border-bottom: none;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* The writer sits on top of the drawer, full width. */
+  .airp-prototype[data-stream-open='true'] .writer-fab__sheet {
+    left: max(8px, env(safe-area-inset-left)) !important;
+    right: max(8px, env(safe-area-inset-right)) !important;
+    width: auto !important;
+    top: auto !important;
+    bottom: calc(var(--airp-bottom-stack, 58dvh) + 8px) !important;
+    max-height: calc(100dvh - var(--airp-bottom-stack, 58dvh) - 84px);
+  }
+
+  /* The ✎ stays in the bottom-right corner over the drawer: the newest entry scrolls clear of it. */
+  .message-stream,
+  .message-drawer__options { padding-bottom: 76px; }
+
+  .message-drawer__peek { min-height: 40px; }
+  .message-drawer__peek-text { font-size: 14px; }
+  .message-stream__said { max-width: 94%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .message-drawer__panel { animation: none; }
+  .message-stream { scroll-behavior: auto; }
+  .message-stream__entry[data-lit='true'] { animation: none; }
+  .object[data-chalk-retiring='true'] { transition: none; }
+}

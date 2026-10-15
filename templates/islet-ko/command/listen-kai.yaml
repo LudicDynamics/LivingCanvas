@@ -1,0 +1,11 @@
+name: 그늘에서 기타 듣기
+desc: 광장 그늘에 잠시 앉는다. 카이가 있으면 그의 연주를 듣는다
+do:
+  - action: add_state
+    with:
+      target: characters/kai
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "60"

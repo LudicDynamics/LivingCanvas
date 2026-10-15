@@ -1,0 +1,253 @@
+/* 我的记录 / 奖励 / CG tabs of the account popup (components/profile/ProfileTabs.tsx; the design notes),
+   drawn inside the popup's glass sheet (components/account/account-dialog.css). Launcher glass tokens
+   (index.css --ux-glass-*). */
+
+.profile-page {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  min-width: 0;
+  color: var(--ux-glass-ink);
+  font-family: var(--ux-font-ui);
+}
+
+.profile-page__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.profile-page__head h2 { margin: 0; font: 600 22px/1.3 var(--ux-font-ui); letter-spacing: 0.02em; }
+
+.profile-page__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--ux-glass-line-soft);
+  border-radius: 50%;
+  background: var(--ux-glass-well);
+  color: var(--ux-glass-ink);
+  cursor: pointer;
+}
+.profile-page__close:hover, .profile-page__close:focus-visible { background: var(--ux-glass-hover); }
+.profile-page__close svg { width: 18px; height: 18px; }
+
+.profile-page__muted { color: var(--ux-glass-muted); font-size: 13px; line-height: 1.5; margin: 0; }
+.profile-page__fine { color: var(--ux-glass-faint); font-size: 12px; margin: 6px 0 0; }
+
+.profile-page__link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ux-glass-accent);
+  font: 600 13px/1.5 var(--ux-font-ui);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* 「你获得了…」: new badges since the page was last opened. */
+.profile-page__notice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 14px;
+  border: 1px solid rgba(201, 242, 122, 0.4);
+  border-radius: 12px;
+  background: rgba(201, 242, 122, 0.1);
+  font: 600 14px/1.5 var(--ux-font-ui);
+}
+.profile-page__notice svg { flex: none; width: 18px; height: 18px; color: var(--ux-glass-accent); }
+
+.profile-page__signin {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--ux-glass-well);
+  color: var(--ux-glass-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* overview tiles */
+.profile-page__overview { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; }
+.profile-page__tile {
+  display: grid;
+  gap: 4px;
+  align-content: start;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--ux-glass-line-soft);
+  border-radius: 12px;
+  background: var(--ux-glass-well);
+}
+.profile-page__tile-label { color: var(--ux-glass-faint); font-size: 12px; }
+.profile-page__tile-value { font: 600 18px/1.25 var(--ux-font-ui); overflow-wrap: anywhere; }
+.profile-page__tile-note { color: var(--ux-glass-muted); font-size: 11px; }
+
+/* sections */
+.profile-page__section { display: grid; gap: 10px; min-width: 0; padding-top: 14px; border-top: 1px solid var(--ux-glass-line-soft); }
+.profile-page__section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; }
+.profile-page__section h3 { margin: 0; font: 600 16px/1.4 var(--ux-font-ui); }
+.profile-page__section h4 { margin: 6px 0 4px; font: 600 13px/1.4 var(--ux-font-ui); color: var(--ux-glass-muted); }
+.profile-page__section ul { list-style: none; margin: 0; padding: 0; }
+
+/* history */
+.profile-page__history { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.profile-page__run {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 10px;
+  border-radius: 12px;
+  background: var(--ux-glass-well);
+}
+.profile-page__run-cover {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08) center / cover no-repeat;
+}
+.profile-page__run-body { display: grid; gap: 3px; min-width: 0; }
+.profile-page__run-title { margin: 0; font: 600 14px/1.4 var(--ux-font-ui); overflow-wrap: anywhere; }
+.profile-page__run-meta { margin: 0; color: var(--ux-glass-muted); font-size: 12px; line-height: 1.5; }
+.profile-page__run-ending { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin: 0; font-size: 13px; line-height: 1.5; color: var(--ux-glass-crit); }
+.profile-page__run-ending svg { width: 13px; height: 13px; }
+
+.profile-page__endings ul { display: grid; gap: 6px; }
+.profile-page__endings li { display: grid; grid-template-columns: minmax(0, 12em) auto minmax(0, 1fr); gap: 4px 12px; align-items: baseline; font-size: 13px; }
+.profile-page__endings-world { font-weight: 600; overflow-wrap: anywhere; }
+.profile-page__endings-list { color: var(--ux-glass-muted); overflow-wrap: anywhere; }
+
+/* usage: plain bars, no chart library */
+.profile-page__chart {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 4px;
+  height: 140px;
+  padding: 8px 0 0;
+}
+.profile-page__bar { display: grid; grid-template-rows: 1fr auto; gap: 4px; min-width: 0; }
+.profile-page__bar-fill {
+  align-self: end;
+  display: block;
+  width: 100%;
+  min-height: 0;
+  border-radius: 4px 4px 1px 1px;
+  background: var(--ux-glass-accent);
+  opacity: 0.85;
+}
+.profile-page__bar[data-unknown] { background: repeating-linear-gradient(135deg, transparent 0 4px, rgba(255, 255, 255, 0.05) 4px 8px); border-radius: 4px; }
+.profile-page__bar-day { color: var(--ux-glass-faint); font-size: 10px; text-align: center; white-space: nowrap; overflow: hidden; }
+
+.profile-page__worlds ul { display: grid; gap: 6px; }
+.profile-page__worlds li { display: grid; grid-template-columns: minmax(0, 12em) minmax(0, 1fr) 3em; gap: 10px; align-items: center; font-size: 13px; }
+.profile-page__worlds-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.profile-page__worlds-bar { display: block; height: 8px; border-radius: 4px; background: var(--ux-glass-well); overflow: hidden; }
+.profile-page__worlds-bar span { display: block; height: 100%; background: var(--ux-glass-pass); }
+
+/* achievements: earned in colour, locked as a silhouette with its hint */
+.profile-page__badges { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.profile-page__badge {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 14px 10px;
+  border: 1px solid var(--ux-glass-line-soft);
+  border-radius: 12px;
+  background: var(--ux-glass-well);
+  text-align: center;
+}
+.profile-page__badge-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--ux-glass-faint);
+}
+.profile-page__badge-icon svg { width: 22px; height: 22px; }
+.profile-page__badge[data-earned] { border-color: rgba(255, 210, 122, 0.45); }
+.profile-page__badge[data-earned] .profile-page__badge-icon { background: rgba(255, 210, 122, 0.16); color: var(--ux-glass-crit); }
+.profile-page__badge-title { font: 600 13px/1.4 var(--ux-font-ui); }
+.profile-page__badge:not([data-earned]) .profile-page__badge-title { color: var(--ux-glass-faint); }
+.profile-page__badge-hint { color: var(--ux-glass-muted); font-size: 12px; line-height: 1.45; }
+
+/* CG gallery */
+.profile-page__gallery ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
+.profile-page__thumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  border: 1px solid var(--ux-glass-line-soft);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  cursor: zoom-in;
+}
+.profile-page__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.profile-page__thumb:focus-visible { outline: 2px solid var(--ux-glass-accent); outline-offset: 2px; }
+
+.profile-page__viewer {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.88);
+  cursor: zoom-out;
+}
+.profile-page__viewer figure { margin: 0; display: grid; gap: 10px; max-width: min(1280px, 100%); cursor: default; }
+.profile-page__viewer img { max-width: 100%; max-height: calc(100vh - 120px); object-fit: contain; border-radius: 10px; }
+.profile-page__viewer figcaption { color: var(--ux-glass-muted); font-size: 14px; text-align: center; }
+.profile-page__viewer-close { position: absolute; top: 16px; right: 16px; }
+
+@media (max-width: 860px) {
+  .profile-page__overview { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .profile-page__history { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 520px) {
+  .profile-page { padding: 0; }
+  .profile-page__sheet { min-height: 100%; padding: 16px 16px 28px; border: 0; border-radius: 0; gap: 14px; }
+  .profile-page__head h2 { font-size: 19px; }
+  .profile-page__overview { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .profile-page__tile { padding: 10px; }
+  .profile-page__tile-value { font-size: 16px; }
+  .profile-page__endings li { grid-template-columns: minmax(0, 1fr) auto; }
+  .profile-page__endings-list { grid-column: 1 / -1; }
+  .profile-page__worlds li { grid-template-columns: minmax(0, 7em) minmax(0, 1fr) 3em; }
+  .profile-page__badges { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .profile-page__gallery ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .profile-page__chart { height: 110px; gap: 2px; }
+  .profile-page__bar-day { font-size: 9px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-page, .profile-page__viewer { scroll-behavior: auto; }
+}
+
+/* 再玩一次 / share cards / the large CG view */
+.profile-page__run { grid-template-columns: 64px minmax(0, 1fr) auto; }
+.profile-page__again { align-self: center; white-space: nowrap; }
+.profile-page__cards { list-style: none; margin: 0; padding: 0; display: flex; gap: 12px; overflow-x: auto; padding-bottom: 6px; }
+.profile-page__card { flex: 0 0 auto; display: grid; gap: 4px; width: 132px; font-size: 12px; }
+.profile-page__card[data-format="landscape"] { width: 200px; }
+.profile-page__card img { width: 100%; border-radius: 8px; border: 1px solid var(--ux-glass-line-soft); display: block; }
+.profile-page__card-meta { color: var(--ux-glass-muted); }
+.profile-page__card .profile-page__link { justify-self: start; font-size: 12px; }
+.profile-page__cg-view { gap: 14px; }
+.profile-page__cg-view > .profile-page__link { justify-self: start; }
+.profile-page__cg-large { margin: 0; display: grid; gap: 8px; }
+.profile-page__cg-large img { width: 100%; max-height: 56vh; object-fit: contain; border-radius: 12px; background: rgba(0, 0, 0, 0.3); }
+.profile-page__cg-large figcaption { color: var(--ux-glass-muted); font-size: 14px; }
+.profile-page__cg-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }

@@ -1,0 +1,11 @@
+{
+  "sourceRepository": "worldlines-assets",
+  "assets": [
+    {
+      "source": "emberglass-demo/characters/seraphina/base-transparent.webm",
+      "target": "assets/motion/seedance/characters/seraphina-transparent.webm",
+      "bytes": 2317355,
+      "sha256": "90c9ebd4ec96d723410a269c713bd919a05ad759bd7f58f7cf84fc78e2aa736c"
+    }
+  ]
+}

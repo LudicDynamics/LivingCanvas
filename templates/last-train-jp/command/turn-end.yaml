@@ -1,0 +1,8 @@
+name: "一拍終わる"
+desc: "毎拍一つ足す（world.json の experience.turnEnd）：四拍目のあと2号車に出口が出る。"
+do:
+- action: add_state
+  with:
+    target: world
+    state: turns
+    by: '1'

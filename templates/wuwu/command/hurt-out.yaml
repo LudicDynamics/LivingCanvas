@@ -1,0 +1,11 @@
+name: Too Hurt to Move
+desc: "Hidden hit points reach zero (world.json trigger too-hurt): by the time Old Mo finds you with a lamp, you can no longer stand, and the tide and fog swallow the clues together"
+do:
+  - action: event
+    with:
+      target: characters/old-mo
+      title: Old Mo found you
+      text: You lean against a soaked mooring post and can no longer stand. Old Mo comes looking with a lamp and hauls you back to the lighthouse, saying nothing the whole way. The tide rises inch by inch behind you.
+  - action: end
+    with:
+      ending: swallowed

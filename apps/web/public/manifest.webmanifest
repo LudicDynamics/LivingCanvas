@@ -1,0 +1,17 @@
+{
+  "name": "LivingCanvas",
+  "short_name": "LivingCanvas",
+  "description": "Step into living stories — an AI narrative canvas by Worldlines.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#d9d0bf",
+  "theme_color": "#d9d0bf",
+  "icons": [
+    { "src": "/brand/icon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/brand/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/brand/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/brand/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

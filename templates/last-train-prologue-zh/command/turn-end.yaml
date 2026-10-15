@@ -1,0 +1,8 @@
+name: 一回合结束
+desc: 序章的回合计数：玩家每结束一回合加一（world.json 的 experience.turnEnd）。
+do:
+- action: add_state
+  with:
+    target: world
+    state: turns
+    by: '1'

@@ -1,0 +1,16 @@
+name: 花に魚を預ける
+desc: 魚籠を空けて花の帳簿につけてもらい、少し仲良くなる
+do:
+  - action: set_state
+    with:
+      target: player
+      state: fish
+      value: "0"
+  - action: add_state
+    with:
+      target: characters/hana
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "30"

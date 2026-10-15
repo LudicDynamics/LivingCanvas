@@ -1,0 +1,445 @@
+{
+  "id": "last-train-zh",
+  "audio": {
+    "theme": "canvas-mistport"
+  },
+  "name": "末班车 · 中文",
+  "version": "1.0.0",
+  "schema": 1,
+  "description": "山里的末班车停在了隧道正中间，一位乘客从车厢里消失了。五点整列车重新开动——在那之前，找到她，也找到真相。",
+  "intro": {
+    "status": "playable",
+    "category": "trpg",
+    "rank": 4,
+    "hook": "山里的末班车停在隧道正中间，17 号座的乘客不见了。五点列车重新开动之前，找到她。",
+    "genres": [
+      "mystery"
+    ],
+    "loop": [
+      "第一幕：在2车醒来，拿起她的笔记本，掷骰问问醒着的学生",
+      "第二幕：卧铺、餐车、驾驶室，三节车厢各藏一个谜，顺序随你",
+      "第三幕：钥匙打开行李车——时钟一格格走向 05:00"
+    ],
+    "minutes": [
+      25,
+      35
+    ],
+    "difficulty": "standard",
+    "mechanics": [
+      "dice",
+      "clock",
+      "endings",
+      "voice"
+    ],
+    "endings": 2,
+    "characters": [
+      {
+        "id": "xia-cheng",
+        "line": "二十四岁的列车员，是她发现 17 号座空了"
+      },
+      {
+        "name": "老秦",
+        "avatar": "assets/characters/lao-qin.webp",
+        "line": "守着电台的老司机，靴子上全是碎石灰"
+      },
+      {
+        "name": "周子航",
+        "avatar": "assets/characters/zhou-zihang.webp",
+        "line": "戴着耳机、一夜没睡的大学生"
+      }
+    ],
+    "for": [
+      "喜欢密室推理",
+      "想要紧凑的一局",
+      "喜欢倒计时"
+    ]
+  },
+  "author": "Worldlines Canvas / AIRP",
+  "genre": "故事体验",
+  "tags": [
+    "短篇故事",
+    "封闭跑团",
+    "密室"
+  ],
+  "locale": "zh-CN",
+  "material": "parchment",
+  "extensions": [
+    {
+      "id": "airp:note",
+      "version": ">=1.0.0",
+      "optional": false
+    }
+  ],
+  "mode": "closed",
+  "clock": {
+    "path": "world/departure-clock.md",
+    "key": "left",
+    "start": 8,
+    "label": "距离发车",
+    "time": {
+      "start": "01:10",
+      "end": "05:00"
+    }
+  },
+  "endings": [
+    {
+      "id": "found",
+      "title": "找到了她",
+      "path": "endings/found/README.md"
+    },
+    {
+      "id": "departed",
+      "title": "列车开走了",
+      "path": "endings/departed/README.md",
+      "when": "clock <= 0"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "too-hurt",
+      "label": "伤得太重，撑不下去了",
+      "kind": "state",
+      "when": "player.hp <= 0",
+      "do": "collapse"
+    },
+    {
+      "id": "car-two-exits",
+      "label": "2车的出口：问到证词，或在这里待了四拍",
+      "kind": "state",
+      "when": "has(\"world/seated-car/witness-account.md\") || has(\"world/seated-car/witness-half.md\") || has(\"player/witness-account.md\") || has(\"player/witness-half.md\") || world.turns >= 4",
+      "do": "open-exits"
+    }
+  ],
+  "characters": [
+    {
+      "id": "xia-cheng",
+      "name": "夏澄",
+      "home": "world/seated-car",
+      "role": "companion",
+      "description": "这趟末班车的列车员，二十四岁。是她点人数时发现17号座空了。熟悉每一节车厢，但只说自己亲眼看到的事。",
+      "avatar": "assets/characters/xia-cheng.webp"
+    },
+    {
+      "id": "zhong-huaili",
+      "name": "钟怀礼",
+      "home": "world/sleeper",
+      "role": "npc",
+      "description": "3车3号下铺的乘客，铁路分局的老领导，去岭口参加断云隧道事故的纪念会。说自己十一点半就睡了。",
+      "avatar": "assets/characters/zhong-huaili.webp"
+    }
+  ],
+  "opening": {
+    "greeter": "xia-cheng",
+    "replies": [
+      "当然，我帮你找",
+      "抱歉，我睡着了。出什么事了？",
+      "你最后一次看见她是什么时候？"
+    ]
+  },
+  "ui": {
+    "replyChips": true
+  },
+  "player": {
+    "id": "player",
+    "name": "2车18号的乘客",
+    "avatar": "assets/characters/player.webp"
+  },
+  "entry": "world/seated-car",
+  "rules": {
+    "system": "coc",
+    "characterChecks": true
+  },
+  "inspiration": {
+    "per": "clock",
+    "max": 4,
+    "fumble": [
+      {
+        "clock": -1
+      }
+    ]
+  },
+  "createdAt": "2026-09-26T00:00:00Z",
+  "updatedAt": "2026-09-26T00:00:00Z",
+  "cover": "assets/scenes/tunnel-train.webp",
+  "mysteries": [
+    {
+      "id": "who",
+      "question": "是谁把苏禾带离座位、锁进了行李车？",
+      "options": [
+        {
+          "id": "zhong",
+          "label": "3车3号的钟怀礼",
+          "tier": "surface",
+          "clues": [
+            "world/seated-car/witness-account.md",
+            "world/sleeper/pill-strip.md",
+            "player/tea-bill.md"
+          ],
+          "epilogue": "周子航后来在岭口站认出了那件灰呢大衣。他说，那天夜里要是自己多问一句就好了。"
+        },
+        {
+          "id": "driver",
+          "label": "司机老秦",
+          "tier": "wrong"
+        },
+        {
+          "id": "student",
+          "label": "坐在后排的学生周子航",
+          "tier": "wrong"
+        },
+        {
+          "id": "herself",
+          "label": "没有人——苏禾是自己躲起来的",
+          "tier": "wrong"
+        }
+      ]
+    },
+    {
+      "id": "tea",
+      "question": "苏禾为什么会迷迷糊糊地跟着人往车尾走？",
+      "options": [
+        {
+          "id": "sleeping-pills",
+          "label": "餐车那杯茶里被放了安眠药",
+          "tier": "surface",
+          "clues": [
+            "world/sleeper/pill-strip.md",
+            "player/tea-bill.md"
+          ],
+          "epilogue": "化验单出来那天，老贺把4号桌那两只茶杯的事又讲了一遍。他说以后谁记别人的账请喝茶，他都要多看一眼。"
+        },
+        {
+          "id": "motion-sick",
+          "label": "她真的晕车，需要透透气",
+          "tier": "wrong"
+        },
+        {
+          "id": "willing",
+          "label": "她自愿去车尾见一个人",
+          "tier": "wrong"
+        }
+      ]
+    },
+    {
+      "id": "key",
+      "question": "行李车的钥匙是怎么到了犯人手里，后来又去了哪？",
+      "options": [
+        {
+          "id": "cab-to-coal",
+          "label": "趁司机下车、驾驶室没人时从钥匙板上拿走，回来不敢挂回，扔进了餐车的煤斗",
+          "tier": "surface",
+          "clues": [
+            "player/repair-notice.md",
+            "world/dining-car/freight-key.md"
+          ],
+          "epilogue": "老秦从那以后把钥匙板锁进了铁皮柜。他说，懂铁路的人最知道钥匙挂在哪，也最不该碰它。"
+        },
+        {
+          "id": "conductor",
+          "label": "列车员夏澄借给了他，他用完就还了",
+          "tier": "wrong"
+        },
+        {
+          "id": "su-he-key",
+          "label": "钥匙一直在苏禾自己身上",
+          "tier": "wrong"
+        }
+      ]
+    },
+    {
+      "id": "motive",
+      "question": "他为什么非要让苏禾今晚消失？",
+      "options": [
+        {
+          "id": "memorial",
+          "label": "苏禾要他在事故纪念会上当众认下十二年前的事",
+          "tier": "surface",
+          "clues": [
+            "player/su-he-notebook.md",
+            "player/su-he-testimony.md",
+            "world/freight-car/logbook-page.md",
+            "world/freight-car/torn-corner.md"
+          ],
+          "epilogue": "纪念会照常开了，只是台上少了一个发言的人。苏禾坐在第一排，手里攥着一张车票。"
+        },
+        {
+          "id": "red-light",
+          "label": "十二年前 01:12，是他在电话里下令“红灯放行”；苏长庚照办了，还把这句话记在了行车日志上",
+          "tier": "hidden",
+          "title": "01:12 的红灯",
+          "clues": [
+            "world/freight-car/logbook-page.md"
+          ],
+          "epilogue": "那页日志后来被复印了很多份。断云隧道的纪念碑上，苏长庚的名字旁边多了一行小字：他提出过异议。苏禾在碑前站了很久，说爸爸，这回有人听见了。"
+        },
+        {
+          "id": "money",
+          "label": "为了钱，苏禾手里有他受贿的账本",
+          "tier": "wrong"
+        },
+        {
+          "id": "threat",
+          "label": "苏禾威胁要伤害他，他只是自保",
+          "tier": "wrong"
+        }
+      ]
+    }
+  ],
+  "reckoning": {
+    "epilogues": {
+      "all": "那一夜的每一环你都看清了：一杯茶、一把钥匙、一扇锁上的门，还有十二年前那一分钟。夏澄后来说，那天坐在18号的人，是整趟车上唯一没睡着的人。",
+      "most": "那一夜的事，你看清了大半。剩下的几环，是后来岭口的调查组一点点补上的——可最先开口问“17号去哪了”的，是你。",
+      "few": "那一夜像隧道里的雾，你只摸到了几处轮廓。很多年后你还会想起那趟停在山腹里的末班车，想起17号座上那件没人认领的外套。"
+    }
+  },
+  "view": {
+    "default": "map"
+  },
+  "tutorial": {
+    "firstLine": {
+      "en": "Sorry — I must have dozed off. What's going on?",
+      "zh-CN": "不好意思，我刚才睡着了。出什么事了？",
+      "ja": "すみません、眠ってしまって……何があったんですか？",
+      "ko": "죄송해요, 깜빡 잠들었네요. 무슨 일이에요?"
+    }
+  },
+  "experience": {
+    "kind": "story",
+    "turnEnd": "turn-end"
+  },
+  "tick": {
+    "every": 5,
+    "window": 1,
+    "grace": 2,
+    "budget": 4,
+    "landCap": 3,
+    "chooser": "rules",
+    "wip": true,
+    "pace": {
+      "pageGrace": 2,
+      "lineGap": 4,
+      "cooldown": 7,
+      "chatter": 4,
+      "chatterChance": 0.3
+    },
+    "deny": [
+      "安眠药",
+      "日志页",
+      "煤斗",
+      "红灯",
+      "十二年前",
+      "01:12",
+      "苏长庚"
+    ],
+    "actors": {
+      "xia-cheng": {
+        "goal": "夏澄：陪乘客找到17号的姑娘；看这节查完了，就催一句往下走",
+        "moves": [
+          {
+            "id": "nudge-on",
+            "verb": "speak",
+            "suggest": [
+              {
+                "card": "world/seated-car/README.md",
+                "option": "go-sleeper"
+              },
+              {
+                "card": "world/seated-car/README.md",
+                "option": "go-train"
+              }
+            ]
+          },
+          {
+            "id": "chat",
+            "verb": "speak"
+          },
+          {
+            "id": "invite",
+            "verb": "invite"
+          }
+        ]
+      },
+      "zhou-zihang": {
+        "card": "world/seated-car/zhou-zihang.md",
+        "goal": "周子航：别被卷进去",
+        "moves": [
+          {
+            "id": "glance-seat",
+            "verb": "approach",
+            "target": "world/seated-car/su-he-notebook.md",
+            "weight": 1,
+            "run": "tick-zhou-zihang-glance",
+            "label": {
+              "intent": "周子航 → 17号座",
+              "landed": "周子航摘下一只耳机，盯着17号的空座看了一会儿，又戴上了。",
+              "stopped": "周子航对上你的目光，赶紧低头去摆弄耳机线。"
+            },
+            "counter": [
+              "talk",
+              "guard"
+            ]
+          },
+          {
+            "id": "mutter",
+            "verb": "speak"
+          }
+        ]
+      },
+      "lao-he": {
+        "card": "world/dining-car/lao-he.md",
+        "goal": "老贺：回去接着睡，别担责任",
+        "moves": [
+          {
+            "id": "wipe-table",
+            "verb": "mark",
+            "target": "world/dining-car/two-teacups.md",
+            "weight": 1,
+            "run": "tick-lao-he-wipe",
+            "label": {
+              "intent": "老贺 → 4号桌的茶杯",
+              "landed": "老贺拿抹布在4号桌边擦了两下，看了看那两只杯子，没收，又坐回去打盹。",
+              "stopped": "老贺把抹布往肩上一搭：「不动不动，你们查。」"
+            },
+            "counter": [
+              "talk",
+              "guard"
+            ]
+          },
+          {
+            "id": "grumble",
+            "verb": "speak"
+          },
+          {
+            "id": "invite",
+            "verb": "invite"
+          }
+        ]
+      },
+      "zhong-huaili": {
+        "goal": "钟怀礼：让夜里平平静静地过去",
+        "moves": [
+          {
+            "id": "fix-coat",
+            "verb": "approach",
+            "target": "world/sleeper/grey-coat.md",
+            "weight": 1,
+            "run": "tick-zhong-huaili-coat",
+            "label": {
+              "intent": "钟怀礼 → 门口的大衣",
+              "landed": "钟怀礼披着毯子起身，把门口那件大衣的领子理平，又慢慢躺了回去。",
+              "stopped": "钟怀礼看了你一眼，把手缩回毯子里：「夜里冷，年轻人。」"
+            },
+            "counter": [
+              "talk",
+              "guard"
+            ]
+          },
+          {
+            "id": "murmur",
+            "verb": "speak"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+name: 時間が一歩進む
+desc: 判定をするたびに発車へ一歩近づく。うまくいかなければもう一歩。
+do:
+- action: tick
+  with:
+    by: '-1'
+- action: tick
+  when: roll.passed == false
+  with:
+    by: '-1'

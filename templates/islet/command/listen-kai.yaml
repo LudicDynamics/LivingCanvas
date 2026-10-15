@@ -1,0 +1,11 @@
+name: Listen in the shade
+desc: Sit a while in the shade of the square; if Kai is there, listen to him play
+do:
+  - action: add_state
+    with:
+      target: characters/kai
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "60"

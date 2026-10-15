@@ -1,0 +1,11 @@
+name: 나기와 그물 깁기
+desc: 모래에 앉아 나기와 그물을 깁는다
+do:
+  - action: add_state
+    with:
+      target: characters/nagi
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "60"

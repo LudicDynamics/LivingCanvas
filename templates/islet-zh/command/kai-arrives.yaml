@@ -1,0 +1,17 @@
+name: 海下了渡轮
+desc: 那个一直坐在渡轮甲板上的旅人终于提着行李下了船
+do:
+  - action: set_state
+    with:
+      target: world
+      state: kai_arrived
+      value: "true"
+  - action: event
+    with:
+      target: world/dock
+      title: 渡轮带来了新人
+      text: 渡轮靠岸时，那个总抱着吉他坐在甲板上的人提着一只小箱子走下了栈桥。他朝灯真点点头，说想在岛上住一阵子。花已经在问他要不要租店楼上的空房间了。
+  - action: show_cg
+    with:
+      path: assets/cg/ferry-arrival.webp
+      caption: 渡轮带来了新人。

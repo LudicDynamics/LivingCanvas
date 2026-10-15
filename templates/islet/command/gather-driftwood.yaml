@@ -1,0 +1,16 @@
+name: Gather driftwood for the boatyard
+desc: Each load of driftwood brings the old boat a step closer to the water
+do:
+  - action: add_state
+    with:
+      target: world
+      state: boat_progress
+      by: "1"
+  - action: add_state
+    with:
+      target: characters/kenta
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "90"

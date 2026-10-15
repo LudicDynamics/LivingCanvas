@@ -1,0 +1,22 @@
+{
+  "barks": [
+    "Ink never comes out. You learn.",
+    "Every line has its time in the log.",
+    "Mind the type cases, sir.",
+    "Presses don't wait for anyone."
+  ],
+  "emotes": [
+    "dots",
+    "music",
+    "sigh"
+  ],
+  "chats": [
+    {
+      "with": "blackburn",
+      "barks": [
+        "The forme's locked, sir.",
+        "Then check it again, Hale."
+      ]
+    }
+  ]
+}

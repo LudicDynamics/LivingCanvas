@@ -1,0 +1,6 @@
+name: '先顾伊迪丝'
+desc: '华生带伊迪丝从后门离开：人保住了，韦恩也看出了风声'
+do:
+  - action: end
+    with:
+      ending: half-truth

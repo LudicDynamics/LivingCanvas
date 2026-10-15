@@ -1,0 +1,314 @@
+/*
+ * Ambient life (components/canvas/AmbientLayer.tsx, the design notes).
+ *
+ * Decorative only: pointer-events none, aria-hidden, compositor properties
+ * (transform / translate / scale / rotate / opacity). Stacking reuses the
+ * registered overlay depth token (no numeric z-index). Ambient pointers sit
+ * just under the real ones and are quieter: smaller, softer, translucent tag.
+ */
+
+.ambient-host {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ambient-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: var(--depth-overlay);
+}
+
+.ambient-cursor {
+  --ambient-color: var(--ambient-hue, var(--ux-color-rust));
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  will-change: transform;
+  transition: opacity 600ms ease-out;
+  animation: ambient-fade-in 700ms ease-out backwards;
+}
+
+/* The real pointer for this agent is up: step aside. */
+.ambient-cursor[data-yielded='true'] {
+  opacity: 0;
+}
+
+/* Parked at the edge of the view: half there. */
+.ambient-cursor[data-resting='true'] {
+  opacity: 0.55;
+}
+
+.ambient-cursor__body {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 1px;
+  transform: scale(var(--ambient-scale, var(--map-pin-scale, 1)));
+  transform-origin: 0 0;
+}
+
+.ambient-cursor__pointer {
+  flex: none;
+  filter: drop-shadow(0 1px 2px rgba(35, 28, 20, 0.3));
+}
+
+.ambient-cursor__pointer path {
+  fill: var(--ambient-color);
+  stroke: var(--ux-color-cream);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.ambient-cursor__tag {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  margin-top: 16px;
+  padding: 2px 8px 3px;
+  max-width: 200px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ambient-color) 88%, transparent);
+  color: var(--ux-color-cream);
+  box-shadow: var(--ux-shadow-soft);
+  font-family: var(--ux-font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.ambient-cursor__pip {
+  font-weight: 500;
+  opacity: 0.9;
+  animation: ambient-pip 1.2s ease-in-out infinite;
+}
+
+.ambient-cursor[data-writing='true'] .ambient-cursor__pointer {
+  animation: ambient-scribble 900ms ease-in-out infinite;
+}
+
+/* Tap ripple: the attribute flips 0/1 per tap so the animation restarts. */
+.ambient-cursor__ripple {
+  position: absolute;
+  left: -10px;
+  top: -10px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--ambient-color);
+  opacity: 0;
+}
+
+.ambient-cursor[data-tap='0'] .ambient-cursor__ripple {
+  animation: ambient-ripple-a 520ms ease-out;
+}
+
+.ambient-cursor[data-tap='1'] .ambient-cursor__ripple {
+  animation: ambient-ripple-b 520ms ease-out;
+}
+
+/* Phones and reduced motion: a small presence dot, no pointer, no travel. */
+.ambient-cursor[data-dot='true'] .ambient-cursor__pointer,
+.ambient-cursor[data-dot='true'] .ambient-cursor__ripple,
+.ambient-cursor[data-dot='true'] .ambient-cursor__name {
+  display: none;
+}
+
+.ambient-cursor[data-dot='true'] .ambient-cursor__body::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ambient-color);
+  box-shadow: 0 0 0 2px var(--ux-color-cream);
+}
+
+.ambient-cursor[data-dot='true'] .ambient-cursor__tag {
+  margin: 0 0 0 4px;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  color: var(--ambient-color);
+}
+
+.ambient-cursor[data-dot='true'][data-writing='false'] .ambient-cursor__tag {
+  display: none;
+}
+
+/* "Selecting" a line of a card: a soft highlight that sweeps, then lets go. */
+.ambient-selection {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--ambient-hue, var(--ux-color-rust)) 22%, transparent);
+  outline: 1px solid color-mix(in srgb, var(--ambient-hue, var(--ux-color-rust)) 45%, transparent);
+  transition: width 900ms var(--ux-motion-ink);
+  animation: ambient-fade-in 200ms ease-out backwards;
+}
+
+/* Bubbles: anchored above a head (world px), counter-scaled to one on-screen size. */
+.ambient-bubble {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.ambient-bubble__inner {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: block;
+  width: max-content;
+  max-width: 240px;
+  padding: 6px 12px 7px;
+  border-radius: 14px;
+  background: var(--ux-color-cream);
+  color: var(--ux-color-ink);
+  border: 1.5px solid color-mix(in srgb, var(--ambient-hue, var(--ux-color-ink)) 55%, transparent);
+  box-shadow: var(--ux-shadow-soft);
+  font-family: var(--ux-font-human);
+  font-size: 15px;
+  line-height: 1.35;
+  transform: translateX(-50%) scale(var(--ambient-scale, var(--map-pin-scale, 1)));
+  transform-origin: 50% 100%;
+  animation: ambient-bubble-in 260ms var(--ux-motion-ink) backwards;
+}
+
+.ambient-bubble__inner::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  background: inherit;
+  border-right: inherit;
+  border-bottom: inherit;
+  rotate: 45deg;
+}
+
+.ambient-bubble[data-kind='emote'] .ambient-bubble__inner,
+.ambient-bubble[data-kind='murmur'] .ambient-bubble__inner {
+  padding: 3px 10px 4px;
+  font-family: var(--ux-font-ui);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.ambient-bubble__emote {
+  display: inline-block;
+  color: var(--ambient-hue, var(--ux-color-rust));
+  animation: ambient-bob 1.6s ease-in-out infinite;
+}
+
+.ambient-bubble__murmur {
+  display: inline-flex;
+  gap: 4px;
+  padding: 6px 2px;
+}
+
+.ambient-bubble__murmur i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ux-color-ink) 60%, transparent);
+  animation: ambient-murmur 1.1s ease-in-out infinite;
+}
+
+.ambient-bubble__murmur i:nth-child(2) { animation-delay: 160ms; }
+.ambient-bubble__murmur i:nth-child(3) { animation-delay: 320ms; }
+
+/* Idle avatars breathe and sway a little (AmbientLayer sets the attribute on the
+   world layer). Individual `scale` / `translate`, so the presence slide on the
+   shell's `transform` and the anchor's entry animation are untouched. */
+[data-ambient-life='on'] .presence-avatar__body {
+  animation: ambient-breathe 5.6s ease-in-out infinite;
+}
+
+[data-ambient-life='on'] .presence-avatar:nth-of-type(2n) .presence-avatar__body {
+  animation-duration: 6.4s;
+  animation-delay: -2.1s;
+}
+
+[data-ambient-life='on'] .presence-avatar:nth-of-type(3n) .presence-avatar__body {
+  animation-duration: 5.1s;
+  animation-delay: -3.4s;
+}
+
+[data-ambient-life='on'] .npc-card__portrait {
+  animation: ambient-breathe 6s ease-in-out infinite;
+}
+
+/* The picture map's people pins breathe too. */
+[data-ambient-life='on'] .map-pin--character:not(.is-fresh) .map-pin__icon,
+[data-ambient-life='on'] .map-pin--npc:not(.is-fresh) .map-pin__icon {
+  animation: ambient-breathe 5.8s ease-in-out infinite;
+}
+
+@keyframes ambient-breathe {
+  0%, 100% { scale: 1; }
+  45% { scale: 1.025; }
+}
+
+@keyframes ambient-fade-in {
+  from { opacity: 0; }
+}
+
+@keyframes ambient-bubble-in {
+  from { opacity: 0; translate: 0 6px; }
+}
+
+@keyframes ambient-bob {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -3px; }
+}
+
+@keyframes ambient-murmur {
+  0%, 60%, 100% { opacity: 0.35; translate: 0 0; }
+  30% { opacity: 1; translate: 0 -3px; }
+}
+
+@keyframes ambient-pip {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+@keyframes ambient-scribble {
+  0%, 100% { translate: 0 0; rotate: 0deg; }
+  25% { translate: 3px 1px; rotate: -4deg; }
+  50% { translate: -1px 2px; rotate: 2deg; }
+  75% { translate: 2px -1px; rotate: -2deg; }
+}
+
+@keyframes ambient-ripple-a {
+  from { opacity: 0.9; scale: 0.3; }
+  to { opacity: 0; scale: 1.6; }
+}
+
+@keyframes ambient-ripple-b {
+  from { opacity: 0.9; scale: 0.3; }
+  to { opacity: 0; scale: 1.6; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-cursor,
+  .ambient-cursor__pointer,
+  .ambient-cursor__pip,
+  .ambient-bubble__inner,
+  .ambient-bubble__emote,
+  .ambient-bubble__murmur i,
+  .ambient-selection,
+  [data-ambient-life] .presence-avatar__body,
+  [data-ambient-life] .npc-card__portrait,
+  [data-ambient-life] .map-pin__icon {
+    animation: none !important;
+    transition: opacity 120ms linear;
+  }
+}

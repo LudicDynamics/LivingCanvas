@@ -1,0 +1,8 @@
+name: A turn ends
+desc: 'The prologue counts turns: one more each time a player turn ends (world.json experience.turnEnd).'
+do:
+- action: add_state
+  with:
+    target: world
+    state: turns
+    by: '1'

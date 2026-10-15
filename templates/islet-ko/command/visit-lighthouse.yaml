@@ -1,0 +1,11 @@
+name: 스즈 할머니와 하늘 보기
+desc: 등대에 올라 그녀와 구름과 바다를 본다
+do:
+  - action: add_state
+    with:
+      target: characters/suzu
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "60"

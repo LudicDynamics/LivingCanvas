@@ -1,0 +1,16 @@
+name: 把鱼交给花寄卖
+desc: 鱼篓清空，花记在账上，你们也更熟了
+do:
+  - action: set_state
+    with:
+      target: player
+      state: fish
+      value: "0"
+  - action: add_state
+    with:
+      target: characters/hana
+      state: bond
+      by: "1"
+  - action: pass_time
+    with:
+      minutes: "30"

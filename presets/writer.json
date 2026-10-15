@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "id": "writer",
+  "name": "Writer",
+  "description": "The lead narrator and director of the AIRP world",
+  "hiddenOverrides": {
+    "compaction": {
+      "systemPrompt": "You are the continuity script for an interactive narrative world. You read a transcript and produce a summary that the Writer will rely on after the earlier turns are gone. Do NOT continue the story, do NOT invent events, and do NOT respond to anyone in the transcript. Output ONLY the structured summary.",
+      "initialPrompt": "<conversation>\n{conversation}\n</conversation>\n\nSummarize the transcript above as the Writer's continuity record. Another LLM reads this after the original turns are gone, so it must be able to continue without re-reading them. Use this EXACT format:\n\n## Scene\n[Where the player is now, and how they got there. Name the layer and the path.]\n\n## Outstanding action\n[An action of the player's that nothing has yet narrated the outcome of. Write \"(none)\" if every action has been answered.]\n\n## Promises and pacts\n[Anything the player or a character committed to. Write \"(none)\" if none.]\n\n## Dice results\n[Every check that resolved and its outcome, kept in order. Write \"(none)\" if none.]\n\n## Relationships\n[How any character's stance toward the player has changed, and why. Write \"(none)\" if none.]\n\n## Open threads\n[Unresolved clues, unopened doors, questions the player has not answered. Write \"(none)\" if none.]\n\n## Canon facts\n[Facts the world has already established that must not be contradicted.]\n\nKeep each section to a few lines. Preserve exact file paths, card names, and dice numbers verbatim.",
+      "updatePrompt": "<previous-summary>\n{previous_summary}\n</previous-summary>\n\n<conversation>\n{conversation}\n</conversation>\n\nThe messages above are NEW turns to fold into the existing summary in <previous-summary>. Never drop a promise, a dice result, or a relationship change that is already recorded there — carry every one of them forward. Rules:\n- PRESERVE the existing sections; UPDATE them rather than rewriting from scratch.\n- Move an entry out of \"Outstanding action\" only once its outcome is narrated.\n- Keep dice results and their numbers verbatim.\n- \"Canon facts\" only grows; contradictions are resolved in favour of the newer turn, and the old line is replaced.\n\nUse the SAME format as the previous summary.",
+      "turnPrefixPrompt": "<conversation>\n{conversation}\n</conversation>\n\nThis is the OPENING of a story turn too large to keep whole; the recent part is retained. Summarize only what the retained part needs in order to be understood:\n- the player's action that started this turn;\n- any dice result or choice resolved in this opening;\n- promises made here.\nBe short. Do not restate the whole scene.",
+      "branchSummaryPrompt": "<conversation>\n{conversation}\n</conversation>\n\nSummarize this abandoned branch so it can be restored later without the Writer re-reading it. Keep, at most:\n\n## Where the branch turned\n[The last state of the world in this branch.]\n\n## What was promised or resolved\n[Promises, pacts, dice outcomes, relationship changes — verbatim.]\n\n## Why it was abandoned\n[One line, or \"(unknown)\".]\n\nPreserve exact paths and names."
+    }
+  },
+  "tools": {
+    "deny": [
+      "bash",
+      "recall",
+      "retrieve",
+      "memorize",
+      "revise",
+      "forget",
+      "relocate",
+      "associate",
+      "trigger",
+      "consolidate",
+      "retrace",
+      "set_time",
+      "awaken",
+      "get_state",
+      "state_update"
+    ]
+  },
+  "items": [
+    { "kind": "slot", "id": "writer-instruction", "slot": "writer-char" },
+    { "kind": "slot", "id": "tools", "slot": "tools", "options": { "onlyWithSnippets": true } },
+    {
+      "kind": "slot",
+      "id": "tool-guidelines",
+      "slot": "tool-guidelines",
+      "options": { "includePiDefaultGuidelines": false, "heading": "Guidelines:" }
+    },
+    { "kind": "slot", "id": "skills", "slot": "skills" },
+    { "kind": "slot", "id": "chat-history", "slot": "chat-history" }
+  ]
+}

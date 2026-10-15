@@ -1,0 +1,23 @@
+name: "네 번째 실마리 못 박기: 두 번째 항적"
+desc: 해도 위의 결정적 판정 성공(60 이하) 또는 돌아가기 이후, '두 번째 항적'을 증거로서 가방에 넣고 해도에 체크한다
+do:
+  - action: give
+    with:
+      path: player/second-wake.md
+      title: 증거 · 안개 속의 두 번째 항적
+      frontmatter:
+        type: note
+        portable: true
+      body: |
+        해도 위에 두 개의 항적이 나란히 그려져 있다: 하나는 7번 부두로 떠내려온 무인선이고, 다른 하나는 옛 세관 터널 입구에서 나와 그 배에 바짝 붙어 스쳐 지나간 뒤 다시 안개 속으로 접어든다.
+
+        두 번째 항적은 흘수가 깊다. 등대가 꺼진 십이 분 동안 유일하게 지나갈 수 있는 수로를 그대로 따라간다. 장부에 없는 그 배가 바로 이것이다.
+  - action: set_status
+    with:
+      path: world/harbor-chart/05-accuse.md
+      values:
+        wake: yes
+  - action: edit
+    with:
+      path: world/harbor-chart/05-accuse.md
+      append_body: "✓ 해도 위에 실마리를 못 박았다: 안개 속에 두 번째 항적이 있다."

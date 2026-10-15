@@ -1,0 +1,18 @@
+name: World or content issue
+description: A problem in a bundled world (text, translation, art, a puzzle that can't be solved)
+labels: [content]
+body:
+  - type: input
+    id: world
+    attributes:
+      label: World and language
+      placeholder: "e.g. whitechapel-zh"
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What's wrong
+      description: Quote the text or describe the place / card / item.
+    validations:
+      required: true

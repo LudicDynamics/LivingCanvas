@@ -1,0 +1,8 @@
+name: "캐릭터 턴: 허 영감이 4번 테이블을 닦는다"
+desc: "허 영감이 4번 테이블 가장자리를 닦는다: 찻잔은 치우지 않고 그대로 둔다."
+do:
+- action: set_status
+  with:
+    path: world/dining-car/lao-he.md
+    values:
+      wiped_table: 'yes'

@@ -1,0 +1,8 @@
+name: "キャラクターターン：鐘懐礼がコートを整える"
+desc: "鐘懐礼が起きて戸口のコートの襟を整える：コートは元のまま、何もなくならない。"
+do:
+- action: set_status
+  with:
+    path: world/sleeper/grey-coat.md
+    values:
+      straightened: 'yes'

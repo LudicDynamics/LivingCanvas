@@ -1,0 +1,11 @@
+name: 伤得走不动了
+desc: 隐藏生命值归零（world.json 触发器 too-hurt）：老莫举着灯找到你时，你已经站不起来，潮水和雾把线索一起吞了
+do:
+  - action: event
+    with:
+      target: characters/old-mo
+      title: 老莫找到了你
+      text: 你靠着一根湿透的缆桩，再也站不起来。老莫举着灯找过来，把你架回灯塔，一路没说话。潮水在身后一寸寸涨上来。
+  - action: end
+    with:
+      ending: swallowed

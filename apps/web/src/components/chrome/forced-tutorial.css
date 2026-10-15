@@ -1,0 +1,111 @@
+/* Forced first-run tutorial: a dim mask with one cut-out. The mask itself never
+   takes pointer events — ForcedTutorial swallows presses outside the cut-out at
+   the window's capture phase, so the highlighted element keeps working natively. */
+.forced-tutorial {
+  position: fixed;
+  inset: 0;
+  z-index: var(--depth-chrome-tutorial);
+  pointer-events: none;
+}
+
+.forced-tutorial__hole {
+  position: fixed;
+  border-radius: 10px;
+  box-shadow: 0 0 0 200vmax rgba(8, 8, 12, 0.62);
+  outline: 2px solid rgba(255, 226, 150, 0.95);
+  outline-offset: 0;
+  transition: top 120ms ease, left 120ms ease, width 120ms ease, height 120ms ease;
+  animation: forced-tutorial-pulse 1.6s ease-in-out infinite;
+}
+
+/* No target on screen: dim lightly and let presses through. */
+.forced-tutorial__veil {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 8, 12, 0.35);
+}
+
+/* A performance is playing (or just ended): no mask, no caption — the stage is
+   the point. Only the way out stays, small, in a corner. */
+.forced-tutorial__pause {
+  position: fixed;
+  left: 16px;
+  /* Above the player's own badge in the bottom-left corner. */
+  bottom: 88px;
+  display: flex;
+  gap: 12px;
+  padding: 6px 12px;
+  border-radius: var(--ux-radius-pill);
+  border: 1px solid var(--ux-color-line);
+  background: var(--ux-color-cream);
+  box-shadow: var(--ux-shadow-halo);
+  pointer-events: auto;
+}
+
+.forced-tutorial__bubble {
+  position: fixed;
+  box-sizing: border-box;
+  max-width: calc(100vw - 32px);
+  /* The same bubble as the onboarding guide and the teach-once cards. */
+  padding: 12px 14px;
+  border-radius: var(--ux-radius-panel);
+  border: 1px solid var(--ux-color-line);
+  background: var(--ux-color-cream);
+  color: var(--ux-color-ink);
+  box-shadow: var(--ux-shadow-halo);
+  font-size: 14px;
+  line-height: 1.5;
+  pointer-events: auto;
+}
+
+.forced-tutorial__caption {
+  margin: 0;
+  font-family: var(--ux-font-hand);
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+.forced-tutorial__quote {
+  margin: 6px 0 0;
+  color: var(--ux-color-muted);
+}
+
+.forced-tutorial__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px 14px;
+  margin-top: 10px;
+}
+
+.forced-tutorial__skip {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ux-color-muted);
+  font-family: var(--ux-font-ui);
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.forced-tutorial__done {
+  margin-left: auto;
+  padding: 4px 14px;
+  border: 0;
+  border-radius: var(--ux-radius-pill);
+  background: var(--ux-color-ink);
+  color: var(--ux-color-cream);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+@keyframes forced-tutorial-pulse {
+  0%, 100% { outline-color: rgba(255, 226, 150, 0.95); }
+  50% { outline-color: rgba(255, 226, 150, 0.4); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .forced-tutorial__hole { animation: none; transition: none; }
+}

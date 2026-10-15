@@ -1,0 +1,18 @@
+name: 收成
+desc: 把熟了的庄稼收进来，重新播种
+do:
+  - action: set_state
+    with:
+      target: world
+      state: farm_growth
+      value: "1"
+  - action: add_state
+    with:
+      target: characters/ren
+      state: bond
+      by: "1"
+  - action: event
+    with:
+      target: world/farm
+      title: 收成
+      text: 一垄垄的萝卜拔出来，堆在田埂上白花花一片。莲隔着矮墙探过头来，笑着帮你把它们装进筐里，又帮你撒下了下一季的种子。

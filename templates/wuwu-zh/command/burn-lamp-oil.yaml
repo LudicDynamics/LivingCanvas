@@ -1,0 +1,19 @@
+name: 灯油烧光了
+desc: 判定落在 96–100 时，手里那一份灯油在慌乱里点光了，只剩一个空瓶
+do:
+  - action: move
+    with:
+      from: player/lamp-oil.md
+      to: player/empty-oil-flask.md
+  - action: edit
+    with:
+      path: player/empty-oil-flask.md
+      frontmatter:
+        title: 空油瓶 · 灯油已经烧光
+        status:
+          data:
+            oil: empty
+      body: |
+        瓶底只剩一圈发黑的油渍。刚才慌乱中点起的那一下光，把一次的量全烧掉了。
+
+        雾里再出事，就没有灯可以点了。

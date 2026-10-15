@@ -1,0 +1,17 @@
+name: 遠回り：古い灯台
+desc: 古い灯台の調査ダイスを全部振り切らなかった後、老モーに日誌を一分ずつ照合してもらう。潮を一段余分に使う。手元の半本の糸（潮汐表）が完全な証拠になる
+do:
+  - action: edit
+    when: has("player/customs-tunnel-half.md")
+    with:
+      path: player/customs-tunnel-half.md
+      frontmatter:
+        title: 半本の糸・補完済み（鞄の中の証拠を参照）
+  - action: set_status
+    with:
+      path: world/harbor-chart/old-lighthouse/05-long-way.md
+      values:
+        done: yes
+  - action: tick
+    with:
+      by: "-1"
