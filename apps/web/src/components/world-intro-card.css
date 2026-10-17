@@ -162,6 +162,13 @@
   font: 600 clamp(8px, 2.1cqw, 11px)/1.2 ui-monospace, "SFMono-Regular", monospace; letter-spacing: .04em;
 }
 .world-launcher__tile.is-locked .world-launcher__image { filter: grayscale(.6) brightness(.75); }
+/* The local edition's lock on a shared world (lib/play-gate.ts accountTileLocked): hover, focus or a long press says why. */
+.world-launcher__lock-tip {
+  justify-self: start; max-width: 100%;
+  padding: 4px 9px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, .3);
+  background: rgba(10, 11, 18, .78);
+  font: 500 clamp(9px, 2.3cqw, 12px)/1.35 var(--ux-font-ui, system-ui), sans-serif;
+}
 
 /* Phones, upright: a bottom sheet. */
 @media (max-width: 640px) {

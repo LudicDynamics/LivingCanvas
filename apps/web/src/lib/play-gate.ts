@@ -19,6 +19,7 @@
  *   - no account system at all (an old local server without `/api/remote/*`,
  *     or `AIRP_PLAY_WITHOUT_ACCOUNT=1`): play is never blocked.
  */
+import { useEffect, useState } from 'react';
 import { ACCOUNT_CHANGED_EVENT, openAccountPanel, type AccountReason } from './account-open.js';
 
 export type AccountMode =
@@ -50,6 +51,23 @@ export function gateDecision(mode: AccountMode, target: GateTarget = 'account'):
   if (mode.kind === 'hosted') return mode.signedIn ? 'go' : 'sign-in-hosted';
   if (mode.kind === 'local') return mode.signedIn || !mode.required || (mode.sharedOnly && target === 'local') ? 'go' : 'sign-in-local';
   return 'go';
+}
+
+/**
+ * The lobby tile's lock for a shared world: the local edition with login on, signed out, marks
+ * the tiles that only open with the account — a world shared through the Worldlines services (`published/…`) with
+ * nothing of it on this computer (no original of the author's, no save). It asks the same `gateDecision` the click
+ * does, so the mark and the sign-in prompt never disagree. Templates, saves, login off, the remote edition (its
+ * own lock is the guest trial's, lib/guest-trial.ts) and a signed-in player: never.
+ */
+export function accountTileLocked(
+  mode: AccountMode | null,
+  group: { templatePath: string | null; workshop?: { editPath: string | null } | null; saves?: readonly unknown[] },
+): boolean {
+  if (!mode || mode.kind !== 'local' || !mode.sharedOnly) return false;
+  if (group.workshop?.editPath || (group.saves?.length ?? 0) > 0) return false;
+  if (playTargetOf(group.templatePath) !== 'account') return false;
+  return gateDecision(mode, 'account') !== 'go';
 }
 
 /** Is `/auth/me` a gateway's answer (JSON with `signedIn`)? A dev server answers HTML or 404. */
@@ -107,6 +125,21 @@ export async function detectAccountMode(): Promise<AccountMode> {
   } catch {
     return { kind: 'none' };
   }
+}
+
+/** The last mode `useAccountMode` read (null before the first read). */
+let modeNow: AccountMode | null = null;
+/** React: the account mode, read once and again on every sign-in / sign-out. Null until the first answer. */
+export function useAccountMode(): AccountMode | null {
+  const [mode, setMode] = useState<AccountMode | null>(modeNow);
+  useEffect(() => {
+    let live = true;
+    const reread = () => { void detectAccountMode().then((m) => { modeNow = m; if (live) setMode(m); }); };
+    window.addEventListener(ACCOUNT_CHANGED_EVENT, reread);
+    reread();
+    return () => { live = false; window.removeEventListener(ACCOUNT_CHANGED_EVENT, reread); };
+  }, []);
+  return mode;
 }
 
 // ── the pick waiting for a sign-in ──────────────────────────────────────────

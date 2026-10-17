@@ -5,6 +5,7 @@ import {
   worldLanguageOf,
   type LocalWorldStore,
   type WorldLanguage,
+  characterVoiceOf,
 } from '@airp/shared';
 import { localTtsEnabled, readLocalTtsConfig, selectLocalVoice } from '../routes/local-tts.js';
 
@@ -79,7 +80,7 @@ export async function resolveVoiceLiveCast(
   try { manifest = await store.getManifest(); } catch { /* language unknown → English, like TTS */ }
   const language = worldLanguageOf(manifest?.locale);
   cast.language = LANGUAGE_TYPE[language];
-  const declaredVoice = typeof declared.voice === 'string' ? declared.voice.trim() : undefined;
+  const declaredVoice = characterVoiceOf(declared);
   if (localTtsEnabled() && readLocalTtsConfig().baseUrl && manifest && selectLocalVoice(manifest.id, characterId, language, declaredVoice)) {
     return cast;
   }

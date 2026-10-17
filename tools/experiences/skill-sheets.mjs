@@ -75,7 +75,7 @@ export const SPEC = {
       ['psychology', 40], ['history', 35], ['dodge', 35], ['first_aid', 30], ['occult', 15],
     ],
     characters: {
-      'xiulian-po': [
+      'xiulian': [
         ['language_other', 80, L('Hakka', '客家话', '客家語', '객가어')], ['history', 60, L('Clan Lore', '族中旧事', '一族の昔話', '집안 옛일')],
         ['persuade', 55], ['occult', 45], ['listen', 40], ['spot_hidden', 30],
       ],

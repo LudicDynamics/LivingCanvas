@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import { existsSync, realpathSync } from 'node:fs';
 import { createHash, randomUUID } from 'node:crypto';
 import path from 'node:path';
-import { resolveVoice, resolveVoiceFor, sanitiseTtsText, parseFrontmatter, worldLanguageOf, TtsRequestSchema, type LocalWorldStore, type WorldLanguage } from '@airp/shared';
+import { characterVoiceOf, resolveVoice, resolveVoiceFor, sanitiseTtsText, parseFrontmatter, worldLanguageOf, TtsRequestSchema, type LocalWorldStore, type WorldLanguage } from '@airp/shared';
 import { LocalTtsError, localTtsEmotion, localTtsEnabled, localTtsHash, readLocalTtsConfig, selectLocalVoice, synthesiseLocal } from './local-tts.js';
 import { AiQuotaError, accountSignedIn, aiModels, gatewayFetch, quotaBody, quotaErrorOf, quotaStatus, readAiGateway, type AiGateway } from '../ai-gateway.js';
 
@@ -489,7 +489,7 @@ export function createTtsRouter(
         }
         if (!scopeIsCurrent()) return worldChangedResponse(res);
         const selected = registered
-          ? selectLocalVoice(manifest.id, characterId, worldLanguage, typeof declared.voice === 'string' ? declared.voice : undefined)
+          ? selectLocalVoice(manifest.id, characterId, worldLanguage, characterVoiceOf(declared))
           : null;
         if (selected) {
           const localConfig = { ...local, voice: selected, ...(viaGateway ? { baseUrl: `${viaGateway.base}#${aiModels().ttsLocal}` } : {}) };

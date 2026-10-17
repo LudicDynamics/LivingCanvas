@@ -357,7 +357,8 @@ test('opening a save reads the newest page; scrolling up reads the page above; a
   } });
   racing.scope('/w/a');
   await racing.loadLatest();
-  await new Promise((r) => setTimeout(r, 60));
+  // The retries are timers (5 ms, then 10 ms); a loaded machine can fire them late, so wait for them rather than a fixed 60 ms.
+  for (let waited = 0; tries < 3 && waited < 2000; waited += 20) await new Promise((r) => setTimeout(r, 20));
   assert.equal(tries, 3);
   assert.deepEqual(racing.entries().map((e) => e.id), ['ask:2']);
 });

@@ -161,7 +161,7 @@ A state with `hidden: true` is never shown in a panel but is still readable by t
 
 ### The world skill
 
-`skills/<world-id>-play/SKILL.md` is the writer's handbook for this world: continuity rules, what never to reveal early, how dice are presented, what the people are like. Its frontmatter `name` must equal its directory name, and it needs a `description`. Keep the run's truth out of it when the truth changes per run ([§8](#8-run-variants-and-time-loops)). Example: [`templates/first-snow/skills/first-snow-play/SKILL.md`](../templates/first-snow/skills/first-snow-play/SKILL.md).
+`skills/<world-id>-play/SKILL.md` is the writer's handbook for this world: continuity rules, what never to reveal early, how dice are presented, what the people are like. Its frontmatter `name` must equal its directory name, and it needs a `description`. Keep the run's truth out of it when the truth changes per run ([§8](#8-run-variants-and-time-loops)). Example: [`templates/whitechapel/skills/whitechapel-play/SKILL.md`](../templates/whitechapel/skills/whitechapel-play/SKILL.md).
 
 ## 3. `world.json` reference
 
@@ -400,7 +400,7 @@ A clock is an ordinary card whose `status.data[key]` counts the steps left.
 
 Every `perTurns` player turns (1–50), the engine ticks once. **A player turn** is exactly one of: the player's own message to the writer; one line the player says to a character or an NPC card; the player choosing an option, rolling a die (search, skill check, dice card) or using an item. **Not** a turn: reading, entering a place, moving cards, notes, the writer's or a character's own actions, character turns, engine effects.
 
-The count lives on the clock card as `status.data.turns`, so `clock.turns` can appear in trigger conditions (`clock.left <= 1 && clock.turns >= 5` = the last turn of the last hour). Don't name the clock's `key` `turns`, and don't also give the clock card a button that ticks. Example: [`templates/seven-days-inn-zh/world.json`](../templates/seven-days-inn-zh/world.json).
+The count lives on the clock card as `status.data.turns`, so `clock.turns` can appear in trigger conditions (`clock.left <= 1 && clock.turns >= 5` = the last turn of the last hour). Don't name the clock's `key` `turns`, and don't also give the clock card a button that ticks. None of the worlds in this repository uses `perTurns` yet; the example above is complete.
 
 ## 7. Endings and the debrief
 
@@ -476,7 +476,7 @@ Each mystery has 3–4 options, at least one `surface` and one `wrong`. A `surfa
 
 The template carries one overlay per option, `variants/<id>/<option>/`, mirroring the world root (`world/…`, `command/…`, `player/…`). When a **new game** starts, the engine draws a seed, picks one option per variant, copies that overlay over the save, deletes `variants/` from the save (so no agent can read the other truths), writes the pick into the declared `state`, and records `run: { seed, variants }` in `world/README.md`. Set `AIRP_RUN_SEED` to reproduce a draw locally.
 
-Rules for the template: the base files *are* the first option (byte-identical to `variants/<id>/<first>/`); every option overlays the same set of files; options differ only in prose, never in ids, paths, dice or conditions; `state` is an `enum` state in `world/README.md` (usually `hidden: true`) whose values are the options and whose `initial` is the first. Keep variable content in fixed "slot" paths so triggers need no per-variant copies, and put the run's truth only where the writer reads it (e.g. a suspect card's `intent`), never in the world skill. Example: [`templates/last-witness`](../templates/last-witness/).
+Rules for the template: the base files *are* the first option (byte-identical to `variants/<id>/<first>/`); every option overlays the same set of files; options differ only in prose, never in ids, paths, dice or conditions; `state` is an `enum` state in `world/README.md` (usually `hidden: true`) whose values are the options and whose `initial` is the first. Keep variable content in fixed "slot" paths so triggers need no per-variant copies, and put the run's truth only where the writer reads it (e.g. a suspect card's `intent`), never in the world skill. None of the worlds in this repository draws variants yet; the rules above are the whole contract.
 
 ### Loops: the world resets, the player remembers
 
@@ -594,7 +594,7 @@ While you are still authoring, it is often easier to keep the source in `templat
 
 ### Pictures and art prompts
 
-Each place wants a scene picture (`bg`) and, for map view, a top-down map (`map.plan.picture`). Keep the world's style in `assets/maps/PROMPTS.md`: one style line, then each prompt, so pictures can be regenerated consistently. A README, NPC card, character README or ending may also declare `art:` (`scene`, `map`, `portrait`, `cg` entries of `{ path, prompt }`); the in-game art panel lists and repaints from these. After painting a map, move the pins onto what was drawn. Example: [`templates/first-snow/assets/maps/PROMPTS.md`](../templates/first-snow/assets/maps/PROMPTS.md).
+Each place wants a scene picture (`bg`) and, for map view, a top-down map (`map.plan.picture`). Keep the world's style in `assets/maps/PROMPTS.md`: one style line, then each prompt, so pictures can be regenerated consistently. A README, NPC card, character README or ending may also declare `art:` (`scene`, `map`, `portrait`, `cg` entries of `{ path, prompt }`); the in-game art panel lists and repaints from these. After painting a map, move the pins onto what was drawn. Example: [`templates/whitechapel/assets/maps/PROMPTS.md`](../templates/whitechapel/assets/maps/PROMPTS.md).
 
 ### Validate
 

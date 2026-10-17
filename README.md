@@ -1,14 +1,30 @@
 <div align="center">
 
+<img src=".github/assets/icon.svg" width="112" height="112" alt="LivingCanvas icon: a gold frame and dot on a deep-blue tile">
+
 # LivingCanvas
 
 **An AI roleplay game played on one infinite canvas — where you, a writer agent and a cast of character agents share the same living world.**
 
-[Play the hosted version](https://canvas.worldlines.gg/?lang=en&src=github) · [1-minute film](https://youtu.be/FnUXFOv74Tg) · [Guides](guide/) · [中文说明](README.zh-CN.md) · [Discord](https://discord.gg/6KYtmZQhnR)
+**English** · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md)
 
-[![Code: Apache-2.0](https://img.shields.io/badge/code-Apache--2.0-blue)](LICENSE)
-[![Content: CC BY-NC 4.0](https://img.shields.io/badge/content-CC%20BY--NC%204.0-lightgrey)](CONTENT-LICENSE.md)
-![Node ≥ 22](https://img.shields.io/badge/node-%E2%89%A5%2022-339933)
+[Play online](https://canvas.worldlines.gg/?lang=en&src=github) · [1-minute film](https://youtu.be/FnUXFOv74Tg) · [Guides](guide/) · [Discord](https://discord.gg/6KYtmZQhnR)
+
+[![Code: Apache-2.0](https://img.shields.io/badge/code-Apache--2.0-f2c27b?labelColor=141a3a)](LICENSE)
+[![Content: CC BY-NC 4.0](https://img.shields.io/badge/content-CC%20BY--NC%204.0-f2c27b?labelColor=141a3a&logo=creativecommons&logoColor=white)](CONTENT-LICENSE.md)
+[![Node.js ≥ 22](https://img.shields.io/badge/node-%E2%89%A5%2022-f2c27b?labelColor=141a3a&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![pnpm ≥ 10](https://img.shields.io/badge/pnpm-%E2%89%A5%2010-f2c27b?labelColor=141a3a&logo=pnpm&logoColor=white)](https://pnpm.io/)
+[![TypeScript 5](https://img.shields.io/badge/TypeScript-5-f2c27b?labelColor=141a3a&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React 19](https://img.shields.io/badge/React-19-f2c27b?labelColor=141a3a&logo=react&logoColor=white)](https://react.dev/)
+[![Languages: EN · 中文 · 日本語 · 한국어](https://img.shields.io/badge/languages-EN%20%C2%B7%20%E4%B8%AD%E6%96%87%20%C2%B7%20%E6%97%A5%E6%9C%AC%E8%AA%9E%20%C2%B7%20%ED%95%9C%EA%B5%AD%EC%96%B4-f2c27b?labelColor=141a3a)](templates/)
+
+[![Play online: canvas.worldlines.gg](https://img.shields.io/badge/play-canvas.worldlines.gg-f2c27b?labelColor=141a3a)](https://canvas.worldlines.gg/?lang=en&src=github)
+[![1-minute film on YouTube](https://img.shields.io/badge/film-1%20min-f2c27b?labelColor=141a3a&logo=youtube&logoColor=white)](https://youtu.be/FnUXFOv74Tg)
+[![Discord](https://img.shields.io/badge/Discord-join-f2c27b?labelColor=141a3a&logo=discord&logoColor=white)](https://discord.gg/6KYtmZQhnR)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-f2c27b?labelColor=141a3a)](CONTRIBUTING.md)
+[![CLA: one click](https://img.shields.io/badge/CLA-one%20click-f2c27b?labelColor=141a3a)](.github/CLA.md)
+[![GitHub stars](https://img.shields.io/github/stars/LudicDynamics/LivingCanvas?labelColor=141a3a&color=f2c27b&logo=github&logoColor=white)](https://github.com/LudicDynamics/LivingCanvas/stargazers)
+[![Last commit](https://img.shields.io/github/last-commit/LudicDynamics/LivingCanvas?labelColor=141a3a&color=f2c27b)](https://github.com/LudicDynamics/LivingCanvas/commits)
 
 </div>
 
@@ -92,23 +108,21 @@ flowchart LR
   server -.->|only when signed in| wl["Worldlines account services"]
 ```
 
-A player beat — typing to the writer, a choice, dragging a key onto a lock, a roll — reaches the server, which hands it to the writer (or the one-call fast path), runs the world's own commands and clock, writes the changes to the save's files, and streams the result back to the canvas as frames.
+A player beat — typing to the writer, a choice, dragging a key onto a lock, a roll — reaches the server, which hands it to the writer (or the one-call fast path), runs the world's own commands and clock, writes the changes to the save's files, and streams the result back to the canvas as frames. More: [Architecture and the turn loop](guide/architecture.md).
 
-- [Architecture and the turn loop](guide/architecture.md)
-
-```text
-apps/server/          Node.js + WebSocket server: world routes, action service, engine, agent lifecycle
-apps/web/             React 19 + Tailwind + Vite canvas front end
-apps/browser-runtime/ experimental browser mode: the same server and agents inside a Web Worker
-packages/shared/      world schema, file store, actions, rules and the WebSocket protocol
-extensions/           the agents' tools
-presets/ skills/      prompts and skills for the writer and character agents
-templates/            the bundled worlds (content, CC BY-NC 4.0)
-assets/               platform audio (see assets/audio/CREDITS.md) and the 3D die
-tools/                scaffold, probes and contract checks
-vendor/pi-rp/         agent runtime (git submodule, MIT)
-vendor/worldlines-identity-client/  client for signing in to a Worldlines account
-```
+| Folder | What is in it |
+|---|---|
+| `apps/server/` | Node.js + WebSocket server: world routes, action service, engine, agent lifecycle |
+| `apps/web/` | React 19 + Tailwind + Vite canvas front end |
+| `apps/browser-runtime/` | Experimental browser mode: the same server and agents inside a Web Worker |
+| `packages/shared/` | World schema, file store, actions, rules and the WebSocket protocol |
+| `extensions/` | The agents' tools |
+| `presets/`, `skills/` | Prompts and skills for the writer and character agents |
+| `templates/` | The bundled worlds (content, CC BY-NC 4.0) |
+| `assets/` | Platform audio (see `assets/audio/CREDITS.md`) and the 3D die |
+| `tools/` | Scaffold, probes and contract checks |
+| `vendor/pi-rp/` | Agent runtime (git submodule, MIT) |
+| `vendor/worldlines-identity-client/` | Client for signing in to a Worldlines account |
 
 ## Make your own world
 
@@ -116,9 +130,7 @@ vendor/worldlines-identity-client/  client for signing in to a Worldlines accoun
 node tools/scaffold.mjs --template moonlit-contract --out worlds/my-world
 ```
 
-A world is a folder: `world.json` for the rules (clock, endings, dice, characters), a directory per place, a Markdown file per card, a folder per character. Edit the files and play — or open the world in the in-game workshop and let the writer build it with you. `worlds/` is where your saves and your own worlds live; it is never committed.
-
-- [Writing a world](guide/world-authoring.md) — places and cards, search points and the four dice tiers, endings, the clock, loops, characters, editions.
+A world is a folder: `world.json` for the rules (clock, endings, dice, characters), a directory per place, a Markdown file per card, a folder per character. Edit the files and play — or open the world in the in-game workshop and let the writer build it with you. `worlds/` is where your saves and your own worlds live; it is never committed. More: [Writing a world](guide/world-authoring.md) — places and cards, search points and the four dice tiers, endings, the clock, loops, characters, editions.
 
 ## Open source, and what is not
 
@@ -131,7 +143,7 @@ The game — server, canvas, agent tools, prompts, and eight of its worlds — i
 | **Names and logos** ("LivingCanvas", "Worldlines", the brand files) | Trademarks of Ludic Dynamics, not licensed — see [TRADEMARKS.md](TRADEMARKS.md) |
 | **Third-party** (the pi-rp runtime, platform audio, fonts) | Their own licenses — see [NOTICE](NOTICE) and [`assets/audio/CREDITS.md`](assets/audio/CREDITS.md) |
 
-- [Open source at LivingCanvas](guide/open-source.md) — what is open, what stays hosted and why, how the licenses combine, forks and trademarks, the contributor agreement.
+What is open, what stays hosted and why, how the licenses combine, forks and trademarks, the contributor agreement: [Open source at LivingCanvas](guide/open-source.md).
 
 ## Contributing
 

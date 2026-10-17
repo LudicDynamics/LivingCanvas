@@ -201,6 +201,11 @@ for (const { world, id, file } of readmes) {
   const { frontmatter } = parseFrontmatter(fs.readFileSync(file, 'utf-8'));
   const raw = frontmatter?.voice;
   const where = `${rel(file)}`;
+  // A character's other forms speak too: each form voice must resolve.
+  for (const [form, entry] of Object.entries(frontmatter?.forms ?? {})) {
+    if (typeof entry?.voice !== 'string') continue;
+    check(`${where}: forms.${form}.voice "${entry.voice}" resolves`, resolveVoiceFor(entry.voice.trim(), worldLanguage(world)) !== null);
+  }
 
   if (raw === undefined || raw === null) {
     // No declaration = the server default. Legal, and worth SEEING: a world

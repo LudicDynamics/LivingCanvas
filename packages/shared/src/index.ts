@@ -166,6 +166,7 @@ export * from './commands/receipt.js';
 // Triggers + declared states. `world-triggers.js`
 // registers the ActionService hook at load time, like the action modules.
 export * from './rules/states.js';         // StateDeclSchema / mappedStates / harmAmount / example packs
+export * from './rules/character-form.js'; // characterFormOf: a `form` state switches name / avatar / voice
 export * from './schemas/triggers.js';     // TriggerSchema / parseWorldTriggers
 export * from './actions/states.js';       // writeState / stateFileOf / assertStateWriteAllowed
 export * from './actions/music.js';        // setMusic (set_music, the design notes)

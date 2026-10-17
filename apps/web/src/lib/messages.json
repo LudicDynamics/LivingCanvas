@@ -8075,6 +8075,16 @@
     "ja": "ログインで全世界を解放",
     "ko": "로그인하면 모든 세계 해제"
   },
+  "Sign in to play": {
+    "zh-CN": "登录后可玩",
+    "ja": "ログインでプレイ",
+    "ko": "로그인 후 플레이"
+  },
+  "Sign in to your Worldlines account to play": {
+    "zh-CN": "登录 Worldlines 账号后可玩",
+    "ja": "Worldlines アカウントにログインするとプレイできます",
+    "ko": "Worldlines 계정에 로그인하면 플레이할 수 있어요"
+  },
   "Critical success": {
     "zh-CN": "大成功",
     "ja": "大成功",

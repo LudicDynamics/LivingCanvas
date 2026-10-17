@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { diceConfigProblems, diceEnforced, parseEndingPassages, parseTriggerCondition, diceTierProblems, parseFrontmatter, parseSearchDeclarations, parseSheet, parseStateDecls, parseWorldCommand, runVariantsOf, searchFinds, worldIntroMachine, worldIntroProblems, worldRulesOf, WorldManifestSchema } from '../packages/shared/dist/index.js';
+import { characterFormProblems, diceConfigProblems, diceEnforced, parseEndingPassages, parseTriggerCondition, diceTierProblems, parseFrontmatter, parseSearchDeclarations, parseSheet, parseStateDecls, parseWorldCommand, runVariantsOf, searchFinds, worldIntroMachine, worldIntroProblems, worldRulesOf, WorldManifestSchema } from '../packages/shared/dist/index.js';
 import { editionFamilies, editionId, editionLocales, isExperimentalWorld, shippedFamilies } from './world-editions.mjs';
 import { filesUnder, mapText } from './localize-world-editions.mjs';
 import { triggerProblems } from './trigger-problems.mjs';
@@ -387,6 +387,8 @@ export async function checkEditions({ staged = false, only = null } = {}) {
         // Before a character lived at the root layer, this line never saw it.
         await fs.access(path.join(root, c.home === 'map' ? 'world' : c.home, 'README.md'));
         for (const f of ['README.md', 'personality.md', 'memory.md', 'identity.md', 'relationships.md', 'diary.md', 'unspoken.md', 'likes-and-fears.md', 'near-term.md', 'long-term.md']) await fs.access(path.join(root, 'characters', c.id, f));
+        // A character with more than one face: forms over an enum `form` state.
+        assert.deepEqual(characterFormProblems(parseFrontmatter(await fs.readFile(path.join(root, 'characters', c.id, 'README.md'), 'utf8')).frontmatter), [], `${id}/${c.id}: forms`);
         const preset = await json(path.join(root, 'characters', c.id, 'preset.json'));
         const profile = preset.items.find(x => x.id === 'profile');
         assert.equal(profile.options.baseDir, `characters/${c.id}`);

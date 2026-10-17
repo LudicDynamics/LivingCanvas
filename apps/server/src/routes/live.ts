@@ -8,6 +8,7 @@ import {
   resolveLiveVoice,
   type LocalWorldStore,
   type LiveLanguage,
+  characterVoiceOf,
 } from '@airp/shared';
 import {
   LiveCallError,
@@ -218,7 +219,7 @@ export function createLiveRouter(
       const { frontmatter } = parseFrontmatter(
         await store.readFile(`${nookId}/README.md`)
       );
-      const declared = typeof frontmatter?.voice === 'string' ? frontmatter.voice : undefined;
+      const declared = characterVoiceOf(frontmatter);
       voice = resolveLiveVoice(declared);
     } catch {
       // No README is not an error here: the call still works on the default voice.

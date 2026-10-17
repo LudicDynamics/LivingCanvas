@@ -75,6 +75,7 @@ import {
   characterVoicesOn,
   planTickPrefetch,
   hintDueNow,
+  characterFormOf,
 } from '@airp/shared';
 import { createTickModelHost } from '../tick-model.js';
 import type { AgentLifecycleManager } from '../engine/lifecycle.js';
@@ -1533,9 +1534,11 @@ export function createWorldRouter(
       );
       const chars = await Promise.all(
         (manifest.characters || []).map(async (c) => {
+          let name = c.name;
           let avatar = c.avatar;
           let avatarVideo = c.avatarVideo;
           let bio = c.description;
+          let formVoice: string | undefined;
           let voice: string | undefined;
           let greeting: string | undefined;
           let invitesFollowLine: string | undefined;
@@ -1546,6 +1549,13 @@ export function createWorldRouter(
             if (frontmatter?.avatar) avatar = frontmatter.avatar;
             if (typeof frontmatter?.avatarVideo === 'string') avatarVideo = frontmatter.avatarVideo;
             if (!bio) bio = body.slice(0, 100);
+            // A character in another form: the
+            // `form` state's entry replaces name / avatar / voice below.
+            const form = characterFormOf(frontmatter);
+            if (form?.name) name = form.name;
+            if (form?.avatar) avatar = form.avatar;
+            if (form?.description) bio = form.description;
+            formVoice = form?.voice;
             // `voice` is a character property declared in the README frontmatter
             // — passed through VERBATIM, alias or raw id, and
             // resolved exactly once, in `POST /api/tts` (the design notes: one
@@ -1554,6 +1564,7 @@ export function createWorldRouter(
             if (typeof frontmatter?.voice === 'string' && frontmatter.voice.trim() !== '') {
               voice = frontmatter.voice.trim();
             }
+            if (formVoice) voice = formVoice;
             // The first act's three author-written lines.
             // They live beside the character, travel with the same edition, and
             // are passed through VERBATIM: the writer never generates them and
@@ -1574,6 +1585,7 @@ export function createWorldRouter(
           const row = presenceByCharacter.get(c.id);
           return {
             ...c,
+            ...(name ? { name } : {}),
             ...(avatar ? { avatar } : {}),
             ...(avatarVideo ? { avatarVideo } : {}),
             bio,

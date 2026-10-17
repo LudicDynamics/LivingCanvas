@@ -39,7 +39,7 @@ This repository carries these worlds, each with its `-jp`, `-zh` and `-ko` editi
 
 ## What is *not* covered
 
-- **Names and logos.** `apps/web/public/brand/**`, `tools/brand/**` and the names "LivingCanvas" and "Worldlines" are trademarks of Ludic Dynamics and are not licensed. See [TRADEMARKS.md](TRADEMARKS.md).
+- **Names and logos.** `apps/web/public/brand/**`, `.github/assets/**`, `tools/brand/**` and the names "LivingCanvas" and "Worldlines" are trademarks of Ludic Dynamics and are not licensed. See [TRADEMARKS.md](TRADEMARKS.md).
 - **Third-party audio.** `assets/audio/**` contains CC0 and CC BY 4.0 works by others, under their own licenses. See [`assets/audio/CREDITS.md`](assets/audio/CREDITS.md).
 - **Code.** Prompt text that is part of the source code (`apps/**/*.ts`, `extensions/**`, `packages/**`) is covered by Apache-2.0.
 

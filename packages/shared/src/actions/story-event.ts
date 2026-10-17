@@ -15,6 +15,7 @@
  * they were told, the same way it keeps what was said to them.
  */
 import { parseFrontmatter } from '../schemas/frontmatter.js';
+import { characterFormOf } from '../rules/character-form.js';
 import { layerOfPath } from '../store/layers.js';
 import { ActionError } from './errors.js';
 import type { ActionContext } from './types.js';
@@ -82,7 +83,13 @@ async function resolveTarget(
       throw new ActionError({ code: 'not_found', message: `No character "${id}" in world.json characters.` });
     }
     const layer = store.getPresenceOf(id)?.layer ?? config.home ?? 'map';
-    return { kind: 'character', layer, name: config.name ?? id, path: `characters/${id}` };
+    // A character in another form shows that form's name.
+    let name = config.name ?? id;
+    try {
+      const formName = characterFormOf(parseFrontmatter(await store.readFile(`characters/${id}/README.md`)).frontmatter)?.name;
+      if (formName) name = formName;
+    } catch { /* no README: the world.json name */ }
+    return { kind: 'character', layer, name, path: `characters/${id}` };
   }
   const path = target.replace(/\/+$/, '');
   if (path === 'map' || path === 'world') {

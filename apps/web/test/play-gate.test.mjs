@@ -6,7 +6,7 @@ import { test } from 'node:test';
 import { readFile } from 'node:fs/promises';
 import { createJiti } from '../../../vendor/pi-rp/node_modules/jiti/lib/jiti.mjs';
 
-const { gateDecision, guestDecision, hostedAnswer, isSharedWorldPath, localAnswer, playTargetOf, takeResumePath, PENDING_MS } = await createJiti(import.meta.url, { moduleCache: false }).import('../src/lib/play-gate.ts');
+const { accountTileLocked, gateDecision, guestDecision, hostedAnswer, isSharedWorldPath, localAnswer, playTargetOf, takeResumePath, PENDING_MS } = await createJiti(import.meta.url, { moduleCache: false }).import('../src/lib/play-gate.ts');
 const src = (p) => readFile(new URL(p, import.meta.url), 'utf8');
 
 test('who must sign in before playing', () => {
@@ -98,4 +98,41 @@ test('a hosted guest signs in in the account panel, not on the gateway page; the
   const hook = await src('../src/components/chrome/useHostedSignIn.ts');
   assert.match(hook, /await verifyHostedCode\(email, code\);\s*announceAccountChanged\(\);\s*window\.location\.reload\(\);/, 'one reload takes a seat and enters the picked world');
   assert.match(hook, /window\.location\.assign\(hostedGoogleUrl\(returnPathFrom\(window\.location\.pathname, gatewayBase\(\)\)\)\)/);
+});
+
+test('the lobby locks a shared world only where the click would ask: local edition, login on, signed out', () => {
+  const settings = (scope, signedIn = false, extra = {}) => localAnswer({ signedIn, playRequiresAccount: scope !== 'none', playAccountScope: scope, ...extra });
+  const localOn = settings('shared');
+  const shared = { templatePath: 'published/made-0000abcd', workshop: { status: 'published', owner: 'x', mine: false, editPath: null }, saves: [] };
+  const template = { templatePath: 'templates/wuwu', saves: [] };
+  const templateWithSave = { templatePath: 'templates/whitechapel-zh', saves: [{ id: 'w-1', path: 'worlds/w-1' }] };
+  const sharedWithSave = { ...shared, saves: [{ id: 'made-1', path: 'worlds/made-1' }] };
+  const myDraft = { templatePath: null, workshop: { status: 'draft', owner: 'me', mine: true, editPath: 'worlds/made-me' }, saves: [] };
+  const myPublished = { ...shared, workshop: { status: 'published', owner: 'me', mine: true, editPath: 'worlds/made-me' } };
+
+  assert.equal(accountTileLocked(localOn, shared), true, 'a shared world, nothing of it here: locked');
+  assert.equal(gateDecision(localOn, playTargetOf(shared.templatePath)), 'sign-in-local', 'and the click asks for the account');
+  for (const [name, g] of Object.entries({ template, templateWithSave, sharedWithSave, myDraft, myPublished })) {
+    assert.equal(accountTileLocked(localOn, g), false, `${name}: plays on this computer, never locked`);
+  }
+  // login off / AIRP_PLAY_WITHOUT_ACCOUNT=1
+  assert.equal(accountTileLocked(settings('none'), shared), false, 'login off: no lock');
+  // signed in
+  assert.equal(accountTileLocked(settings('shared', true), shared), false, 'signed in: no lock');
+  // remote: the hosted gateway, or a remote-mode server (scope all); its own lock is the guest trial's
+  assert.equal(accountTileLocked({ kind: 'hosted', signedIn: false }, shared), false, 'remote (hosted): unchanged');
+  assert.equal(accountTileLocked(settings('all', false, { guestTrial: true }), shared), false, 'remote server: unchanged');
+  assert.equal(accountTileLocked({ kind: 'none' }, shared), false, 'no account system');
+  assert.equal(accountTileLocked(null, shared), false, 'before the first answer: no lock');
+});
+
+test('the lobby brick draws the account lock with the guest lock\'s look and says why on hover / long press', async () => {
+  const launcher = await src('../src/components/WorldLauncher.tsx');
+  assert.match(launcher, /accountLock=\{accountTileLocked\(accountMode, worlds\[index\]\)\}/);
+  assert.match(launcher, /const accountMode = useAccountMode\(\);/);
+  assert.match(launcher, /guestMark === 'locked' \|\| accountLock \? ' is-locked' : ''/, 'the same greyed tile');
+  assert.match(launcher, /<span className="world-launcher__lock" data-testid="account-lock"><Lock aria-hidden="true" size=\{12\} \/>\{t\('Sign in to play'\)\}<\/span>/, 'the same lock badge');
+  assert.match(launcher, /title=\{accountLock \? t\('Sign in to your Worldlines account to play'\) : undefined\}/, 'hover');
+  assert.match(launcher, /LOCK_TIP_PRESS_MS/, 'long press');
+  assert.match(launcher, /data-testid="account-lock-tip"/);
 });

@@ -1,1 +1,1 @@
-Screenshots used by the top-level README: `canvas.png` (a world in play) and `lobby.jpg` (the world lobby).
+Screenshots used by the top-level READMEs (README.md, README.zh-CN.md, README.ja.md, README.ko.md): `canvas.png` (a world in play) and `lobby.jpg` (the world lobby). The README icon is `../assets/icon.svg`, a copy of `apps/web/public/brand/icon.svg` (a trademark, see TRADEMARKS.md).

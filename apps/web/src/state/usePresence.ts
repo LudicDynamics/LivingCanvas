@@ -49,7 +49,8 @@ export function usePresence(input: {
     () =>
       JSON.stringify({
         layer,
-        c: (characters ?? []).map((c) => [c.id, c.presence?.layer ?? null, c.presence?.following ?? false]),
+        // name / avatar too: a character can change face mid-scene.
+        c: (characters ?? []).map((c) => [c.id, c.name ?? null, c.avatar ?? null, c.presence?.layer ?? null, c.presence?.following ?? false]),
         p: (presence ?? []).map((p) => [p.characterId, p.x, p.y, p.following]),
       }),
     [characters, layer, presence],

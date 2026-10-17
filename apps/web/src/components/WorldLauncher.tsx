@@ -15,6 +15,7 @@ import { LauncherNotices } from './Announcements.js';
 import { accountData, useAccountData, worldKeyOf } from '../lib/account-data.js';
 import { track } from '../lib/analytics.js';
 import { guestModeOf, guestTileMark, useGuestTrial } from '../lib/guest-trial.js';
+import { accountTileLocked, useAccountMode } from '../lib/play-gate.js';
 import { groupPlaceBadge } from '../lib/world-sync.js';
 import { AMBIENT_LOOK, ambientBackdropUrl, coverThumbUrl } from '../lib/launcher-ambient.js';
 import {
@@ -65,6 +66,10 @@ const PLAYING_BRICKS = 5;
 /** Stable identity for "nothing plays" — a fresh Set per render would defeat
  * the Brick memo and reshuffle play/pause while dragging. */
 const PLAYING_NONE: ReadonlySet<string> = new Set<string>();
+/** A press this long on a locked tile (touch) shows why it is locked instead of opening it. */
+const LOCK_TIP_PRESS_MS = 500;
+/** …and the line stays this long after the finger lifts. */
+const LOCK_TIP_SHOW_MS = 3_000;
 
 type Translate = ReturnType<typeof useLocale>['t'];
 
@@ -98,6 +103,11 @@ interface BrickProps {
   onPublish: (editPath: string, publish: boolean) => void;
   /** The guest trial (lib/guest-trial.ts): signed out, the trial world says 免登录试玩, every other world is locked. */
   guestMark?: 'trial' | 'locked' | null;
+  /**
+   * The local edition, login on, signed out: a shared world that opens only with the account
+   * (lib/play-gate.ts `accountTileLocked`). The same lock as the guest trial's; hover / long-press says why.
+   */
+  accountLock?: boolean;
   /** 「上传到云端」 for a 本机 original. */
   onKeepInCloud?: (editPath: string) => void;
   /** 「两份都保留」 for a conflict (§5.2). */
@@ -105,8 +115,12 @@ interface BrickProps {
 }
 
 /** One glass brick. Memoised: panning mounts and unmounts bricks at the edges only. */
-const Brick = memo(function Brick({ brickKey, world, index, left, top, width, height, active, open, playing, cover: coverUrl, loading, publishing, social, t, locale, onHover, onToggle, onIntro, onLoad, onCreate, onPublish, onKeepInCloud, onKeepBoth, guestMark = null }: BrickProps) {
+const Brick = memo(function Brick({ brickKey, world, index, left, top, width, height, active, open, playing, cover: coverUrl, loading, publishing, social, t, locale, onHover, onToggle, onIntro, onLoad, onCreate, onPublish, onKeepInCloud, onKeepBoth, guestMark = null, accountLock = false }: BrickProps) {
   const [ready, setReady] = useState(false);
+  // The account lock's line, shown by a long press (touch); hover and focus show it through `active`.
+  const [lockTip, setLockTip] = useState(false);
+  const lockPress = useRef<{ timer: number; shown: boolean }>({ timer: 0, shown: false });
+  useEffect(() => () => window.clearTimeout(lockPress.current.timer), []);
   // Keep the <video> element once it has played. Re-mounting it on every
   // window crossing restarts the network fetch AND the decoder — a 100-200ms
   // main-thread block per cell crossing (measured as the launcher's dominant
@@ -158,9 +172,10 @@ const Brick = memo(function Brick({ brickKey, world, index, left, top, width, he
   const republish = workshop?.official === true;
   return (
     <article
-      className={`world-launcher__tile${active ? ' is-active' : ''}${guestMark === 'locked' ? ' is-locked' : ''}`}
+      className={`world-launcher__tile${active ? ' is-active' : ''}${guestMark === 'locked' || accountLock ? ' is-locked' : ''}`}
       data-brick={brickKey}
       data-guest={guestMark ?? undefined}
+      data-account-lock={accountLock ? '' : undefined}
       style={{ left, top, width, height }}
       onPointerEnter={() => onHover(brickKey)}
       onPointerLeave={() => onHover(null)}
@@ -199,8 +214,24 @@ const Brick = memo(function Brick({ brickKey, world, index, left, top, width, he
         type="button"
         className="world-launcher__hit"
         aria-expanded={open}
-        aria-label={title}
-        onClick={() => {
+        aria-label={accountLock ? `${title} · ${t('Sign in to your Worldlines account to play')}` : title}
+        title={accountLock ? t('Sign in to your Worldlines account to play') : undefined}
+        onPointerDown={accountLock ? (event) => {
+          if (event.pointerType !== 'touch') return;
+          window.clearTimeout(lockPress.current.timer);
+          lockPress.current.shown = false;
+          lockPress.current.timer = window.setTimeout(() => {
+            lockPress.current.shown = true;
+            setLockTip(true);
+            lockPress.current.timer = window.setTimeout(() => setLockTip(false), LOCK_TIP_SHOW_MS);
+          }, LOCK_TIP_PRESS_MS);
+        } : undefined}
+        onPointerUp={accountLock ? () => { if (!lockPress.current.shown) window.clearTimeout(lockPress.current.timer); } : undefined}
+        onPointerCancel={accountLock ? () => { if (!lockPress.current.shown) window.clearTimeout(lockPress.current.timer); } : undefined}
+        onContextMenu={accountLock ? (event) => event.preventDefault() : undefined}
+        onClick={(event) => {
+          // A long press only explained the lock: it does not also open the world.
+          if (lockPress.current.shown) { lockPress.current.shown = false; event.preventDefault(); return; }
           // Browser mode: start downloading this world while the card is read (no-op otherwise).
           if (!open) prefetchWorld(world.templatePath);
           // The intro card answers "what is this world" before anything loads.
@@ -219,13 +250,17 @@ const Brick = memo(function Brick({ brickKey, world, index, left, top, width, he
         {place && <span className={`world-place world-place--${place.tone}`} data-place={place.tone}>{t(place.label)}</span>}
       </span>
       <div className="world-launcher__caption">
-        {(marked || world.intro?.recommended || guestMark) && (
+        {(marked || world.intro?.recommended || guestMark || accountLock) && (
           <span className="world-launcher__tags">
             {guestMark === 'trial' && <span className="world-launcher__ribbon is-trial" data-testid="guest-trial-ribbon">{t('Free trial, no sign-in')}</span>}
             {guestMark === 'locked' && <span className="world-launcher__lock" data-testid="guest-lock"><Lock aria-hidden="true" size={12} />{t('Sign in to unlock every world')}</span>}
+            {accountLock && !guestMark && <span className="world-launcher__lock" data-testid="account-lock"><Lock aria-hidden="true" size={12} />{t('Sign in to play')}</span>}
             {world.intro?.recommended && <span className="world-launcher__ribbon">{t('Recommended for beginners')}</span>}
             <WorldMarks world={world} t={t} locale={locale} className="world-launcher__status" />
           </span>
+        )}
+        {accountLock && !guestMark && (active || lockTip) && (
+          <span className="world-launcher__lock-tip" role="tooltip" data-testid="account-lock-tip">{t('Sign in to your Worldlines account to play')}</span>
         )}
         <b>{title}</b>
         {(world.intro && !world.intro.derived ? world.intro.hook : world.description) && <small>{world.intro && !world.intro.derived ? world.intro.hook : world.description}</small>}
@@ -316,6 +351,8 @@ export function WorldLauncher({ shelf, loading, publishing, onLoad, onCreate, on
   const still = useStill();
   // The guest trial: signed out where it is on, the lobby marks the one playable world and locks the rest.
   const guestMode = guestModeOf(useGuestTrial());
+  // The local edition with login on: the shared worlds that only open with the account carry the same lock.
+  const accountMode = useAccountMode();
   const mediaAllowed = performanceSettings.effectsEnabled && !hidden && !still;
   const tiltAllowed = mediaAllowed;
   const categoryLocale = locale === 'zh-CN' || locale === 'ja' || locale === 'ko' ? locale : 'en';
@@ -929,6 +966,7 @@ export function WorldLauncher({ shelf, loading, publishing, onLoad, onCreate, on
                   onCreate={create}
                   onPublish={publish}
                   guestMark={guestTileMark(worlds[index], guestMode)}
+                  accountLock={accountTileLocked(accountMode, worlds[index])}
                   onKeepInCloud={keepInCloud}
                   onKeepBoth={keepBoth}
                 />
