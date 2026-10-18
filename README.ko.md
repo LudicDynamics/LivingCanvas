@@ -10,21 +10,21 @@
 
 [온라인으로 플레이](https://canvas.worldlines.gg/?lang=ko&src=github) · [1분 영상](https://youtu.be/FnUXFOv74Tg) · [가이드(영어)](guide/) · [Discord](https://discord.gg/6KYtmZQhnR)
 
-[![Code: Apache-2.0](https://img.shields.io/badge/code-Apache--2.0-f2c27b?labelColor=141a3a)](LICENSE)
-[![Content: CC BY-NC 4.0](https://img.shields.io/badge/content-CC%20BY--NC%204.0-f2c27b?labelColor=141a3a&logo=creativecommons&logoColor=white)](CONTENT-LICENSE.md)
-[![Node.js ≥ 22](https://img.shields.io/badge/node-%E2%89%A5%2022-f2c27b?labelColor=141a3a&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
-[![pnpm ≥ 10](https://img.shields.io/badge/pnpm-%E2%89%A5%2010-f2c27b?labelColor=141a3a&logo=pnpm&logoColor=white)](https://pnpm.io/)
-[![TypeScript 5](https://img.shields.io/badge/TypeScript-5-f2c27b?labelColor=141a3a&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![React 19](https://img.shields.io/badge/React-19-f2c27b?labelColor=141a3a&logo=react&logoColor=white)](https://react.dev/)
-[![Languages: EN · 中文 · 日本語 · 한국어](https://img.shields.io/badge/languages-EN%20%C2%B7%20%E4%B8%AD%E6%96%87%20%C2%B7%20%E6%97%A5%E6%9C%AC%E8%AA%9E%20%C2%B7%20%ED%95%9C%EA%B5%AD%EC%96%B4-f2c27b?labelColor=141a3a)](templates/)
+[![Code: Apache-2.0](https://img.shields.io/badge/code-Apache--2.0-D22128?labelColor=141a3a)](LICENSE)
+[![Content: CC BY-NC 4.0](https://img.shields.io/badge/content-CC%20BY--NC%204.0-EF9421?labelColor=141a3a&logo=creativecommons&logoColor=white)](CONTENT-LICENSE.md)
+[![Node.js ≥ 22](https://img.shields.io/badge/node-%E2%89%A5%2022-5FA04E?labelColor=141a3a&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![pnpm ≥ 10](https://img.shields.io/badge/pnpm-%E2%89%A5%2010-F69220?labelColor=141a3a&logo=pnpm&logoColor=white)](https://pnpm.io/)
+[![TypeScript 5](https://img.shields.io/badge/TypeScript-5-3178C6?labelColor=141a3a&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React 19](https://img.shields.io/badge/React-19-61DAFB?labelColor=141a3a&logo=react&logoColor=white)](https://react.dev/)
+[![Languages: EN · 中文 · 日本語 · 한국어](https://img.shields.io/badge/languages-EN%20%C2%B7%20%E4%B8%AD%E6%96%87%20%C2%B7%20%E6%97%A5%E6%9C%AC%E8%AA%9E%20%C2%B7%20%ED%95%9C%EA%B5%AD%EC%96%B4-8A63D2?labelColor=141a3a)](templates/)
 
 [![Play online: canvas.worldlines.gg](https://img.shields.io/badge/play-canvas.worldlines.gg-f2c27b?labelColor=141a3a)](https://canvas.worldlines.gg/?lang=ko&src=github)
-[![1-minute film on YouTube](https://img.shields.io/badge/film-1%20min-f2c27b?labelColor=141a3a&logo=youtube&logoColor=white)](https://youtu.be/FnUXFOv74Tg)
-[![Discord](https://img.shields.io/badge/Discord-join-f2c27b?labelColor=141a3a&logo=discord&logoColor=white)](https://discord.gg/6KYtmZQhnR)
-[![PRs welcome](https://img.shields.io/badge/PRs-welcome-f2c27b?labelColor=141a3a)](CONTRIBUTING.md)
-[![CLA: one click](https://img.shields.io/badge/CLA-one%20click-f2c27b?labelColor=141a3a)](.github/CLA.md)
-[![GitHub stars](https://img.shields.io/github/stars/LudicDynamics/LivingCanvas?labelColor=141a3a&color=f2c27b&logo=github&logoColor=white)](https://github.com/LudicDynamics/LivingCanvas/stargazers)
-[![Last commit](https://img.shields.io/github/last-commit/LudicDynamics/LivingCanvas?labelColor=141a3a&color=f2c27b)](https://github.com/LudicDynamics/LivingCanvas/commits)
+[![1-minute film on YouTube](https://img.shields.io/badge/film-1%20min-FF0000?labelColor=141a3a&logo=youtube&logoColor=white)](https://youtu.be/FnUXFOv74Tg)
+[![Discord](https://img.shields.io/badge/Discord-join-5865F2?labelColor=141a3a&logo=discord&logoColor=white)](https://discord.gg/6KYtmZQhnR)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-2EA44F?labelColor=141a3a)](CONTRIBUTING.md)
+[![CLA: one click](https://img.shields.io/badge/CLA-one%20click-1ABC9C?labelColor=141a3a)](.github/CLA.md)
+[![GitHub stars](https://img.shields.io/github/stars/LudicDynamics/LivingCanvas?labelColor=141a3a&color=E3B341&logo=github&logoColor=white)](https://github.com/LudicDynamics/LivingCanvas/stargazers)
+[![Last commit](https://img.shields.io/github/last-commit/LudicDynamics/LivingCanvas?labelColor=141a3a&color=0A84FF)](https://github.com/LudicDynamics/LivingCanvas/commits)
 
 </div>
 

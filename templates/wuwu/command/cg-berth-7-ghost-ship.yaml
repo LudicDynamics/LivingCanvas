@@ -1,0 +1,6 @@
+name: First time at Berth 7
+desc: 'First entry into world/harbor-chart/seventh-berth: show the CG once'
+do:
+- action: show_cg
+  with:
+    path: assets/cg/berth-7-ghost-ship.webp

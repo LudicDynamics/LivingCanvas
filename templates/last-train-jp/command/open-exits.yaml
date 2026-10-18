@@ -1,6 +1,9 @@
 name: "2号車の出口"
 desc: "証言を得たか四拍過ぎた：2号車の選択肢の先頭に寝台車と列車全体への出口が出る。"
 do:
+- action: show_cg
+  with:
+    path: assets/cg/car-two-exits.webp
 - action: set_status
   with:
     path: world/seated-car/README.md

@@ -100,6 +100,26 @@
       "kind": "state",
       "when": "player.hp <= 0",
       "do": "hurt-out"
+    },
+    {
+      "id": "cg-dark-minutes",
+      "label": "First time at the old lighthouse",
+      "kind": "place",
+      "once": true,
+      "when": {
+        "layer": "world/harbor-chart/old-lighthouse"
+      },
+      "do": "cg-dark-minutes"
+    },
+    {
+      "id": "cg-berth-7-ghost-ship",
+      "label": "First time at Berth 7",
+      "kind": "place",
+      "once": true,
+      "when": {
+        "layer": "world/harbor-chart/seventh-berth"
+      },
+      "do": "cg-berth-7-ghost-ship"
     }
   ],
   "extensions": [

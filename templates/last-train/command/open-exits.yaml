@@ -1,6 +1,9 @@
 name: "Car 2's exits"
 desc: "The account is in, or four beats have passed: Car 2's options lead with the sleeper and the whole train."
 do:
+- action: show_cg
+  with:
+    path: assets/cg/car-two-exits.webp
 - action: set_status
   with:
     path: world/seated-car/README.md

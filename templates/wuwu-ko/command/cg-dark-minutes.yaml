@@ -1,0 +1,6 @@
+name: First time at the old lighthouse
+desc: 'First entry into world/harbor-chart/old-lighthouse: show the CG once'
+do:
+- action: show_cg
+  with:
+    path: assets/cg/dark-minutes.webp

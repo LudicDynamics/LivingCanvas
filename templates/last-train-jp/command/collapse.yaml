@@ -1,6 +1,9 @@
 name: 傷が限界
 desc: 隠しHPがゼロになる（world.json トリガー too-hurt）：夏澄があなたを2号車へ支えて戻し、あなたはもう歩けなくなり、列車は五時に予定どおり発車する
 do:
+  - action: show_cg
+    with:
+      path: assets/cg/collapse.webp
   - action: event
     with:
       target: characters/xia-cheng

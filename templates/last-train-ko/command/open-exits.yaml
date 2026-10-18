@@ -1,6 +1,9 @@
 name: "2호차의 출구"
 desc: "증언을 얻었거나 네 박자가 지났다: 2호차 선택지 맨 앞에 침대차와 열차 전체로 가는 출구가 나온다."
 do:
+- action: show_cg
+  with:
+    path: assets/cg/car-two-exits.webp
 - action: set_status
   with:
     path: world/seated-car/README.md

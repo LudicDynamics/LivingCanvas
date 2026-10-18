@@ -78,8 +78,11 @@ function ensureOnMain() {
 /**
  * The build red line. `build:offline` lives in the vendor ROOT package.json (the pi-rp
  * monorepo), not inside the coding-agent package, and it fails at `check:model-data`
- * unless the gitignored model data has been hydrated first - so hydrate every time
- * (it is idempotent and offline-safe once the data is there).
+ * unless the gitignored model data has been hydrated first. Hydrating fetches models.dev
+ * LIVE, so a new upstream model can break the type check of an unchanged submodule
+ * (2026-10-19: opencode-go gained a google-generative-ai model → TS2322, canvas release
+ * blocked). So hydrate only when the data is missing or stale (`check:model-data` fails);
+ * AIRP_PI_HYDRATE=1 forces a refresh.
  */
 function buildPi(noBuild) {
   if (noBuild) {
@@ -93,8 +96,13 @@ function buildPi(noBuild) {
         '\n  (in the vendor root, and never with --ignore-scripts)'
     );
   }
-  console.log('- npm run hydrate:model-data (regenerates the gitignored model data; idempotent)');
-  run('npm', ['run', 'hydrate:model-data'], { cwd: SUB });
+  const dataOk = spawnSync('npm', ['--prefix', 'packages/ai', 'run', '--silent', 'check:model-data'], { cwd: SUB, stdio: 'ignore' }).status === 0;
+  if (process.env.AIRP_PI_HYDRATE === '1' || !dataOk) {
+    console.log('- npm run hydrate:model-data (regenerates the gitignored model data from models.dev)');
+    run('npm', ['run', 'hydrate:model-data'], { cwd: SUB });
+  } else {
+    console.log('- model data present and valid: not re-fetching models.dev (AIRP_PI_HYDRATE=1 refreshes it)');
+  }
   console.log('- npm run build:offline (red line: dist is not committed, but the runtime runs it)');
   run('npm', ['run', 'build:offline'], { cwd: SUB });
 }

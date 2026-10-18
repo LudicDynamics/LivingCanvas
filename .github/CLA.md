@@ -1,14 +1,14 @@
-# LivingCanvas Individual Contributor License Agreement
+# Ludic Dynamics Individual Contributor License Agreement
 
-Version 1.0
+Version 1.1
 
-Thank you for contributing to LivingCanvas, a project of **Ludic Dynamics** ("we", "us"). This agreement explains the terms under which you ("you") contribute. Please read it carefully. You sign it once, through the CLA Assistant check on your first pull request, and it covers every contribution you make afterwards.
+This agreement applies to the open source projects of **Ludic Dynamics** ("we", "us"), such as LivingCanvas and WorldLines. Thank you for contributing. This agreement explains the terms under which you ("you") contribute. Please read it carefully. You sign it once, through the CLA Assistant check on your first pull request to any of our projects, and it covers every contribution you make afterwards, to that project and to every other Ludic Dynamics project.
 
 ## 1. Definitions
 
 **"Contribution"** means any work you submit to us for inclusion in the project. That covers code, documentation, worlds, text, prompts, art, audio and any other material, sent in a pull request, a patch, an issue attachment or any other channel we manage. It does not cover anything you have clearly marked "Not a Contribution".
 
-**"Project"** means LivingCanvas and any other software, content or service made or run by Ludic Dynamics or its affiliates and successors.
+**"Project"** means LivingCanvas, WorldLines and any other software, content or service made or run by Ludic Dynamics or its affiliates and successors.
 
 ## 2. You keep your copyright
 
@@ -20,7 +20,7 @@ You grant us, and anyone who receives the Project from us, a perpetual, worldwid
 
 This licence includes the right to:
 - use your Contributions in commercial products and services, including hosted services;
-- distribute them under the licences the Project uses at the time (currently Apache-2.0 for code and CC BY-NC 4.0 for content); and
+- distribute them under the licences each project uses at the time (for example Apache-2.0 / CC BY-NC 4.0 for LivingCanvas, AGPL-3.0 for WorldLines); and
 - distribute them under **any other licence, open source or proprietary**, now or in the future.
 
 ## 4. Patent licence

@@ -1,6 +1,9 @@
 name: 부상이 한계다
 desc: "숨겨진 체력이 0이 됨(world.json 트리거 too-hurt): 샤청이 당신을 2호차로 부축해 돌아가고, 당신은 더 이상 걸을 수 없으며, 열차는 5시에 예정대로 떠난다"
 do:
+  - action: show_cg
+    with:
+      path: assets/cg/collapse.webp
   - action: event
     with:
       target: characters/xia-cheng

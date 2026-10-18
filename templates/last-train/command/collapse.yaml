@@ -1,6 +1,9 @@
 name: Too Hurt to Continue
 desc: "Hidden health reaches zero (world.json trigger too-hurt): Xia Cheng helps you back to Car 2, you can no longer walk, and the train departs at five as scheduled"
 do:
+  - action: show_cg
+    with:
+      path: assets/cg/collapse.webp
   - action: event
     with:
       target: characters/xia-cheng

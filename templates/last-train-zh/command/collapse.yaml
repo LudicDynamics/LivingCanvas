@@ -1,6 +1,9 @@
 name: 伤得撑不住了
 desc: 隐藏生命值归零（world.json 触发器 too-hurt）：夏澄把你扶回2车，你再也走不动，列车五点照常开走
 do:
+  - action: show_cg
+    with:
+      path: assets/cg/collapse.webp
   - action: event
     with:
       target: characters/xia-cheng
