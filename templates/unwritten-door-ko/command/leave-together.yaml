@@ -1,0 +1,7 @@
+name: "아이리스와 떠나기"
+desc: "플레이어가 아이리스와 함께 돌아오지 않고 떠난다. 문밖(world/outside/README.md)이 있을 때만 결말이 되고, 없으면 트리거의 대체 문장이 나온다."
+do:
+  - action: end
+    when: 'has("world/outside/README.md")'
+    with:
+      ending: leave-with-iris

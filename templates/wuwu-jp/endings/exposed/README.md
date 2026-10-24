@@ -1,7 +1,7 @@
 ---
 type: ending
 title: 暴く
-bg: assets/scenes/harbor-chart.webp
+bg: assets/scenes/ending-exposed.webp
 ---
 
 四本の赤い線が海図の上で一つの結び目を作る。7番埠頭のあの無人船は放たれた囮であり、領主家の帳簿に載らないあの船は、消灯の十二分を利用して、旧税関隧道の口からそっと港を出たのだ。

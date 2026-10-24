@@ -77,6 +77,8 @@ test('voice-live’s brain frames reach our engine verbatim, once it is open, in
   assert.equal(created[0].sent.length, 0, 'queued until the loopback opens');
   created[0].open();
   assert.deepEqual(created[0].json.map((f) => f.type), ['character_start', 'character_prompt']);
+  assert.equal(created[0].json[1].via, 'voice', 'a line said over the call is answered with thinking off');
+  assert.equal(created[0].json[0].via, undefined);
 });
 
 test('only the call’s own character, only character frames: the call cannot drive anything else', () => {

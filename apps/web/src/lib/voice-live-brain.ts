@@ -73,6 +73,8 @@ export function createBrainRelay(
       // Only the fields the canvas protocol defines for these frames travel on.
       const out: Record<string, unknown> = { type: frame.type, characterId, savePath };
       if (frame.type === 'character_prompt' && typeof frame.message === 'string') out.message = frame.message;
+      // Said over the call: she answers with thinking off (the caller hears it as dead air).
+      if (frame.type === 'character_prompt') out.via = 'voice';
       if (frame.type === 'character_start' && typeof frame.recentContext === 'string') out.recentContext = frame.recentContext;
       if (!bridge.send(out)) {
         // Fail the turn now rather than letting it wait out voice-live's timeout.

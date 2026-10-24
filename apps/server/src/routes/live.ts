@@ -149,7 +149,9 @@ export function createLiveRouter(
     }
     if (!isCurrent()) return res.status(409).json({ mode: 'error', code: 'world_changed', message: 'The active world changed before the voice call could start.' });
     if (!accessToken) return res.status(401).json({ mode: 'error', code: 'signed_out', message: 'Sign in with your account to make a voice call.' });
-    const cast = await resolveVoiceLiveCast(storeAtStart, characterId);
+    // A ticketed call is spoken by the AI service's voice-live (Fish + DashScope): play chooses the
+    // voice with this account's token, as for the dialogue's TTS (voice-live-cast.ts castCallVoice).
+    const cast = await resolveVoiceLiveCast(storeAtStart, characterId, { fish: true, token: accessToken });
     if (!isCurrent()) return res.status(409).json({ mode: 'error', code: 'world_changed', message: 'The active world changed before the voice call could start.' });
     const answer = await requestVoiceTicket({ ticketsUrl, accessToken, cast, world: gatewayWorld() });
     if (!isCurrent()) return res.status(409).json({ mode: 'error', code: 'world_changed', message: 'The active world changed before the voice call could start.' });

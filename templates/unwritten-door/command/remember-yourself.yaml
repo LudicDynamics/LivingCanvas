@@ -1,0 +1,7 @@
+name: "Remember who you are"
+desc: "The player says who they are from what they actually found. It ends only once the place outside exists (world/outside/README.md)."
+do:
+  - action: end
+    when: 'has("world/outside/README.md")'
+    with:
+      ending: remember

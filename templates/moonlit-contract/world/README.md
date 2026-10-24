@@ -3,7 +3,7 @@ type: readme
 name: Moonlit Summoning
 title: Moonlit Summoning
 bg: assets/backgrounds/opening.webp
-intent: In this world’s actions, always read skills/moonlit-contract-play/SKILL.md, current README, base Chalk, and the actual blue ribbon file. Initially, the contract is unformed. Generate world/moonlit-courtyard only upon clear consent. Do not generate on questions or refusals. Maintain existing content; next places generate on each explicit player step.
+intent: "In this world’s actions, always read skills/moonlit-contract-play/SKILL.md, current README, base Chalk, and the actual blue ribbon file. Initially, the contract is unformed. Generate world/moonlit-courtyard only upon clear consent. Do not generate on questions or refusals. Maintain existing content; next places generate on each explicit player step. Endings land only through the engine (world.json triggers): asking Lyra to stay, releasing her, or turning her away. The writer never announces an ending."
 map:
   plan:
     picture: assets/maps/seaside-observatory.webp

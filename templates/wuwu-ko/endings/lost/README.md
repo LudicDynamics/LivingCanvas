@@ -1,7 +1,7 @@
 ---
 type: ending
 title: 놓침
-bg: assets/scenes/beyond-the-fog.webp
+bg: assets/scenes/ending-lost.webp
 ---
 
 조수가 다시 밀려왔다. 옛 세관 터널 입구의 수위가 표선을 넘었고, 안개 속에서 아주 가벼운 노 젓는 소리가 들리다가 이내 아무것도 들리지 않았다.

@@ -1,7 +1,7 @@
 ---
 type: ending
 title: 見失う
-bg: assets/scenes/beyond-the-fog.webp
+bg: assets/scenes/ending-lost.webp
 ---
 
 潮が戻った。旧税関隧道の口の水位は標線を越え、霧の中からとても軽い櫂の音が聞こえ、それから何も聞こえなくなった。

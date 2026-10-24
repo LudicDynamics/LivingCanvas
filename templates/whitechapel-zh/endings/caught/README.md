@@ -1,7 +1,7 @@
 ---
 type: ending
 title: 不在第四幅画里的人
-bg: assets/scenes/fleet-street-press.webp
+bg: assets/scenes/ending-caught.webp
 ---
 
 你把证据一样一样摆在韦恩面前：比事件早到的插图，现场栏杆上的群青，他手腕上的新伤，还有8:15签收的那份订正稿。

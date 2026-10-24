@@ -29,10 +29,10 @@
     "mechanics": [
       "dice",
       "live-image",
-      "free-explore",
+      "endings",
       "voice"
     ],
-    "endings": 0,
+    "endings": 3,
     "characters": [
       {
         "id": "iris",
@@ -43,7 +43,7 @@
       "하드코어 샌드박스 TRPG 팬",
       "AI의 즉흥 생성을 보고 싶은 사람"
     ],
-    "unfinished": "개발 중: 쓰여 있는 건 첫 오두막뿐이고 문밖은 전부 생성됩니다. 아직 목표와 결말이 없습니다."
+    "unfinished": "개발 중: 쓰여 있는 건 첫 오두막뿐이고 문밖은 전부 생성됩니다. 결말 세 개가 들어갔지만 결말 그림은 아직 임시입니다."
   },
   "author": "AIRP",
   "genre": "서사 경험",
@@ -77,5 +77,59 @@
     "system": "dnd",
     "proficiency": 2,
     "characterChecks": true
-  }
+  },
+  "mode": "semi",
+  "endings": [
+    {
+      "id": "leave-with-iris",
+      "title": "아이리스와 함께 문밖으로",
+      "path": "endings/leave-with-iris/README.md"
+    },
+    {
+      "id": "remember",
+      "title": "기억해 낸 것",
+      "path": "endings/remember/README.md"
+    },
+    {
+      "id": "stay",
+      "title": "꺼지지 않는 등불",
+      "path": "endings/stay/README.md"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "leave-with-her",
+      "label": "플레이어가 아이리스와 함께 떠나기로 한다",
+      "kind": "keyword",
+      "once": false,
+      "when": {
+        "intent": "플레이어가 아이리스와 함께, 돌아오지 않을 생각으로 이곳을 떠나기로 분명히 정한다(그녀에게 함께 가자고 하고 같이 나선다). 밖에 다녀오는 것, 질문, \"아마도\"는 세지 않는다.",
+        "scope": "player"
+      },
+      "do": "leave-together",
+      "fallback": "아이리스는 문을 보고, 다시 당신을 본다. \"밖에 뭐가 있는지도 아직 모르잖아. 한 번 보고 나서 다시 말해 줘.\""
+    },
+    {
+      "id": "say-who-you-are",
+      "label": "플레이어가 자신이 누구인지 말한다",
+      "kind": "keyword",
+      "once": false,
+      "when": {
+        "intent": "플레이어가 편지, 전화, 문밖의 장소가 실제로 드러낸 것을 바탕으로, 자신이 누구인지 또는 어떻게 이 오두막에 왔는지를 자기 결론으로 말한다. 추측, 질문, 혼잣말 같은 고민은 세지 않는다.",
+        "scope": "player"
+      },
+      "do": "remember-yourself",
+      "fallback": "손을 뻗자 그것은 미끄러져 달아난다. 당신이 누구인지, 문은 아직 보여 주지 않았다. 먼저 저편을 보고 오자."
+    },
+    {
+      "id": "stay-here",
+      "label": "플레이어가 오두막에 남기로 한다",
+      "kind": "keyword",
+      "when": {
+        "intent": "플레이어가 더는 문을 열지도 밖으로 나가지도 않고 아이리스와 이 오두막에 남기로 분명히 정한다. 잠시 쉬는 것, 망설임, 질문은 세지 않는다.",
+        "scope": "player"
+      },
+      "do": "stay-in-the-cabin"
+    }
+  ]
 }

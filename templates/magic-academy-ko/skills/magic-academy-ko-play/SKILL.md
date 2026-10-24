@@ -30,9 +30,16 @@ player/spell-draft.md 파일은 플레이어의 말을 저장한다. 초안을 w
 
 후보 대가에는 별의 조각이 다음 밤까지 잠시 빛을 쉬게 하는 것이 포함된다. 사전 동의 없이 기억, 목소리, 이름을 영구히 잃지 않는다. 다른 대가를 고르기 전에 범위를 합의한다. 불확실한 시전에만 선택적 사전 선언 판정을 붙인다. 공식, 기준값, 모든 결과 확률, 보통/대성공, 실패/희귀한 피해를 표시한 뒤 플레이어의 주사위 입력을 기다린다. 조용한 수치 추가는 없다.
 
-"열다" + 별의 조각이 공간을 열기로 합의했다면 world/spell-atlas/star-chart-room, changed-space.md, cost-trace.md, 01-my-spell.md, return-gate.md에 대한 리드미를 생성하고, 천문대 입구를 배치한다. "비추다" + 손거울이 휴대용 별지도에 합의했다면 world/spell-atlas/palm-stars와 player/named-star-chart.md.에 같은 구조를 만든다. 이것은 거울에 별을 비추지만 입구는 없다. 모든 성공을 같은 입구로 합치지 않는다. 의미와 대가에서 짧은 대안을 하나 만든다.
+"열다" + 별의 조각이 공간을 열기로 합의했다면 world/spell-atlas/star-chart-room, changed-space.md, cost-trace.md, 01-my-spell.md, return-gate.md에 대한 리드미를 생성하고, 천문대 입구를 배치한다. "비추다" + 손거울이 휴대용 별지도에 합의했다면 world/spell-atlas/palm-stars와 player/named-star-chart.md.에 같은 구조를 만든다. 이것은 거울에 별을 비추지만 입구는 없다. 모든 성공을 같은 입구로 합치지 않는다. 의미와 대가에서 짧은 대안을 하나 만들고, 그 동사의 결과 폴더에 둔다("열다" 주문은 모두 star-chart-room, "비추다" 주문은 모두 palm-stars). 폴더 id는 그대로 두고, 제목은 실제로 바뀐 것을 따른다. 01-my-spell.md에는 반드시 "밤의 도서관으로 가져가기"(choice_actions kind enter, target map)를 둔다.
 
 시전 후에만 실제로 사용한 아이템에 대가를 적용하고, 실행 사실과 결과 위치를 같은 초안에 기록한다. 이중 실행은 없다. 필요하면 결과에 어울리는 배경 이미지를 생성한다. 세라피나는 플레이어가 이름 붙인 단어를 인용하며 변화를 네 앞에서 보여준다.
+
+## 결말
+이 세계는 `semi`이며 결말은 세 개, 엔진만 내린다:
+- `opened-door`(네가 연 문): world/spell-atlas/star-chart-room/01-my-spell.md가 생긴 뒤 플레이어가 밤의 도서관(`map`)으로 돌아온다(트리거 back-to-the-library → command/lesson-ends.yaml).
+- `kept-stars`(손바닥 위의 별): world/spell-atlas/palm-stars/01-my-spell.md가 생긴 뒤 같은 귀환.
+- `unnamed`(빈 명찰): 플레이어가 시전 없이 수업을 끝내기로 분명히 정하면 작가는 `trigger_keyword({ id: "leave-without-a-spell" })`를 호출한다(command/leave-unnamed.yaml. 이미 시전한 주문이 있으면 그 결말). 대가를 묻기, 수정, "아직"은 해당하지 않는다.
+본문에서 결말을 선언하지 않고, 시전을 재촉하지 않는다. 결말 뒤에는 대화만 남는다.
 
 ## 확정 행동과 작가의 분리 (현재)
 choice_actions는 choice.options의 영어 ID와 일치하는 구현된 UI 행동 선언이다. read(paths), take(paths), stage(paths), enter(target), character(character), reply(text), writer(prompt 선택)만 사용한다. 읽기, 이동, 장소로 돌아가기, 재료 준비, 짧은 주사위 표시는 작가를 발동하지 않는다. stage는 재료만 확인하며 제출이나 실행은 없다. writer는 생성, 자유 RP, 미확정 약속, 전략에만 사용한다. 인물 질문은 대화를 열며, 요청 없이 대사를 보내지 않는다.

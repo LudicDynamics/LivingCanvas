@@ -3,7 +3,7 @@ type: readme
 name: 小屋
 title: 小屋
 bg: assets/backgrounds/intro.webp
-intent: 手紙と電話だけが調査用の小道具です。家具は雰囲気作りであり、追加の謎ではありません。プレイヤーの身分や超自然的説明を事前に決めないでください。
+intent: "手紙と電話だけが調査用の小道具です。家具は雰囲気作りであり、追加の謎ではありません。プレイヤーの身分や超自然的説明を事前に決めないでください。 結末は三つで、エンジンだけが下ろします（world.json の triggers）：扉の外が書かれたあとでアイリスと出ていく、または自分が誰かを言う、あるいは小屋に残る。ライターは結末を宣言しません。"
 bgVideo: assets/motion/seedance/backgrounds/intro.webm
 map:
   plan:

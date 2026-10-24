@@ -1,0 +1,7 @@
+name: "アイリスと出ていく"
+desc: "プレイヤーがアイリスと二度と戻らずに出ていく。扉の外（world/outside/README.md）がある時だけ結末になり、ない時はトリガーの代替文が出る。"
+do:
+  - action: end
+    when: 'has("world/outside/README.md")'
+    with:
+      ending: leave-with-iris

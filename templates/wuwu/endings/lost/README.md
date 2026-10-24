@@ -1,7 +1,7 @@
 ---
 type: ending
 title: Lost
-bg: assets/scenes/beyond-the-fog.webp
+bg: assets/scenes/ending-lost.webp
 ---
 
 The tide has returned. The water at the Old Customs Tunnel's mouth rises past the marker line; a very soft sound of oars comes through the fog, then nothing more is heard.

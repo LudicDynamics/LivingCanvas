@@ -3,7 +3,7 @@ type: readme
 name: 小屋
 title: 小屋
 bg: assets/backgrounds/intro.webp
-intent: 信和手机是仅有的调查道具。家具只是营造氛围，不是额外的谜题。不要预先决定玩家的身份或超自然的解释。
+intent: "信和手机是仅有的调查道具。家具只是营造氛围，不是额外的谜题。不要预先决定玩家的身份或超自然的解释。 结局有三个，只由引擎落下（world.json 的 triggers）：门外写出来之后和艾莉丝一起离开、或说出自己是谁，或者留在木屋里。作家不在叙述里宣布结局。"
 bgVideo: assets/motion/seedance/backgrounds/intro.webm
 map:
   plan:

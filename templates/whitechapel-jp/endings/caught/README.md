@@ -1,7 +1,7 @@
 ---
 type: ending
 title: 第四の絵にいない人
-bg: assets/scenes/fleet-street-press.webp
+bg: assets/scenes/ending-caught.webp
 ---
 
 あなたは証拠をひとつずつウェインの前に並べた。事件より先に届いた挿絵、現場の手すりの群青、手首の新しい傷、そして8時15分に彼が受け取った訂正稿。

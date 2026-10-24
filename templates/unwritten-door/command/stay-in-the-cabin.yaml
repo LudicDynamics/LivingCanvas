@@ -1,0 +1,6 @@
+name: "Stay in the cabin"
+desc: "The player latches the door and stays in the cabin with Iris."
+do:
+  - action: end
+    with:
+      ending: stay

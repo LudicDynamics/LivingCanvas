@@ -1,0 +1,7 @@
+name: "请她留下"
+desc: "莉拉在这个夜晚之后留下。只有契约已成（world/moonlit-courtyard 已存在）时才进入“天亮之后”；在那之前只有莉拉的一句简短回答。"
+do:
+  - action: end
+    when: 'has("world/moonlit-courtyard/README.md")'
+    with:
+      ending: bound

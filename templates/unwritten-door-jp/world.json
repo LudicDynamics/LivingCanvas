@@ -29,10 +29,10 @@
     "mechanics": [
       "dice",
       "live-image",
-      "free-explore",
+      "endings",
       "voice"
     ],
-    "endings": 0,
+    "endings": 3,
     "characters": [
       {
         "id": "iris",
@@ -43,7 +43,7 @@
       "ハードコアなサンドボックスTRPG好き",
       "AIの即興を見たい人"
     ],
-    "unfinished": "開発中：書かれているのは最初の山小屋だけで、扉の外はすべて生成。目標と結末はまだありません。"
+    "unfinished": "開発中：書かれているのは最初の山小屋だけで、扉の外はすべて生成。結末は三つ入りましたが、結末の絵はまだ仮のままです。"
   },
   "author": "AIRP",
   "genre": "物語体験",
@@ -77,5 +77,59 @@
     "system": "dnd",
     "proficiency": 2,
     "characterChecks": true
-  }
+  },
+  "mode": "semi",
+  "endings": [
+    {
+      "id": "leave-with-iris",
+      "title": "アイリスと扉の外へ",
+      "path": "endings/leave-with-iris/README.md"
+    },
+    {
+      "id": "remember",
+      "title": "思い出したこと",
+      "path": "endings/remember/README.md"
+    },
+    {
+      "id": "stay",
+      "title": "灯りは消えない",
+      "path": "endings/stay/README.md"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "leave-with-her",
+      "label": "プレイヤーがアイリスとここを出ると決めた",
+      "kind": "keyword",
+      "once": false,
+      "when": {
+        "intent": "プレイヤーが、アイリスと一緒にこの場所をもう戻らないつもりで出ていくと明確に決める（彼女を誘い、ともに出発する）。外を見て戻るだけ、質問、「たぶん」は数えない。",
+        "scope": "player"
+      },
+      "do": "leave-together",
+      "fallback": "アイリスは扉を見て、それからあなたに目を戻す。「外に何があるのかも、まだ知らないでしょう。一度見てから、もう一度言って」"
+    },
+    {
+      "id": "say-who-you-are",
+      "label": "プレイヤーが自分は誰かを言い当てた",
+      "kind": "keyword",
+      "once": false,
+      "when": {
+        "intent": "プレイヤーが、手紙・電話・扉の外の場所が実際に明かしたことをもとに、自分は誰なのか、どうやってこの小屋に来たのかを自分の結論として言う。推測、質問、独り言の思案は数えない。",
+        "scope": "player"
+      },
+      "do": "remember-yourself",
+      "fallback": "手を伸ばしたところで、それはするりと逃げる。あなたが何者なのか、扉はまだ見せていない。まず向こう側を見てきて。"
+    },
+    {
+      "id": "stay-here",
+      "label": "プレイヤーが小屋に残ると決めた",
+      "kind": "keyword",
+      "when": {
+        "intent": "プレイヤーが、もう扉を開けず外にも出ず、アイリスとこの小屋に残ると明確に決める。少し休む、迷う、尋ねるだけでは数えない。",
+        "scope": "player"
+      },
+      "do": "stay-in-the-cabin"
+    }
+  ]
 }

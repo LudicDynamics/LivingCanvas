@@ -100,6 +100,10 @@ test('voice: the card’s own, else by gender', () => {
   assert.equal(npcVoiceAlias({ gender: 'male' }), 'soothing-smooth');
   assert.equal(npcVoiceAlias({ gender: 'female' }), 'gentle-calm');
   assert.equal(npcVoiceAlias({}), 'warm-cheerful');
+  // the card's own gender overrules a voice of the other sex
+  assert.equal(npcVoiceAlias({ voice: 'bold-resonant', gender: 'male' }), 'soothing-smooth');
+  assert.equal(npcVoiceAlias({ voice: 'cool-composed', gender: 'female' }), 'gentle-calm');
+  assert.equal(npcVoiceAlias({ voice: 'bold-resonant', gender: 'female' }), 'bold-resonant');
 });
 
 test('a declared find is known by its reward text before the roll', () => {

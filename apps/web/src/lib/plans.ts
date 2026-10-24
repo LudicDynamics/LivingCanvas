@@ -40,6 +40,8 @@ const n = (v: number) => v.toLocaleString('en-US');
  * Voice Live (voice calls) works on canvas.worldlines.gg? false: every plan line that
  * sells the minutes says 「即将开放 / Coming soon」 (the minutes stay). Flip to true to remove every label at once —
  * the billing side has its own switch, VOICE_LIVE_AVAILABLE in services/billing (config.voiceLiveAvailable).
+ * It is also what puts the call button in the tab: browser-mode.ts switches the in-tab server to voice-live
+ * (tickets from the AI service) only when this is true.
  */
 export const VOICE_LIVE_AVAILABLE = false;
 

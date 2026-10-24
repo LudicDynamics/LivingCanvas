@@ -1,0 +1,11 @@
+name: '回到图书馆'
+desc: '咒语成形之后回到夜晚的图书馆：「开启」的咒语（star-chart-room）或「映照」的咒语（palm-stars）让这堂课结束'
+do:
+  - action: end
+    when: 'has("world/spell-atlas/star-chart-room/01-my-spell.md")'
+    with:
+      ending: opened-door
+  - action: end
+    when: 'has("world/spell-atlas/palm-stars/01-my-spell.md")'
+    with:
+      ending: kept-stars

@@ -23,14 +23,14 @@ import { createTtsRouter } from './routes/tts.js';
 import { createLiveRouter } from './routes/live.js';
 import { createConnectionSettingsRouter, migrateLegacyOpenAI } from './routes/connection-settings.js';
 import { createSttRouter } from './routes/stt.js';
-import { createAiProxyRouter } from './ai-gateway.js';
+import { accountAccessToken, createAiProxyRouter } from './ai-gateway.js';
 import { gatewayWorld, setGatewayWorldSource } from './gateway-world.js';
 import { worldKeyOfRoot } from './world-shelf.js';
 import { DiceSettler } from './engine/dice-settle.js';
 import { WriterFastPath } from './engine/writer-fast-path.js';
 import { handleSttStream, STT_STREAM_PATH } from './engine/stt-stream.js';
 import { handleVoiceLiveStream, VOICE_LIVE_STREAM_PATH } from './engine/voice-live-proxy.js';
-import { resolveVoiceLiveCast, voiceLiveCharacterOf, voiceLiveSavePathOf, voiceLiveSessionUrl } from './engine/voice-live-cast.js';
+import { proxiedVoiceLiveSpeaksFish, resolveVoiceLiveCast, voiceLiveCharacterOf, voiceLiveSavePathOf, voiceLiveSessionUrl } from './engine/voice-live-cast.js';
 import { resolveVoiceLiveUrl, voiceLiveRelaysBrain, voiceLiveSocketUrl, voiceLiveUpstreamHeaders } from './engine/voice-provider.js';
 import { createBrainRelay } from './engine/voice-live-brain.js';
 import { startHeartbeat } from './gateway/heartbeat.js';
@@ -443,7 +443,10 @@ wss.on('connection', (ws: WebSocket, req: http.IncomingMessage) => {
     // Cast the call in the character's own voice (voice-live-cast.ts): without
     // this, voice-live speaks every character in its one configured voice.
     const characterId = voiceLiveCharacterOf(req.url);
-    const cast = resolveVoiceLiveCast(storeAtOpen, characterId).then((resolved) => {
+    // A self-run voice-live speaks Fish only when told so (VOICE_LIVE_FISH=1); otherwise DashScope voices.
+    // play is asked with the signed-in account's token (signed out: its cache, then the built-in table).
+    const cast = accountAccessToken().catch(() => null).then((token) =>
+      resolveVoiceLiveCast(storeAtOpen, characterId, { fish: proxiedVoiceLiveSpeaksFish(), token })).then((resolved) => {
       if (!isCurrent()) throw new Error('The active world changed before the voice call could start.');
       return voiceLiveSessionUrl(voiceLiveSocketUrl(resolveVoiceLiveUrl()), resolved, {
         relayBrain: voiceLiveRelaysBrain() && !!characterId,
@@ -692,7 +695,10 @@ wss.on('connection', (ws: WebSocket, req: http.IncomingMessage) => {
             // on the wire is its own change.
             let client = character;
             await lifecycle.submitCharacterTurn(characterId, async () => {
-              const send = () => {
+              const send = async () => {
+                if (activeStore !== storeAtStart || activeStore?.worldRoot !== turnSavePath) throw new Error('The active world changed before the character turn was sent.');
+                // Over a voice call she answers without thinking first (lifecycle.applyCharacterThinking).
+                await lifecycle.applyCharacterThinking(client, data.via === 'voice' ? 'voice' : 'dialogue');
                 if (activeStore !== storeAtStart || activeStore?.worldRoot !== turnSavePath) throw new Error('The active world changed before the character turn was sent.');
                 return data.mode === 'followUp' ? client.followUp(data.message) : client.prompt(data.message);
               };

@@ -1,7 +1,7 @@
 ---
 type: ending
 title: What Was Kept, What Was Missed
-bg: assets/scenes/intro.webp
+bg: assets/scenes/ending-half-truth.webp
 ---
 
 Noon strikes, and nothing happens on Baker Street. Edith is safe; Watson never leaves her side.

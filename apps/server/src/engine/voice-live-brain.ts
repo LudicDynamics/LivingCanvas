@@ -111,7 +111,8 @@ export function createBrainRelay(
       if (closed || !isCurrent() || !frame || frame.characterId !== characterId ||
         (frame.savePath !== undefined && frame.savePath !== worldRoot) || !DOWN.has(String(frame.type))) return true;
       if (frame.type === 'character_start') started = true;
-      const text = JSON.stringify({ ...frame, savePath: worldRoot });
+      // A line said over the call is answered with thinking off (lifecycle.applyCharacterThinking).
+      const text = JSON.stringify({ ...frame, savePath: worldRoot, ...(frame.type === 'character_prompt' ? { via: 'voice' } : {}) });
       local ??= connect();
       if (open) local.send(text);
       else if (queued.length < MAX_QUEUED) queued.push(text);

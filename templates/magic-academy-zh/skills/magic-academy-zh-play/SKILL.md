@@ -30,9 +30,16 @@ player/spell-draft.md 保存玩家的原话。读完草稿后，在 world/spell-
 
 候选代价是：星星碎片要让光芒休息到下一个夜晚，这是看得见的暂时消耗。不要擅自让记忆、声音、名字永久丧失。如果玩家想要别的代价，先商定范围。只有结果不确定的施法，才另外做可选的检定预告：展示公式、阈值、所有结果的概率、普通成功与大成功、失败与小概率的损害，等待本人操作掷骰。不要悄悄加数值。
 
-如果商定用「开启」＋星星碎片打开空间，就可以生成 world/spell-atlas/star-chart-room 的 README、changed-space.md、cost-trace.md、01-my-spell.md、return-gate.md，并放置通往天文台的入口。如果商定用「映照」＋手镜做成可随身携带的星图，就生成 world/spell-atlas/palm-stars 的同样结构以及 player/named-star-chart.md。这一种会让星星映在镜中，但进不了天文台。不要让所有成功都汇聚到同一个入口。其他方案则根据含义和代价做出一个简短结果。
+如果商定用「开启」＋星星碎片打开空间，就可以生成 world/spell-atlas/star-chart-room 的 README、changed-space.md、cost-trace.md、01-my-spell.md、return-gate.md，并放置通往天文台的入口。如果商定用「映照」＋手镜做成可随身携带的星图，就生成 world/spell-atlas/palm-stars 的同样结构以及 player/named-star-chart.md。这一种会让星星映在镜中，但进不了天文台。不要让所有成功都汇聚到同一个入口。其他方案则根据含义和代价做出一个简短结果，并放进它所用动词的结果文件夹（凡是「开启」的咒语都放 star-chart-room，凡是「映照」的咒语都放 palm-stars）。文件夹 id 不变，标题按实际改变的东西来写。01-my-spell.md 一定要有「带回夜晚的图书馆」选项（choice_actions kind enter，target map）。
 
 只有在施法之后，才把代价反映到实际用到的物品上，并在同一份草稿里记录已执行的事实和结果所在的位置。不要重复执行。需要时生成一张符合结果的背景图。塞拉菲娜会引用玩家起的名字，当着你的面展示改变了什么。
+
+## 结局
+这是一个 `semi` 世界，共三个结局，只由引擎落下：
+- `opened-door`（你打开的门）：world/spell-atlas/star-chart-room/01-my-spell.md 存在之后，玩家回到夜晚的图书馆（`map`，触发器 back-to-the-library → command/lesson-ends.yaml）。
+- `kept-stars`（掌心的星星）：world/spell-atlas/palm-stars/01-my-spell.md 存在之后，同样回到图书馆。
+- `unnamed`（空白的名牌）：玩家明确决定不施法就结束这堂课时，作家调用 `trigger_keyword({ id: "leave-without-a-spell" })`（command/leave-unnamed.yaml；已经施放过的咒语按它自己的结局算）。询问代价、修改、「还没想好」都不算。
+不要在正文里宣布结局，也不要催玩家施法。结局之后只剩对话。
 
 ## 确定操作与作家的分离（现行）
 choice_actions 是已实现的 UI 操作声明，对应 choice.options 中的 ASCII id。只使用 read(paths)、take(paths)、stage(paths)、enter(target)、character(character)、reply(text)、writer(prompt 可选)。阅读、搬运、回到已有场景、摆放材料、简短显示骰子结果时，不启动作家。stage 只是确认材料，不是提交或执行。只有生成、自由角色扮演、执行未确定的约定或计划时，才使用 writer。向人物提问时用 character 打开对话，不要擅自发送台词。

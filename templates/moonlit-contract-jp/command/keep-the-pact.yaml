@@ -1,0 +1,7 @@
+name: "残ってほしいと頼む"
+desc: "ライラはこの夜を越えて残る。契約成立後（world/moonlit-courtyard がある）だけ「夜明けの向こうへ」に至る。それまではライラの短い返事だけ。"
+do:
+  - action: end
+    when: 'has("world/moonlit-courtyard/README.md")'
+    with:
+      ending: bound

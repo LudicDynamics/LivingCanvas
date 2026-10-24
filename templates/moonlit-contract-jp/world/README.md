@@ -3,7 +3,7 @@ type: readme
 name: 月下の召喚
 title: 月下の召喚
 bg: assets/backgrounds/opening.webp
-intent: この世界の行動では必ず skills/moonlit-contract-play/SKILL.md、現在の README、行動元の Chalk、青いリボンの実在するファイルを読む。開始時点では契約は未成立。明確な同意を得たときだけ world/moonlit-courtyard を一層生成する。質問や拒否では生成しない。既存の内容を保ち、次の場所はプレイヤーの明示した一歩ごとに生成する。
+intent: "この世界の行動では必ず skills/moonlit-contract-play/SKILL.md、現在の README、行動元の Chalk、青いリボンの実在するファイルを読む。開始時点では契約は未成立。明確な同意を得たときだけ world/moonlit-courtyard を一層生成する。質問や拒否では生成しない。既存の内容を保ち、次の場所はプレイヤーの明示した一歩ごとに生成する。結末はエンジンだけが下ろす（world.json の triggers）。ライラに残ってほしいと頼む、彼女を解き放つ、退ける、の三つ。作家は本文で結末を宣言しない。"
 map:
   plan:
     picture: assets/maps/seaside-observatory.webp

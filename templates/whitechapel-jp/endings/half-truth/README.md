@@ -1,7 +1,7 @@
 ---
 type: ending
 title: 守れたもの、取り逃がしたもの
-bg: assets/scenes/intro.webp
+bg: assets/scenes/ending-half-truth.webp
 ---
 
 正午の鐘が鳴り、ベーカー街では何も起こらなかった。イーディスは無事で、ワトソンはずっと彼女のそばにいた。

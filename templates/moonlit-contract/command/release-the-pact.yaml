@@ -1,0 +1,7 @@
+name: "Release her"
+desc: "Untie the ribbon and let Lyra rest. Lands “The Sword Laid Down” only once the pact is made (world/moonlit-courtyard exists); before that only Lyra's short reply plays."
+do:
+  - action: end
+    when: 'has("world/moonlit-courtyard/README.md")'
+    with:
+      ending: released

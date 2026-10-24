@@ -26,9 +26,9 @@
     "mechanics": [
       "voice",
       "live-image",
-      "free-explore"
+      "endings"
     ],
-    "endings": 0,
+    "endings": 3,
     "characters": [
       {
         "id": "seraphina",
@@ -43,7 +43,7 @@
       "Fantasy settings",
       "Making and naming things"
     ],
-    "unfinished": "In development: there is only one room so far; the price system and the endings are not finished."
+    "unfinished": "In development: one room and one short lesson; three endings are in, but their pictures are still placeholders."
   },
   "author": "Mingyue",
   "genre": "Story experience",
@@ -102,5 +102,45 @@
   "player": {
     "id": "player",
     "name": "New Student at the Academy"
-  }
+  },
+  "mode": "semi",
+  "endings": [
+    {
+      "id": "opened-door",
+      "title": "The Door You Opened",
+      "path": "endings/opened-door/README.md"
+    },
+    {
+      "id": "kept-stars",
+      "title": "Stars in Your Palm",
+      "path": "endings/kept-stars/README.md"
+    },
+    {
+      "id": "unnamed",
+      "title": "The Blank Name Tag",
+      "path": "endings/unnamed/README.md"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "back-to-the-library",
+      "label": "Back in the night library with a cast spell",
+      "kind": "place",
+      "once": false,
+      "when": {
+        "layer": "map"
+      },
+      "do": "lesson-ends"
+    },
+    {
+      "id": "leave-without-a-spell",
+      "label": "The player leaves the lesson without casting",
+      "kind": "keyword",
+      "when": {
+        "intent": "The player clearly decides to end tonight's lesson without casting any spell (puts the materials down and leaves). Asking about costs, revising or 'not yet' does not count.",
+        "scope": "player"
+      },
+      "do": "leave-unnamed"
+    }
+  ]
 }

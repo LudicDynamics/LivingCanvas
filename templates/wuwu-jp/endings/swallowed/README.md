@@ -1,7 +1,7 @@
 ---
 type: ending
 title: 霧に呑まれる
-bg: assets/scenes/old-lighthouse.webp
+bg: assets/scenes/ending-swallowed.webp
 ---
 
 一番外側の足場が滑り、霧が四方から閉じてくる。あなたは手を伸ばして灯油を探る——手元には一滴も点せない油がない。光がない。

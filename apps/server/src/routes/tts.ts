@@ -3,9 +3,12 @@ import fs from 'node:fs/promises';
 import { existsSync, realpathSync } from 'node:fs';
 import { createHash, randomUUID } from 'node:crypto';
 import path from 'node:path';
-import { characterVoiceOf, resolveVoice, resolveVoiceFor, sanitiseTtsText, parseFrontmatter, worldLanguageOf, TtsRequestSchema, type LocalWorldStore, type WorldLanguage } from '@airp/shared';
+import { ALIAS_DESCRIPTORS, LOCAL_VOICE_HOSTED_FALLBACK, characterVoiceOf, inferVoiceProfile, worldFamilyOf, resolveVoice, resolveVoiceFor, sanitiseTtsText, parseFrontmatter, voiceEntry, worldLanguageOf, TtsRequestSchema, type LocalWorldStore, type RosterProfile, type WorldLanguage } from '@airp/shared';
+import { builtinCandidates } from '../builtin-voices.js';
+import { castFromPlay } from '../play-voice.js';
+import { FishTtsError, isFishGatewayModel, readFishTtsConfig, synthesiseFish, ttsProviderOf } from './fish-tts.js';
 import { LocalTtsError, localTtsEmotion, localTtsEnabled, localTtsHash, readLocalTtsConfig, selectLocalVoice, synthesiseLocal } from './local-tts.js';
-import { AiQuotaError, accountSignedIn, aiModels, gatewayFetch, quotaBody, quotaErrorOf, quotaStatus, readAiGateway, type AiGateway } from '../ai-gateway.js';
+import { AiQuotaError, accountAccessToken, accountSignedIn, aiModels, gatewayFetch, quotaBody, quotaErrorOf, quotaStatus, readAiGateway, type AiGateway } from '../ai-gateway.js';
 
 /**
  * Server-side TTS: the ONE synthesis point.
@@ -119,6 +122,11 @@ class TtsUpstreamError extends Error {
 }
 
 /** Map a `synthesise` throw onto the frozen error matrix. */
+/** The AI service refused the caller (401 / 403): every voice would be refused the same way. */
+function isAccountRefusal(err: unknown): boolean {
+  return err instanceof TtsUpstreamError && (err.status === 401 || err.status === 403);
+}
+
 function mapSynthError(err: unknown): { status: number; code: string; error: string } {
   // The service refused the caller (signed out, a guest of the trial — voices are for accounts): not a broken
   // upstream. The page stops asking for this session and says once that signing in brings the voices.
@@ -301,6 +309,15 @@ export async function synthesiseViaGateway(opts: {
 export async function ttsNeedsAccount(config: Pick<TtsConfig, 'apiKey' | 'gateway'>, signedIn: () => Promise<boolean> = accountHere): Promise<boolean> {
   return !config.apiKey.trim() && config.gateway?.account === true && !(await signedIn());
 }
+/**
+ * The AI service through the player's own Worldlines account, when they are signed in: voices then
+ * always go through it, so a signed-in player needs no TTS key. null when signed out, or the gateway is not an
+ * account one (a service key configured by an operator keeps the old order).
+ */
+async function accountGatewayFor(signedIn: () => Promise<boolean> = accountHere): Promise<AiGateway | null> {
+  const gateway = readAiGateway();
+  return gateway?.account === true && await signedIn() ? gateway : null;
+}
 /** A session in remote.json, or the account-token hook (sync/remote-client.ts) has a token; null without a session, no network. */
 async function accountHere(): Promise<boolean> {
   if (accountSignedIn()) return true;
@@ -349,11 +366,14 @@ export function createTtsRouter(
     const localUrl = readLocalTtsConfig().baseUrl;
     const localTts = localTtsEnabled();
     const ownLocal = Boolean(localUrl && localTts);
-    const requiresAccount = !ownLocal && await ttsNeedsAccount(config);
+    const fish = readFishTtsConfig();
+    const signedIn = await accountGatewayFor();
+    const ownFish = !signedIn && ttsProviderOf() === 'fish' && Boolean(fish.apiKey);
+    const requiresAccount = !signedIn && !ownLocal && !ownFish && await ttsNeedsAccount(config);
     res.json({
-      configured: Boolean(config.apiKey.trim() || ownLocal || (config.gateway && !requiresAccount)),
+      configured: Boolean(signedIn || ownFish || config.apiKey.trim() || ownLocal || (config.gateway && !requiresAccount)),
       ...(requiresAccount ? { requiresAccount: true } : {}),
-      model: config.model,
+      model: signedIn ? (aiModels().ttsFish || aiModels().tts) : ownFish ? `fish-audio/${fish.model}` : config.model,
       defaultVoice: config.defaultVoice,
       // The studio voice through the service is experimental and opt-in per
       // browser (`X-AIRP-TTS-Local: 1`); an own local URL keeps it always on.
@@ -518,62 +538,148 @@ export function createTtsRouter(
       }
     }
 
-    // Step 7 — cache lookup. `existsSync` (not `stat`) is enough: atomic writes
-    // guarantee "present ⇒ complete".
-    const model = config.apiKey || !config.gateway ? config.model : aiModels().tts;
-    const instructions = deliveryInstructions(model, voice);
-    const hash = hashOf(model, voice, languageType, text, instructions);
-    const cacheDir = path.join(store.worldRoot, '.airpworld', 'tts-cache');
-    const file = `${hash}.wav`;
-    const abs = path.join(cacheDir, file);
-    if (!scopeIsCurrent()) return worldChangedResponse(res);
-    if (existsSync(abs)) {
-      return res.json({
-        ok: true,
-        url: `/api/tts/audio/${file}`,
-        cached: true,
-        characters: text.length,
-        truncated,
-      });
-    }
-
-    // Step 8 — key check comes AFTER the cache probe on purpose: an already
-    // synthesised page keeps playing even if the key was withdrawn.
-    if (!config.apiKey && !config.gateway) {
-      console.warn('[AIRP TTS] Online TTS unavailable: DASHSCOPE_API_KEY is not set.');
-      return res
-        .status(503)
-        .json({ ok: false, code: 'tts_unconfigured', error: 'DASHSCOPE_API_KEY is not set' });
-    }
-    if (needsAccount) {
-      return res.status(401).json({ ok: false, code: 'tts_requires_account', error: 'Voices need a Worldlines account.' });
-    }
-    let wav: Buffer;
-    try {
-      wav = config.apiKey || !config.gateway
-        ? await synthesise({
-          text,
-          voice,
-          languageType,
-          apiKey: config.apiKey,
-          baseUrl: config.baseUrl,
-          model: config.model,
-          timeoutMs: config.timeoutMs,
-        })
-        : await synthesiseViaGateway({
-          gateway: config.gateway, model, text, voice, language: languageType, instructions, timeoutMs: config.timeoutMs,
-          onProviderFallback: (detail) => {
-            console.warn(`[AIRP TTS] The AI service fell back to another voice provider (${detail}).`);
-            res.setHeader('X-AIRP-TTS-Fallback', 'provider');
-          },
-        });
-    } catch (err) {
-      if (!scopeIsCurrent()) return worldChangedResponse(res);
-      if (err instanceof AiQuotaError) {
-        console.warn('[AIRP TTS] Online TTS stopped: the Worldlines plan quota is used up.');
-        return res.status(quotaStatus(err)).json(quotaBody(err));
+    // Step 6b — which voice, which provider: worldlines-play decides. POST play /v1/voice/cast with the
+    // signed-in account's token → ordered candidates { provider, voiceId } (manual voice → pinned auto-cast → same cell →
+    // other provider → the language's fallbacks; native speakers only). No voice ids are taken from this repo's roster
+    // snapshot any more. play cannot be asked (signed out / unreachable) → its last answer (play-voice.ts cache) → the
+    // built-in fallback table (builtin-voices.ts). X-AIRP-Voice-Source says which: play | cache | builtin.
+    //   Route: signed in to a Worldlines account → the AI service, whatever keys are local (the player needs no TTS
+    //   key); otherwise an own Fish key (FISH_AUDIO_API_KEY / FISH_API_KEY) and/or own DashScope key; otherwise the
+    //   service the old way (it asks for an account). Only providers reachable on that route are asked for.
+    //   Candidates are tried in order; one that fails right now (402 / 5xx / timeout / network) gives way to the next
+    //   (a Fish failure answered by qwen is marked X-AIRP-TTS-Fallback: fish-to-qwen). A quota stop ends it.
+    const fish = readFishTtsConfig();
+    const accountGateway = await accountGatewayFor();
+    const fishKey = ttsProviderOf() === 'fish' && Boolean(fish.apiKey);
+    const useGateway = accountGateway ?? (!config.apiKey && !fishKey ? config.gateway : null);
+    const gatewayFishModel = useGateway ? aiModels().ttsFish : '';
+    const qwenGatewayModel = isFishGatewayModel(aiModels().tts) ? DEFAULTS.model : aiModels().tts;
+    const reach = {
+      fish: useGateway ? Boolean(gatewayFishModel) : fishKey,
+      dashscope: useGateway ? true : Boolean(config.apiKey),
+    };
+    let profile: RosterProfile = {};
+    let character: string | undefined;
+    let description = '';
+    if (typeof characterId === 'string' && /^[a-z0-9][a-z0-9-]*$/.test(characterId) && manifest) {
+      const row = manifest.characters?.find(c => c.id === characterId) as { description?: unknown } | undefined;
+      if (row) {
+        let declaredGender: unknown;
+        try { declaredGender = parseFrontmatter(await store.readFile(`characters/${characterId}/README.md`)).frontmatter?.gender; } catch { /* legacy */ }
+        if (!scopeIsCurrent()) return worldChangedResponse(res);
+        character = characterId;
+        description = typeof row.description === 'string' ? row.description : '';
+        profile = inferVoiceProfile(description, declaredGender);
       }
-      const mapped = mapSynthError(err);
+    }
+    // the author's declared voice tells sex × age where the text does not (wise-elder = an old man)
+    const aliasOf = (n: string) => voiceEntry(n)?.alias ?? voiceEntry(LOCAL_VOICE_HOSTED_FALLBACK[n] ?? '')?.alias ?? n;
+    const descriptor = requestedVoice ? ALIAS_DESCRIPTORS[aliasOf(requestedVoice)] : undefined;
+    profile = { ...profile, gender: profile.gender ?? descriptor?.gender, age: profile.age ?? descriptor?.age };
+    // the language to cast in: the world's; unknown (no manifest locale, no usable request language → `Auto`) = zh, the
+    // language of the default voice (Cherry) — never a guess at English
+    const castLanguage: WorldLanguage = languageType === 'Auto' ? 'zh' : worldLanguage;
+    const providers = (['fish', 'dashscope'] as const).filter(p => reach[p]);
+    // nothing reachable: still look the line up in the cache under the qwen model, then answer tts_unconfigured below
+    const castProviders: ('fish' | 'dashscope')[] = providers.length ? [...providers] : ['dashscope'];
+    let source: 'play' | 'cache' | 'builtin' = 'builtin';
+    let candidates: { provider: 'fish' | 'dashscope'; voiceId: string }[] = [];
+    if (character && manifest?.id) {
+      const asked = await castFromPlay(
+        { family: String(manifest.id).replace(/-(?:zh|jp|ja|ko|en)$/, ''), character, lang: castLanguage, ...(description ? { description } : {}), traits: { ...(profile.gender ? { gender: profile.gender } : {}), ...(profile.age ? { age: profile.age } : {}) }, providers: castProviders },
+        accountGateway ? await accountAccessToken() : null,
+      );
+      if (!scopeIsCurrent()) return worldChangedResponse(res);
+      if (asked.source !== 'none') {
+        candidates = asked.candidates.flatMap(c => (castProviders as string[]).includes(c.provider) ? [{ provider: c.provider as 'fish' | 'dashscope', voiceId: c.voiceId }] : []);
+        if (candidates.length) source = asked.source;
+      }
+    }
+    if (!candidates.length) {
+      // the team's assigned voice for this character (builtin-voices.ts BUILTIN_ASSIGNED) on a Fish route; else
+      // the author's own voice (as written, or as the palette resolved it) — never the configured default standing in
+      const declared = (requestedVoice ? [requestedVoice, voice] : []).find(d => d && builtinCandidates({ providers: castProviders, lang: castLanguage, gender: profile.gender, age: profile.age, declared: d }).some(c => c.voiceId === d));
+      candidates = builtinCandidates({ providers: castProviders, lang: castLanguage, gender: profile.gender, age: profile.age, declared, declaredFirst: declared === requestedVoice, ...(character && manifest?.id ? { family: worldFamilyOf(manifest.id), character } : {}) }).map(c => ({ provider: c.provider as 'fish' | 'dashscope', voiceId: c.voiceId }));
+      source = 'builtin';
+    }
+    if (!candidates.length) {
+      // qwen speaks only its own language and there is no native voice of this sex on any reachable provider
+      console.warn(`[AIRP TTS] no ${castLanguage} voice for this character on the reachable providers (${castProviders.join(', ')}); refusing.`);
+      return res.status(503).json({ ok: false, code: 'tts_voice_unavailable', reason: 'no_native_voice', error: `No ${castLanguage} voice is available for this character here.` });
+    }
+    res.setHeader('X-AIRP-Voice-Source', source);
+
+    // Step 7 — per candidate: cache lookup (`existsSync` is enough: atomic writes guarantee "present ⇒ complete"),
+    // else synthesise; the cache key is always the voice actually spoken, and a failed attempt writes nothing.
+    const cacheDir = path.join(store.worldRoot, '.airpworld', 'tts-cache');
+    const plan = (c: { provider: 'fish' | 'dashscope'; voiceId: string }) => {
+      const ownFish = c.provider === 'fish' && !useGateway;
+      const gatewayFish = c.provider === 'fish' && Boolean(useGateway);
+      const model = ownFish ? `fish-audio/${fish.model}` : gatewayFish ? gatewayFishModel : useGateway ? qwenGatewayModel : config.model;
+      const instructions = c.provider === 'fish' ? '' : deliveryInstructions(model, c.voiceId);
+      const file = `${hashOf(model, c.voiceId, languageType, text, instructions)}.wav`;
+      return { ...c, ownFish, gatewayFish, model, instructions, file, abs: path.join(cacheDir, file) };
+    };
+    const tries = candidates.slice(0, 3).map(plan);
+    let file = tries[0]!.file;
+    let abs = tries[0]!.abs;
+    let wav: Buffer | undefined;
+    let lastErr: unknown;
+    let fishFailed = false;
+    for (const [i, t] of tries.entries()) {
+      if (!scopeIsCurrent()) return worldChangedResponse(res);
+      if (existsSync(t.abs)) {
+        if (fishFailed && t.provider === 'dashscope') res.setHeader('X-AIRP-TTS-Fallback', 'fish-to-qwen');
+        return res.json({ ok: true, url: `/api/tts/audio/${t.file}`, cached: true, characters: text.length, truncated });
+      }
+      if (i === 0) {
+        // Step 8 — key check comes AFTER the first cache probe on purpose: an already synthesised page keeps playing
+        // even if the key was withdrawn.
+        if (!t.ownFish && !useGateway && !config.apiKey && !config.gateway) {
+          console.warn('[AIRP TTS] Online TTS unavailable: neither FISH_AUDIO_API_KEY nor DASHSCOPE_API_KEY is set.');
+          return res.status(503).json({ ok: false, code: 'tts_unconfigured', error: 'DASHSCOPE_API_KEY is not set' });
+        }
+        if (needsAccount && !t.ownFish && !accountGateway) {
+          return res.status(401).json({ ok: false, code: 'tts_requires_account', error: 'Voices need a Worldlines account.' });
+        }
+      }
+      try {
+        wav = t.ownFish
+          ? await synthesiseFish({ text, referenceId: t.voiceId, config: fish })
+          : !useGateway
+          ? await synthesise({ text, voice: t.voiceId, languageType, apiKey: config.apiKey, baseUrl: config.baseUrl, model: config.model, timeoutMs: config.timeoutMs })
+          : await synthesiseViaGateway({
+            gateway: useGateway, model: t.model, text, voice: t.voiceId, language: languageType, instructions: t.instructions, timeoutMs: config.timeoutMs,
+            onProviderFallback: (detail) => {
+              console.warn(`[AIRP TTS] The AI service fell back to another voice provider (${detail}).`);
+              res.setHeader('X-AIRP-TTS-Fallback', 'provider');
+            },
+          });
+        file = t.file;
+        abs = t.abs;
+        if (fishFailed && t.provider === 'dashscope') res.setHeader('X-AIRP-TTS-Fallback', 'fish-to-qwen');
+        break;
+      } catch (err) {
+        if (!scopeIsCurrent()) return worldChangedResponse(res);
+        if (err instanceof AiQuotaError) {
+          console.warn('[AIRP TTS] Online TTS stopped: the Worldlines plan quota is used up.');
+          return res.status(quotaStatus(err)).json(quotaBody(err));
+        }
+        // the service refusing the caller is not this voice's fault: the next one would be refused the same way
+        if (isAccountRefusal(err)) { lastErr = err; break; }
+        lastErr = err;
+        if (t.provider === 'fish') fishFailed = true;
+        const reason = err instanceof FishTtsError || err instanceof Error ? err.message : String(err);
+        if (i + 1 < tries.length) console.warn(`[AIRP TTS] ${t.provider} voice failed (${reason}); trying the next candidate.`);
+      }
+    }
+    if (!wav) {
+      const err = lastErr;
+      const mapped = err instanceof FishTtsError
+        ? err.kind === 'timeout'
+          ? { status: 504, code: 'tts_timeout', error: err.message }
+          : { status: 502, code: 'tts_upstream', error: err.message }
+        : mapSynthError(err);
       // The reason ("DashScope HTTP 429", a timeout…) carries no key or URL.
       console.warn(`[AIRP TTS] Online TTS failed (${mapped.code}: ${mapped.error}).`);
       return res.status(mapped.status).json({ ok: false, code: mapped.code, error: mapped.error });

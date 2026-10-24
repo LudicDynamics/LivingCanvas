@@ -1,0 +1,6 @@
+name: "留在木屋"
+desc: "玩家插上门闩，和艾莉丝一起留在木屋里。"
+do:
+  - action: end
+    with:
+      ending: stay

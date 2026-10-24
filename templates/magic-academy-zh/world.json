@@ -26,9 +26,9 @@
     "mechanics": [
       "voice",
       "live-image",
-      "free-explore"
+      "endings"
     ],
-    "endings": 0,
+    "endings": 3,
     "characters": [
       {
         "id": "seraphina",
@@ -43,7 +43,7 @@
       "喜欢奇幻设定",
       "喜欢创造和命名"
     ],
-    "unfinished": "开发中：目前只有一个房间，代价系统和结局都还没做完。"
+    "unfinished": "开发中：一个房间、一堂小课；三个结局已经做好，但结局图还是占位。"
   },
   "author": "Mingyue",
   "genre": "故事体验",
@@ -102,5 +102,45 @@
   "player": {
     "id": "player",
     "name": "学院新生"
-  }
+  },
+  "mode": "semi",
+  "endings": [
+    {
+      "id": "opened-door",
+      "title": "你打开的门",
+      "path": "endings/opened-door/README.md"
+    },
+    {
+      "id": "kept-stars",
+      "title": "掌心的星星",
+      "path": "endings/kept-stars/README.md"
+    },
+    {
+      "id": "unnamed",
+      "title": "空白的名牌",
+      "path": "endings/unnamed/README.md"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "back-to-the-library",
+      "label": "施法之后回到夜晚的图书馆",
+      "kind": "place",
+      "once": false,
+      "when": {
+        "layer": "map"
+      },
+      "do": "lesson-ends"
+    },
+    {
+      "id": "leave-without-a-spell",
+      "label": "玩家不施法就离开这堂课",
+      "kind": "keyword",
+      "when": {
+        "intent": "玩家明确决定今晚不施放任何咒语就结束这堂课：放下材料离开，或说今晚不做咒语了。询问代价、修改草稿、犹豫或说「还没想好」都不算。",
+        "scope": "player"
+      },
+      "do": "leave-unnamed"
+    }
+  ]
 }

@@ -30,9 +30,16 @@ player/spell-draft.md saves the player’s words. Reads drafts into world/spell-
 
 Candidate costs include the star fragment temporarily resting its light until the next night. No permanent loss of memory, voice, or name without prior consent. Agree on range before choosing a different cost. Only uncertain casts get optional pre-declared checks. Display formula, thresholds, all result probabilities, normal/great success, failure/rare harm, then await player dice input. No silent numerical additions.
 
-If "Open" + star fragment agreed to open space, generate README for world/spell-atlas/star-chart-room, changed-space.md, cost-trace.md, 01-my-spell.md, and return-gate.md, placing an entrance to the observatory. If "Reflect" + hand mirror agrees on portable star map, make same structure for world/spell-atlas/palm-stars and player/named-star-chart.md. This reflects stars in the mirror but no entrance. Don’t merge all successes to the same entrance. Make one short alternative from meaning and cost.
+If "Open" + star fragment agreed to open space, generate README for world/spell-atlas/star-chart-room, changed-space.md, cost-trace.md, 01-my-spell.md, and return-gate.md, placing an entrance to the observatory. If "Reflect" + hand mirror agrees on portable star map, make same structure for world/spell-atlas/palm-stars and player/named-star-chart.md. This reflects stars in the mirror but no entrance. Don’t merge all successes to the same entrance. Make one short alternative from meaning and cost; it lands in the result folder of its verb (any Open spell in star-chart-room, any Reflect spell in palm-stars). Folder ids stay; titles follow what actually changed. 01-my-spell.md always offers "Take it back to the night library" (choice_actions kind enter, target map).
 
 Only after casting apply costs to actually used items, record the execution fact and result location in the same draft. No double execution. Generate a suitable background image for results if needed. Seraphina quotes the player-named words and shows changes before you.
+
+## Endings
+This is a `semi` world with three endings, landed only by the engine:
+- `opened-door` (The Door You Opened): the player walks back into the night library (`map`, trigger back-to-the-library → command/lesson-ends.yaml) after world/spell-atlas/star-chart-room/01-my-spell.md exists.
+- `kept-stars` (Stars in Your Palm): the same return after world/spell-atlas/palm-stars/01-my-spell.md exists.
+- `unnamed` (The Blank Name Tag): the player clearly decides to end the lesson without casting; the writer calls `trigger_keyword({ id: "leave-without-a-spell" })` (command/leave-unnamed.yaml; a spell already cast still lands its own ending). Asking about costs, revising or "not yet" does not count.
+Never announce an ending in prose and never push the player to cast. After an ending, only conversation remains.
 
 ## Separation of Confirmed Actions and Authors (Current)
 choice_actions are implemented UI action declarations matching choice.options English IDs. Use only read(paths), take(paths), stage(paths), enter(target), character(character), reply(text), and writer(prompt optional). Reading, moving, returning to places, staging materials, or short dice displays don’t trigger authors. Stage checks materials only, no submission or execution. Writer used only for generating, free RP, unconfirmed promises, or strategies. Character questions open dialogues; don’t send lines unprompted.

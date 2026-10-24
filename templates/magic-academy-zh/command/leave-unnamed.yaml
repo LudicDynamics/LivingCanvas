@@ -1,0 +1,14 @@
+name: '不带咒语离开'
+desc: '玩家决定不施法就结束这堂课；已经施放过的咒语仍按它自己的结局算'
+do:
+  - action: end
+    when: 'has("world/spell-atlas/star-chart-room/01-my-spell.md")'
+    with:
+      ending: opened-door
+  - action: end
+    when: 'has("world/spell-atlas/palm-stars/01-my-spell.md")'
+    with:
+      ending: kept-stars
+  - action: end
+    with:
+      ending: unnamed

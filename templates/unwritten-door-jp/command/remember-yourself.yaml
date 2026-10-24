@@ -1,0 +1,7 @@
+name: "自分を思い出す"
+desc: "プレイヤーが実際に見つけたことから自分が誰かを言う。扉の外（world/outside/README.md）がある時だけ結末になる。"
+do:
+  - action: end
+    when: 'has("world/outside/README.md")'
+    with:
+      ending: remember

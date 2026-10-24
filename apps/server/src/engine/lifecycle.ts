@@ -140,6 +140,14 @@ export class AgentLifecycleManager {
    * restarted writer re-reads its own launch level.
    */
   private writerThinking: { client: RpcClient; base: ThinkingLevel; now: ThinkingLevel } | null = null;
+  /**
+   * A character's thinking during a voice call: off. A caller
+   * hears reasoning time as dead air — its first token is what they are waiting
+   * for — so a turn that arrives over a call (`character_prompt { via: 'voice' }`)
+   * runs with thinking off, and the next typed turn gets the launch level back.
+   * Keyed by client, so a restarted character re-reads its own launch level.
+   */
+  private characterThinking = new WeakMap<RpcClient, { base: ThinkingLevel; now: ThinkingLevel }>();
   /** A writer tool call failed during the running beat; the next beat thinks. */
   private writerBeatToolError = false;
   /**
@@ -714,6 +722,31 @@ export class AgentLifecycleManager {
   async restoreWriterThinking(client: RpcClient): Promise<void> {
     const tracked = this.writerThinking;
     if (tracked?.client === client) await this.setWriterThinking(client, tracked.base);
+  }
+
+  /**
+   * Put a character on the thinking level for where this turn came from: off for
+   * a voice call, its launch level otherwise. Switches only when it changes; a
+   * failed switch keeps the turn going on whatever level the character has.
+   * Called inside `submitCharacterTurn`, so it never races the turn before it.
+   */
+  async applyCharacterThinking(client: RpcClient, via: 'dialogue' | 'voice'): Promise<void> {
+    try {
+      let tracked = this.characterThinking.get(client);
+      if (!tracked) {
+        if (via !== 'voice') return; // never switched: nothing to restore
+        const current = (await client.getState()).thinkingLevel;
+        const base = isThinkingLevel(current) ? current : 'low';
+        tracked = { base, now: base };
+        this.characterThinking.set(client, tracked);
+      }
+      const level: ThinkingLevel = via === 'voice' ? 'off' : tracked.base;
+      if (tracked.now === level) return;
+      await client.setThinkingLevel(level);
+      tracked.now = level;
+    } catch (error) {
+      console.warn('[AIRP Lifecycle] character thinking level switch failed:', error instanceof Error ? error.message : String(error));
+    }
   }
 
   /**

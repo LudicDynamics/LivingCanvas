@@ -13,6 +13,8 @@ const legitimateFrames = [
   { type: 'character_start', savePath, characterId: 'sarah', recentContext: 'The last exchange.' },
   { type: 'character_prompt', savePath, characterId: 'sarah', message: 'What happened?', mode: 'followUp' },
   { type: 'character_prompt', savePath, characterId: 'sarah', message: 'Add this detail.', mode: 'steer' },
+  // Said over a voice call: answered with thinking off (lifecycle.applyCharacterThinking).
+  { type: 'character_prompt', savePath, characterId: 'sarah', message: 'Are you there?', via: 'voice' },
   { type: 'character_abort', savePath, characterId: 'sarah' },
   { type: 'character_stop', savePath, characterId: 'sarah', turns: 3 },
   { type: 'character_stop', savePath, characterId: 'sarah' },
@@ -44,4 +46,8 @@ test('command-specific values are type-checked before dispatch', () => {
   assert.equal(WsCommandSchema.safeParse({ type: 'character_prompt', savePath, characterId: 7, message: 'hello' }).success, false);
   assert.equal(WsCommandSchema.safeParse({ type: 'character_stop', savePath, characterId: 'sarah', turns: '3' }).success, false);
   assert.equal(WsCommandSchema.safeParse({ type: 'unknown_command', savePath }).success, false);
+});
+
+test('character_prompt.via is only dialogue or voice', () => {
+  assert.equal(WsCommandSchema.safeParse({ type: 'character_prompt', savePath, characterId: 'sarah', message: 'hi', via: 'phone' }).success, false);
 });

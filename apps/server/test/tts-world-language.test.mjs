@@ -10,7 +10,7 @@ import os from 'node:os';
 import path from 'node:path';
 import express from 'express';
 import { test } from 'node:test';
-import { LocalWorldStore } from '@airp/shared';
+import { LocalWorldStore, VOICE_ROSTER } from '@airp/shared';
 import { createTtsRouter } from '../dist/routes/tts.js';
 
 const WAV = Buffer.from('RIFF\x24\x00\x00\x00WAVEfmt ');
@@ -106,9 +106,14 @@ test('a female studio voice never speaks for a male character, even in its own l
   const h = await harness(t, {
     locale: 'ja', worldId: 'whitechapel-jp', characters: [{ id: 'watson', home: 'world/map', voice: 'scholarly-narrator' }], mapping: 'watson=setsuna',
   });
-  await h.post({ text: 'やあ。', voice: 'scholarly-narrator', language: 'ja', characterId: 'watson' });
+  const res = await h.post({ text: 'やあ。', voice: 'scholarly-narrator', language: 'ja', characterId: 'watson' });
   assert.equal(h.local.calls.length, 0);
-  assert.equal(synthOf(h).input.voice, 'Elias');
+  // scholarly-narrator is Elias, banned on the voice roster. qwen speaks only its own native language
+  // and there is no Japanese qwen man: on a qwen-only route nothing may read it — refused, never
+  // forced onto a Chinese voice or a woman.
+  assert.equal(res.status, 503);
+  assert.deepEqual([(await res.json()).reason], ['no_native_voice']);
+  assert.equal(synthOf(h), undefined, 'no synthesis at all');
 });
 
 test('the world locale decides the language even when the request omits or contradicts it', async t => {
@@ -121,7 +126,8 @@ test('the world locale decides the language even when the request omits or contr
 test('a voice bound to another language is re-cast on the same gender in the world language', async t => {
   const h = await harness(t, { locale: 'en', worldId: 'mandongbu-en', characters: [], mapping: '' });
   await h.post({ text: 'Hello.', voice: 'beijing-youth', language: 'en' });
-  assert.equal(synthOf(h).input.voice, 'Ethan', 'Beijing-dialect Dylan → Ethan (male, all-language)');
+  const en = VOICE_ROSTER.voices.find(v => v.id === synthOf(h).input.voice);
+  assert.deepEqual([en.provider, en.gender, en.only], ['dashscope', 'male', 'en'], 'Beijing-dialect Dylan → a native-English qwen man (qwen speaks only its own language)');
   const zh = await harness(t, { locale: 'zh-CN', worldId: 'x-zh', characters: [], mapping: '' });
   await zh.post({ text: '你好。', voice: 'Jennifer', language: 'zh-CN' });
   assert.equal(synthOf(zh).input.voice, 'Katerina', 'an American-English raw id is re-cast for a Chinese world');

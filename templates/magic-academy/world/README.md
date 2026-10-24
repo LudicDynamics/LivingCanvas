@@ -2,8 +2,7 @@
 type: readme
 name: Night Library · First Magic
 title: Night Library · First Magic
-intent: If received, move the name tag to player/. The failure story returns one
-  concrete example but imposes no unconfirmed costs on the player.
+intent: 'If received, move the name tag to player/. The failure story returns one concrete example but imposes no unconfirmed costs on the player. Endings are landed by the engine: walking back into the night library after an Open or Reflect spell has landed, or deciding to leave without casting. The writer never announces an ending.'
 choice:
   options:
     - id: action-1

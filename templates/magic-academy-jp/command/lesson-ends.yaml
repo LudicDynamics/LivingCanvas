@@ -1,0 +1,11 @@
+name: '図書館へ戻る'
+desc: '呪文が成立したあとで夜の図書館へ戻る：「開く」の呪文（star-chart-room）か「映す」の呪文（palm-stars）で授業が終わる'
+do:
+  - action: end
+    when: 'has("world/spell-atlas/star-chart-room/01-my-spell.md")'
+    with:
+      ending: opened-door
+  - action: end
+    when: 'has("world/spell-atlas/palm-stars/01-my-spell.md")'
+    with:
+      ending: kept-stars

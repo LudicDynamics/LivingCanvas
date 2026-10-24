@@ -26,9 +26,9 @@
     "mechanics": [
       "voice",
       "live-image",
-      "free-explore"
+      "endings"
     ],
-    "endings": 0,
+    "endings": 3,
     "characters": [
       {
         "id": "seraphina",
@@ -43,7 +43,7 @@
       "ファンタジー設定が好きな人",
       "作ること・名づけることが好きな人"
     ],
-    "unfinished": "開発中：今は部屋が一つだけで、代価の仕組みと結末はまだできていません。"
+    "unfinished": "開発中：部屋は一つ、短い授業が一つ。結末は三つ入りましたが、その絵はまだ仮のものです。"
   },
   "author": "Mingyue",
   "genre": "物語体験",
@@ -102,5 +102,45 @@
   "player": {
     "id": "player",
     "name": "学院の新入生"
-  }
+  },
+  "mode": "semi",
+  "endings": [
+    {
+      "id": "opened-door",
+      "title": "あなたが開いた扉",
+      "path": "endings/opened-door/README.md"
+    },
+    {
+      "id": "kept-stars",
+      "title": "手のひらの星",
+      "path": "endings/kept-stars/README.md"
+    },
+    {
+      "id": "unnamed",
+      "title": "白紙の名札",
+      "path": "endings/unnamed/README.md"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "back-to-the-library",
+      "label": "呪文を唱えたあと夜の図書館へ戻る",
+      "kind": "place",
+      "once": false,
+      "when": {
+        "layer": "map"
+      },
+      "do": "lesson-ends"
+    },
+    {
+      "id": "leave-without-a-spell",
+      "label": "プレイヤーが施法せずに授業を去る",
+      "kind": "keyword",
+      "when": {
+        "intent": "プレイヤーが、今夜はどの呪文も唱えずに授業を終えると明確に決めた：材料を置いて去る、または今夜は呪文を作らないと言う。代価を尋ねる、草稿を直す、迷う、「まだ」は数えない。",
+        "scope": "player"
+      },
+      "do": "leave-unnamed"
+    }
+  ]
 }

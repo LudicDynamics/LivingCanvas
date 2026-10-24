@@ -36,7 +36,7 @@ test('voice-live’s frames for this character go onto the canvas socket, only t
   assert.equal(relay.take(brain({ type: 'character_abort', characterId: 'vera', savePath: SAVE_A })), true);
   assert.deepEqual(bridge.sent, [
     { type: 'character_start', characterId: 'vera', savePath: SAVE_A, recentContext: '' },
-    { type: 'character_prompt', characterId: 'vera', savePath: SAVE_A, message: 'hello' },
+    { type: 'character_prompt', characterId: 'vera', savePath: SAVE_A, message: 'hello', via: 'voice' },
     { type: 'character_abort', characterId: 'vera', savePath: SAVE_A },
   ]);
 });

@@ -1,0 +1,11 @@
+name: 'Back to the library'
+desc: 'Walking back into the night library once a spell has landed: an Open spell (star-chart-room) or a Reflect spell (palm-stars) ends the lesson'
+do:
+  - action: end
+    when: 'has("world/spell-atlas/star-chart-room/01-my-spell.md")'
+    with:
+      ending: opened-door
+  - action: end
+    when: 'has("world/spell-atlas/palm-stars/01-my-spell.md")'
+    with:
+      ending: kept-stars

@@ -1,7 +1,7 @@
 ---
 type: ending
 title: 안개에 삼켜짐
-bg: assets/scenes/old-lighthouse.webp
+bg: assets/scenes/ending-swallowed.webp
 ---
 
 맨 바깥의 디딤돌이 미끄러지고, 안개가 사방에서 모여들었다. 너는 등유를 더듬었지만—손 닿는 곳에 한 방울도 태울 기름이 없었고, 빛도 없었다.

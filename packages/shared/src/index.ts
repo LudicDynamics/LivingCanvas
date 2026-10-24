@@ -35,6 +35,8 @@ export * from './rules/characters.js';    // isValidCharacterId / nookIdOf / cha
 export * from './rules/emptiness.js';     // isLayerEmpty / isNookEmpty / hasInitProduct
 export * from './rules/init-fallback.js'; // w2SceneTemplate
 export * from './rules/voices.js';       // resolveVoice / VOICES / voiceEntry
+export * from './rules/voice-roster-cast.js';  // Fish voices: casting rules against play's voice roster
+export * from './rules/voice-roster.js';       // the roster snapshot this build ships + castWorldVoice
 export * from './rules/emotions.js';     // EMOTIONS / Emotion / isEmotion / emotionPortraitsOf
 export * from './rules/tts-text.js';     // sanitiseTtsText
 export * from './rules/media.js';        // assertImageAsset / assertAssetReference

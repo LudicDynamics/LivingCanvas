@@ -1,0 +1,7 @@
+name: "和艾莉丝离开"
+desc: "玩家和艾莉丝一起离开、不再回来。只有门外（world/outside/README.md）已经存在时才进入结局，否则落下触发器的兜底文字。"
+do:
+  - action: end
+    when: 'has("world/outside/README.md")'
+    with:
+      ending: leave-with-iris

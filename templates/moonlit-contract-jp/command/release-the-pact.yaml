@@ -1,0 +1,7 @@
+name: "彼女を解き放つ"
+desc: "リボンをほどき、ライラを休ませる。契約成立後（world/moonlit-courtyard がある）だけ「剣を置く夜」に至る。それまではライラの短い返事だけ。"
+do:
+  - action: end
+    when: 'has("world/moonlit-courtyard/README.md")'
+    with:
+      ending: released

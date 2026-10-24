@@ -1,0 +1,7 @@
+name: "그녀를 놓아준다"
+desc: "리본을 풀고 라일라를 쉬게 한다. 계약이 맺어진 뒤(world/moonlit-courtyard 있음)에만 「검을 내려놓은 밤」에 이른다. 그 전에는 라일라의 짧은 대답만 나온다."
+do:
+  - action: end
+    when: 'has("world/moonlit-courtyard/README.md")'
+    with:
+      ending: released

@@ -1,7 +1,7 @@
 ---
 type: ending
 title: 揭穿
-bg: assets/scenes/harbor-chart.webp
+bg: assets/scenes/ending-exposed.webp
 ---
 
 四条红线在海图上交成一个结：7号码头那艘无人船是放出来的诱饵，领主家账簿上那艘不在册的船，趁着熄灯的十二分钟，从旧海关隧道口悄悄出了港。

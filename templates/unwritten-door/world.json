@@ -29,10 +29,10 @@
     "mechanics": [
       "dice",
       "live-image",
-      "free-explore",
+      "endings",
       "voice"
     ],
-    "endings": 0,
+    "endings": 3,
     "characters": [
       {
         "id": "iris",
@@ -43,7 +43,7 @@
       "Hardcore sandbox tabletop RPG",
       "Watching the AI improvise"
     ],
-    "unfinished": "In development: only the opening cabin is written; beyond the door everything is generated, with no goal or ending yet."
+    "unfinished": "In development: only the opening cabin is written and everything beyond the door is generated; three endings are in, but their pictures are still placeholders."
   },
   "author": "AIRP",
   "genre": "narrative experience",
@@ -77,5 +77,59 @@
     "system": "dnd",
     "proficiency": 2,
     "characterChecks": true
-  }
+  },
+  "mode": "semi",
+  "endings": [
+    {
+      "id": "leave-with-iris",
+      "title": "Out the Door Together",
+      "path": "endings/leave-with-iris/README.md"
+    },
+    {
+      "id": "remember",
+      "title": "What You Remembered",
+      "path": "endings/remember/README.md"
+    },
+    {
+      "id": "stay",
+      "title": "The Lamp Stays On",
+      "path": "endings/stay/README.md"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "leave-with-her",
+      "label": "The player leaves for good with Iris",
+      "kind": "keyword",
+      "once": false,
+      "when": {
+        "intent": "The player clearly decides to leave this place for good together with Iris: asks her to come and sets out with her, not coming back. A walk outside and back, a question or a maybe does not count.",
+        "scope": "player"
+      },
+      "do": "leave-together",
+      "fallback": "Iris looks at the door, then back at you. \"We don't even know what's out there yet. Let's see it once, and then ask me again.\""
+    },
+    {
+      "id": "say-who-you-are",
+      "label": "The player says who they are",
+      "kind": "keyword",
+      "once": false,
+      "when": {
+        "intent": "The player states, as their own conclusion, who they are or how they came to this cabin, from what the letter, the call or the outside actually revealed. A guess, question or musing does not count.",
+        "scope": "player"
+      },
+      "do": "remember-yourself",
+      "fallback": "You reach for it and it slips away. Whatever you are, the door has not shown you yet. Go and see what is on the other side first."
+    },
+    {
+      "id": "stay-here",
+      "label": "The player decides to stay in the cabin",
+      "kind": "keyword",
+      "when": {
+        "intent": "The player clearly decides to stay in the cabin for good: not to open the door or go out again, but to remain here with Iris. Resting a while, hesitating or asking does not count.",
+        "scope": "player"
+      },
+      "do": "stay-in-the-cabin"
+    }
+  ]
 }

@@ -19,7 +19,7 @@ Upon agreement and departure wish, update ribbon text and status.data.contract, 
 
 ## World Unfolding Step by Step
 
-Each explicit 'step forward' creates only one child folder under current location. Pre-reading recursive generation is prohibited. No limit on times or preplanned endings; repeat same rules each next step requested.
+Each explicit 'step forward' creates only one child folder under current location. Pre-reading recursive generation is prohibited. No limit on steps; repeat the same rules each time a next step is requested. The story ends only through the three endings below.
 
 New scenes always have the next minimal configuration.
 
@@ -33,6 +33,16 @@ Do not create next folder until choice finalizes. For existing child folders, on
 On generation, check necessary files, create text first. Call generate_image exactly once per new scene. Beautiful 2D visual novel CG, seaside moonlight and pale purple, black copper armor, UI/subtitles off, current terrain and weather. Lyra's appearance: short silver-gray hair, amber eyes, dark grape clothes and black copper armor, natural-colored scarf, adult female facial features consistent. Do not reuse opening CG for background changes. Set README.bg only to actual returned existing images; no bgVideo. Keep text and items on image failure, report incomplete. Retry only on player request; do not duplicate completed text or items.
 
 Gate to child scenes appear by directory scan. Player decides whether to open. One opening per scene, one item too. Questions or investigations edit existing opening.md / item.md and return. Do not delete existing parents. Quiet scene BGM inherits world emberglass theme; avoid unnecessary music overlaps.
+
+## Endings
+
+This is a `semi` world with three endings. The engine lands them; the prose never does.
+
+- `bound` (Past Dawn): with the pact made, the player clearly asks Lyra to stay beyond this night. Call `trigger_keyword({ id: "ask-her-to-stay" })`.
+- `released` (The Sword Laid Down): with the pact made, the player clearly releases her: unties the ribbon, or tells her the night no longer needs her sword. Call `trigger_keyword({ id: "release-her" })`.
+- `broken` (The Untied Ribbon): the player clearly turns her away for good, or breaks a pact already made. Call `trigger_keyword({ id: "turn-her-away" })`.
+
+The engine counts the pact as made once world/moonlit-courtyard/README.md exists, because it is generated only after clear consent; before that the first two land only Lyra's short reply. “Not yet”, questions, hesitation and a refusal for now are never an ending and are never punished. Do not steer the player toward an ending, do not announce one in narration, and after an ending only conversation remains.
 
 ## Skills and checks
 This world uses D&D-like skills (world.json `rules`). The protagonist's sheet is `sheet:` in player/README.md (ability modifiers and proficient skills); a companion's is in its character README. A check is d20 + the skill modifier against a DC (easy 10, moderate 12, hard 15, very hard 20), with advantage or disadvantage when the fiction gives it; a natural 20 always succeeds, a natural 1 always fails. When the protagonist attempts something uncertain, call skill_check with the fitting skill and DC, then stop and let the player roll; narrate from the resolved tier. A companion may roll for its own action (skill_check, actor "self"). Never decide such an outcome in prose; feelings, promises and consent are never checks.

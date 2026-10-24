@@ -32,7 +32,7 @@
  *
  * Pure and browser-safe: no I/O, no Node imports.
  */
-import { LOCAL_VOICE_HOSTED_FALLBACK, resolveVoice, type WorldLanguage, worldLanguageOf } from './voices.js';
+import { LOCAL_VOICE_HOSTED_FALLBACK, resolveVoice, voiceEntry, type WorldLanguage, worldLanguageOf } from './voices.js';
 
 export const NPC_CARD_TYPE = 'npc';
 /** `persona` is a sketch, not a character sheet. */
@@ -205,9 +205,12 @@ export function readNpcCard(frontmatter: unknown): NpcCard | null {
 /** The voice alias to speak an NPC with: its own, else a gender-appropriate default. */
 export function npcVoiceAlias(npc: Pick<NpcCard, 'voice' | 'gender'> | Record<string, unknown> | null | undefined): string {
   const voice = str((npc as { voice?: unknown } | null)?.voice);
-  if (voice && resolveVoice(voice)) return voice;
-  if (voice && Object.hasOwn(LOCAL_VOICE_HOSTED_FALLBACK, voice)) return LOCAL_VOICE_HOSTED_FALLBACK[voice];
   const gender = (npc as { gender?: unknown } | null)?.gender;
+  // A voice of the other sex than the card's own `gender:` is never used
+  //.
+  const sexOk = (alias: string) => !(gender === 'female' || gender === 'male') || voiceEntry(alias)?.gender !== (gender === 'female' ? 'male' : 'female');
+  if (voice && resolveVoice(voice) && sexOk(voice)) return voice;
+  if (voice && Object.hasOwn(LOCAL_VOICE_HOSTED_FALLBACK, voice) && sexOk(LOCAL_VOICE_HOSTED_FALLBACK[voice]!)) return LOCAL_VOICE_HOSTED_FALLBACK[voice]!;
   return gender === 'female' || gender === 'male' ? NPC_DEFAULT_VOICE[gender] : NPC_DEFAULT_VOICE.unknown;
 }
 

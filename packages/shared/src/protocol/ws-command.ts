@@ -31,6 +31,8 @@ export const WsCommandSchema = z.discriminatedUnion('type', [
     characterId: z.string(),
     message: z.string(),
     mode: z.enum(['steer', 'followUp']).optional(),
+    /** Where the line was said: `voice` = over a call, answered with thinking off. */
+    via: z.enum(['dialogue', 'voice']).optional(),
   }).strict(),
   z.object({
     ...command('character_abort'),

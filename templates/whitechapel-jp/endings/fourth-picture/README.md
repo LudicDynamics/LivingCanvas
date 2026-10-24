@@ -1,7 +1,7 @@
 ---
 type: ending
 title: 第四の絵
-bg: assets/backgrounds/fourth.webp
+bg: assets/scenes/ending-fourth-picture.webp
 ---
 
 正午までに、彼を止めることはできなかった。

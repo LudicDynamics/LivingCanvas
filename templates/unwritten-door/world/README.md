@@ -3,7 +3,7 @@ type: readme
 name: The Cabin
 title: The Cabin
 bg: assets/backgrounds/intro.webp
-intent: The letter and phone are the only investigative props. Furniture is atmosphere, not extra puzzles. Do not decide the player identity or supernatural explanation in advance.
+intent: "The letter and phone are the only investigative props. Furniture is atmosphere, not extra puzzles. Do not decide the player identity or supernatural explanation in advance. Three endings land only through the engine (world.json triggers): leaving for good with Iris or saying who you are, once the outside has been written, or staying in the cabin. The writer never announces an ending."
 bgVideo: assets/motion/seedance/backgrounds/intro.webm
 map:
   plan:

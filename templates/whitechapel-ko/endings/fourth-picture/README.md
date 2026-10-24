@@ -1,7 +1,7 @@
 ---
 type: ending
 title: 네 번째 그림
-bg: assets/backgrounds/fourth.webp
+bg: assets/scenes/ending-fourth-picture.webp
 ---
 
 당신은 정오 전에 그를 막지 못했다.

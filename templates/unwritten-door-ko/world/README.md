@@ -3,7 +3,7 @@ type: readme
 name: 오두막
 title: 오두막
 bg: assets/backgrounds/intro.webp
-intent: 편지와 전화기는 유일한 조사 도구다. 가구는 분위기일 뿐 추가 퍼즐이 아니다. 플레이어의 정체나 초자연적 설명을 미리 결정하지 않는다.
+intent: "편지와 전화기는 유일한 조사 도구다. 가구는 분위기일 뿐 추가 퍼즐이 아니다. 플레이어의 정체나 초자연적 설명을 미리 결정하지 않는다. 결말은 세 가지이며 엔진만이 내린다(world.json의 triggers): 문밖이 쓰인 뒤 아이리스와 떠나거나 자신이 누구인지 말하거나, 오두막에 남는다. 작가는 결말을 선언하지 않는다."
 bgVideo: assets/motion/seedance/backgrounds/intro.webm
 map:
   plan:

@@ -1,0 +1,7 @@
+name: "想起自己是谁"
+desc: "玩家根据真正找到的东西说出自己是谁。只有门外（world/outside/README.md）已经存在时才进入结局。"
+do:
+  - action: end
+    when: 'has("world/outside/README.md")'
+    with:
+      ending: remember

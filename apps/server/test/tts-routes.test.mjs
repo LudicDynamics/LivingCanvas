@@ -67,6 +67,9 @@ async function harness({ stub = true, blob, afterCacheWrite } = {}) {
   process.env.DASHSCOPE_API_KEY = 'test-key';
   process.env.AIRP_TTS_MODEL = MODEL;
   process.env.AIRP_TTS_DEFAULT_VOICE = DEFAULT_VOICE;
+  // DashScope is what this file pins; a Fish key in the developer's env must not switch providers.
+  delete process.env.FISH_AUDIO_API_KEY;
+  delete process.env.AIRP_TTS_PROVIDER;
   const writeCacheAtomic = afterCacheWrite
     ? async (abs, data) => {
       await fs.mkdir(path.dirname(abs), { recursive: true });
@@ -94,7 +97,8 @@ async function harness({ stub = true, blob, afterCacheWrite } = {}) {
       await fs.rm(repo, { recursive: true, force: true });
       for (const k of ['AIRP_TTS_BASE_URL', 'DASHSCOPE_API_KEY', 'AIRP_TTS_MODEL',
                        'AIRP_TTS_DEFAULT_VOICE', 'AIRP_TTS_TIMEOUT_MS', 'AIRP_TTS_LOCAL_BASE_URL',
-                       'AIRP_TTS_LOCAL_TIMEOUT_MS', 'AIRP_TTS_LOCAL_VOICE', 'AIRP_TTS_LOCAL_API_KEY', 'AIRP_LOCAL_TTS']) {
+                       'AIRP_TTS_LOCAL_TIMEOUT_MS', 'AIRP_TTS_LOCAL_VOICE', 'AIRP_TTS_LOCAL_API_KEY', 'AIRP_LOCAL_TTS',
+                       'FISH_AUDIO_API_KEY', 'AIRP_TTS_PROVIDER']) {
         if (savedEnv[k] === undefined) delete process.env[k]; else process.env[k] = savedEnv[k];
       }
     },
@@ -296,8 +300,8 @@ test('C3 alias / 裸 id / 畸形 / 未知 四种 voice 的解析与回落', asyn
   await post(h.base, { text: 'v1', voice: 'wise-elder' });
   assert.equal(h.ds.calls[0].body.input.voice, 'Eldric Sage');
   // 已在调色板里的裸 id → 原样透传（向后兼容）
-  await post(h.base, { text: 'v2', voice: 'Vincent' });
-  assert.equal(h.ds.calls[1].body.input.voice, 'Vincent');
+  await post(h.base, { text: 'v2', voice: 'Neil' });
+  assert.equal(h.ds.calls[1].body.input.voice, 'Neil');
   // 含空格的合法 id：旧 /^[A-Za-z0-9_-]+$/ 会把它静默改成默认（07 §0 回归）
   await post(h.base, { text: 'v3', voice: 'Eldric Sage' });
   assert.equal(h.ds.calls[2].body.input.voice, 'Eldric Sage');
@@ -310,6 +314,9 @@ test('C3 alias / 裸 id / 畸形 / 未知 四种 voice 的解析与回落', asyn
   const r = await post(h.base, { text: 'v6', voice: '../evil' });
   assert.equal(r.status, 200);
   assert.equal(h.ds.calls[5].body.input.voice, DEFAULT_VOICE);
+  // 声线清单封禁的（Vincent：标男声、F0 落在女声区；the design notes 换成清单里最接近的千问声线，绝不原样发出
+  await post(h.base, { text: 'v7', voice: 'Vincent' });
+  assert.notEqual(h.ds.calls[6].body.input.voice, 'Vincent');
   await h.close();
 });
 

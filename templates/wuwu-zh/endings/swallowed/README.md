@@ -1,7 +1,7 @@
 ---
 type: ending
 title: 被雾吞
-bg: assets/scenes/old-lighthouse.webp
+bg: assets/scenes/ending-swallowed.webp
 ---
 
 最外头的落脚处一滑，雾从四面合拢过来。你伸手去摸灯油——手边没有一滴能点的油，没有光。

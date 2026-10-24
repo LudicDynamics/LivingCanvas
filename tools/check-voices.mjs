@@ -37,6 +37,8 @@ import {
   VOICE_COUNT,
   WORLD_LANGUAGES,
   castVoice,
+  VOICE_ROSTER,
+  inferVoiceProfile,
   resolveVoice,
   resolveVoiceFor,
   voiceEntry,
@@ -44,6 +46,7 @@ import {
   worldLanguageOf,
 } from '../packages/shared/dist/index.js';
 import { isExperimentalWorld } from './world-editions.mjs';
+import { validateRoster } from './sync-voice-roster.mjs';
 
 import { parseFrontmatter } from '../vendor/pi-rp/packages/coding-agent/dist/utils/frontmatter.js';
 
@@ -323,6 +326,73 @@ for (const { world, id, declared, spoken } of casts) {
     entry ? `speaks ${entry.native ?? 'all'}, ${entry.gender}` : 'no voice'
   );
 }
+
+// --------------------------------------------------------------------- V8
+
+// Which voice a character speaks with comes from worldlines-play now
+// This gate stays offline, so it checks the two things this repo still owns:
+//   - the snapshot file (kept for now, refreshed by tools/sync-voice-roster.mjs) is a valid roster;
+//   - every character of every edition gets a voice from the BUILT-IN fallback (apps/server builtin-voices.ts, what tts.ts
+//     speaks with when play cannot be asked): a native Fish voice of its sex × age band in its world language. Where qwen has
+//     no native voice of that sex in that language (no Japanese / Korean qwen man), the character is LISTED: on a qwen-only
+//     route it gets a 503, never a forced voice.
+// Opt-in against a running play service (a local one, or a test double): AIRP_PLAY_URL + AIRP_PLAY_TOKEN → every character
+// must get at least one candidate from it too.
+const rosterProblems = validateRoster(VOICE_ROSTER);
+check('V8 the voice roster snapshot is valid', rosterProblems.length === 0, rosterProblems.join('; '));
+const { builtinCandidates } = await import('../apps/server/dist/builtin-voices.js');
+const playBase = (process.env.AIRP_PLAY_URL ?? '').trim().replace(/\/+$/, '');
+const playToken = (process.env.AIRP_PLAY_TOKEN ?? '').trim();
+const noQwen = [];
+for (const { world, id, file } of readmes) {
+  const { frontmatter } = parseFrontmatter(fs.readFileSync(file, 'utf-8'));
+  let manifest = {};
+  try { manifest = JSON.parse(fs.readFileSync(path.join(REPO, 'templates', world, 'world.json'), 'utf-8')); } catch { /* no manifest */ }
+  const description = manifest.characters?.find((c) => c.id === id)?.description ?? '';
+  const lang = worldLanguageOf(manifest.locale);
+  const profile = inferVoiceProfile(description, frontmatter?.gender);
+  const fish = builtinCandidates({ providers: ['fish'], lang, gender: profile.gender, age: profile.age });
+  check(`V8 ${world}/${id}: a built-in ${lang} Fish voice`, fish.length === 1, 'no built-in voice');
+  if (!builtinCandidates({ providers: ['dashscope'], lang, gender: profile.gender, age: profile.age }).length) noQwen.push(`${world}/${id} (${lang}, ${profile.gender ?? '?'})`);
+  if (playBase && playToken) {
+    const family = String(manifest.id ?? world).replace(/-(?:zh|jp|ja|ko|en)$/, '');
+    const r = await fetch(`${playBase}/v1/voice/cast`, { method: 'POST', headers: { 'content-type': 'application/json', authorization: `Bearer ${playToken}` }, body: JSON.stringify({ product: 'livingcanvas', family, character: id, lang, description, providers: ['fish', 'dashscope'] }) }).then((x) => x.json()).catch(() => null);
+    check(`V8 ${world}/${id}: play gives a candidate`, Boolean(r?.candidates?.length), 'no candidate from play');
+  }
+}
+// --------------------------------------------------------------------- V9
+
+// the team's per-character voices (worldlines-assets voices/assignments.json, 2026-10-18): the built-in copy
+// (builtin-voices.ts BUILTIN_ASSIGNED) equals the roster snapshot's assignedVoices; every one is a roster Fish voice that
+// speaks its language; every edition's assigned character gets it first on a Fish route. Assignments no template character
+// matches (family / character id) are LISTED, not failed — the character may not be in LivingCanvas yet.
+const { BUILTIN_ASSIGNED } = await import('../apps/server/dist/builtin-voices.js');
+const sorted = (o) => JSON.stringify(o, (_k, v) => (v && typeof v === 'object' && !Array.isArray(v) ? Object.fromEntries(Object.entries(v).sort()) : v));
+check('V9 built-in assigned voices = the roster snapshot\'s assignedVoices', sorted(BUILTIN_ASSIGNED) === sorted(VOICE_ROSTER.assignedVoices ?? {}), 'copy VOICE_ROSTER.assignedVoices into builtin-voices.ts');
+for (const [family, souls] of Object.entries(BUILTIN_ASSIGNED)) for (const [soul, set] of Object.entries(souls)) for (const lang of WORLD_LANGUAGES) {
+  const v = VOICE_ROSTER.voices.find((x) => x.id === set[lang]);
+  const only = v?.only === undefined ? undefined : [v.only].flat();
+  check(`V9 ${family}/${soul} [${lang}] ${set[lang]} is a roster Fish voice speaking ${lang}`, Boolean(v && v.provider === 'fish' && !VOICE_ROSTER.banned.includes(v.id) && (!only || only.includes(lang))), v ? `${v.provider}, only ${JSON.stringify(v.only)}` : 'not in the roster');
+}
+const matched = new Set();
+for (const world of fs.readdirSync(path.join(REPO, 'templates'), { withFileTypes: true })) {
+  if (!world.isDirectory()) continue;
+  let manifest;
+  try { manifest = JSON.parse(fs.readFileSync(path.join(REPO, 'templates', world.name, 'world.json'), 'utf-8')); } catch { continue; }
+  const family = String(manifest.id ?? world.name).replace(/-(?:zh|jp|ja|ko|en)$/, '');
+  const lang = worldLanguageOf(manifest.locale);
+  for (const c of manifest.characters ?? []) {
+    const set = BUILTIN_ASSIGNED[family]?.[c.id];
+    if (!set) continue;
+    matched.add(`${family}/${c.id}`);
+    const first = builtinCandidates({ providers: ['fish', 'dashscope'], lang, family, character: c.id })[0];
+    check(`V9 ${world.name}/${c.id} [${lang}]: niko's voice ${set[lang]}`, first?.provider === 'fish' && first.voiceId === set[lang] && first.via === 'assigned', JSON.stringify(first));
+  }
+}
+const unmatched = Object.entries(BUILTIN_ASSIGNED).flatMap(([family, souls]) => Object.keys(souls).map((soul) => `${family}/${soul}`)).filter((k) => !matched.has(k));
+if (unmatched.length) console.warn(`  ~~  V9 assigned voices with no template character (${unmatched.length}): ${unmatched.join(', ')}`);
+
+if (noQwen.length) console.warn(`  ~~  V8 no native built-in qwen voice (qwen-only routes answer 503 for these) (${noQwen.length}):\n      ${noQwen.join('\n      ')}`);
 
 console.log(`\n${failed === 0 ? 'ALL VOICE-CORPUS ASSERTIONS PASSED' : `${failed} ASSERTION(S) FAILED`}`);
 process.exit(failed === 0 ? 0 : 1);

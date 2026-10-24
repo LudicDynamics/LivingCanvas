@@ -1,7 +1,7 @@
 ---
 type: ending
 title: Exposed
-bg: assets/scenes/harbor-chart.webp
+bg: assets/scenes/ending-exposed.webp
 ---
 
 Four red threads cross into a knot on the chart: the unmanned ship at Berth 7 was a decoy set loose, and the ship missing from the Lord's ledger slipped quietly out of the Old Customs Tunnel's mouth during the twelve dark minutes.

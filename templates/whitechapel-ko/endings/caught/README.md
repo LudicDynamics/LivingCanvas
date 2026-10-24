@@ -1,7 +1,7 @@
 ---
 type: ending
 title: 네 번째 그림에 없는 사람
-bg: assets/scenes/fleet-street-press.webp
+bg: assets/scenes/ending-caught.webp
 ---
 
 당신은 웨인 앞에 증거를 하나씩 늘어놓는다: 사건보다 먼저 도착한 삽화, 현장 난간에 묻은 군청색, 그의 손목에 새로 생긴 상처, 그리고 그가 8:15에서 서명한 정정.

@@ -1,0 +1,11 @@
+name: '도서관으로 돌아가기'
+desc: '주문이 이루어진 뒤 밤의 도서관으로 돌아온다: "열다" 주문(star-chart-room)이나 "비추다" 주문(palm-stars)으로 수업이 끝난다'
+do:
+  - action: end
+    when: 'has("world/spell-atlas/star-chart-room/01-my-spell.md")'
+    with:
+      ending: opened-door
+  - action: end
+    when: 'has("world/spell-atlas/palm-stars/01-my-spell.md")'
+    with:
+      ending: kept-stars

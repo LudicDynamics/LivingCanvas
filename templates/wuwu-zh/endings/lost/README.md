@@ -1,7 +1,7 @@
 ---
 type: ending
 title: 追丢
-bg: assets/scenes/beyond-the-fog.webp
+bg: assets/scenes/ending-lost.webp
 ---
 
 潮水回涨了。旧海关隧道口的水位漫过了标线，雾里传来一声很轻的桨响，然后什么也听不见了。

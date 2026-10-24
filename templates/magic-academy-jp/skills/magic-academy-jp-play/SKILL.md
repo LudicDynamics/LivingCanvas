@@ -30,9 +30,16 @@ player/spell-draft.md はプレイヤーの言葉を保存する。草稿を読�
 
 候補の代価は、星の欠片が次の夜まで光を休めるという目に見える一時的な消耗。記憶、声、名前を勝手に永久喪失させない。別の代価を望んだら範囲を先に合意する。不確実な施法だけ任意の判定予告を作る。式・閾値・全結果の確率・通常と大成功・失敗と小確率の害を表示し、本人の骰子操作を待つ。数値を無言で追加しない。
 
-「開く」＋星の欠片で空間を開くと合意したなら、world/spell-atlas/star-chart-room の README、changed-space.md、cost-trace.md、01-my-spell.md、return-gate.md を生成し、天文台への入口を置ける。「映す」＋手鏡で携帯できる星図を合意したなら、world/spell-atlas/palm-stars の同じ構成と player/named-star-chart.md を作る。こちらは鏡に星が映るが天文台へは入れない。全成功を同じ入口へ収束させない。別案は意味と代価から一つの短い結果を作る。
+「開く」＋星の欠片で空間を開くと合意したなら、world/spell-atlas/star-chart-room の README、changed-space.md、cost-trace.md、01-my-spell.md、return-gate.md を生成し、天文台への入口を置ける。「映す」＋手鏡で携帯できる星図を合意したなら、world/spell-atlas/palm-stars の同じ構成と player/named-star-chart.md を作る。こちらは鏡に星が映るが天文台へは入れない。全成功を同じ入口へ収束させない。別案は意味と代価から一つの短い結果を作り、その動詞の結果フォルダに置く（「開く」の呪文はすべて star-chart-room、「映す」の呪文はすべて palm-stars）。フォルダ id は変えず、題名は実際に変わったものに合わせる。01-my-spell.md には必ず「夜の図書館へ持って帰る」（choice_actions kind enter、target map）を置く。
 
 施法後にだけ実際に使った物へ代価を反映し、同じ草稿に実行済みの事実と結果の場所を記録。二重実行しない。必要なら結果に即した背景を一枚生成する。セラフィナはプレイヤーが名付けた言葉を引用し、何が変わったかを目の前で示す。
+
+## 結末
+これは `semi` の世界で、結末は三つ。落とすのはエンジンだけ：
+- `opened-door`（あなたが開いた扉）：world/spell-atlas/star-chart-room/01-my-spell.md ができたあと、プレイヤーが夜の図書館（`map`）へ戻る（トリガー back-to-the-library → command/lesson-ends.yaml）。
+- `kept-stars`（手のひらの星）：world/spell-atlas/palm-stars/01-my-spell.md ができたあと、同じく戻る。
+- `unnamed`（白紙の名札）：プレイヤーが施法せずに授業を終えると明確に決めたら、作家は `trigger_keyword({ id: "leave-without-a-spell" })` を呼ぶ（command/leave-unnamed.yaml。すでに唱えた呪文があればその結末になる）。代価を尋ねる、直す、「まだ」は数えない。
+本文で結末を宣言せず、施法を急かさない。結末のあとは会話だけが残る。
 
 ## 確定操作と作家の分離（現行）
 choice_actions は実装済みのUI操作宣言。choice.optionsの英語idに対応する。read(paths)、take(paths)、stage(paths)、enter(target)、character(character)、reply(text)、writer(promptは任意)だけを使う。読む・運ぶ・既存場面へ戻る・材料を並べる・骰子結果の短い表示で作家を起動しない。stageは材料の確認だけで、提出や実行ではない。生成、自由RP、未確定の約束や作戦を実行する時だけwriterにする。人物の質問はcharacterで対話を開き、勝手に台詞を送らない。

@@ -1,0 +1,6 @@
+name: "Turn her away"
+desc: "Lyra is turned away for good, or the pact is broken: lands “The Untied Ribbon”."
+do:
+  - action: end
+    with:
+      ending: broken

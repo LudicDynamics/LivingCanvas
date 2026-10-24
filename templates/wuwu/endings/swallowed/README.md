@@ -1,7 +1,7 @@
 ---
 type: ending
 title: Swallowed
-bg: assets/scenes/old-lighthouse.webp
+bg: assets/scenes/ending-swallowed.webp
 ---
 
 The outermost foothold slips, and the fog closes in from all sides. You reach for lamp oil. There is not a drop of burnable oil at hand, no light.

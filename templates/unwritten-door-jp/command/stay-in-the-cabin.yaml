@@ -1,0 +1,6 @@
+name: "小屋に残る"
+desc: "プレイヤーが掛け金を下ろし、アイリスと小屋に残る。"
+do:
+  - action: end
+    with:
+      ending: stay

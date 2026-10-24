@@ -1,7 +1,7 @@
 ---
 type: ending
 title: 지킨 것과 놓친 것
-bg: assets/scenes/intro.webp
+bg: assets/scenes/ending-half-truth.webp
 ---
 
 정오가 울리고, 베이커 가에서는 아무 일도 일어나지 않는다. 이디스는 안전하고, 왓슨은 그녀 곁을 한시도 떠나지 않는다.

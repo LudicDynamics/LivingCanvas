@@ -16,7 +16,7 @@
     "loop": [
       "听莉拉讲契约：接受、追问条件，或者拒绝",
       "之后每往前走一步，新的场景由 AI 当场写出",
-      "和她对话，决定这段誓约走向哪里"
+      "和她对话，决定这段誓约走向哪里：留住她、放她走，还是拒绝她"
     ],
     "minutes": [
       15,
@@ -24,10 +24,10 @@
     ],
     "difficulty": "intro",
     "mechanics": [
-      "free-explore",
+      "endings",
       "voice"
     ],
-    "endings": 0,
+    "endings": 3,
     "characters": [
       {
         "id": "lyra",
@@ -38,7 +38,7 @@
       "喜欢奇幻恋爱",
       "喜欢和角色慢慢聊"
     ],
-    "unfinished": "开发中：契约之后是自由生成，还没有目标、倒计时和结局。"
+    "unfinished": "开发中：契约之后每一步都当场生成；三个结局已经加入，但结局图还是临时的。"
   },
   "author": "AIRP",
   "genre": "生成式视觉小说",
@@ -76,5 +76,59 @@
     "theme": "emberglass"
   },
   "createdAt": "2026-09-14T00:00:00Z",
-  "updatedAt": "2026-09-14T00:00:00Z"
+  "updatedAt": "2026-09-14T00:00:00Z",
+  "mode": "semi",
+  "endings": [
+    {
+      "id": "bound",
+      "title": "天亮之后",
+      "path": "endings/bound/README.md"
+    },
+    {
+      "id": "released",
+      "title": "放下剑的夜晚",
+      "path": "endings/released/README.md"
+    },
+    {
+      "id": "broken",
+      "title": "没有系上的丝带",
+      "path": "endings/broken/README.md"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "ask-her-to-stay",
+      "label": "契约已成，玩家请莉拉留下",
+      "kind": "keyword",
+      "once": false,
+      "when": {
+        "intent": "已缔结契约的玩家明确请求莉拉在这个夜晚之后也留在自己身边。道谢、提问或“继续走吧”都不算。",
+        "scope": "player"
+      },
+      "do": "keep-the-pact",
+      "fallback": "莉拉的手仍摊开在你们之间。“那就先缔结契约，”她温和地说，“我不能停留在一个还没许下的约定上。”"
+    },
+    {
+      "id": "release-her",
+      "label": "契约已成，玩家放莉拉离开",
+      "kind": "keyword",
+      "once": false,
+      "when": {
+        "intent": "已缔结契约的玩家明确解除莉拉的契约：解开丝带，或告诉她这个夜晚已经不需要她的剑。只是询问这件事不算。",
+        "scope": "player"
+      },
+      "do": "release-the-pact",
+      "fallback": "莉拉歪了歪头。“还没有什么可解开的。一个结都还没系上，你本来就是自由的。”"
+    },
+    {
+      "id": "turn-her-away",
+      "label": "玩家彻底拒绝莉拉，或毁弃契约",
+      "kind": "keyword",
+      "when": {
+        "intent": "玩家明确彻底拒绝莉拉（拒绝契约并让她离开），或毁弃已缔结的契约。“还不行”、犹豫或提问都不算。",
+        "scope": "player"
+      },
+      "do": "break-the-pact"
+    }
+  ]
 }

@@ -1,0 +1,6 @@
+name: "오두막에 남기"
+desc: "플레이어가 빗장을 걸고 아이리스와 오두막에 남는다."
+do:
+  - action: end
+    with:
+      ending: stay

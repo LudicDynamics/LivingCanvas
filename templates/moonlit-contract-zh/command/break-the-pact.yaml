@@ -1,0 +1,6 @@
+name: "让她离开"
+desc: "彻底拒绝莉拉，或毁弃契约：进入“没有系上的丝带”。"
+do:
+  - action: end
+    with:
+      ending: broken

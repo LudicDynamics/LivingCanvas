@@ -37,6 +37,7 @@ import { missingRuntimeFeatures, OutdatedBrowserError } from './browser-support.
 import { buildMode, buildModeProblem, buildVersion } from './build-mode.js';
 import { perfMark } from './perf.js';
 import { currentLocale } from './i18n.js';
+import { VOICE_LIVE_AVAILABLE } from './plans.js';
 import { bootText } from './boot-copy.js';
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -228,10 +229,20 @@ function serverEnv(world: string | undefined): Record<string, string> {
     if (d.characterVoices) env.AIRP_TTS_CHARACTER_VOICES = d.characterVoices;
     // Studio voice: hidden unless this browser's local-TTS toggle is on (lib/tts-readiness.ts).
     if (localTtsFeature()) env.AIRP_LOCAL_TTS = '1';
-    // No live calls in a tab: voice-live needs a Mac on the host's network and
-    // GPT Live is not carried by the service, so it reports itself unavailable
+    // Live calls from a tab go to the AI service's own voice channel
+    // (ai.worldlines.gg /v1/voice/live, Fish voices in the cloud — no Mac on the
+    // host's network): the in-tab server trades the account token for a one-use
+    // ticket (engine/voice-live-ticket.ts) and the page dials ai directly, the
+    // character answering over the same call (voice-live-brain.ts). Until
+    // VOICE_LIVE_AVAILABLE (plans.ts, the one switch for launch) the tab stays on
+    // GPT Live, which the service does not carry: it reports itself unavailable
     // and the call button stays hidden (never a direct OpenAI call).
-    env.AIRP_VOICE_PROVIDER = 'gpt-live';
+    if (VOICE_LIVE_AVAILABLE) {
+      env.AIRP_VOICE_PROVIDER = 'voice-live';
+      env.VOICE_LIVE_TICKETS_URL = `${d.modelBase.replace(/\/+$/, '')}/voice/live/ticket`;
+    } else {
+      env.AIRP_VOICE_PROVIDER = 'gpt-live';
+    }
   }
   if (!d.staticSite) {
     // Local dev host: the account is for sync/publish, so the play gate stays off.

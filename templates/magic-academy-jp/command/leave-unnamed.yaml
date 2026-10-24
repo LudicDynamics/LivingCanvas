@@ -1,0 +1,14 @@
+name: '呪文なしで帰る'
+desc: 'プレイヤーが施法せずに授業を終えると決めた。すでに唱えた呪文があればそちらが数える'
+do:
+  - action: end
+    when: 'has("world/spell-atlas/star-chart-room/01-my-spell.md")'
+    with:
+      ending: opened-door
+  - action: end
+    when: 'has("world/spell-atlas/palm-stars/01-my-spell.md")'
+    with:
+      ending: kept-stars
+  - action: end
+    with:
+      ending: unnamed

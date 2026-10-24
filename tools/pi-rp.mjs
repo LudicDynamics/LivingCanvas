@@ -8,6 +8,7 @@
  *   pnpm pi update [--no-build] [--no-push] Pull pi-rp origin/main -> build -> bump our pointer
  *   pnpm pi commit <msg> [--no-build] [--no-push]
  *                                           build (red line) -> submodule commit+push -> pointer commit+push
+ *   pnpm pi snapshot                        Keep the current (compiling) model data as tools/pi-model-data
  *
  * Two invariants this tool exists to enforce (both have already bitten us):
  *
@@ -26,6 +27,7 @@ import { spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { matchesSnapshot, replaceData, SNAPSHOT_DIR, snapshotDate } from './pi-model-snapshot.mjs';
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const SUB = path.join(ROOT, 'vendor', 'pi-rp');
@@ -33,6 +35,8 @@ const SUB_PATH = 'vendor/pi-rp';
 const SUB_URL = 'https://github.com/2722550596/pi-rp.git';
 /** Fixed so the pointer bumps stay greppable in the log. */
 const PTR_MSG = 'chore: update pi-rp submodule ref';
+/** pi-rp's gitignored model data (generated from models.dev); tools/pi-model-snapshot.mjs keeps a compiling copy. */
+const MODEL_DATA = path.join(SUB, 'packages', 'ai', 'src', 'providers', 'data');
 
 // --- helpers ---------------------------------------------------------------
 
@@ -78,12 +82,33 @@ function ensureOnMain() {
 /**
  * The build red line. `build:offline` lives in the vendor ROOT package.json (the pi-rp
  * monorepo), not inside the coding-agent package, and it fails at `check:model-data`
- * unless the gitignored model data has been hydrated first. Hydrating fetches models.dev
- * LIVE, so a new upstream model can break the type check of an unchanged submodule
- * (2026-10-19: opencode-go gained a google-generative-ai model → TS2322, canvas release
- * blocked). So hydrate only when the data is missing or stale (`check:model-data` fails);
- * AIRP_PI_HYDRATE=1 forces a refresh.
+ * unless the gitignored model data is in place. That data used to be fetched from
+ * models.dev LIVE, so a new upstream model could break the type check of an unchanged
+ * submodule (2026-10-19: opencode-go gained a google-generative-ai model → TS2322, the
+ * canvas release and every fresh worktree's build blocked) — and `check:model-data`
+ * still calls such data valid. So the build uses the known-good snapshot
+ * (tools/pi-model-data, tools/pi-model-snapshot.mjs) and never fetches by itself:
+ *
+ *   - default: install the snapshot (if the data differs or is missing), build. Only
+ *     when the snapshot no longer fits this pi-rp (a submodule bump changed the
+ *     provider structure: `check:model-data` fails) is models.dev fetched.
+ *   - AIRP_PI_HYDRATE=1: fetch models.dev, build; when that data does not compile, put
+ *     the snapshot back and build with it. Keep good new data with `pnpm pi snapshot`.
  */
+function modelDataValid() {
+  return spawnSync('npm', ['--prefix', 'packages/ai', 'run', '--silent', 'check:model-data'], { cwd: SUB, stdio: 'ignore' }).status === 0;
+}
+
+function buildOffline() {
+  return spawnSync('npm', ['run', 'build:offline'], { cwd: SUB, stdio: 'inherit', env: process.env }).status === 0;
+}
+
+function useSnapshot() {
+  if (matchesSnapshot(MODEL_DATA)) return;
+  replaceData(SNAPSHOT_DIR, MODEL_DATA);
+  console.log(`- model data: installed the known-good snapshot (tools/pi-model-data, generated ${snapshotDate() || 'unknown'})`);
+}
+
 function buildPi(noBuild) {
   if (noBuild) {
     console.log('- --no-build: skipping the rebuild (docs-only changes that cannot affect the runtime)');
@@ -96,15 +121,33 @@ function buildPi(noBuild) {
         '\n  (in the vendor root, and never with --ignore-scripts)'
     );
   }
-  const dataOk = spawnSync('npm', ['--prefix', 'packages/ai', 'run', '--silent', 'check:model-data'], { cwd: SUB, stdio: 'ignore' }).status === 0;
-  if (process.env.AIRP_PI_HYDRATE === '1' || !dataOk) {
-    console.log('- npm run hydrate:model-data (regenerates the gitignored model data from models.dev)');
+  let fetched = false;
+  if (process.env.AIRP_PI_HYDRATE === '1') {
+    console.log('- AIRP_PI_HYDRATE=1: npm run hydrate:model-data (fetches the model list from models.dev)');
     run('npm', ['run', 'hydrate:model-data'], { cwd: SUB });
+    fetched = true;
   } else {
-    console.log('- model data present and valid: not re-fetching models.dev (AIRP_PI_HYDRATE=1 refreshes it)');
+    useSnapshot();
+    if (!modelDataValid()) {
+      console.log('! the snapshot does not fit this pi-rp (check:model-data fails: the submodule moved on) - fetching models.dev');
+      run('npm', ['run', 'hydrate:model-data'], { cwd: SUB });
+      fetched = true;
+    }
   }
   console.log('- npm run build:offline (red line: dist is not committed, but the runtime runs it)');
-  run('npm', ['run', 'build:offline'], { cwd: SUB });
+  if (buildOffline()) {
+    if (fetched) console.log('- the fetched model data compiles: `pnpm pi snapshot` keeps it as the new snapshot');
+    return;
+  }
+  if (!fetched) die('npm run build:offline exited with an error (on the known-good snapshot: a source problem, not the model list)');
+  console.error('! the model data fetched from models.dev does not compile - going back to the snapshot');
+  replaceData(SNAPSHOT_DIR, MODEL_DATA);
+  if (!modelDataValid()) {
+    die('the snapshot does not fit this pi-rp either: fix the generated data (or pi-rp) by hand, then `pnpm pi snapshot`');
+  }
+  console.log('- npm run build:offline (on the snapshot)');
+  if (!buildOffline()) die('npm run build:offline exited with an error on the snapshot too');
+  console.error('! built on the snapshot; the newer models.dev data was NOT used');
 }
 
 /**
@@ -241,6 +284,17 @@ function cmdCommit(msg, opts) {
   console.log('Done. Re-run `pnpm build && pnpm probe` before trusting the new engine.');
 }
 
+// --- snapshot --------------------------------------------------------------
+
+function cmdSnapshot() {
+  ensureSub();
+  if (!modelDataValid()) die('the current model data fails check:model-data - not keeping it');
+  console.log('- npm --prefix packages/ai run build:offline (the data must compile before it becomes the snapshot)');
+  run('npm', ['--prefix', 'packages/ai', 'run', 'build:offline'], { cwd: SUB });
+  const n = replaceData(MODEL_DATA, SNAPSHOT_DIR);
+  console.log(`Done. tools/pi-model-data now holds ${n} files (generated ${snapshotDate() || 'unknown'}); commit it with the pointer.`);
+}
+
 // --- main ------------------------------------------------------------------
 
 function usage() {
@@ -249,7 +303,8 @@ function usage() {
   pnpm pi init
   pnpm pi build
   pnpm pi update [--no-build] [--no-push]
-  pnpm pi commit <msg> [--no-build] [--no-push]`);
+  pnpm pi commit <msg> [--no-build] [--no-push]
+  pnpm pi snapshot`);
 }
 
 function main() {
@@ -276,6 +331,9 @@ function main() {
       break;
     case 'commit':
       cmdCommit(rest.join(' '), opts);
+      break;
+    case 'snapshot':
+      cmdSnapshot();
       break;
     default:
       usage();

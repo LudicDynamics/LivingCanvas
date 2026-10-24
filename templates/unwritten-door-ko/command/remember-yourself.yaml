@@ -1,0 +1,7 @@
+name: "자신을 기억해 내기"
+desc: "플레이어가 실제로 찾은 것으로 자신이 누구인지 말한다. 문밖(world/outside/README.md)이 있을 때만 결말이 된다."
+do:
+  - action: end
+    when: 'has("world/outside/README.md")'
+    with:
+      ending: remember

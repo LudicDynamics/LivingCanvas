@@ -1,0 +1,14 @@
+name: '주문 없이 떠나기'
+desc: '플레이어가 시전하지 않고 수업을 끝내기로 했다. 이미 시전한 주문이 있으면 그쪽이 먼저다'
+do:
+  - action: end
+    when: 'has("world/spell-atlas/star-chart-room/01-my-spell.md")'
+    with:
+      ending: opened-door
+  - action: end
+    when: 'has("world/spell-atlas/palm-stars/01-my-spell.md")'
+    with:
+      ending: kept-stars
+  - action: end
+    with:
+      ending: unnamed

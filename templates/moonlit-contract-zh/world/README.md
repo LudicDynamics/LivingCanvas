@@ -3,7 +3,7 @@ type: readme
 name: 月下召唤
 title: 月下召唤
 bg: assets/backgrounds/opening.webp
-intent: 在这个世界中行动时，务必阅读 skills/moonlit-contract-zh-play/SKILL.md、当前 README、行动来源的 Chalk，以及实际存在的蓝丝带文件。起初契约尚未成立。只有在明确同意时才生成 world/moonlit-courtyard。提问或拒绝时不要生成。保留已有内容；之后的地点在玩家每次明确迈步时生成。
+intent: "在这个世界中行动时，务必阅读 skills/moonlit-contract-zh-play/SKILL.md、当前 README、行动来源的 Chalk，以及实际存在的蓝丝带文件。起初契约尚未成立。只有在明确同意时才生成 world/moonlit-courtyard。提问或拒绝时不要生成。保留已有内容；之后的地点在玩家每次明确迈步时生成。结局只由引擎落下（world.json 的 triggers）：请莉拉留下、放她离开、或让她走。作家不在正文中宣布结局。"
 map:
   plan:
     picture: assets/maps/seaside-observatory.webp

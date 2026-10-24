@@ -257,7 +257,9 @@ for (const EDITION of EDITIONS) {
       assert.deepEqual(hurt, HARM[key] ? [[2, 4, HARM[key]]] : [], `${key}: harm only on 2–4`);
     }
     const { triggers } = JSON.parse(await fs.readFile(path.join(TEMPLATE, 'world.json'), 'utf8'));
-    assert.deepEqual(triggers.map(({ id, kind, when, do: run }) => ({ id, kind, when, run })), [{ id: 'too-hurt', kind: 'state', when: 'player.hp <= 0', run: 'hurt-out' }]);
+    // the one STATE trigger is the hp floor; the mid-story CGs (3dc2132f) are place triggers and never touch hp
+    assert.deepEqual(triggers.filter((t) => t.kind === 'state').map(({ id, kind, when, do: run }) => ({ id, kind, when, run })), [{ id: 'too-hurt', kind: 'state', when: 'player.hp <= 0', run: 'hurt-out' }]);
+    for (const t of triggers.filter((t) => t.kind !== 'state')) assert.match(t.id, /^cg-/, `${t.id}: only CG place triggers besides the hp floor`);
     assert.match(await fs.readFile(path.join(TEMPLATE, 'command/hurt-out.yaml'), 'utf8'), /ending: swallowed/);
   });
 

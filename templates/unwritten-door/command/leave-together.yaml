@@ -1,0 +1,7 @@
+name: "Leave with Iris"
+desc: "The player leaves for good with Iris. It ends only once the place outside exists (world/outside/README.md); otherwise the trigger fallback lands."
+do:
+  - action: end
+    when: 'has("world/outside/README.md")'
+    with:
+      ending: leave-with-iris

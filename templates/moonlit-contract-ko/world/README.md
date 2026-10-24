@@ -3,7 +3,7 @@ type: readme
 name: 달빛 아래의 소환
 title: 달빛 아래의 소환
 bg: assets/backgrounds/opening.webp
-intent: 이 세계의 행동에서는 항상 skills/moonlit-contract-ko-play/SKILL.md, 현재 리드미, 기본 초크, 그리고 실제 푸른 리본 파일을 읽는다. 처음에는 계약이 형성되지 않는다. 분명한 동의가 있을 때만 world/moonlit-courtyard을 생성한다. 질문이나 거절에는 생성하지 않는다. 기존 내용을 유지하며, 다음 장소는 플레이어의 명시적 단계마다 생성한다.
+intent: "이 세계의 행동에서는 항상 skills/moonlit-contract-ko-play/SKILL.md, 현재 리드미, 기본 초크, 그리고 실제 푸른 리본 파일을 읽는다. 처음에는 계약이 형성되지 않는다. 분명한 동의가 있을 때만 world/moonlit-courtyard을 생성한다. 질문이나 거절에는 생성하지 않는다. 기존 내용을 유지하며, 다음 장소는 플레이어의 명시적 단계마다 생성한다. 결말은 엔진만이 내린다(world.json의 triggers). 라일라에게 곁에 있어 달라고 하기, 그녀를 놓아주기, 돌려보내기의 세 가지다. 작가는 본문에서 결말을 선언하지 않는다."
 map:
   plan:
     picture: assets/maps/seaside-observatory.webp

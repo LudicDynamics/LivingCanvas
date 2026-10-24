@@ -1,7 +1,7 @@
 ---
 type: ending
 title: 폭로
-bg: assets/scenes/harbor-chart.webp
+bg: assets/scenes/ending-exposed.webp
 ---
 
 네 개의 붉은 선이 해도 위에서 하나의 매듭으로 교차한다: 7번 부두의 그 무인선은 풀어놓은 미끼이고, 영주가의 장부에 없는 그 배는 등불이 꺼진 십이 분 동안 옛 세관 터널 입구에서 조용히 항구를 빠져나갔다.

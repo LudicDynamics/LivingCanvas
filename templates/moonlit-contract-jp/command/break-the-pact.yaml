@@ -1,0 +1,6 @@
+name: "彼女を退ける"
+desc: "ライラをきっぱり退ける、または契約を破る。「結ばれなかったリボン」に至る。"
+do:
+  - action: end
+    with:
+      ending: broken

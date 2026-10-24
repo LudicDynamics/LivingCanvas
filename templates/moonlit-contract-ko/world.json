@@ -16,7 +16,7 @@
     "loop": [
       "라일라의 계약을 듣고 받아들이거나, 조건을 묻거나, 거절한다",
       "그 뒤로는 한 걸음 나아갈 때마다 새 장면을 AI가 즉석에서 쓴다",
-      "그녀와 이야기하며 이 맹세가 향할 곳을 정한다"
+      "그녀와 이야기하며 이 맹세가 향할 곳을 정한다: 붙잡을지, 놓아줄지, 돌려보낼지"
     ],
     "minutes": [
       15,
@@ -24,10 +24,10 @@
     ],
     "difficulty": "intro",
     "mechanics": [
-      "free-explore",
+      "endings",
       "voice"
     ],
-    "endings": 0,
+    "endings": 3,
     "characters": [
       {
         "id": "lyra",
@@ -38,7 +38,7 @@
       "판타지 로맨스 좋아하는 사람",
       "캐릭터와 천천히 대화하고 싶은 사람"
     ],
-    "unfinished": "개발 중: 계약 이후는 자유 생성이며, 아직 목표·카운트다운·결말이 없습니다."
+    "unfinished": "개발 중: 계약 이후는 한 걸음마다 즉석에서 생성됩니다. 결말 세 개는 들어갔지만 결말 그림은 아직 임시입니다."
   },
   "author": "AIRP",
   "genre": "생성형 비주얼 노벨",
@@ -76,5 +76,59 @@
     "theme": "emberglass"
   },
   "createdAt": "2026-09-14T00:00:00Z",
-  "updatedAt": "2026-09-14T00:00:00Z"
+  "updatedAt": "2026-09-14T00:00:00Z",
+  "mode": "semi",
+  "endings": [
+    {
+      "id": "bound",
+      "title": "새벽 너머로",
+      "path": "endings/bound/README.md"
+    },
+    {
+      "id": "released",
+      "title": "검을 내려놓은 밤",
+      "path": "endings/released/README.md"
+    },
+    {
+      "id": "broken",
+      "title": "묶이지 않은 리본",
+      "path": "endings/broken/README.md"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "ask-her-to-stay",
+      "label": "계약을 맺은 뒤, 라일라에게 곁에 있어 달라고 한다",
+      "kind": "keyword",
+      "once": false,
+      "when": {
+        "intent": "계약을 맺은 플레이어가 이 밤이 지나도 곁에 있어 달라고 라일라에게 분명히 부탁한다. 감사 인사, 질문, “계속 가자”는 해당하지 않는다.",
+        "scope": "player"
+      },
+      "do": "keep-the-pact",
+      "fallback": "라일라의 손은 둘 사이에 펼쳐진 채로 있다. “그럼 먼저 계약을.” 그녀가 부드럽게 말한다. “맺지 않은 약속 위에 머물 수는 없다.”"
+    },
+    {
+      "id": "release-her",
+      "label": "계약을 맺은 뒤, 라일라를 놓아준다",
+      "kind": "keyword",
+      "once": false,
+      "when": {
+        "intent": "계약을 맺은 플레이어가 라일라를 계약에서 분명히 놓아준다. 리본을 풀거나, 이 밤에는 더 이상 검이 필요 없다고 말한다. 그에 대해 묻기만 하는 것은 해당하지 않는다.",
+        "scope": "player"
+      },
+      "do": "release-the-pact",
+      "fallback": "라일라가 고개를 갸웃한다. “아직 풀 것이 없다. 묶인 매듭이 하나도 없으니, 너는 이미 자유다.”"
+    },
+    {
+      "id": "turn-her-away",
+      "label": "라일라를 완전히 돌려보내거나 계약을 깬다",
+      "kind": "keyword",
+      "when": {
+        "intent": "플레이어가 라일라를 완전히 돌려보내거나(계약을 거절하고 떠나라고 한다) 이미 맺은 계약을 깬다. “아직은”, 망설임, 질문은 해당하지 않는다.",
+        "scope": "player"
+      },
+      "do": "break-the-pact"
+    }
+  ]
 }

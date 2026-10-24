@@ -1,0 +1,6 @@
+name: "그녀를 돌려보낸다"
+desc: "라일라를 완전히 돌려보내거나 계약을 깬다. 「묶이지 않은 리본」에 이른다."
+do:
+  - action: end
+    with:
+      ending: broken

@@ -26,9 +26,9 @@
     "mechanics": [
       "voice",
       "live-image",
-      "free-explore"
+      "endings"
     ],
-    "endings": 0,
+    "endings": 3,
     "characters": [
       {
         "id": "seraphina",
@@ -43,7 +43,7 @@
       "판타지 설정 좋아하는 사람",
       "만들고 이름 붙이기 좋아하는 사람"
     ],
-    "unfinished": "개발 중: 지금은 방이 하나뿐이고, 대가 시스템과 결말은 아직 완성되지 않았습니다."
+    "unfinished": "개발 중: 방 하나, 짧은 수업 하나. 결말 세 개가 들어갔지만 그림은 아직 임시입니다."
   },
   "author": "Mingyue",
   "genre": "이야기 체험",
@@ -102,5 +102,45 @@
   "player": {
     "id": "player",
     "name": "학원의 신입생"
-  }
+  },
+  "mode": "semi",
+  "endings": [
+    {
+      "id": "opened-door",
+      "title": "네가 연 문",
+      "path": "endings/opened-door/README.md"
+    },
+    {
+      "id": "kept-stars",
+      "title": "손바닥 위의 별",
+      "path": "endings/kept-stars/README.md"
+    },
+    {
+      "id": "unnamed",
+      "title": "빈 명찰",
+      "path": "endings/unnamed/README.md"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "back-to-the-library",
+      "label": "주문을 시전한 뒤 밤의 도서관으로 돌아옴",
+      "kind": "place",
+      "once": false,
+      "when": {
+        "layer": "map"
+      },
+      "do": "lesson-ends"
+    },
+    {
+      "id": "leave-without-a-spell",
+      "label": "플레이어가 시전 없이 수업을 떠남",
+      "kind": "keyword",
+      "when": {
+        "intent": "플레이어가 오늘 밤 어떤 주문도 시전하지 않고 수업을 끝내기로 분명히 정했다: 재료를 내려놓고 떠나거나, 오늘 밤은 주문을 만들지 않겠다고 말한다. 대가를 묻기, 초안 고치기, 망설임, \"아직\"은 해당하지 않는다.",
+        "scope": "player"
+      },
+      "do": "leave-unnamed"
+    }
+  ]
 }

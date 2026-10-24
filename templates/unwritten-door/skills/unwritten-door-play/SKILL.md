@@ -26,7 +26,14 @@ Write world/outside/README.md, resident.md, found-object.md, 01-arrival.md and r
 Verify all five files, even when README already exists. Repair a partial scene without inventing a different resident or geography. Text completion precedes one generate_image call: restrained cinematic contemporary atmosphere, the actual weather and objects, no UI or lettering. Do not make the phone or letter a giant background prop. Store the returned asset in README bg. Missing image is a visible pending illustration, not a fabricated success.
 
 ## First-minute reward
-When the player talks to the resident, quote a detail the player really supplied or noticed, then update resident.md with what they learned. Inspecting the found object yields one usable fact or small item, not a solved conspiracy. The punch line is recognising something from inside in a newly materialised outside. Returning uses map and preserves the outside. No campaign ending is required.
+When the player talks to the resident, quote a detail the player really supplied or noticed, then update resident.md with what they learned. Inspecting the found object yields one usable fact or small item, not a solved conspiracy. The punch line is recognising something from inside in a newly materialised outside. Returning uses map and preserves the outside. Exploring never ends the story by itself; the three endings below are the player's choice.
+
+## Endings
+This is a `semi` world with three endings, and only the engine lands them (world.json `triggers`, `command/*.yaml`):
+- `leave-with-iris` (Out the Door Together): the player clearly decides to leave for good together with Iris. Call `trigger_keyword({ id: "leave-with-her" })`. It ends only once world/outside/README.md exists; before that, Iris asks to see the outside first.
+- `remember` (What You Remembered): the player states, as their own conclusion, who they are or how they came here, from what the letter, the call or the outside actually revealed. Call `trigger_keyword({ id: "say-who-you-are" })`. It also needs world/outside/README.md.
+- `stay` (The Lamp Stays On): the player clearly decides to stay in the cabin and not go out again. Call `trigger_keyword({ id: "stay-here" })`.
+Mentioning, asking, guessing or hesitating does not count. Never steer the player toward an ending, never announce one in prose, never write an ending scene, and never reveal what is in Iris's envelope. After an ending, only conversation remains.
 
 ## Direct actions and writer turns
 choice_actions maps stable choice.options IDs to implemented UI recipes: read(paths), take(paths), stage(paths), enter(target), character(character), reply(text), writer(optional prompt). Reading, taking, navigating existing scenes and staging materials do not invoke the writer. Stage does not submit or execute. Unknown content, new promises, fictional calls and generation still require explicit writer input. Add these bindings to new choices, preserving free RP. Never invent action kinds, script execution or references to nonexistent readable files.

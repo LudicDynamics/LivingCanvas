@@ -11,7 +11,7 @@ import express from 'express';
 import { test } from 'node:test';
 import {
   LocalWorldStore, createActionService, hostedVoiceOf, localTtsFlag, npcVoiceAlias,
-  resolveLiveVoice, resolveVoice, resolveVoiceFor,
+  resolveLiveVoice, resolveVoice, resolveVoiceFor, VOICE_ROSTER,
 } from '@airp/shared';
 import { createTtsRouter } from '../dist/routes/tts.js';
 import { aiRoutes } from '../dist/ai-gateway.js';
@@ -88,7 +88,8 @@ test('flag off: a configured studio voice is not used; Nanami speaks with her ho
   assert.equal((await res.json()).ok, true);
   assert.equal(res.headers.get('x-airp-tts-fallback'), null, 'not a failure: local is simply off');
   assert.equal(h.local.calls.length, 0);
-  assert.equal(synthOf(h).input.voice, 'Nini');
+  // girl-next-door is Nini, a Chinese qwen voice; qwen speaks only its own language → the Japanese qwen woman
+  assert.equal(synthOf(h).input.voice, 'Ono Anna');
   assert.equal(synthOf(h).input.language_type, 'Japanese');
 });
 
@@ -125,7 +126,10 @@ test('an old save that declares the studio voice id falls back to a hosted voice
     const res = await h.post({ text: 'Hi.', voice: 'setsuna', language: locale, characterId: 'aoi' });
     assert.equal((await res.json()).ok, true, locale);
     assert.equal(h.local.calls.length, 0);
-    assert.equal(synthOf(h).input.voice, 'Mia', `${locale}: setsuna → shy-sweet (female, every language)`);
+    // setsuna → shy-sweet (a young woman's voice): signed out, worldlines-play is not asked, so the built-in qwen
+    // woman of the world language — qwen speaks only its own language
+    const spoken = VOICE_ROSTER.voices.find(v => v.id === synthOf(h).input.voice);
+    assert.deepEqual([spoken.provider, spoken.gender, spoken.only], ['dashscope', 'female', locale === 'zh-CN' ? 'zh' : locale], locale);
     assert.equal(synthOf(h).input.language_type, language);
   }
 });
@@ -143,7 +147,8 @@ test('fallback mapping: studio ids resolve to a hosted voice for reading, never 
 test('voice call (flag off): the studio mapping is ignored and the hosted voice is named', async t => {
   const h = await harness(t, { characters: [{ id: 'nanami', home: 'world/map', voice: 'setsuna' }] });
   const cast = await resolveVoiceLiveCast(h.store, 'nanami');
-  assert.equal(cast.voice, 'Mia');
+  // signed out: play is not asked; the built-in native Japanese voice, as /api/tts gives her
+  assert.equal(cast.voice, 'Ono Anna');
   assert.equal(cast.language, 'Japanese');
 });
 

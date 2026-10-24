@@ -16,7 +16,7 @@
     "loop": [
       "ライラの契約を聞き、受け入れるか、条件を尋ねるか、断るかを選ぶ",
       "その先は一歩進むたびに、新しい場面をAIがその場で書く",
-      "彼女と話し、この誓いの行き先を決める"
+      "彼女と話し、この誓いの行き先を決める。留めるか、解き放つか、退けるか"
     ],
     "minutes": [
       15,
@@ -24,10 +24,10 @@
     ],
     "difficulty": "intro",
     "mechanics": [
-      "free-explore",
+      "endings",
       "voice"
     ],
-    "endings": 0,
+    "endings": 3,
     "characters": [
       {
         "id": "lyra",
@@ -38,7 +38,7 @@
       "ファンタジー恋愛好き",
       "キャラとじっくり話したい人"
     ],
-    "unfinished": "開発中：契約の後は自由生成で、目標・カウントダウン・結末はまだありません。"
+    "unfinished": "開発中：契約の後は一歩ごとにその場で生成します。三つの結末は入りましたが、結末の絵はまだ仮のものです。"
   },
   "author": "AIRP",
   "genre": "生成型ビジュアルノベル",
@@ -76,5 +76,59 @@
     "theme": "emberglass"
   },
   "createdAt": "2026-09-14T00:00:00Z",
-  "updatedAt": "2026-09-14T00:00:00Z"
+  "updatedAt": "2026-09-14T00:00:00Z",
+  "mode": "semi",
+  "endings": [
+    {
+      "id": "bound",
+      "title": "夜明けの向こうへ",
+      "path": "endings/bound/README.md"
+    },
+    {
+      "id": "released",
+      "title": "剣を置く夜",
+      "path": "endings/released/README.md"
+    },
+    {
+      "id": "broken",
+      "title": "結ばれなかったリボン",
+      "path": "endings/broken/README.md"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "ask-her-to-stay",
+      "label": "契約を結んだうえで、ライラに残ってほしいと頼む",
+      "kind": "keyword",
+      "once": false,
+      "when": {
+        "intent": "契約を結んだプレイヤーが、この夜を越えても一緒にいてほしいとライラにはっきり頼む。お礼、質問、「先へ進もう」だけでは数えない。",
+        "scope": "player"
+      },
+      "do": "keep-the-pact",
+      "fallback": "ライラの手は、二人のあいだで開いたままだ。「では、まず契約を」と彼女は穏やかに言う。「交わしていない約束の上に、私は留まれません」"
+    },
+    {
+      "id": "release-her",
+      "label": "契約を結んだうえで、ライラを解き放つ",
+      "kind": "keyword",
+      "once": false,
+      "when": {
+        "intent": "契約を結んだプレイヤーが、ライラをはっきり契約から解く。リボンをほどく、またはこの夜にもう剣は要らないと告げる。それについて尋ねるだけでは数えない。",
+        "scope": "player"
+      },
+      "do": "release-the-pact",
+      "fallback": "ライラは首をかしげる。「解くものはまだありません。結び目は一つもない。あなたはもう自由です」"
+    },
+    {
+      "id": "turn-her-away",
+      "label": "ライラをきっぱり退ける、または契約を破る",
+      "kind": "keyword",
+      "when": {
+        "intent": "プレイヤーがライラをきっぱり退ける（契約を断り、去るよう告げる）か、結んだ契約を破る。「今はまだ」、迷い、質問は数えない。",
+        "scope": "player"
+      },
+      "do": "break-the-pact"
+    }
+  ]
 }

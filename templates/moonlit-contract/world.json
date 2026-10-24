@@ -16,7 +16,7 @@
     "loop": [
       "Hear Lyra’s pact: accept, ask her terms, or refuse",
       "From then on, every step forward is a new scene the AI writes on the spot",
-      "Talk with her and decide where the vow leads"
+      "Talk with her and decide where the vow leads: keep her, release her, or turn her away"
     ],
     "minutes": [
       15,
@@ -24,10 +24,10 @@
     ],
     "difficulty": "intro",
     "mechanics": [
-      "free-explore",
+      "endings",
       "voice"
     ],
-    "endings": 0,
+    "endings": 3,
     "characters": [
       {
         "id": "lyra",
@@ -38,7 +38,7 @@
       "Fantasy romance",
       "Long talks with a character"
     ],
-    "unfinished": "In development: after the pact it is free generation, with no goal, countdown or ending yet."
+    "unfinished": "In development: after the pact each step is generated on the spot; the three endings are in, but their pictures are still placeholders."
   },
   "author": "AIRP",
   "genre": "Generative Visual Novel",
@@ -76,5 +76,59 @@
     "theme": "emberglass"
   },
   "createdAt": "2026-09-14T00:00:00Z",
-  "updatedAt": "2026-09-14T00:00:00Z"
+  "updatedAt": "2026-09-14T00:00:00Z",
+  "mode": "semi",
+  "endings": [
+    {
+      "id": "bound",
+      "title": "Past Dawn",
+      "path": "endings/bound/README.md"
+    },
+    {
+      "id": "released",
+      "title": "The Sword Laid Down",
+      "path": "endings/released/README.md"
+    },
+    {
+      "id": "broken",
+      "title": "The Untied Ribbon",
+      "path": "endings/broken/README.md"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "ask-her-to-stay",
+      "label": "With the pact made, the player asks Lyra to stay",
+      "kind": "keyword",
+      "once": false,
+      "when": {
+        "intent": "The player, having made the pact, clearly asks Lyra to stay with them beyond this night. Thanks, questions or “let's keep going” do not count.",
+        "scope": "player"
+      },
+      "do": "keep-the-pact",
+      "fallback": "Lyra's hand stays open between you. “Then make the pact first,” she says gently. “I will not stay on a promise we have not made.”"
+    },
+    {
+      "id": "release-her",
+      "label": "With the pact made, the player releases Lyra",
+      "kind": "keyword",
+      "once": false,
+      "when": {
+        "intent": "The player, having made the pact, clearly releases Lyra from it: unties the ribbon, or tells her the night no longer needs her sword. Asking about it does not count.",
+        "scope": "player"
+      },
+      "do": "release-the-pact",
+      "fallback": "Lyra tilts her head. “There is nothing to release yet. No knot has been tied; you are already free.”"
+    },
+    {
+      "id": "turn-her-away",
+      "label": "The player turns Lyra away for good, or breaks the pact",
+      "kind": "keyword",
+      "when": {
+        "intent": "The player clearly turns Lyra away for good (refuses the pact and tells her to go) or breaks a pact already made. “Not yet”, doubt or questions do not count.",
+        "scope": "player"
+      },
+      "do": "break-the-pact"
+    }
+  ]
 }

@@ -1,7 +1,7 @@
 ---
 type: ending
 title: 守住的，与错过的
-bg: assets/scenes/intro.webp
+bg: assets/scenes/ending-half-truth.webp
 ---
 
 正午的钟声响过，贝克街上什么也没有发生。伊迪丝平安无事，华生一直守在她身边。

@@ -1,7 +1,7 @@
 ---
 type: ending
 title: The Fourth Picture
-bg: assets/backgrounds/fourth.webp
+bg: assets/scenes/ending-fourth-picture.webp
 ---
 
 You could not stop him before noon.

@@ -29,10 +29,10 @@
     "mechanics": [
       "dice",
       "live-image",
-      "free-explore",
+      "endings",
       "voice"
     ],
-    "endings": 0,
+    "endings": 3,
     "characters": [
       {
         "id": "iris",
@@ -43,7 +43,7 @@
       "喜欢硬核沙盒跑团",
       "想看 AI 即兴生成"
     ],
-    "unfinished": "开发中：只有开场的木屋是写好的，门外全靠生成，还没有目标和结局。"
+    "unfinished": "开发中：只有开场的木屋是写好的，门外全靠生成；三个结局已经加上，结局图还是占位。"
   },
   "author": "AIRP",
   "genre": "叙事体验",
@@ -77,5 +77,59 @@
     "system": "dnd",
     "proficiency": 2,
     "characterChecks": true
-  }
+  },
+  "mode": "semi",
+  "endings": [
+    {
+      "id": "leave-with-iris",
+      "title": "和艾莉丝一起出门",
+      "path": "endings/leave-with-iris/README.md"
+    },
+    {
+      "id": "remember",
+      "title": "想起来的事",
+      "path": "endings/remember/README.md"
+    },
+    {
+      "id": "stay",
+      "title": "灯一直亮着",
+      "path": "endings/stay/README.md"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "leave-with-her",
+      "label": "玩家决定和艾莉丝一起离开",
+      "kind": "keyword",
+      "once": false,
+      "when": {
+        "intent": "玩家明确决定和艾莉丝一起离开这里、不再回来：叫上她，和她一起出发。出门看一圈再回来、提问、“也许吧”都不算。",
+        "scope": "player"
+      },
+      "do": "leave-together",
+      "fallback": "艾莉丝看看门，又看回你：“外面是什么我们都还不知道。先去看一次，回来再跟我说。”"
+    },
+    {
+      "id": "say-who-you-are",
+      "label": "玩家说出自己是谁",
+      "kind": "keyword",
+      "once": false,
+      "when": {
+        "intent": "玩家根据信、电话或门外那个地方真正透露的内容，把自己是谁、或自己是怎么来到这间木屋的，当作自己的结论说出来。猜测、提问、自言自语式的琢磨都不算。",
+        "scope": "player"
+      },
+      "do": "remember-yourself",
+      "fallback": "你伸手去够，它却滑走了。你是谁，那扇门还没给你看过。先去门那边看看吧。"
+    },
+    {
+      "id": "stay-here",
+      "label": "玩家决定留在木屋里",
+      "kind": "keyword",
+      "when": {
+        "intent": "玩家明确决定留在木屋里：不再开门、不再出去，和艾莉丝一起待在这儿。歇一会儿、犹豫、只是问问都不算。",
+        "scope": "player"
+      },
+      "do": "stay-in-the-cabin"
+    }
+  ]
 }

@@ -91,6 +91,10 @@ const accountToken = async (force: boolean, chat: boolean): Promise<string | nul
   // A guest plays the story (chat) only — same rule as the browser runtime's gateway fetch.
   return chat ? (await hooks.__airpGuestToken?.({ force })) ?? null : null;
 };
+/** The signed-in account's own access token (never a guest's), or null — for worldlines-play (play-voice.ts). */
+export async function accountAccessToken(force = false): Promise<string | null> {
+  return (await (globalThis as { __airpAccountToken?: TokenHook }).__airpAccountToken?.({ force })) ?? null;
+}
 const isChatCall = (url: string) => { try { return /\/chat\/completions$/.test(new URL(url).pathname); } catch { return false; } };
 
 const authRequired = () => new Response(JSON.stringify({ error: { code: 'auth_required', type: 'authentication_error', message: 'Sign in to your Worldlines account to use it here (auth required, 401).' } }), { status: 401, headers: { 'content-type': 'application/json' } });
@@ -148,11 +152,27 @@ export async function billingStopResponse(res: Response): Promise<Response> {
   return new Response(JSON.stringify({ error: { message: CREDITS_MESSAGES[reason], type: 'insufficient_quota', code: 'insufficient_credits', reason, ...str('kind', e.kind), ...str('billing_url', e.billing_url), ...str('resets_at', e.resets_at) } }), { status: 402, headers: { 'content-type': 'application/json' } });
 }
 
+export const DEFAULT_GATEWAY_FISH_MODEL = 'fish-s2.1-pro';
+function fishGatewayModelOf(env: NodeJS.ProcessEnv): string {
+  const own = (env.AIRP_AI_TTS_FISH_MODEL ?? '').trim();
+  if (/^(off|none|0|false)$/i.test(own)) return '';
+  if (own) return own;
+  const tts = (env.AIRP_AI_TTS_MODEL ?? '').trim();
+  return tts.startsWith('fish') ? tts : DEFAULT_GATEWAY_FISH_MODEL;
+}
+
 /** Model names the service routes on; operator-overridable, never sent to the browser. */
 export function aiModels(env: NodeJS.ProcessEnv = process.env) {
   return {
     /** Online character voices (DashScope Qwen TTS behind the service). */
     tts: (env.AIRP_AI_TTS_MODEL ?? '').trim() || 'qwen3-tts-flash',
+    /**
+     * Fish voices through the service: the model the service serves them with. ai.worldlines.gg serves
+     * `fish-s2.1-pro` on every plan (platform migration 0022, 2026-10-18), so that is the default. AIRP_AI_TTS_FISH_MODEL
+     * overrides it; `off` (or `none` / `0` / `false`) turns Fish through the service off — then a Fish voice from the roster
+     * is re-cast on the nearest native qwen voice. Unset or empty = the default (an empty `.env` line does not switch it off).
+     */
+    ttsFish: fishGatewayModelOf(env),
     /** The studio voice server (setsuna …) the service reaches over its tailnet. */
     ttsLocal: (env.AIRP_AI_TTS_LOCAL_MODEL ?? '').trim() || 'local-tts',
     stt: (env.AIRP_AI_STT_MODEL ?? '').trim() || 'gpt-4o-transcribe',
@@ -355,7 +375,7 @@ export function aiRoutes(env: NodeJS.ProcessEnv = process.env) {
   const imagePath: AiPath = imageOwn ? 'own' : via;
   return {
     chat: { deepseek: pick(has('DEEPSEEK_API_KEY')), openai: pick(has('OPENAI_API_KEY')) },
-    tts: has('DASHSCOPE_API_KEY') ? 'own' as AiPath : has('AIRP_TTS_LOCAL_BASE_URL') && localTtsFlag(env) && !gateway ? 'local' as AiPath : via,
+    tts: has('DASHSCOPE_API_KEY') || has('FISH_AUDIO_API_KEY') ? 'own' as AiPath : has('AIRP_TTS_LOCAL_BASE_URL') && localTtsFlag(env) && !gateway ? 'local' as AiPath : via,
     stt: pick(has('OPENAI_API_KEY')),
     image: imagePath,
     signedIn: accountSignedIn(),

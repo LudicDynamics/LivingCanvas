@@ -26,7 +26,7 @@ process.env.AIRP_REMOTE_CONFIG = path.join(os.tmpdir(), `airp-ai-media-none-${pr
 
 const WAV = Buffer.from('RIFF\x24\x00\x00\x00WAVEfmt ');
 const QUOTA = { error: { code: 'quota_exceeded', kind: 'tts', message: 'Plan used up', billing_url: 'https://worldlines.gg/billing' } };
-const ENV_KEYS = ['DASHSCOPE_API_KEY', 'OPENAI_API_KEY', 'OPENAI_BASE_URL', 'AIRP_TTS_LOCAL_BASE_URL', 'AIRP_TTS_CHARACTER_VOICES', 'AIRP_AI_BASE', 'AIRP_AI_KEY', 'AIRP_TTS_MODEL', 'AIRP_STT_MODEL', 'AIRP_AI_TTS_MODEL'];
+const ENV_KEYS = ['AIRP_PLAY_URL', 'DASHSCOPE_API_KEY', 'OPENAI_API_KEY', 'OPENAI_BASE_URL', 'AIRP_TTS_LOCAL_BASE_URL', 'AIRP_TTS_CHARACTER_VOICES', 'AIRP_AI_BASE', 'AIRP_AI_KEY', 'AIRP_TTS_MODEL', 'AIRP_STT_MODEL', 'AIRP_AI_TTS_MODEL'];
 
 /** Stub service: records every request; `reply(path)` → [status, type, body] overrides the default. */
 async function serviceStub(reply = () => null) {
@@ -54,7 +54,8 @@ async function serviceStub(reply = () => null) {
 function useEnv(t, values) {
   const saved = Object.fromEntries(ENV_KEYS.map((k) => [k, process.env[k]]));
   for (const k of ENV_KEYS) delete process.env[k];
-  Object.assign(process.env, values);
+  // worldlines-play is not asked here (play-voice.test.mjs fakes it): the built-in voices answer
+  Object.assign(process.env, { AIRP_PLAY_URL: 'off' }, values);
   t.after(() => { for (const [k, v] of Object.entries(saved)) { if (v === undefined) delete process.env[k]; else process.env[k] = v; } });
 }
 
@@ -152,7 +153,7 @@ test('TTS: the studio voice through the service is opt-in; opted in, nanami in a
   const api = await ttsApp(t, { id: 'first-snow-ja', locale: 'ja', characters: [{ id: 'nanami', home: 'world/map' }] });
   assert.equal((await (await fetch(`${api}/tts/config`)).json()).experimentalLocal, true);
   await post(`${api}/tts`, { text: 'こんにちは。', characterId: 'nanami', emotion: 'smile' });
-  assert.equal(ai.calls[0].json.model, 'qwen3-tts-flash'); // not opted in: the cloud voice
+  assert.equal(ai.calls[0].json.model, 'fish-s2.1-pro'); // not opted in: the cloud voice (Fish through the service by default)
   const res = await (await post(`${api}/tts`, { text: 'こんばんは。', characterId: 'nanami', emotion: 'smile' }, { 'x-airp-tts-local': '1' })).json();
   assert.equal(res.ok, true);
   assert.deepEqual(ai.calls[1].json, { model: 'local-tts', input: 'こんばんは。', voice: 'setsuna', response_format: 'wav', language: 'ja', emotion: 'happy' });
@@ -166,7 +167,7 @@ test('TTS: an experimental studio voice failure plays the cloud voice for that l
   const res = await post(`${api}/tts`, { text: 'こんにちは。', characterId: 'nanami' }, { 'x-airp-tts-local': '1' });
   assert.equal(res.headers.get('x-airp-tts-fallback'), 'local-to-online');
   assert.equal((await res.json()).ok, true);
-  assert.deepEqual(ai.calls.map((c) => c.json.model), ['local-tts', 'qwen3-tts-flash']);
+  assert.deepEqual(ai.calls.map((c) => c.json.model), ['local-tts', 'fish-s2.1-pro'], 'the cloud voice: Fish through the service by default');
 });
 
 test('TTS: the service\'s own provider fallback is reported, never retried here', async (t) => {
@@ -209,7 +210,22 @@ test('billingStopOf: an image tool error names its billing stop (claim_required 
   assert.equal(billingStopOf('HTTP 400: code=invalid_size'), null);
 });
 
-test('TTS: an own DashScope key keeps the direct call; the service is not used', async (t) => {
+test('TTS: signed in, the service speaks even with an own DashScope key', async (t) => {
+  const ai = await serviceStub();
+  t.after(ai.close);
+  useEnv(t, { AIRP_AI_BASE: ai.base, DASHSCOPE_API_KEY: 'own' });
+  process.env.AIRP_TTS_BASE_URL = 'http://127.0.0.1:1';
+  t.after(() => { delete process.env.AIRP_TTS_BASE_URL; });
+  const api = await ttsApp(t, { id: 'w', locale: 'en', characters: [] });
+  const res = await post(`${api}/tts`, { text: 'Hello.' });
+  assert.equal(res.status, 200);
+  assert.equal(ai.calls.at(-1).path, '/v1/audio/speech');
+});
+
+test('TTS: signed out, an own DashScope key keeps the direct call; the service is not used', async (t) => {
+  const hook = globalThis.__airpAccountToken;
+  globalThis.__airpAccountToken = async () => null;
+  t.after(() => { globalThis.__airpAccountToken = hook; });
   const ai = await serviceStub();
   t.after(ai.close);
   useEnv(t, { AIRP_AI_BASE: ai.base, DASHSCOPE_API_KEY: 'own' });

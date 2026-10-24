@@ -1,7 +1,7 @@
 ---
 type: ending
 title: 第四幅画
-bg: assets/backgrounds/fourth.webp
+bg: assets/scenes/ending-fourth-picture.webp
 ---
 
 你没能赶在正午之前拦住他。

@@ -1,7 +1,7 @@
 ---
 type: ending
 title: The One Not in the Fourth Picture
-bg: assets/scenes/fleet-street-press.webp
+bg: assets/scenes/ending-caught.webp
 ---
 
 You lay the evidence out in front of Wayne, piece by piece: the illustration that arrived before the incident, the ultramarine on the railing at the scene, the fresh injury on his wrist, and the correction he signed for at 8:15.
