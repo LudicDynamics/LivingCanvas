@@ -160,7 +160,7 @@ function characterOpenHighWaterKey(worldRoot: string, characterId: string): stri
 // consequence.
 const diceSettler = new DiceSettler((worldRoot) => (activeStore && activeStore.worldRoot === worldRoot ? activeStore : null));
 
-// The writer's fast path: AIRP_WRITER_FAST_PATH=off|shadow|on, default off.
+// The writer's fast path: AIRP_WRITER_FAST_PATH=off|shadow|on, default on.
 const writerFastPath = new WriterFastPath({ storeFor: (worldRoot) => (activeStore && activeStore.worldRoot === worldRoot ? activeStore : null) });
 
 const lifecycle = new AgentLifecycleManager({

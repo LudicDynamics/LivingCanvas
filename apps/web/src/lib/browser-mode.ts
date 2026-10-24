@@ -39,6 +39,7 @@ import { perfMark } from './perf.js';
 import { currentLocale } from './i18n.js';
 import { VOICE_LIVE_AVAILABLE } from './plans.js';
 import { bootText } from './boot-copy.js';
+import { worldLoadStore } from './world-load-progress.js';
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 const FLAG = 'airp.browserMode';
@@ -393,6 +394,8 @@ export async function startBrowserMode(opts: { templates?: string; world?: strin
     const m = ev.data;
     if (m.type === 'ws-message' || m.type === 'ws-opened' || m.type === 'ws-closed') { sockets.get(m.id)?._frame(m); return; }
     if (m.type === 'ready') { waiters.get('ready')?.(m); return; }
+    // A world open's download / prepare progress (apps/browser-runtime/src/load-progress.ts) → the loading indicator.
+    if (m.type === 'world-progress') { worldLoadStore.runtime(m.progress); return; }
     if (m.id !== undefined && waiters.has(m.id)) { const w = waiters.get(m.id)!; waiters.delete(m.id); w(m); return; }
     // A socket's open failed in the Worker: close that socket (the app reconnects); it is not a boot failure.
     if (m.type === 'error' && m.id !== undefined && sockets.has(m.id)) {

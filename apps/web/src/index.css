@@ -181,6 +181,10 @@
      dialogue, just below the CG reveal (a CG landing in the same moment is the
      world's own picture). */
   --depth-milestone: calc(var(--depth-ui) + 19);
+  /* Opening a world (owner WorldLoading, lib/world-load-progress.ts): the download bar / spinner covers the
+     lobby, the world card on it (--depth-ui) and the world being left, so the press visibly did something;
+     below the milestone / CG presentations, which never run while a world is opening. */
+  --depth-world-loading: calc(var(--depth-ui) + 10);
   /* The forced first-run tutorial dims EVERYTHING, dialogue included, with one
      cut-out; it paints only the mask and its caption and blocks presses itself. */
   --depth-chrome-tutorial: calc(var(--depth-ui) + 30);

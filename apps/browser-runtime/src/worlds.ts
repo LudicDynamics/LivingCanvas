@@ -13,6 +13,7 @@
 // catalog hash changed is fetched again on its next open.
 import { fs } from './platform/fs';
 import { catalogFailureOf, type CatalogWorld, type WorldCatalog } from './catalog';
+import { createLoadProgress, type WorldLoadProgress } from './load-progress';
 
 const TYPES: Record<string, string> = { webp: 'image/webp', png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', avif: 'image/avif', webm: 'video/webm', mp4: 'video/mp4' };
 type Answer = { status: number; headers: Record<string, string>; body: Uint8Array };
@@ -66,6 +67,8 @@ export class WorldLibrary {
   };
   /** Bumped by every prefetch and every open: a running prefetch stops at its next file once it is stale. */
   private prefetchGen = 0;
+  /** An open's progress for the page's loading indicator (load-progress.ts); the Worker posts it as `world-progress`. Prefetches send none. */
+  onProgress: (p: WorldLoadProgress) => void = () => {};
 
   constructor(private catalog: WorldCatalog, private repo = '/repo', private onIgnore: (root: string) => void = () => {}, private intros: IntroSource = siteIntros) {}
 
@@ -186,6 +189,8 @@ export class WorldLibrary {
     const bundle = await this.catalog.getWorld(w.id, w.revision);
     let fetched = 0;
     const bodies = new Array<Uint8Array>(bundle.files.length);
+    // Blobs already cached count as done from the first update; the rest as each one lands.
+    const meter = createLoadProgress(key, bundle.files.map((f) => ({ size: f.size, cached: this.catalog.hasBlob(f.sha256, f.size) })), (p) => this.onProgress(p));
     let next = 0;
     const worker = async () => {
       while (next < bundle.files.length) {
@@ -193,9 +198,11 @@ export class WorldLibrary {
         const f = bundle.files[i];
         if (!this.catalog.hasBlob(f.sha256, f.size)) fetched++;
         bodies[i] = await this.catalog.getBlob(f, { id: w.id, revision: bundle.revision });
+        meter.fileDone(i);
       }
     };
     await Promise.all(Array.from({ length: 8 }, worker));
+    meter.finish();
     // Swap in one synchronous step: the server never sees a half-written world.
     const root = this.root(key);
     fs.rmSync(root, { recursive: true, force: true });
@@ -224,6 +231,8 @@ export class WorldLibrary {
         try { await this.ensure(key); } catch (e) {
           return json(...worldLoadFailure(e));
         }
+        // The files are in place: what is left is the server making the save (a spinner on the page).
+        this.onProgress({ world: key, phase: 'prepare' });
       }
       return null;
     }

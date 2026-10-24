@@ -204,11 +204,11 @@ Every knob is listed in the [configuration reference](configuration.md#writer-tu
 
 | Mode (`AIRP_WRITER_FAST_PATH`) | Behaviour |
 |---|---|
-| `off` (default) | The agent answers every beat. |
+| `off` | The agent answers every beat. |
 | `shadow` | The agent answers; the fast path runs beside it and only logs what it would have done to `.airpworld/fast-path.log`. |
-| `on` | Qualifying beats are answered by the fast path; the rest go to the agent. |
+| `on` (default) | Qualifying beats are answered by the fast path; the rest go to the agent. |
 
-A world author can switch it off with `"writer": { "fastPath": false }` in `world.json`; a player can switch it off for one save (`writerFastPath: false` in the save's settings). The fast path calls an OpenAI-compatible chat endpoint: your own `DEEPSEEK_API_KEY` first, otherwise the signed-in account.
+A world author can switch it off with `"writer": { "fastPath": false }` in `world.json`; a player can switch it off for one save (`writerFastPath: false` in the save's settings); an author's own creation worlds never use it. The fast path calls an OpenAI-compatible chat endpoint: your own `DEEPSEEK_API_KEY` first, otherwise the Worldlines AI service (the signed-in account, or the guest trial). With neither, every beat goes to the agent.
 
 ## Engine rules: commands, triggers, clock, endings
 

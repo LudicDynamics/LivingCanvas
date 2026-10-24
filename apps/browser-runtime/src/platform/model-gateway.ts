@@ -24,7 +24,10 @@
 //   - optionally renames the model (`map`: the id the server asks for → the
 //     gateway's id);
 // - the guest trial: signed out, `guestToken` signs calls for the trial world
-//     (null for any other world). A guest's 402 (trial credits used up), 403 (guest_world_only /
+//     (null for any other world): chat and speech (`/audio/speech`, the guest's small voice allowance —
+// the Worldlines platform services/ai guestTtsPlan); transcription and images stay account-only. A guest's
+//     429 guest_tts_exhausted (voice allowance used up, the story goes on) → one non-retryable 429 ("quota
+//     exceeded") that the TTS route turns into tts_requires_account (no trial popup). A guest's 402 (trial credits used up), 403 (guest_world_only /
 //     guest_not_allowed) or 503 guest_trial_unavailable → onAuthRequired('trial') and one friendly,
 //     non-retryable 402 ("billing") that says: sign in to keep playing, the progress stays;
 //   - `x-airp-quiet: 1` (a background call: character tick v2) → never onAuthRequired; the header is dropped;
@@ -62,7 +65,11 @@ export const CREDITS_MESSAGES: Record<CreditsReason, string> = {
 };
 /** A guest's stop (trial credits used up, or past what the trial allows): "billing" so pi never retries it. */
 export const TRIAL_MESSAGE = 'The guest trial is over for now (trial_used; billing 402). Sign in to keep playing: you get a 500-credit newcomer gift and your progress is kept.';
-export const GUEST_MEDIA_MESSAGE = 'Voice and pictures need a Worldlines account (guest trial: story only).';
+export const GUEST_MEDIA_MESSAGE = 'Pictures and transcription need a Worldlines account (guest trial: story and voice only).';
+/** A guest's voice allowance is used up (429 guest_tts_exhausted): "quota exceeded" so it is never retried as transient. */
+export const GUEST_VOICE_MESSAGE = 'The guest voice allowance is used up (guest_tts_exhausted; quota exceeded). Sign in to keep hearing the story.';
+/** What a guest token may sign: the story (chat) and the characters' voices (speech). */
+export const isGuestPath = (pathname: string) => /\/(?:chat\/completions|audio\/speech)$/.test(pathname);
 const GUEST_STOPS = new Set(['insufficient_credits', 'guest_world_only', 'guest_not_allowed', 'guest_trial_unavailable']);
 /** Is this gateway answer to a guest call the end of the trial (→ sign in), not a transient failure? */
 export async function isTrialStop(res: Response): Promise<boolean> {
@@ -145,8 +152,8 @@ export function createGatewayFetch(direct: typeof fetch, opts: GatewayOptions): 
     let tokenOf = opts.token;
     if (!token && opts.guestToken) {
       const t = await opts.guestToken(false);
-      // A guest plays the story (chat) only: voice, pictures, transcription stay quiet for them, no sign-in popup each time.
-      if (t && !/\/chat\/completions$/.test(new URL(href).pathname)) return json(403, GUEST_MEDIA_MESSAGE, 'guest_not_allowed', 'permission_error');
+      // A guest gets the story (chat) and voices (speech) only: pictures, transcription stay quiet for them, no sign-in popup each time.
+      if (t && !isGuestPath(new URL(href).pathname)) return json(403, GUEST_MEDIA_MESSAGE, 'guest_not_allowed', 'permission_error');
       if (t) { token = t; tokenOf = opts.guestToken; }
     }
     const guest = tokenOf !== opts.token;
@@ -157,6 +164,13 @@ export function createGatewayFetch(direct: typeof fetch, opts: GatewayOptions): 
       token = await tokenOf(true);
       if (token) res = await send(token);
       if (!token || res.status === 401) { onAuthRequired(); return json(401, SIGN_IN_MESSAGE, 'auth_required', 'authentication_error'); }
+    }
+    if (guest && res.status === 429) {
+      const p = await res.clone().json().catch(() => null) as { error?: { code?: unknown } } | null;
+      if (p?.error?.code === 'guest_tts_exhausted') {
+        await res.body?.cancel().catch(() => {});
+        return json(429, GUEST_VOICE_MESSAGE, 'guest_tts_exhausted', 'insufficient_quota', { kind: 'tts' });
+      }
     }
     if (guest && await isTrialStop(res)) {
       await res.body?.cancel().catch(() => {});

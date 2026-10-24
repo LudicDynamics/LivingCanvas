@@ -8936,5 +8936,35 @@
     "zh-CN": "对话摘录",
     "ja": "会話の抜粋",
     "ko": "대화 발췌"
+  },
+  "Opening the world…": {
+    "zh-CN": "正在打开世界…",
+    "ja": "世界を開いています…",
+    "ko": "세계를 여는 중…"
+  },
+  "Downloading the world…": {
+    "zh-CN": "正在下载世界文件…",
+    "ja": "世界のファイルをダウンロード中…",
+    "ko": "세계 파일을 내려받는 중…"
+  },
+  "Downloaded {done} / {total} · {mb} / {totalMb} MB": {
+    "zh-CN": "已下载 {done} / {total} · {mb} / {totalMb} MB",
+    "ja": "ダウンロード済み {done} / {total} · {mb} / {totalMb} MB",
+    "ko": "내려받음 {done} / {total} · {mb} / {totalMb} MB"
+  },
+  "Preparing your save…": {
+    "zh-CN": "正在准备存档…",
+    "ja": "セーブデータを準備しています…",
+    "ko": "저장 데이터를 준비하는 중…"
+  },
+  "Entering the world…": {
+    "zh-CN": "正在进入世界…",
+    "ja": "世界に入っています…",
+    "ko": "세계로 들어가는 중…"
+  },
+  "World download": {
+    "zh-CN": "世界下载进度",
+    "ja": "世界のダウンロード進捗",
+    "ko": "세계 다운로드 진행률"
   }
 }

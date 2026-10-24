@@ -152,6 +152,8 @@ import { airpGateway, isWorldUnavailable, onWorldUnavailable, AirpRequestError, 
 import { WorldShelf as WorldShelfDialog } from './components/WorldShelf.js';
 import { WorldLauncher } from './components/WorldLauncher.js';
 import { RotateHint } from './components/chrome/RotateHint.js';
+import { WorldLoading } from './components/chrome/WorldLoading.js';
+import { worldLoadStore } from './lib/world-load-progress.js';
 import { CreateWorldDialog } from './components/CreateWorldDialog.js';
 import { WorldIntroDialog } from './components/WorldIntroDialog.js';
 import { INITIAL_INTRO_GATE, introGateFrom, tutorialHeldByIntro, type IntroGate } from './lib/world-theme.js';
@@ -1600,6 +1602,7 @@ export function App() {
     const generation = ++worldLoadGeneration.current;
     actionCoordinator.reset('');
     setLoadingWorld(worldPath);
+    worldLoadStore.begin(worldPath);
     agentActivityStore.selectSave(null);
     setCharacters([]); setBackpack([]); setPreparedAction('');
     writerSuspendedForBagRef.current = false;
@@ -1618,6 +1621,7 @@ export function App() {
     try {
       const result = await airpGateway.loadWorld<WorldManifest>(worldPath, options);
       if (generation !== worldLoadGeneration.current) return;
+      worldLoadStore.entering(worldPath);
       agentActivityStore.selectSave(result.path);
       setActiveWorldPath(result.path);
       worldReopener.opened(result.path);
@@ -1669,7 +1673,7 @@ export function App() {
         if (failure.kind === 'sign-in') void withAccount('play', () => { void loadWorld(worldPath, options); }, worldPath);
       }
     } finally {
-      if (generation === worldLoadGeneration.current) setLoadingWorld(null);
+      if (generation === worldLoadGeneration.current) { setLoadingWorld(null); worldLoadStore.end(worldPath); }
     }
   };
   loadWorldRef.current = (worldPath) => loadWorld(worldPath);
@@ -3691,7 +3695,8 @@ export function App() {
         </section>
       </main>
 
-      {loadingWorld && <div role="status" className="prototype-world-loading">{t(' · opening…')}</div>}
+      {/* Opening a world: download progress on the browser build, a spinner for the waits it cannot measure. */}
+      {loadingWorld && <WorldLoading />}
       <GateThreshold focus={focusCoordinator} />
       {/* The prologue has its own upright phone layout (first-run.css): no rotate hint there. */}
       {!launcherOpen && !prologueOpen && <RotateHint />}

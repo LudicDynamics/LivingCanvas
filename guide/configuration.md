@@ -84,7 +84,7 @@ The fast path is described in [Architecture → The writer fast path](architectu
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `AIRP_WRITER_FAST_PATH` | `off` | `off`: the agent answers every beat. `shadow`: the agent answers, the fast path only logs to `.airpworld/fast-path.log`. `on`: qualifying play beats are answered in one call, the rest fall back to the agent |
+| `AIRP_WRITER_FAST_PATH` | `on` | `off` (or `0` / `false` / `no`): the agent answers every beat. `shadow`: the agent answers, the fast path only logs to `.airpworld/fast-path.log`. `on`: qualifying play beats are answered in one call, the rest fall back to the agent |
 | `AIRP_WRITER_FAST_PATH_MODEL` | `deepseek-v4-flash` | Model id for the fast path (at `DEEPSEEK_BASE_URL`, or the account) |
 | `AIRP_WRITER_FAST_PATH_MAX_CHARS` | `60000` | Size limit of the packed request; a larger beat goes to the agent |
 | `AIRP_WRITER_FAST_PATH_TIMEOUT_MS` | `20000` | Time limit for the fast call |
@@ -100,7 +100,7 @@ The fast path is described in [Architecture → The writer fast path](architectu
 | `AIRP_WRITER_MAX_TOOL_CALLS` | `24` | Tool calls per writer beat before it is told to wrap up |
 | `AIRP_TURN_TIMEOUT_MS` | `90000` | An agent turn is aborted after this long without progress; text and tool activity reset it. A turn never runs longer than 5 minutes in total |
 
-Per world, `"writer": { "fastPath": false }` in `world.json` keeps the agent; per save, the play settings can do the same.
+Per world, `"writer": { "fastPath": false }` in `world.json` keeps the agent; per save, the play settings can do the same. Your own creation worlds (the workshop) always use the agent.
 
 ## Helper models and character ticks
 

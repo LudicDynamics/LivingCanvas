@@ -1,0 +1,82 @@
+/* Opening a world (WorldLoading.tsx): the launcher's glass, one small card in the middle of a dimmed screen. */
+.world-loading {
+  position: fixed;
+  inset: 0;
+  z-index: var(--depth-world-loading);
+  display: grid;
+  place-items: center;
+  padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  background: var(--ux-glass-scrim);
+  cursor: progress;
+  animation: world-loading-in 160ms ease-out both;
+}
+
+.world-loading__card {
+  box-sizing: border-box;
+  width: min(360px, 100%);
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 22px 22px 20px;
+  color: var(--ux-glass-ink);
+  background: var(--ux-glass-panel);
+  border: 1px solid var(--ux-glass-line-soft);
+  border-radius: 18px;
+  box-shadow: var(--ux-glass-shadow);
+  -webkit-backdrop-filter: var(--ux-glass-blur);
+  backdrop-filter: var(--ux-glass-blur);
+  font-family: var(--ux-font-glass);
+  text-align: center;
+}
+
+.world-loading__headline {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.world-loading__detail {
+  margin: 0;
+  color: var(--ux-glass-muted);
+  font: 12px/1.4 var(--ux-font-glass-label);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.world-loading__bar {
+  width: 100%;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--ux-glass-well);
+  box-shadow: inset 0 0 0 1px var(--ux-glass-line-soft);
+}
+
+.world-loading__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--ux-glass-accent);
+  transition: width 180ms linear;
+}
+
+.world-loading__spinner {
+  box-sizing: border-box;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid var(--ux-glass-line-soft);
+  border-top-color: var(--ux-glass-accent);
+  animation: world-loading-spin var(--ux-duration-spin) linear infinite;
+}
+
+@keyframes world-loading-spin { to { transform: rotate(360deg); } }
+@keyframes world-loading-in { from { opacity: 0; } }
+
+/* No spinning, no sliding: the ring stands still (its accent arc still says "working"), the bar jumps. */
+@media (prefers-reduced-motion: reduce) {
+  .world-loading { animation: none; }
+  .world-loading__spinner { animation: none; }
+  .world-loading__fill { transition: none; }
+}

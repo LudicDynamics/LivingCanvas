@@ -201,7 +201,6 @@
 }
 .prototype-language select { max-width: 112px; padding: 6px 8px; border: 1px solid var(--ux-color-line); border-radius: var(--ux-radius-toolbar); color: var(--ux-color-ink); background: var(--ux-color-paper); font: inherit; font-size: 12px; }
 .prototype-language select:focus-visible { outline: 2px solid var(--ux-color-rust); outline-offset: 2px; }
-.prototype-world-loading{position:fixed;inset:0;z-index:var(--depth-writer);display:grid;place-items:center;background:color-mix(in srgb, var(--ux-color-ink) 85%, transparent);color:var(--ux-color-paper);font:20px var(--ux-font-human);cursor:progress}
 .agent-settings{position:relative}
 .agent-settings>button{font-size:13px;color:var(--ux-color-ink)}
 .agent-settings-panel{position:absolute;right:0;top:calc(100% + 16px);width:min(350px,85vw);max-height:70vh;overflow:auto;padding:20px;border:1px solid var(--ux-color-line);border-radius:var(--ux-radius-panel);background:var(--ux-surface-paper);color:var(--ux-color-ink);box-shadow:var(--ux-shadow-halo);font:14px/1.5 var(--ux-font-human);z-index:var(--depth-writer);text-align:left}

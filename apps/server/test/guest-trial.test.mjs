@@ -194,7 +194,7 @@ test('local app: a guest session turns the model gateway on; its calls carry the
   assert.equal(readAiGateway(), null, 'signed out, no guest yet: no gateway');
   await guestTrial(DEVICE, { start: true, fetch });
   assert.equal(guestSessionHere(), true);
-  assert.equal(readAiGateway(), null, 'voices / pictures / workshop helpers: a guest is not an account');
+  assert.equal(readAiGateway(), null, 'pictures / workshop helpers: a guest is not an account (voices: routes/tts.ts accountGatewayFor)');
   const gateway = readAiGateway(process.env, { guest: true });
   assert.equal(gateway?.account, true, 'the agents (chat): the guest session routes through the service');
   const seen = [];
@@ -209,8 +209,16 @@ test('local app: a guest session turns the model gateway on; its calls carry the
   assert.equal(seen.length, 1);
   world = 'last-train-prologue-zh';
   const speech = await gatewayFetch(gateway, 'https://ai.test/v1/audio/speech', { method: 'POST', body: '{}' }, request);
-  assert.equal(speech.status, 401, 'a guest never signs a voice / picture call');
-  assert.equal(seen.length, 1);
+  assert.equal(speech.status, 200, 'trial world → the guest token signs speech too (guest voice allowance)');
+  assert.match(seen.at(-1) ?? '', /^Bearer guest-access-/);
+  for (const p of ['audio/transcriptions', 'images/generations']) {
+    const r = await gatewayFetch(gateway, `https://ai.test/v1/${p}`, { method: 'POST', body: '{}' }, request);
+    assert.equal(r.status, 401, `a guest never signs ${p}`);
+  }
+  assert.equal(seen.length, 2);
+  world = 'wuwu';
+  assert.equal((await gatewayFetch(gateway, 'https://ai.test/v1/audio/speech', { method: 'POST', body: '{}' }, request)).status, 401, 'speech outside a trial world: auth required');
+  assert.equal(seen.length, 2);
   process.env.AIRP_GUEST_TRIAL = '0';
   assert.equal(readAiGateway(process.env, { guest: true }), null, 'trial off → the guest session is ignored');
 });

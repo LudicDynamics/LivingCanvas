@@ -104,3 +104,28 @@ test('catalog: the same blob asked for twice at once is downloaded once', async 
     delete globalThis.caches;
   }
 });
+
+test('an open reports its download (cached blobs done at once) and then `prepare`, for the page\'s loading bar; a prefetch reports nothing', async () => {
+  const files = [file('world.json', '{"id":"p"}'), file('assets/a.webp', 'AAAAAAAA'), file('assets/b.webm', 'BB')];
+  const cat = fakeCatalog([{ entry: entry('p'), files }, { entry: entry('q'), files: [file('world.json', '{"id":"q"}')] }]);
+  cat.cached.add(files[1].sha256);
+  const lib = new m.WorldLibrary(cat, '/repo-progress-1', () => {}, async () => null);
+  const seen = [];
+  lib.onProgress = (p) => seen.push(p);
+  await lib.init();
+  await lib.prefetch('templates/q');
+  assert.deepEqual(seen, [], 'a card prefetch is not an open');
+  const before = cat.calls.length;
+  const body = new TextEncoder().encode(JSON.stringify({ worldPath: 'templates/p' }));
+  assert.equal(await lib.intercept({ method: 'POST', url: '/api/worlds/load', body }), null, 'then the server loads it as usual');
+  const total = files.reduce((n, f) => n + f.size, 0);
+  assert.deepEqual(seen[0], { world: 'templates/p', phase: 'download', filesDone: 1, filesTotal: 3, bytesDone: files[1].size, bytesTotal: total });
+  const downloads = seen.filter((p) => p.phase === 'download');
+  assert.deepEqual(downloads.at(-1), { world: 'templates/p', phase: 'download', filesDone: 3, filesTotal: 3, bytesDone: total, bytesTotal: total });
+  assert.deepEqual(seen.at(-1), { world: 'templates/p', phase: 'prepare' });
+  assert.deepEqual(cat.calls.slice(before).sort(), ['assets/a.webp', 'assets/b.webm', 'world.json'], 'what is asked for is unchanged: every file of the bundle');
+  // Already materialised: no download, straight to `prepare`.
+  seen.length = 0;
+  await lib.intercept({ method: 'POST', url: '/api/worlds/load', body });
+  assert.deepEqual(seen, [{ world: 'templates/p', phase: 'prepare' }]);
+});

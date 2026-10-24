@@ -194,6 +194,8 @@ async function boot(msg: any) {
   const catalog = msg.catalog ? createCatalog(catalogFrom(msg.catalog)) : null;
   // The catalog list (network) runs while SQLite finishes and the image is unpacked.
   if (catalog) library = new WorldLibrary(catalog, '/repo', (root) => persistence?.ignore(root));
+  // A world open's download progress for the page's loading indicator (throttled to ≤10/s in load-progress.ts).
+  if (library) library.onProgress = (progress) => post({ type: 'world-progress', progress });
   const listing = library?.list();
   listing?.catch(() => { /* reported by init() below */ });
   await earlySqlite;

@@ -63,9 +63,9 @@ export function guestSessionHere(env: NodeJS.ProcessEnv = process.env): boolean 
 }
 
 /**
- * `guest`: also a trial guest's session (chat only — the agents, their proxy, "is a chat model there"). Voices,
- * pictures, transcription and the workshop's helpers leave it out: the service refuses guests those anyway, and
- * the page then reads them as simply unavailable, as before (no sign-in popup per line).
+ * `guest`: also a trial guest's session (the agents, their proxy, "is a chat model there", and the voices in a
+ * trial world — routes/tts.ts accountGatewayFor). Pictures, transcription and the workshop's helpers leave it out:
+ * the service refuses guests those anyway, and the page then reads them as simply unavailable, as before.
  */
 export function readAiGateway(env: NodeJS.ProcessEnv = process.env, opts: { guest?: boolean } = {}): AiGateway | null {
   const base = (env.AIRP_AI_BASE ?? '').trim().replace(/\/+$/, '');
@@ -84,18 +84,27 @@ type TokenHook = (o: { force?: boolean }) => Promise<string | null>;
  * The account's token, else the trial guest's (sync/guest-session.ts `__airpGuestToken`: null unless nobody is
  * signed in and the open world is a trial world — ai.worldlines.gg refuses a guest anything else anyway).
  */
-const accountToken = async (force: boolean, chat: boolean): Promise<string | null> => {
+const accountToken = async (force: boolean, guestOk: boolean): Promise<string | null> => {
   const hooks = globalThis as { __airpAccountToken?: TokenHook; __airpGuestToken?: TokenHook };
   const own = await hooks.__airpAccountToken?.({ force });
   if (own) return own;
-  // A guest plays the story (chat) only — same rule as the browser runtime's gateway fetch.
-  return chat ? (await hooks.__airpGuestToken?.({ force })) ?? null : null;
+  // A guest gets the story (chat) and the voices (speech) only — same rule as the browser runtime's gateway fetch.
+  return guestOk ? (await hooks.__airpGuestToken?.({ force })) ?? null : null;
 };
 /** The signed-in account's own access token (never a guest's), or null — for worldlines-play (play-voice.ts). */
 export async function accountAccessToken(force = false): Promise<string | null> {
   return (await (globalThis as { __airpAccountToken?: TokenHook }).__airpAccountToken?.({ force })) ?? null;
 }
-const isChatCall = (url: string) => { try { return /\/chat\/completions$/.test(new URL(url).pathname); } catch { return false; } };
+/** What a guest token may sign: chat and speech (the Worldlines platform services/ai admits guests on /audio/speech). */
+const isGuestCall = (url: string) => { try { return /\/(?:chat\/completions|audio\/speech)$/.test(new URL(url).pathname); } catch { return false; } };
+/**
+ * A trial guest may be heard here: nobody signed in, the trial on, a guest session, the open world a trial world
+ * (the `__airpGuestToken` hook answers null otherwise). Never hands the token out.
+ */
+export async function guestVoiceHere(): Promise<boolean> {
+  const hook = (globalThis as { __airpGuestToken?: TokenHook }).__airpGuestToken;
+  try { return Boolean(hook && await hook({})); } catch { return false; }
+}
 
 const authRequired = () => new Response(JSON.stringify({ error: { code: 'auth_required', type: 'authentication_error', message: 'Sign in to your Worldlines account to use it here (auth required, 401).' } }), { status: 401, headers: { 'content-type': 'application/json' } });
 
@@ -116,13 +125,13 @@ export async function gatewayFetch(gateway: AiGateway, url: string, init: Reques
     headers.set('x-worldlines-product', PRODUCT);
     return request(url, { ...init, headers, redirect: 'error' });
   };
-  const chat = isChatCall(url);
-  let token = await accountToken(false, chat);
+  const guestOk = isGuestCall(url);
+  let token = await accountToken(false, guestOk);
   if (!token) return authRequired();
   let res = await send(token);
   if (res.status !== 401) return billingStopResponse(res);
   await res.body?.cancel().catch(() => {});
-  token = await accountToken(true, chat);
+  token = await accountToken(true, guestOk);
   if (!token) return authRequired();
   res = await send(token);
   return billingStopResponse(res);

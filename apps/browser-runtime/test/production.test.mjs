@@ -163,12 +163,38 @@ test('guest trial: credits used up / past the trial → one non-retryable "billi
   assert.deepEqual(h.asked, []);
 });
 
-test('guest trial: voice / pictures are not sent for a guest, and do not pop the sign-in', async () => {
-  const h = guestHarness([]);
+test('guest trial: pictures / transcription are not sent for a guest, and do not pop the sign-in', async () => {
+  for (const p of ['/images/generations', '/audio/transcriptions']) {
+    const h = guestHarness([]);
+    const r = await h.f(`${BASE}${p}`, { method: 'POST', body: '{}' });
+    assert.equal(r.status, 403, p);
+    assert.equal(h.seen.length, 0, p);
+    assert.deepEqual(h.asked, [], p);
+  }
+});
+
+test('guest trial: speech is signed with the guest token (fish_cap fallback header kept); no sign-in asked', async () => {
+  const wav = new Response('RIFF', { status: 200, headers: { 'content-type': 'audio/wav', 'x-worldlines-tts-fallback': 'fish->dashscope (fish_cap)' } });
+  const h = guestHarness([wav]);
   const r = await h.f(`${BASE}/audio/speech`, { method: 'POST', body: '{}' });
-  assert.equal(r.status, 403);
-  assert.equal(h.seen.length, 0);
+  assert.equal(r.status, 200);
+  assert.equal(r.headers.get('x-worldlines-tts-fallback'), 'fish->dashscope (fish_cap)');
+  assert.equal(h.seen[0].headers.authorization, 'Bearer g1');
   assert.deepEqual(h.asked, []);
+});
+
+test('guest trial: voice allowance used up (429 guest_tts_exhausted) → a non-retryable "quota exceeded" 429, no trial popup', async () => {
+  const h = guestHarness([errorRes(429, 'guest_tts_exhausted')]);
+  const r = await h.f(`${BASE}/audio/speech`, { method: 'POST', body: '{}' });
+  assert.equal(r.status, 429);
+  const body = await r.json();
+  assert.equal(body.error.code, 'guest_tts_exhausted');
+  assert.match(body.error.message, /quota exceeded/);
+  assert.deepEqual(h.asked, []);
+  // a guest's speech 402 (trial credits gone) is the end of the trial, as for chat
+  const g = guestHarness([errorRes(402, 'insufficient_credits')]);
+  assert.equal((await g.f(`${BASE}/audio/speech`, { method: 'POST', body: '{}' })).status, 402);
+  assert.deepEqual(g.asked, ['trial']);
 });
 
 test('character tick v2: a quiet call (x-airp-quiet) never opens the sign-in — outside the trial world, or when the trial / wallet refuses; the header is not forwarded', async () => {

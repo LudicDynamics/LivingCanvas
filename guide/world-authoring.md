@@ -198,7 +198,7 @@ Required: `id`, `name`, `description`, `author`, `genre`, `createdAt`, `updatedA
 | `tick` | object | Character turns: every few beats a person shows an intent from a closed menu of moves, each a world command. See [`templates/last-train/world.json`](../templates/last-train/world.json) and [`tick.ts`](../packages/shared/src/schemas/tick.ts). |
 | `inspiration` | object | The stuck-player hint roll, drawing only from `hints.json`. |
 | `experience` | object | `kind` (`story` \| `prologue`), `turnEnd` (a command run after every player turn), `maxTurns`, `next`. |
-| `writer.fastPath` | boolean | `false` keeps every save of this world on the full agent writer even when the server runs the optional one-call fast path ([configuration](configuration.md)). |
+| `writer.fastPath` | boolean | `false` keeps every save of this world on the full agent writer instead of the one-call fast path, which is on by default ([configuration](configuration.md)). |
 | `models` | object | Preferred models per role: `{ writer?, character? }`, each a model id or a list of `{ provider?, model, thinking? }`. The player's own choice wins. |
 | `theme` | object | World type and structure flags set by the in-game workshop. |
 | `exp` | boolean | Experimental: listed separately in the lobby and exempt from the edition set ([§11](#11-workflow-scaffold-play-check)). |

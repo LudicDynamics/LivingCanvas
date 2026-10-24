@@ -308,7 +308,7 @@ export const WorldManifestSchema = z.object({
   /**
    * Writer options of the world's author:
    * `fastPath: false` keeps every save of this world on the agent writer, even
-   * when the server runs the fast path. Lenient like `theme`.
+   * though the server runs the fast path (on by default). Lenient like `theme`.
    */
   writer: z.object({
     fastPath: z.boolean().optional(),

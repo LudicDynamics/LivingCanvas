@@ -2,7 +2,8 @@
  * The writer's fast path on the server:
  * one model call per player beat, beside or instead of the pi-rp agent loop.
  *
- *   AIRP_WRITER_FAST_PATH=off     (default) nothing changes.
+ *   AIRP_WRITER_FAST_PATH=off     the agent answers every beat (`0` / `false` /
+ *                                 `no` mean the same).
  *   AIRP_WRITER_FAST_PATH=shadow  the agent answers as always; the same beat runs
  *                                 the fast path in the background — pack, one
  *                                 call, parse, validate — and only LOGS it
@@ -10,7 +11,9 @@
  *                                 reply, whether its ops are legal, and what the
  *                                 agent actually did. Never writes the world,
  *                                 never sends a frame.
- *   AIRP_WRITER_FAST_PATH=on      a play beat goes to the fast path: the chalk
+ * AIRP_WRITER_FAST_PATH=on (default: unset, empty or anything else; the team
+ *                                 2026-10-25, the local edition and the browser
+ *                                 build alike) a play beat goes to the fast path: the chalk
  *                                 streams on the existing chalk lane
  *                                 (`chalk_writing` / `writer_delta` /
  *                                 `chalk_landed`), the ops run through the action
@@ -23,7 +26,8 @@
  * there — so never prune it.
  *
  * Off for a world: `world.json` `writer.fastPath: false` (the author), or the
- * save's `.airpworld/settings.json` `writerFastPath: false` (the player).
+ * save's `.airpworld/settings.json` `writerFastPath: false` (the player). The
+ * author's own creation worlds never use it (isAuthoringWorld).
  *
  * Player turns (world.json `clock.perTurns`): the beat was already counted where
  * it arrived (the WS `writer_prompt`, a player action's own hook); the fast
@@ -48,9 +52,11 @@ import { isAuthoringWorld } from '../world-workshop.js';
 
 export type FastPathMode = 'off' | 'shadow' | 'on';
 
+/** On unless switched off (`off` / `0` / `false` / `no`) or to `shadow`; an empty `.env` line keeps the default. */
 export function fastPathModeFromEnv(env: NodeJS.ProcessEnv = process.env): FastPathMode {
   const raw = (env.AIRP_WRITER_FAST_PATH ?? '').trim().toLowerCase();
-  return raw === 'on' || raw === 'shadow' ? raw : 'off';
+  if (raw === 'shadow') return 'shadow';
+  return ['off', '0', 'false', 'no'].includes(raw) ? 'off' : 'on';
 }
 
 const numberEnv = (env: NodeJS.ProcessEnv, name: string, fallback: number): number => {

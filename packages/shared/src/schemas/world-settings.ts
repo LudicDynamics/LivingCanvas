@@ -42,7 +42,7 @@ export const WorldSettingsSchema = z.object({
   characterVoices: z.boolean().optional(),
   /**
    * The writer's fast path: when the server runs
-   * it (`AIRP_WRITER_FAST_PATH=shadow|on`), `false` keeps this save on the agent
+   * it (`AIRP_WRITER_FAST_PATH=on`, the default, or `shadow`), `false` keeps this save on the agent
    * writer only. Absent = follow the server.
    */
   writerFastPath: z.boolean().optional(),

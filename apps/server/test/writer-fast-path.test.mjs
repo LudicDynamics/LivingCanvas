@@ -1,5 +1,5 @@
 // The writer's fast path on the server, against a fake model:
-//   - the switch: AIRP_WRITER_FAST_PATH=off|shadow|on (default off), world.json writer.fastPath,
+//   - the switch: AIRP_WRITER_FAST_PATH=off|shadow|on (default on), world.json writer.fastPath,
 //     the save's writerFastPath setting;
 //   - the pre-route (§5.1) and the run-time fallbacks (§5.2–§5.3);
 //   - on: chalk on the existing chalk lane, ops through the action service, the ending runs, the
@@ -93,11 +93,13 @@ const LEAVE = {
   why: '玩家明确选择一个人走',
 };
 
-test('the switch: off by default; shadow / on by env; a world or a save can turn it off', async () => {
-  assert.equal(fastPathModeFromEnv({}), 'off');
-  assert.equal(fastPathModeFromEnv({ AIRP_WRITER_FAST_PATH: 'shadow' }), 'shadow');
+test('the switch: on by default; off / shadow by env; a world or a save can turn it off', async () => {
+  assert.equal(fastPathModeFromEnv({}), 'on');
+  assert.equal(fastPathModeFromEnv({ AIRP_WRITER_FAST_PATH: '' }), 'on');
   assert.equal(fastPathModeFromEnv({ AIRP_WRITER_FAST_PATH: 'ON' }), 'on');
-  assert.equal(fastPathModeFromEnv({ AIRP_WRITER_FAST_PATH: 'yes' }), 'off');
+  assert.equal(fastPathModeFromEnv({ AIRP_WRITER_FAST_PATH: 'yes' }), 'on');
+  assert.equal(fastPathModeFromEnv({ AIRP_WRITER_FAST_PATH: 'shadow' }), 'shadow');
+  for (const v of ['off', 'OFF', ' off ', '0', 'false', 'no']) assert.equal(fastPathModeFromEnv({ AIRP_WRITER_FAST_PATH: v }), 'off', v);
   const w = await world();
   try {
     assert.deepEqual(fastPathAllowed(w.root), { ok: true });
@@ -110,7 +112,7 @@ test('the switch: off by default; shadow / on by env; a world or a save can turn
     assert.equal(fastPathAllowed(w.root).ok, false);
     const fast = new WriterFastPath({ storeFor: () => w.store, env: ENV('on'), request: fakeModel([LEAVE]).request });
     assert.deepEqual(await fast.gate(w.root, BEAT('好')), { ok: false, reason: 'save setting writerFastPath is false' });
-    const off = new WriterFastPath({ storeFor: () => w.store, env: { DEEPSEEK_API_KEY: 'x' }, request: fakeModel([LEAVE]).request });
+    const off = new WriterFastPath({ storeFor: () => w.store, env: { AIRP_WRITER_FAST_PATH: 'off', DEEPSEEK_API_KEY: 'x' }, request: fakeModel([LEAVE]).request });
     assert.deepEqual(await off.gate(w.root, BEAT('好')), { ok: false, reason: 'off' });
   } finally {
     await w.done();

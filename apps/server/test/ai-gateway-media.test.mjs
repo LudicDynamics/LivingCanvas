@@ -16,7 +16,7 @@ import { LocalWorldStore, createOpenAIImageProvider } from '@airp/shared';
 import { createTtsRouter } from '../dist/routes/tts.js';
 import { createSttRouter } from '../dist/routes/stt.js';
 import { handleSttStream } from '../dist/engine/stt-stream.js';
-import { billingStopOf, pcm16Wav, readAiGateway } from '../dist/ai-gateway.js';
+import { billingStopOf, gatewayFetch, pcm16Wav, readAiGateway } from '../dist/ai-gateway.js';
 import { runConnectionTests } from '../dist/routes/connection-test.js';
 
 // The account's token as remote-client.ts would hand it out (refreshed on `force`);
@@ -144,6 +144,84 @@ test('TTS: the service refuses the caller (401 / 403) → 401 tts_requires_accou
     assert.equal(res.status, 401, String(status));
     assert.equal((await res.json()).code, 'tts_requires_account', String(status));
   }
+});
+
+// ── the guest trial's voices (the Worldlines platform services/ai admits guests on /audio/speech) ──
+/** Signed out; the guest hook answers `guest` (sync/guest-session.ts: a token only in a trial world, else null). */
+function asGuest(t, guest = 'guest-tok') {
+  const own = globalThis.__airpAccountToken;
+  const had = globalThis.__airpGuestToken;
+  globalThis.__airpAccountToken = async () => null;
+  globalThis.__airpGuestToken = async () => guest;
+  t.after(() => { globalThis.__airpAccountToken = own; if (had === undefined) delete globalThis.__airpGuestToken; else globalThis.__airpGuestToken = had; });
+}
+
+test('gatewayFetch: a guest token signs chat and speech only; transcription / images stay account-only', async (t) => {
+  asGuest(t, 'g1');
+  const seen = [];
+  const request = async (url, init) => { seen.push({ url, auth: new Headers(init.headers).get('authorization') }); return new Response(WAV, { status: 200 }); };
+  const gw = { base: 'https://ai.example/v1', apiKey: 'worldlines-account', account: true };
+  for (const p of ['/chat/completions', '/audio/speech']) assert.equal((await gatewayFetch(gw, `${gw.base}${p}`, { method: 'POST' }, request)).status, 200, p);
+  assert.deepEqual(seen.map((s) => s.auth), ['Bearer g1', 'Bearer g1']);
+  for (const p of ['/audio/transcriptions', '/images/generations']) assert.equal((await gatewayFetch(gw, `${gw.base}${p}`, { method: 'POST' }, request)).status, 401, p);
+  assert.equal(seen.length, 2, 'never sent for a guest');
+});
+
+test('TTS guest in a trial world: configured (no requiresAccount), the line goes to the service on the guest token; fish_cap fallback reported', async (t) => {
+  const ai = await serviceStub((p) => (p.endsWith('/audio/speech') ? [200, 'audio/wav', WAV, { 'x-worldlines-tts-fallback': 'fish->dashscope (fish_cap)', 'x-worldlines-tts-provider': 'dashscope' }] : null));
+  t.after(ai.close);
+  useEnv(t, { AIRP_AI_BASE: ai.base });
+  asGuest(t);
+  const api = await ttsApp(t, { id: 'last-train-zh', locale: 'zh-CN', characters: [] });
+  const config = await (await fetch(`${api}/tts/config`)).json();
+  assert.deepEqual([config.configured, config.requiresAccount], [true, undefined]);
+  const res = await post(`${api}/tts`, { text: '末班车来了。', voice: 'Cherry' });
+  assert.equal(res.status, 200);
+  assert.equal((await res.json()).ok, true);
+  assert.equal(res.headers.get('x-airp-tts-fallback'), 'provider');
+  assert.equal(ai.calls[0].path, '/v1/audio/speech');
+  assert.equal(ai.calls[0].auth, 'Bearer guest-tok');
+});
+
+test('TTS guest outside the trial worlds (the guest hook answers null): requiresAccount, the service is never asked', async (t) => {
+  const ai = await serviceStub();
+  t.after(ai.close);
+  useEnv(t, { AIRP_AI_BASE: ai.base });
+  asGuest(t, null);
+  const api = await ttsApp(t, { id: 'harbor-of-masks', locale: 'zh-CN', characters: [] });
+  assert.equal((await (await fetch(`${api}/tts/config`)).json()).requiresAccount, true);
+  const res = await post(`${api}/tts`, { text: '你好。', voice: 'Cherry' });
+  assert.equal(res.status, 401);
+  assert.equal((await res.json()).code, 'tts_requires_account');
+  assert.equal(ai.calls.length, 0);
+});
+
+test('TTS guest stops (voice used up / trial credits gone / trial unchecked / past the trial) → 401 tts_requires_account, one call, never the credits prompt', async (t) => {
+  asGuest(t);
+  for (const [status, code, reason] of [[429, 'guest_tts_exhausted', 'guest_tts_exhausted'], [402, 'insufficient_credits', 'guest_credits'], [503, 'guest_trial_unavailable', 'guest_trial_unavailable'], [403, 'guest_world_only', 'guest_world_only']]) {
+    const ai = await serviceStub((p) => (p.endsWith('/audio/speech') ? [status, 'application/json', JSON.stringify({ error: { code, message: code } })] : null));
+    t.after(ai.close);
+    useEnv(t, { AIRP_AI_BASE: ai.base });
+    const api = await ttsApp(t, { id: 'last-train', locale: 'zh-CN', characters: [] });
+    const res = await post(`${api}/tts`, { text: `Line ${code}.`, voice: 'Cherry' });
+    assert.equal(res.status, 401, code);
+    assert.deepEqual(await res.json().then((b) => [b.code, b.reason]), ['tts_requires_account', reason], code);
+    assert.equal(ai.calls.length, 1, `${code}: not retried on another voice`);
+  }
+});
+
+test('TTS signed in: unchanged by a guest session — the account token, and a 402 stays the credits stop', async (t) => {
+  const ai = await serviceStub((p) => (p.endsWith('/audio/speech') ? [402, 'application/json', JSON.stringify({ error: { code: 'insufficient_credits', reason: 'insufficient_credits' } })] : null));
+  t.after(ai.close);
+  useEnv(t, { AIRP_AI_BASE: ai.base });
+  const had = globalThis.__airpGuestToken;
+  globalThis.__airpGuestToken = async () => 'guest-tok';
+  t.after(() => { if (had === undefined) delete globalThis.__airpGuestToken; else globalThis.__airpGuestToken = had; });
+  const api = await ttsApp(t, { id: 'last-train', locale: 'zh-CN', characters: [] });
+  const res = await post(`${api}/tts`, { text: 'Hello.', voice: 'Cherry' });
+  assert.equal(res.status, 402);
+  assert.equal((await res.json()).code, 'insufficient_credits');
+  assert.equal(ai.calls[0].auth, 'Bearer acct');
 });
 
 test('TTS: the studio voice through the service is opt-in; opted in, nanami in a Japanese first-snow uses the local model', async (t) => {

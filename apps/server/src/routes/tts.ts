@@ -8,7 +8,7 @@ import { builtinCandidates } from '../builtin-voices.js';
 import { castFromPlay } from '../play-voice.js';
 import { FishTtsError, isFishGatewayModel, readFishTtsConfig, synthesiseFish, ttsProviderOf } from './fish-tts.js';
 import { LocalTtsError, localTtsEmotion, localTtsEnabled, localTtsHash, readLocalTtsConfig, selectLocalVoice, synthesiseLocal } from './local-tts.js';
-import { AiQuotaError, accountAccessToken, accountSignedIn, aiModels, gatewayFetch, quotaBody, quotaErrorOf, quotaStatus, readAiGateway, type AiGateway } from '../ai-gateway.js';
+import { AiQuotaError, accountAccessToken, accountSignedIn, aiModels, gatewayFetch, guestVoiceHere, quotaBody, quotaErrorOf, quotaStatus, readAiGateway, type AiGateway } from '../ai-gateway.js';
 
 /**
  * Server-side TTS: the ONE synthesis point.
@@ -114,24 +114,36 @@ class TtsUpstreamError extends Error {
     public kind: 'timeout' | 'upstream',
     message: string,
     /** The service's HTTP status, when it answered. */
-    public status?: number
+    public status?: number,
+    /** The service's error code, when it said one (guest_tts_exhausted …). */
+    public code?: string,
   ) {
     super(message);
     this.name = 'TtsUpstreamError';
   }
 }
 
-/** Map a `synthesise` throw onto the frozen error matrix. */
-/** The AI service refused the caller (401 / 403): every voice would be refused the same way. */
+/**
+ * A trial guest's voice ends here (the Worldlines platform services/ai, guest speech): the guest voice allowance used up
+ * (429 guest_tts_exhausted), past the trial world (403 guest_world_only / guest_not_allowed) or the trial cannot be
+ * checked (503 guest_trial_unavailable). Never retried: signing in brings the voices back.
+ */
+const GUEST_VOICE_STOPS = new Set(['guest_tts_exhausted', 'guest_world_only', 'guest_not_allowed', 'guest_trial_unavailable']);
+/** The AI service refused the caller (401 / 403, or a guest's voice stop): every voice would be refused the same way. */
 function isAccountRefusal(err: unknown): boolean {
-  return err instanceof TtsUpstreamError && (err.status === 401 || err.status === 403);
+  return err instanceof TtsUpstreamError && (err.status === 401 || err.status === 403 || GUEST_VOICE_STOPS.has(err.code ?? ''));
 }
+/** The answer that stops the page asking for voices this session and says once that signing in brings them. */
+const REQUIRES_ACCOUNT = { status: 401, code: 'tts_requires_account', error: 'Voices need a Worldlines account.' } as const;
+const requiresAccountBody = (reason?: string) => ({ ok: false as const, code: REQUIRES_ACCOUNT.code, error: REQUIRES_ACCOUNT.error, ...(reason ? { reason } : {}) });
 
-function mapSynthError(err: unknown): { status: number; code: string; error: string } {
-  // The service refused the caller (signed out, a guest of the trial — voices are for accounts): not a broken
+/** Map a `synthesise` throw onto the frozen error matrix. */
+function mapSynthError(err: unknown): { status: number; code: string; error: string; reason?: string } {
+  // The service refused the caller (signed out, a guest past the trial world or out of guest voice): not a broken
   // upstream. The page stops asking for this session and says once that signing in brings the voices.
-  if (err instanceof TtsUpstreamError && (err.status === 401 || err.status === 403)) {
-    return { status: 401, code: 'tts_requires_account', error: 'Voices need a Worldlines account.' };
+  if (isAccountRefusal(err)) {
+    const reason = (err as TtsUpstreamError).code;
+    return { ...REQUIRES_ACCOUNT, ...(reason && GUEST_VOICE_STOPS.has(reason) ? { reason } : {}) };
   }
   if (err instanceof TtsUpstreamError && err.kind === 'timeout') {
     return { status: 504, code: 'tts_timeout', error: err.message };
@@ -292,7 +304,10 @@ export async function synthesiseViaGateway(opts: {
   }
   const quota = await quotaErrorOf(res);
   if (quota) { await res.body?.cancel().catch(() => {}); throw quota; }
-  if (!res.ok) { await res.body?.cancel().catch(() => {}); throw new TtsUpstreamError('upstream', `Worldlines AI HTTP ${res.status}`, res.status); }
+  if (!res.ok) {
+    const code = (await res.json().catch(() => null) as { error?: { code?: unknown } } | null)?.error?.code;
+    throw new TtsUpstreamError('upstream', `Worldlines AI HTTP ${res.status}${typeof code === 'string' && code ? ` (${code})` : ''}`, res.status, typeof code === 'string' ? code : undefined);
+  }
   const buf = Buffer.from(await res.arrayBuffer());
   // Same gate as the DashScope path: an error page must never be cached.
   if (!isWav(buf)) throw new TtsUpstreamError('upstream', 'Worldlines AI speech is not a RIFF/WAVE file');
@@ -303,20 +318,34 @@ export async function synthesiseViaGateway(opts: {
 
 /**
  * The voices go through the Worldlines AI service on the account's token, and nobody is signed in: a signed-out
- * player (or a guest of the trial — the service gives guests the story only) gets no voice at all, so the page is
- * told up front (`requiresAccount`) instead of asking for every line and reading a 401 each time.
+ * player (or a guest outside the trial worlds — the service hears guests in the trial worlds only) gets no voice at
+ * all, so the page is told up front (`requiresAccount`) instead of asking for every line and reading a 401 each time.
  */
-export async function ttsNeedsAccount(config: Pick<TtsConfig, 'apiKey' | 'gateway'>, signedIn: () => Promise<boolean> = accountHere): Promise<boolean> {
+export async function ttsNeedsAccount(config: Pick<TtsConfig, 'apiKey' | 'gateway'>, signedIn: () => Promise<boolean> = voiceSessionHere): Promise<boolean> {
   return !config.apiKey.trim() && config.gateway?.account === true && !(await signedIn());
 }
 /**
  * The AI service through the player's own Worldlines account, when they are signed in: voices then
- * always go through it, so a signed-in player needs no TTS key. null when signed out, or the gateway is not an
- * account one (a service key configured by an operator keeps the old order).
+ * always go through it, so a signed-in player needs no TTS key. Signed out, a guest of the trial in a trial world
+ * (packages/shared guest-trial rules; the `__airpGuestToken` hook decides) goes the same way on the guest token,
+ * marked `guest` (its voice stops ask for sign-in, never for credits). null when signed out otherwise, or the
+ * gateway is not an account one (a service key configured by an operator keeps the old order).
  */
-async function accountGatewayFor(signedIn: () => Promise<boolean> = accountHere): Promise<AiGateway | null> {
-  const gateway = readAiGateway();
-  return gateway?.account === true && await signedIn() ? gateway : null;
+export async function accountGatewayFor(
+  signedIn: () => Promise<boolean> = accountHere,
+  guestHere: () => Promise<boolean> = guestVoiceHere,
+): Promise<(AiGateway & { guest?: true }) | null> {
+  if (await signedIn()) {
+    const gateway = readAiGateway();
+    return gateway?.account === true ? gateway : null;
+  }
+  if (!(await guestHere())) return null;
+  const gateway = readAiGateway(process.env, { guest: true });
+  return gateway?.account === true ? { ...gateway, guest: true } : null;
+}
+/** Somebody this computer may be heard as: the signed-in account, or a guest in a trial world. */
+async function voiceSessionHere(): Promise<boolean> {
+  return (await accountHere()) || guestVoiceHere();
 }
 /** A session in remote.json, or the account-token hook (sync/remote-client.ts) has a token; null without a session, no network. */
 async function accountHere(): Promise<boolean> {
@@ -496,6 +525,9 @@ export function createTtsRouter(
     // That route is EXPERIMENTAL: only when
     // this browser opted in, and any failure plays the cloud voice below.
     const needsAccount = await ttsNeedsAccount(config);
+    const accountGateway = await accountGatewayFor();
+    // a trial guest (accountGatewayFor): a credits stop is the end of the trial — sign in, never 「redeem / top up」
+    const guestGateway = accountGateway?.guest === true;
     const viaGateway = !local.baseUrl && req.get('x-airp-tts-local') === '1' && !needsAccount ? config.gateway : null;
     // Hidden by default: an own local URL counts only with the
     // feature on, so a stale AIRP_TTS_LOCAL_BASE_URL never routes a character.
@@ -531,7 +563,7 @@ export function createTtsRouter(
         if (!scopeIsCurrent()) return worldChangedResponse(res);
         // A quota stop is the account's, not the voice server's: the online
         // voice would be refused the same way.
-        if (error instanceof AiQuotaError) return res.status(quotaStatus(error)).json(quotaBody(error));
+        if (error instanceof AiQuotaError) return viaGateway && guestGateway ? res.status(401).json(requiresAccountBody('guest_credits')) : res.status(quotaStatus(error)).json(quotaBody(error));
         const reason = error instanceof LocalTtsError ? error.message : error instanceof Error ? error.name : 'Error';
         console.warn(`[AIRP TTS] Local character TTS failed (${reason}); falling back to online TTS.`);
         res.setHeader('X-AIRP-TTS-Fallback', 'local-to-online');
@@ -549,7 +581,6 @@ export function createTtsRouter(
     //   Candidates are tried in order; one that fails right now (402 / 5xx / timeout / network) gives way to the next
     //   (a Fish failure answered by qwen is marked X-AIRP-TTS-Fallback: fish-to-qwen). A quota stop ends it.
     const fish = readFishTtsConfig();
-    const accountGateway = await accountGatewayFor();
     const fishKey = ttsProviderOf() === 'fish' && Boolean(fish.apiKey);
     const useGateway = accountGateway ?? (!config.apiKey && !fishKey ? config.gateway : null);
     const gatewayFishModel = useGateway ? aiModels().ttsFish : '';
@@ -587,7 +618,7 @@ export function createTtsRouter(
     if (character && manifest?.id) {
       const asked = await castFromPlay(
         { family: String(manifest.id).replace(/-(?:zh|jp|ja|ko|en)$/, ''), character, lang: castLanguage, ...(description ? { description } : {}), traits: { ...(profile.gender ? { gender: profile.gender } : {}), ...(profile.age ? { age: profile.age } : {}) }, providers: castProviders },
-        accountGateway ? await accountAccessToken() : null,
+        accountGateway && !guestGateway ? await accountAccessToken() : null,
       );
       if (!scopeIsCurrent()) return worldChangedResponse(res);
       if (asked.source !== 'none') {
@@ -640,7 +671,7 @@ export function createTtsRouter(
           return res.status(503).json({ ok: false, code: 'tts_unconfigured', error: 'DASHSCOPE_API_KEY is not set' });
         }
         if (needsAccount && !t.ownFish && !accountGateway) {
-          return res.status(401).json({ ok: false, code: 'tts_requires_account', error: 'Voices need a Worldlines account.' });
+          return res.status(401).json(requiresAccountBody());
         }
       }
       try {
@@ -661,6 +692,10 @@ export function createTtsRouter(
         break;
       } catch (err) {
         if (!scopeIsCurrent()) return worldChangedResponse(res);
+        if (err instanceof AiQuotaError && guestGateway) {
+          console.warn('[AIRP TTS] Guest voice stopped: the trial credits are used up (sign in).');
+          return res.status(401).json(requiresAccountBody('guest_credits'));
+        }
         if (err instanceof AiQuotaError) {
           console.warn('[AIRP TTS] Online TTS stopped: the Worldlines plan quota is used up.');
           return res.status(quotaStatus(err)).json(quotaBody(err));
@@ -675,14 +710,14 @@ export function createTtsRouter(
     }
     if (!wav) {
       const err = lastErr;
-      const mapped = err instanceof FishTtsError
+      const mapped: ReturnType<typeof mapSynthError> = err instanceof FishTtsError
         ? err.kind === 'timeout'
           ? { status: 504, code: 'tts_timeout', error: err.message }
           : { status: 502, code: 'tts_upstream', error: err.message }
         : mapSynthError(err);
       // The reason ("DashScope HTTP 429", a timeout…) carries no key or URL.
       console.warn(`[AIRP TTS] Online TTS failed (${mapped.code}: ${mapped.error}).`);
-      return res.status(mapped.status).json({ ok: false, code: mapped.code, error: mapped.error });
+      return res.status(mapped.status).json({ ok: false, code: mapped.code, error: mapped.error, ...(mapped.reason ? { reason: mapped.reason } : {}) });
     }
     if (!scopeIsCurrent()) return worldChangedResponse(res);
     try {
