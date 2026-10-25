@@ -6,7 +6,7 @@ import { useLocale } from '../lib/i18n.js';
 import { refreshTick } from '../lib/tick/store.js';
 import { agentSettingsPollDelay } from '../lib/agent-settings-poll.js';
 type Model = { provider: string; id: string; name?: string };
-type Status = { world: string; active: string[]; models: Model[]; officialOpenAI?: { configured: boolean; available: boolean }; writer: { model: Model | null; thinking: string }; characters: { id: string; model: Model | null; thinking: string }[]; preferences: Partial<Record<'writer' | 'character', { provider: string; model: string; thinking: string }>> };
+type Status = { world: string; active: string[]; models: Model[]; officialOpenAI?: { configured: boolean; available: boolean }; writer: { model: Model | null; thinking: string }; characters: { id: string; model: Model | null; thinking: string; starting?: boolean }[]; preferences: Partial<Record<'writer' | 'character', { provider: string; model: string; thinking: string }>> };
 export function AgentSettings({ settings, onSaveSettings, focus, onReplayTutorial, characterTick, worldKey }: {
   settings: WorldSettings;
   /** The open save (null before any world is open: nothing to poll — the server would answer 409 no_active_world). */
@@ -64,6 +64,8 @@ export function AgentSettings({ settings, onSaveSettings, focus, onReplayTutoria
   }, [focus, open]);
   const [status, setStatus] = useState<Status | null>(null);
   const [error, setError] = useState('');
+  /** The server answered 503 `agent_starting` (a world load, a restart): the agents are coming up, not gone. */
+  const [starting, setStarting] = useState(false);
   const [saving, setSaving] = useState(false);
   const [role, setRole] = useState<'writer' | 'character'>('writer');
   const [model, setModel] = useState('');
@@ -74,15 +76,29 @@ export function AgentSettings({ settings, onSaveSettings, focus, onReplayTutoria
     let cancelled = false, timer: ReturnType<typeof setTimeout> | undefined, failures = 0;
     const poll = async () => {
       let noWorld = false;
+      let agentStarting = false;
       try {
         const response = await fetch(`/api/agent-settings${open ? '' : '?brief=true'}`); const data = await response.json();
-        if (!response.ok) { noWorld = data?.code === 'no_active_world'; throw new Error(data.error); }
+        if (!response.ok) {
+          noWorld = data?.code === 'no_active_world';
+          agentStarting = data?.code === 'agent_starting';
+          throw new Error(data.error);
+        }
         failures = 0;
         if (!cancelled) {
           setStatus(data);
+          setStarting(false);
+          setError('');
         }
-      } catch (e) { failures++; if (!cancelled) { setStatus(null); if (!noWorld) setError(String(e)); } }
-      const delay = agentSettingsPollDelay({ open, worldOpen, failures, noWorld });
+      } catch (e) {
+        if (!agentStarting) failures++;
+        if (!cancelled) {
+          // Starting keeps the last status on screen; only a real failure clears it.
+          setStarting(agentStarting);
+          if (!agentStarting) { setStatus(null); if (!noWorld) setError(String(e)); }
+        }
+      }
+      const delay = agentSettingsPollDelay({ open, worldOpen, failures, noWorld, starting: agentStarting });
       if (!cancelled && delay !== null) timer = setTimeout(poll, delay);
     };
     if (worldOpen) void poll(); else setStatus(null);
@@ -106,7 +122,9 @@ export function AgentSettings({ settings, onSaveSettings, focus, onReplayTutoria
   const writing = writer.phase === 'writing';
   const seconds = writer.startedAt ? Math.max(0, Math.floor((Date.now() - writer.startedAt) / 1000)) : 0;
   const visibleModels = (status?.models ?? []).filter(m => m.provider !== 'openai' && (m.provider !== 'airp-openai-official' || m.id === 'gpt-6-luna'));
-  const summary = !status
+  const summary = starting
+    ? t('Characters are starting')
+    : !status
     ? t('Connecting')
     : writer.error
       ? t('Attention')
@@ -118,10 +136,10 @@ export function AgentSettings({ settings, onSaveSettings, focus, onReplayTutoria
     <button onClick={() => setOpenState(!open)} aria-expanded={open}>{t('Agents · {summary}', { summary })}</button>
     {open && <section ref={panelRef} className="agent-settings-panel" aria-label={t('Agent models and progress')}>
       <p role="status">
-        {!status ? t('Connecting to the engine') : writing ? writer.stage ?? t('Preparing the response') : t('Ready for your next action')}
+        {starting ? t('The characters are starting…') : !status ? t('Connecting to the engine') : writing ? writer.stage ?? t('Preparing the response') : t('Ready for your next action')}
         {writer.stopRequested ? t(' · Stop requested') : ''}
       </p>
-      <p>{t('Writer')}: {displayModel(status?.writer.model)} · {status?.writer.thinking ?? '—'}<br />{status?.characters.map(c => <span key={c.id}>{c.id}: {displayModel(c.model)} · {c.thinking}<br /></span>)}</p>
+      <p>{t('Writer')}: {displayModel(status?.writer.model)} · {status?.writer.thinking ?? '—'}<br />{status?.characters.map(c => <span key={c.id}>{c.id}: {c.starting ? t('Starting') : `${displayModel(c.model)} · ${c.thinking}`}<br /></span>)}</p>
       {writing && <p>{t('{seconds}s elapsed · You can browse while waiting.', { seconds })}</p>}
       {writer.error && <p role="alert">{writer.error.message}</p>}
       <label>{t('Auto-write')}<select value={settings.autoWrite} onChange={e => void onSaveSettings({ autoWrite: e.target.value as AutoWrite })}><option value="off">{t('Off · the writer waits for you')}</option><option value="scenes">{t('Scenes · write unwritten scenes on entry')}</option><option value="scenes-and-choices">{t('Scenes + choices · also advance on each choice')}</option></select></label>

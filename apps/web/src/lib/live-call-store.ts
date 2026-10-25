@@ -24,6 +24,7 @@
  */
 
 import { agentActivityStore, type AgentActivityStore } from './agent-activity-store.js';
+import { stopVoice } from './audio.js';
 import { AirpRequestError } from './airp-gateway.js';
 import { isCharacterFrame } from './character-frame-queue.js';
 import { UI_COPY } from './legacy-ui-copy.js';
@@ -60,6 +61,11 @@ export interface LiveCallState {
    * GPT Live, which has no such signal.
    */
   bot?: CallBotState;
+  /**
+   * What voice-live last heard the player say (`transcript`), for the
+   * "heard 「…」" status line. Cleared when she starts speaking or they speak again.
+   */
+  heard?: string;
   /** A short in-call notice (one turn failed, the call goes on). Clears itself. */
   notice?: string;
   /** Epoch ms at which this month's minutes run out; null = unlimited; absent = unknown. */
@@ -130,6 +136,8 @@ export interface LiveCallDeps {
   activeSaveStore?: AgentActivityStore;
   /** The voice-live transport; defaults to the real one (`voice-live-call.ts`). */
   startVoiceLive?: typeof startVoiceLiveCall;
+  /** Cuts whatever line the app is voicing; defaults to `audio.ts` `stopVoice`. */
+  stopVoice?: () => void;
 }
 
 interface LiveConfig {
@@ -140,6 +148,8 @@ interface LiveConfig {
   voices: string[];
   /** Added by the provider seam; absent on an older server, which means gpt-live. */
   provider?: VoiceProvider;
+  /** This computer's own voice-live (local edition, voice.json): already folded into `available`. */
+  localVoiceLive?: { state: 'off' | 'starting' | 'ready' | 'failed'; configured: boolean; owned: boolean; reason?: string };
 }
 
 interface LiveSessionResponse {
@@ -379,6 +389,7 @@ function isSameState(a: LiveCallState, b: LiveCallState): boolean {
     a.inputText === b.inputText &&
     a.outputText === b.outputText &&
     a.bot === b.bot &&
+    a.heard === b.heard &&
     a.notice === b.notice &&
     a.endsAt === b.endsAt &&
     a.billingUrl === b.billingUrl
@@ -558,6 +569,7 @@ export function createLiveCallStore(deps: LiveCallDeps = {}): LiveCallStore {
       phase: 'error',
       error: errorText(error, activeLocale, activeUiLocale),
       bot: undefined,
+      heard: undefined,
       notice: undefined,
       ...(billingUrl ? { billingUrl } : {}),
     });
@@ -722,6 +734,9 @@ export function createLiveCallStore(deps: LiveCallDeps = {}): LiveCallStore {
     const gate = startedGate;
     closedGate = null;
     clearBooks();
+    // The call is the voice from here on: a line still sounding (the classic
+    // modal's page, a dock line mid-clip) is cut, not talked over.
+    (deps.stopVoice ?? stopVoice)();
     commitState({
       phase: 'connecting',
       characterId: opts.characterId,
@@ -730,6 +745,7 @@ export function createLiveCallStore(deps: LiveCallDeps = {}): LiveCallStore {
       outputText: '',
       error: undefined,
       bot: undefined,
+      heard: undefined,
       notice: undefined,
       endsAt: undefined,
       billingUrl: undefined,
@@ -864,7 +880,12 @@ export function createLiveCallStore(deps: LiveCallDeps = {}): LiveCallStore {
         onInputText: (text) => {
           if (!isCurrentCall(gen, savePath)) return;
           pendingInput = text;
+          if (text.trim()) commitState({ heard: text.trim() });
           armClock();
+        },
+        onUserStart: () => {
+          if (!isCurrentCall(gen, savePath)) return;
+          if (committed.heard !== undefined) commitState({ heard: undefined });
         },
         onLine: (text) => {
           if (!isCurrentCall(gen, savePath)) return;
@@ -880,7 +901,7 @@ export function createLiveCallStore(deps: LiveCallDeps = {}): LiveCallStore {
         },
         onBotState: (state) => {
           if (!isCurrentCall(gen, savePath)) return;
-          commitState({ bot: state === 'idle' ? 'listening' : state });
+          commitState({ bot: state === 'idle' ? 'listening' : state, ...(state === 'speaking' ? { heard: undefined } : {}) });
         },
         onThought: () => {
           /* Display-only and silent (integration.md §3.3); no surface yet. */
@@ -986,7 +1007,7 @@ export function createLiveCallStore(deps: LiveCallDeps = {}): LiveCallStore {
     activeCallSavePath = null;
     clearBooks();
     disarmClock();
-    if (wasActive || committed.phase === 'error') commitState({ ...IDLE, error: undefined, bot: undefined, notice: undefined, endsAt: undefined, billingUrl: undefined });
+    if (wasActive || committed.phase === 'error') commitState({ ...IDLE, error: undefined, bot: undefined, heard: undefined, notice: undefined, endsAt: undefined, billingUrl: undefined });
   }
   function clearAll(_reason: 'world-unavailable' | 'save-changed'): void {
     generation += 1;
@@ -1041,6 +1062,15 @@ export function createLiveCallStore(deps: LiveCallDeps = {}): LiveCallStore {
  */
 export function callCarries(state: Pick<LiveCallState, 'phase' | 'characterId'>, characterId: string): boolean {
   return (state.phase === 'connecting' || state.phase === 'live') && state.characterId === characterId;
+}
+
+/**
+ * Is any call up (connecting or live)? While it is, the call is the only voice:
+ * the dialogue's per-line TTS stops and stays quiet, otherwise the character
+ * talks over herself.
+ */
+export function callSilencesVoice(state: Pick<LiveCallState, 'phase'>): boolean {
+  return state.phase === 'connecting' || state.phase === 'live';
 }
 
 /** The one call, process-wide. Two entries, one owner of the transport. */

@@ -42,6 +42,11 @@ const n = (v: number) => v.toLocaleString('en-US');
  * the billing side has its own switch, VOICE_LIVE_AVAILABLE in services/billing (config.voiceLiveAvailable).
  * It is also what puts the call button in the tab: browser-mode.ts switches the in-tab server to voice-live
  * (tickets from the AI service) only when this is true.
+ *
+ * It is about the CLOUD Voice Live only (ai.worldlines.gg, minutes on a plan). The local edition's own
+ * voice-live (voice.json on the player's computer, apps/server/src/engine/local-voice-live.ts, their own
+ * keys) does not read it: there the call entry shows when that voice-live is configured / running,
+ * whatever the plan. Plan copy never sells local calls as minutes.
  */
 export const VOICE_LIVE_AVAILABLE = false;
 

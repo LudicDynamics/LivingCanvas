@@ -21,10 +21,10 @@ import { gatewayWorld } from '../gateway-world.js';
 import { accountAccessToken, RemoteError } from '../sync/remote-client.js';
 import {
   composeVoiceCallConfig,
-  resolveVoiceLiveUrl,
   resolveVoiceProvider,
   voiceLiveEventsUrl,
 } from '../engine/voice-provider.js';
+import { effectiveVoiceLiveUrl, localVoiceLiveInEffect, type LocalVoiceLive } from '../engine/local-voice-live.js';
 
 /**
  * The realtime-call HTTP seam.
@@ -48,7 +48,9 @@ export function createLiveRouter(
   // The registry is built in `index.ts` (the composition root) so the world
   // router can call `closeAll()` on world switch / save deletion without the
   // two routers importing each other.
-  registry: LiveCallRegistry
+  registry: LiveCallRegistry,
+  // This computer's own voice-live (local-voice-live.ts); absent in tests and wherever none is supervised.
+  options: { localVoiceLive?: LocalVoiceLive } = {}
 ): Router {
   const router = Router();
 
@@ -62,9 +64,15 @@ export function createLiveRouter(
    * browser already fetches this once before any call, and the answer it needs
    * ("which transport, and can it run") is one question, not two.
    */
-  router.get('/live/config', (_req, res) => {
+  router.get('/live/config', async (_req, res) => {
     const gptLive = readLiveConfig();
-    const config = composeVoiceCallConfig({ provider: resolveVoiceProvider(), gptLive });
+    // The local voice-live's status (voice.json): re-probed per page load, so one started by hand,
+    // or one that came up after the page, is seen. Never a path, port or env value.
+    const local = options.localVoiceLive && localVoiceLiveInEffect()
+      ? await options.localVoiceLive.refresh().catch(() => undefined)
+      : undefined;
+    const provider = resolveVoiceProvider(process.env, { localVoiceLiveConfigured: local?.configured === true });
+    const config = composeVoiceCallConfig({ provider, gptLive, ...(local ? { localVoiceLive: local } : {}) });
     res.setHeader('Cache-Control', 'no-store');
     res.json({ ok: true, ...config });
   });
@@ -80,7 +88,7 @@ export function createLiveRouter(
    * reported, never fatal to anything else.
    */
   router.get('/live/voice-live/events', async (req, res) => {
-    const target = new URL(voiceLiveEventsUrl(resolveVoiceLiveUrl()));
+    const target = new URL(voiceLiveEventsUrl(effectiveVoiceLiveUrl(options.localVoiceLive)));
     for (const key of ['limit', 'session'] as const) {
       const value = req.query[key];
       if (typeof value === 'string' && value !== '') target.searchParams.set(key, value);

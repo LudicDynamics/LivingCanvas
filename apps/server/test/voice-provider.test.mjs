@@ -124,10 +124,10 @@ test('the payload never carries an upstream address', () => {
 
 test('the route hands the composed answer straight out, and reads env per request', async () => {
   const route = await readFile(new URL('../src/routes/live.ts', import.meta.url), 'utf8');
-  assert.match(route, /composeVoiceCallConfig\(\{ provider: resolveVoiceProvider\(\), gptLive \}\)/);
+  assert.match(route, /composeVoiceCallConfig\(\{ provider, gptLive, \.\.\.\(local \? \{ localVoiceLive: local \} : \{\}\) \}\)/);
   // No module-level capture: the provider is re-read on every request, the same
   // rule TTS carries, so flipping env needs no restart.
   const body = route.slice(route.indexOf("router.get('/live/config'"));
-  assert.match(body.slice(0, 400), /resolveVoiceProvider\(\)/);
+  assert.match(body.slice(0, 800), /const provider = resolveVoiceProvider\(process\.env, /);
   assert.doesNotMatch(route, /const provider = resolveVoiceProvider\(\);\s*\n\s*export/);
 });

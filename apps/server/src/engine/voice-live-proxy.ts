@@ -39,6 +39,8 @@ export const VOICE_LIVE_STREAM_PATH = '/ws/voice-live';
  * and the player is better served by a visible failure than by a spinner.
  */
 const UPSTREAM_OPEN_TIMEOUT_MS = 5_000;
+/** Before the URL is known: cast lookup, and possibly a local voice-live still starting. */
+const UPSTREAM_PREPARE_TIMEOUT_MS = 130_000;
 
 /**
  * How much the browser may buffer upstream before the connection opens. One
@@ -114,9 +116,11 @@ export function handleVoiceLiveStream(
     try { client.close(); } catch { /* already gone */ }
   };
 
-  const openTimer = setTimeout(
+  // A promised target may first wait for this computer's voice-live to start (local-voice-live.ts,
+  // up to its own start timeout), so the 5 s open budget only starts once the URL is known.
+  let openTimer = setTimeout(
     () => finish('voice backend unavailable'),
-    UPSTREAM_OPEN_TIMEOUT_MS,
+    typeof target === 'string' ? UPSTREAM_OPEN_TIMEOUT_MS : UPSTREAM_PREPARE_TIMEOUT_MS,
   );
 
   // One queue for BOTH kinds: the client's `played` / `interrupted` receipts are
@@ -131,6 +135,10 @@ export function handleVoiceLiveStream(
     if (!isCurrent()) {
       finish();
       return;
+    }
+    if (typeof target !== 'string') {
+      clearTimeout(openTimer);
+      openTimer = setTimeout(() => finish('voice backend unavailable'), UPSTREAM_OPEN_TIMEOUT_MS);
     }
     let socket: WebSocket;
     try {

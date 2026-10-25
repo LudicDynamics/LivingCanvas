@@ -210,6 +210,9 @@ function serverEnv(world: string | undefined): Record<string, string> {
     PI_PACKAGE_DIR: '/repo/vendor/pi-rp/packages/coding-agent', PI_OFFLINE: '1', AIRP_WRITER_THINKING: 'low',
     // 远端世界 / 发布: the same Worldlines services the local app uses (identity + storage).
     AIRP_ID_BASE: d.identity, AIRP_STORAGE_BASE: d.storage, AIRP_DATA_BASE: d.data, AIRP_CHRONICLE_BASE: d.chronicle, AIRP_BILLING_BASE: d.billing,
+    // No local voice-live in a tab (no voice.json, no processes): the server's supervisor stays off
+    // (apps/server/src/engine/local-voice-live.ts). Calls here are only the cloud's, behind VOICE_LIVE_AVAILABLE.
+    AIRP_LOCAL_VOICE_LIVE: '0',
   };
   // The build mode, said explicitly to the in-tab server too (apps/server/src/deploy-mode.ts checks it again).
   const mode = buildMode();

@@ -44,11 +44,22 @@ test('agent status poll: none before a world is open or after no_active_world; b
   assert.equal(d({}), 5000);
   assert.equal(d({ open: true }), 2000);
   assert.deepEqual([1, 2, 3, 4, 5, 10].map((failures) => d({ failures })), [5000, 10000, 20000, 40000, 60000, 60000]);
+  // 503 agent_starting (a world load, an agent restart): it is coming up — steady 3 s, no back-off.
+  assert.equal(d({ starting: true, failures: 4 }), 3000);
+});
+
+test('AgentSettings: a 503 agent_starting reads "the characters are starting", keeps the last status, is not an error', async () => {
+  const c = await src('../src/components/AgentSettings.tsx');
+  assert.match(c, /agentStarting = data\?\.code === 'agent_starting'/);
+  assert.match(c, /t\('Characters are starting'\)/);
+  assert.match(c, /if \(!agentStarting\) \{ setStatus\(null\)/);
+  const route = await src('../../server/src/routes/world.ts');
+  assert.match(route, /status\(503\)\.json\(\{ code: 'agent_starting'/);
 });
 
 test('AgentSettings: polls only with a world (App passes the open save), through agentSettingsPollDelay', async () => {
   const c = await src('../src/components/AgentSettings.tsx');
-  assert.match(c, /agentSettingsPollDelay\(\{ open, worldOpen, failures, noWorld \}\)/);
+  assert.match(c, /agentSettingsPollDelay\(\{ open, worldOpen, failures, noWorld, starting: agentStarting \}\)/);
   assert.match(c, /if \(worldOpen\) void poll\(\)/);
   assert.doesNotMatch(c, /setTimeout\(poll, open \? 2000 : 5000\)/);
   const app = await src('../src/App.tsx');

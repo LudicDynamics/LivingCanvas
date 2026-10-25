@@ -49,6 +49,21 @@ test('the transcript is spoken words only — no thinking, no tool traffic, no e
   assert.match(last.text, /One more thing/);
 });
 
+test('a line answered over a voice call by the fast brain counts as an exchange (custom_message voice-call)', () => {
+  const t = parseCharacterSession(session(
+    msg('a', null, 'user', 'Hello?'),
+    msg('b', 'a', 'assistant', 'Evening.'),
+    JSON.stringify({ type: 'custom_message', id: 'v1', parentId: 'b', customType: 'voice-call', content: '[Voice call] …', display: false,
+      details: { player: '你是谁？', reply: '[emo: smile] 我是千鹤。（把茶碗推过去）' }, timestamp: '2026-10-25T00:00:00Z' }),
+    JSON.stringify({ type: 'custom_message', id: 'x', parentId: 'v1', customType: 'something-else', content: 'not a line', details: { player: 'no' } }),
+  ));
+  assert.equal(countRealExchanges(t.exchanges), 2);
+  const voice = t.exchanges.at(-1);
+  assert.equal(voice.player, '你是谁？');
+  assert.equal(voice.reply, '我是千鹤。（把茶碗推过去）', 'the history keeps the full line; only the emotion tag goes');
+  assert.equal(t.lastEntryId, 'x');
+});
+
 test('a watermark resumes after it; an unknown one reads the whole branch', () => {
   const after = parseCharacterSession(CHAT, { after: 'd' });
   assert.equal(countRealExchanges(after.exchanges), 1);

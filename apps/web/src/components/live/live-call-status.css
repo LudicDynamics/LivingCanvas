@@ -5,6 +5,8 @@
 .live-call-status__dot { inline-size: .45rem; block-size: .45rem; border-radius: 50%; background: var(--muted); }
 .live-call-status__bot--thinking .live-call-status__dot { background: var(--rust); animation: live-call-status-pulse 1s ease-in-out infinite; }
 .live-call-status__bot--speaking .live-call-status__dot { background: var(--rust); }
+.live-call-status__bot--heard { color: var(--ink); }
+.live-call-status__bot--heard .live-call-status__dot { background: var(--ink); }
 .live-call-status__minutes--low { color: var(--rust); }
 .live-call-status__notice { flex-basis: 100%; margin: 0; color: var(--ink); }
 .live-call-status__upgrade { color: var(--rust); text-decoration: underline; }

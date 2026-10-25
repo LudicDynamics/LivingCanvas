@@ -22,13 +22,19 @@
  *  4. The player can interrupt: `stop()` (the stop control, Esc, or sending a
  *     new line) cuts the current speaker off without closing the dialogue.
  *
+ *  5. A realtime call is the only voice: while one is connecting or live, the
+ *     speaker is cut off exactly as if the dialogue closed, and the lines that
+ *     land during the call are shown, never read after hanging up
+ *
+ *
  * Mute and the TTS switch are not re-implemented: `canRequestTts()`/
  * `ttsEnabled()` gate the request inside `fetchVoiceUrl`, and `playVoice`
  * already returns early while muted or while the page is hidden.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { sanitiseTtsText } from '@airp/shared/tts-text';
 import { isVoiceBusy, isVoicing, playVoice, stopVoice } from './audio.js';
+import { callSilencesVoice, liveCallStore } from './live-call-store.js';
 import { voiceLineBegan } from './stage-performance.js';
 import { fetchVoiceUrl } from './tts-request.js';
 import { agentActivityStore } from './agent-activity-store.js';
@@ -161,8 +167,14 @@ export function useSpokenLines({
   characterIdRef.current = characterId;
   const worldPathRef = useRef<string | null>(worldPath ?? null);
   worldPathRef.current = worldPath ?? null;
+  // A call is up: the call is the voice, the dialogue is silent (rule 5).
+  const callUp = useSyncExternalStore(
+    liveCallStore.subscribe,
+    () => callSilencesVoice(liveCallStore.getSnapshot()),
+    () => false,
+  );
   // No save attached (a world switch in flight): nobody speaks.
-  const live = enabled && open && worldPath != null ? characterId : null;
+  const live = enabled && open && !callUp && worldPath != null ? characterId : null;
   const liveKey = live !== null && worldPath != null ? speakerKey(worldPath, live) : null;
   useEffect(() => {
     turnRef.current += 1;

@@ -63,6 +63,14 @@ export interface VoiceLiveCastOptions {
   request?: typeof fetch;
 }
 
+/**
+ * Whether the proxied call keeps a transcript in voice-live's event log. Default no (`log=meta`);
+ * `VOICE_LIVE_LOG=full` brings the full log back for debugging.
+ */
+export function proxiedVoiceLiveLogsMetaOnly(env: NodeJS.ProcessEnv = process.env): boolean {
+  return (env.VOICE_LIVE_LOG ?? '').trim() !== 'full';
+}
+
 /** Whether a self-run voice-live (the proxied `/ws/voice-live` call) speaks Fish. */
 export function proxiedVoiceLiveSpeaksFish(env: NodeJS.ProcessEnv = process.env): boolean {
   return (env.VOICE_LIVE_FISH ?? '').trim() === '1';
@@ -115,13 +123,15 @@ export async function castCallVoice(input: {
 }
 
 /** Pure: the upstream socket URL with the cast as query parameters. */
-export function voiceLiveSessionUrl(socketUrl: string, cast: VoiceLiveCast, options: { relayBrain?: boolean } = {}): string {
+export function voiceLiveSessionUrl(socketUrl: string, cast: VoiceLiveCast, options: { relayBrain?: boolean; logMeta?: boolean } = {}): string {
   const url = new URL(socketUrl);
   if (cast.character) url.searchParams.set('character', cast.character);
   // voice-live-brain.ts answers for the character over this same call.
   if (cast.character && options.relayBrain) url.searchParams.set('brain', 'relay');
   if (cast.voice) url.searchParams.set('voice', cast.voice);
   if (cast.language) url.searchParams.set('language', cast.language);
+  // voice-live keeps metadata only (types, ids, timings, counts) — not one word of the call (its README, `log=meta`).
+  if (options.logMeta) url.searchParams.set('log', 'meta');
   return url.toString();
 }
 

@@ -149,6 +149,8 @@ export interface VoiceLiveHandlers {
   onLine(text: string): void;
   /** `state{bot}`, for a speaking / thinking indicator. */
   onBotState(state: VoiceLiveBotState): void;
+  /** `user_start`: the player began to speak (the "heard" line gives way to "listening"). */
+  onUserStart?(): void;
   /** Something she thought in the silence. Display only; there is no audio. */
   onThought(text: string): void;
   /** Visible failure. The call is over by the time this is called. */
@@ -522,6 +524,9 @@ export async function startVoiceLiveCall(
       case 'state':
         handlers.onBotState(event.bot);
         break;
+      case 'user-start':
+        handlers.onUserStart?.();
+        break;
       case 'transcript':
         handlers.onInputText(event.text);
         break;
@@ -631,6 +636,7 @@ export async function startVoiceLiveCall(
         return;
       }
       pending.push(event.data);
+      pendingLength += event.data.length;
       if (pendingLength < CHUNK_SAMPLES) return;
       const merged = new Float32Array(pendingLength);
       let offset = 0;

@@ -216,6 +216,7 @@ async function harness(over = {}) {
       state.audio = audio;
       return audio;
     },
+    stopVoice: () => { state.voiceStops = (state.voiceStops ?? 0) + 1; },
   });
   const start = created.start;
   created.start = (opts) => start({ savePath: SAVE_A, ...opts });
@@ -642,4 +643,20 @@ test('A21 the three-argument binding renders under renderToStaticMarkup', () => 
   };
   const html = renderToStaticMarkup(React.createElement(Probe));
   assert.match(html, /idle\|0\|/, 'the server sees an idle call, not a thrown error');
+});
+
+// ── the call is the only voice ─────
+
+test('starting a call cuts the line the app is voicing', async () => {
+  const h = await harness();
+  assert.equal(h.state.voiceStops ?? 0, 0);
+  await liveCall(h);
+  assert.equal(h.state.voiceStops, 1, 'the dialogue TTS clip must stop when the call starts');
+});
+
+test('callSilencesVoice: connecting and live silence the dialogue voice, idle and error do not', () => {
+  assert.equal(store.callSilencesVoice({ phase: 'connecting' }), true);
+  assert.equal(store.callSilencesVoice({ phase: 'live' }), true);
+  assert.equal(store.callSilencesVoice({ phase: 'idle' }), false);
+  assert.equal(store.callSilencesVoice({ phase: 'error' }), false);
 });

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useLocale } from '../../lib/i18n.js';
 import type { LiveCallState } from '../../lib/live-call-store.js';
+import { callStatusLine } from '../../lib/live-call-status-line.js';
 import './live-call-status.css';
 
 export interface LiveCallStatusProps {
   /** Display fields only — never the owner or the character (same rule as LiveCallTranscript). */
-  call: Pick<LiveCallState, 'phase' | 'bot' | 'notice' | 'endsAt' | 'billingUrl'>;
+  call: Pick<LiveCallState, 'phase' | 'bot' | 'notice' | 'endsAt' | 'billingUrl'> & Partial<Pick<LiveCallState, 'heard' | 'error'>>;
   className?: string;
   /** Test seam for the minutes countdown. */
   now?: () => number;
@@ -47,13 +48,21 @@ export const LiveCallStatus: React.FC<LiveCallStatusProps> = ({ call, className,
   if (call.phase !== 'live') return null;
 
   const left = typeof call.endsAt === 'number' ? call.endsAt - at : null;
-  const bot = call.bot;
+  // GPT Live reports no bot state: no badge rather than a guess. Connecting and a failed call
+  // are worded by the host (its call bar / alert), so the line covers the live states.
+  const line = call.bot ? callStatusLine(call) : null;
   return (
     <div data-live-call-status="" className={root}>
-      {bot && (
-        <span className={`live-call-status__bot live-call-status__bot--${bot}`} aria-live="polite">
+      {line && (
+        <span className={`live-call-status__bot live-call-status__bot--${line.kind}`} aria-live="polite" data-call-state={line.kind}>
           <span className="live-call-status__dot" aria-hidden="true" />
-          {bot === 'thinking' ? t('Thinking') : bot === 'speaking' ? t('Speaking') : t('Listening')}
+          {line.kind === 'thinking'
+            ? t('Thinking')
+            : line.kind === 'speaking'
+              ? t('Speaking')
+              : line.kind === 'heard'
+                ? t('Heard “{text}”', { text: line.heard ?? '' })
+                : t('Listening')}
         </span>
       )}
       {left !== null && (

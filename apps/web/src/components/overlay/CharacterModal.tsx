@@ -153,6 +153,9 @@ export const CharacterModal: React.FC<CharacterModalProps> = ({
   // Every interface language (zh-CN / ko too, 2026-10-03): the modal's own copy goes through messages.json.
   const locale: Locale = uiLocale;
   const call = useLiveCallState();
+  // 通话中通话是唯一的声音：页语音的回调读这个 ref，不叠在通话上（）
+  const callUpRef = useRef(false);
+  callUpRef.current = call.phase === 'connecting' || call.phase === 'live';
   const lines = useLiveCallLines();
   const liveCallActions = useLiveCallActions();
   const liveCallAvailable = useLiveCallAvailable();
@@ -348,7 +351,7 @@ export const CharacterModal: React.FC<CharacterModalProps> = ({
       clearStingerGrace();
       if (page.voiceState === 'ready' && page.voiceUrl) {
         stopVoice();
-        playVoice(page.voiceUrl); // 有语音 → 不响 stinger
+        if (!callUpRef.current) playVoice(page.voiceUrl); // 有语音 → 不响 stinger
         stingerFiredRef.current = true;
       } else if (!stingerFiredRef.current) {
         // 无语音（failed）→ 保留 stinger 作为情绪提示；mock 页不响
@@ -436,7 +439,7 @@ export const CharacterModal: React.FC<CharacterModalProps> = ({
       if (opts.announce) {
         if (page.voiceState === 'ready' && page.voiceUrl) {
           // 就绪 → 播语音、抑制 stinger。真实页与 mock 页走同一分支（§15.18）
-          playVoice(page.voiceUrl);
+          if (!callUpRef.current) playVoice(page.voiceUrl);
           stingerFiredRef.current = true;
         } else if (page.voiceState === 'pending') {
           armStingerGrace(page, idx); // 在途 → 挂起；mock 页不因 mockRef 被排除

@@ -8,7 +8,7 @@ import { createJiti } from '../../../vendor/pi-rp/node_modules/jiti/lib/jiti.mjs
 
 globalThis.WebSocket ??= { CONNECTING: 0, OPEN: 1, CLOSING: 2, CLOSED: 3 };
 globalThis.AudioWorkletNode ??= class {
-  constructor() { this.port = { onmessage: null, close() {} }; }
+  constructor() { this.port = { onmessage: null, close() {} }; globalThis.lastTap = this; }
   connect(next) { return next; }
   disconnect() {}
 };
@@ -144,4 +144,14 @@ test('ticket codes map one to one; unknown ones stay generic', () => {
   assert.equal(ticketFailure('ticket_malformed', 502), 'connection');
   assert.equal(closeFailure(4401, 'invalid_ticket', false), 'connection', 'an expired ticket is a retry, not a sign-out');
   assert.equal(closeFailure(1000, '', true), null);
+});
+
+test('the microphone reaches voice-live: 100 ms of mic audio goes out as one PCM16 frame', async () => {
+  // 92dfa6ba dropped the running length, so no chunk ever filled and calls heard silence.
+  const { socket } = await call();
+  socket.open();
+  for (let i = 0; i < 10; i += 1) globalThis.lastTap.port.onmessage({ data: new Float32Array(480).fill(0.1) });
+  const audio = socket.sent.filter((frame) => frame instanceof ArrayBuffer);
+  assert.equal(audio.length, 1);
+  assert.equal(audio[0].byteLength, 1_600 * 2);
 });

@@ -68,6 +68,25 @@ interface SessionEntry {
   parentId?: unknown;
   timestamp?: unknown;
   message?: { role?: unknown; content?: unknown };
+  customType?: unknown;
+  details?: unknown;
+}
+
+/**
+ * A line said over a voice call that the call's fast brain answered, not the
+ * agent (apps/server/src/engine/voice-fast-brain.ts): recorded into the
+ * character's own session as one pi-rp `custom_message` (it reaches the agent's
+ * context as a user-role note) carrying `details: { player, reply }`, so it
+ * counts as an exchange here exactly like a line typed in the dialogue.
+ */
+export const VOICE_CALL_CUSTOM_TYPE = 'voice-call';
+
+function voiceCallLines(entry: SessionEntry): { player: string; reply: string } | null {
+  if (entry.type !== 'custom_message' || entry.customType !== VOICE_CALL_CUSTOM_TYPE) return null;
+  const details = entry.details as { player?: unknown; reply?: unknown } | null | undefined;
+  const player = typeof details?.player === 'string' ? details.player.trim() : '';
+  const reply = typeof details?.reply === 'string' ? details.reply.replace(EMO_TAG_RE, '').trim() : '';
+  return player || reply ? { player, reply } : null;
 }
 
 /**
@@ -115,6 +134,20 @@ export function parseCharacterSession(jsonl: string, opts: { after?: string | nu
   const exchanges: ChatExchange[] = [];
   let current: ChatExchange | null = null;
   for (const entry of branch.slice(start)) {
+    const voice = voiceCallLines(entry);
+    if (voice) {
+      current = {
+        player: voice.player,
+        reply: voice.reply,
+        cue: false,
+        ...(typeof entry.timestamp === 'string' ? { at: entry.timestamp, replyAt: entry.timestamp } : {}),
+        entryId: entry.id,
+        userId: entry.id,
+      };
+      exchanges.push(current);
+      current = null;
+      continue;
+    }
     if (entry.type !== 'message' || !entry.message) continue;
     const role = entry.message.role;
     if (role === 'user') {

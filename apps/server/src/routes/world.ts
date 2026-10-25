@@ -601,7 +601,9 @@ export function createWorldRouter(
     const store = getActiveStore();
     if (!store) { res.status(409).json({ error: 'Load a world first.' }); return; }
     try { res.json(await lifecycle.modelStatus(store.worldRoot, req.query.brief !== 'true')); }
-    catch (error) { res.status(503).json({ error: error instanceof Error ? error.message : 'Agent unavailable.' }); }
+    // `agent_starting`: the agents are (re)starting (a world load, a crash restart, a busy writer):
+    // the page says "the characters are starting" instead of reading it as disconnected.
+    catch (error) { res.status(503).json({ code: 'agent_starting', error: error instanceof Error ? error.message : 'Agent unavailable.' }); }
   });
   router.post('/agent-settings', async (req, res) => {
     const store = getActiveStore();

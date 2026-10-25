@@ -6,7 +6,7 @@ import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import cors from 'cors';
-import { cpSync, existsSync } from 'node:fs';
+import { cpSync, existsSync, readFileSync } from 'node:fs';
 import { WebSocketServer, WebSocket } from 'ws';
 import { LocalWorldStore, chatBeatsEnabled, createActionService, initializeMissingCharacterPresence, isValidCharacterId, prepareLoop, prepareRun, settleTurnCursor, WsCommandSchema, worldScopedCommandMatchesSave } from '@airp/shared';
 import { parseWsAllowedOrigins, registerGatewayUpgrades } from './gateway/upgrade.js';
@@ -30,9 +30,13 @@ import { DiceSettler } from './engine/dice-settle.js';
 import { WriterFastPath } from './engine/writer-fast-path.js';
 import { handleSttStream, STT_STREAM_PATH } from './engine/stt-stream.js';
 import { handleVoiceLiveStream, VOICE_LIVE_STREAM_PATH } from './engine/voice-live-proxy.js';
-import { proxiedVoiceLiveSpeaksFish, resolveVoiceLiveCast, voiceLiveCharacterOf, voiceLiveSavePathOf, voiceLiveSessionUrl } from './engine/voice-live-cast.js';
-import { resolveVoiceLiveUrl, voiceLiveRelaysBrain, voiceLiveSocketUrl, voiceLiveUpstreamHeaders } from './engine/voice-provider.js';
+import { proxiedVoiceLiveLogsMetaOnly, proxiedVoiceLiveSpeaksFish, resolveVoiceLiveCast, voiceLiveCharacterOf, voiceLiveSavePathOf, voiceLiveSessionUrl } from './engine/voice-live-cast.js';
+import { createLocalVoiceLive, effectiveVoiceLiveUrl, localVoiceLiveInEffect } from './engine/local-voice-live.js';
+import { voiceLiveRelaysBrain, voiceLiveSocketUrl, voiceLiveUpstreamHeaders } from './engine/voice-provider.js';
 import { createBrainRelay } from './engine/voice-live-brain.js';
+import { createFastBrain, readCharacterSoul, recordCallExchange, voiceBrainModeFromEnv, voiceModelEndpoint, worldLanguage } from './engine/voice-fast-brain.js';
+import { worldModelPreference } from './engine/world-models.js';
+import { characterSessionFile } from './engine/launch.js';
 import { startHeartbeat } from './gateway/heartbeat.js';
 import { closeCanvasBrowser } from './engine/canvas-browser.js';
 import { createCanvasPerceptionRouter } from './routes/canvas-perception.js';
@@ -296,7 +300,12 @@ app.use('/api', createTtsRouter(REPO_ROOT, () => activeStore, root => lifecycle.
 // on purpose: that router's `needsWorld` middleware is scoped to its own paths
 // (world.ts:407-422), so `/api/live/config` stays answerable with no world
 // while `/api/live/session` does its own nook check.
-app.use('/api', createLiveRouter(() => activeStore, liveCalls));
+// This computer's own voice-live: voice.json beside
+// remote.json says where it is; started in the background at boot so a call does not wait, and
+// only the child started here is stopped on shutdown. Off in the browser build's tab (AIRP_LOCAL_VOICE_LIVE=0).
+const localVoiceLive = createLocalVoiceLive();
+if (localVoiceLiveInEffect()) localVoiceLive.boot();
+app.use('/api', createLiveRouter(() => activeStore, liveCalls, { localVoiceLive }));
 app.use('/api', createConnectionSettingsRouter(REPO_ROOT, {
   // The self-test probes the models the agents actually run on; `modelStatus`
   // starts the writer if needed, exactly as the Agents panel does.
@@ -445,14 +454,25 @@ wss.on('connection', (ws: WebSocket, req: http.IncomingMessage) => {
     const characterId = voiceLiveCharacterOf(req.url);
     // A self-run voice-live speaks Fish only when told so (VOICE_LIVE_FISH=1); otherwise DashScope voices.
     // play is asked with the signed-in account's token (signed out: its cache, then the built-in table).
-    const cast = accountAccessToken().catch(() => null).then((token) =>
-      resolveVoiceLiveCast(storeAtOpen, characterId, { fish: proxiedVoiceLiveSpeaksFish(), token })).then((resolved) => {
+    // This computer's own voice-live: make sure it is up first (it may still be starting, or have
+    // died since boot), the way Sense asks before every call. Its voice.json may say it speaks Fish.
+    const local = localVoiceLiveInEffect() && localVoiceLive.status().configured;
+    const ready = local
+      ? localVoiceLive.ensure().then((st) => { if (st.state !== 'ready') throw new Error(st.reason ?? 'voice-live is not ready'); })
+      : Promise.resolve();
+    const cast = ready.then(() => accountAccessToken().catch(() => null)).then((token) =>
+      resolveVoiceLiveCast(storeAtOpen, characterId, { fish: proxiedVoiceLiveSpeaksFish() || (local && localVoiceLive.speaksFish()), token })).then((resolved) => {
       if (!isCurrent()) throw new Error('The active world changed before the voice call could start.');
-      return voiceLiveSessionUrl(voiceLiveSocketUrl(resolveVoiceLiveUrl()), resolved, {
+      return voiceLiveSessionUrl(voiceLiveSocketUrl(effectiveVoiceLiveUrl(localVoiceLive)), resolved, {
         relayBrain: voiceLiveRelaysBrain() && !!characterId,
+        logMeta: proxiedVoiceLiveLogsMetaOnly(),
       });
     });
     const relayBrain = voiceLiveRelaysBrain() && !!characterId;
+    // A line said over the call is answered by the fast brain (one streamed model call, no tools,
+    // engine/voice-fast-brain.ts) unless AIRP_VOICE_BRAIN=agent keeps the full agent on the line.
+    const fastBrain = voiceBrainModeFromEnv() === 'fast';
+    const soulOf = (id: string) => readCharacterSoul(savePath, id);
     handleVoiceLiveStream(ws, {
       isCurrent,
       upstreamUrl: cast,
@@ -465,6 +485,23 @@ wss.on('connection', (ws: WebSocket, req: http.IncomingMessage) => {
             send,
             undefined,
             isCurrent,
+            {
+              names: [soulOf(characterId).name],
+              fast: fastBrain
+                ? (up) => createFastBrain({
+                    characterId,
+                    worldRoot: savePath,
+                    model: () => voiceModelEndpoint(REPO_ROOT, savePath, { worldHint: worldModelPreference(REPO_ROOT, savePath, 'character') }),
+                    soul: () => soulOf(characterId),
+                    language: () => worldLanguage(savePath),
+                    readSession: () => { try { return readFileSync(characterSessionFile(savePath, characterId), 'utf8'); } catch { return null; } },
+                    record: (player, reply) => isCurrent()
+                      ? recordCallExchange(lifecycle, characterId, savePath, player, reply)
+                      : Promise.resolve(),
+                    broadcast: (frame) => { if (isCurrent()) eventBridge.broadcast(frame); },
+                  }, up)
+                : undefined,
+            },
           )
         : undefined,
     });
@@ -815,11 +852,14 @@ server.listen(PORT, HOST, () => {
   console.log(`[AIRP Server] Listening on http://${HOST}:${PORT} and http://localhost:${PORT}`);
 });
 
+// Last resort when the process exits some other way: SIGTERM the voice-live group started here (only that one).
+process.on('exit', () => localVoiceLive.stopSync());
+
 // Retire every spawned agent and browser on shutdown.
 for (const signal of ['SIGTERM', 'SIGINT'] as const) {
   process.on(signal, () => {
     heartbeat.stop();
-    void Promise.all([lifecycle.stopAll(), canvasArranger.stopAll()]).finally(async () => {
+    void Promise.all([lifecycle.stopAll(), canvasArranger.stopAll(), localVoiceLive.stop()]).finally(async () => {
       await closeCanvasBrowser();
       process.exit(0);
     });

@@ -53,6 +53,12 @@ test('thinking reads as thinking; listening and speaking too', () => {
   assert.equal(messages.Listening['zh-CN'], '在听');
 });
 
+test('what voice-live heard is on the line until she thinks; GPT Live (no bot state) gets no badge', () => {
+  assert.match(render({ phase: 'live', bot: 'listening', heard: '你是谁？' }), /live-call-status__bot--heard[^>]*>.*Heard “你是谁？”/);
+  assert.match(render({ phase: 'live', bot: 'thinking', heard: '你是谁？' }), /live-call-status__bot--thinking[^>]*>.*Thinking/);
+  assert.doesNotMatch(render({ phase: 'live' }), /live-call-status__bot/);
+});
+
 test('the one-turn notice is shown as a status, not an alert', () => {
   const html = render({ phase: 'live', bot: 'listening', notice: 'Say it again.' });
   assert.match(html, /role="status"[^>]*>Say it again\.</);

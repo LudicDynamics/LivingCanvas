@@ -58,9 +58,14 @@ export function isVoiceLiveBrain(value: unknown): value is VoiceLiveBrain {
  * An unrecognised `AIRP_VOICE_PROVIDER` falls back to the default rather than
  * refusing to boot: a typo must not cost the whole server.
  */
-export function resolveVoiceProvider(env: NodeJS.ProcessEnv = process.env): VoiceProvider {
+export function resolveVoiceProvider(
+  env: NodeJS.ProcessEnv = process.env,
+  options: { localVoiceLiveConfigured?: boolean } = {},
+): VoiceProvider {
   const declared = (env.AIRP_VOICE_PROVIDER ?? '').trim();
   if (isVoiceProvider(declared)) return declared;
+  // This computer's own voice-live (voice.json, local-voice-live.ts) is a choice the user made: honour it in any build.
+  if (options.localVoiceLiveConfigured) return 'voice-live';
   return env.NODE_ENV === 'production' ? 'gpt-live' : 'voice-live';
 }
 
@@ -136,13 +141,28 @@ export interface VoiceCallConfig {
   voices: readonly string[];
   /** Per-provider readiness, so a settings panel can explain the choice. */
   providers: Record<VoiceProvider, VoiceProviderReadiness>;
+  /**
+   * The local edition's own voice-live (local-voice-live.ts): off / starting / ready / failed + reason.
+   * Present only when calls go to it; never a path, a port or an env value.
+   */
+  localVoiceLive?: LocalVoiceLiveStatusView;
+}
+
+/** The browser-safe shape of local-voice-live.ts `LocalVoiceLiveStatus` (kept structural: this module stays pure). */
+export interface LocalVoiceLiveStatusView {
+  state: 'off' | 'starting' | 'ready' | 'failed';
+  configured: boolean;
+  owned: boolean;
+  reason?: string;
 }
 
 /**
  * Pure: fold the two providers' readiness into one answer for the browser.
  *
- * voice-live has no credential to check and no cheap synchronous probe, so it
- * reports available. That is honest rather than optimistic: a voice-live that is
+ * Calls to this computer's own voice-live (voice.json, local-voice-live.ts) are
+ * gated by that supervisor's status (`localVoiceLive`), which the route re-probes
+ * per page load. Every other voice-live (a declared VOICE_LIVE_URL, tickets) has
+ * no credential to check and no cheap synchronous probe, so it reports available. That is honest rather than optimistic: a voice-live that is
  * not running fails at connect time, loudly, through the same visible-failure
  * path as every other call error. A readiness probe here would be WORSE — it is
  * fetched once per page load, so it would cache a "down" answer for a backend
@@ -155,12 +175,22 @@ export interface VoiceCallConfig {
 export function composeVoiceCallConfig(input: {
   provider: VoiceProvider;
   gptLive: VoiceProviderReadiness & { model: string; voices: readonly string[] };
+  /**
+   * When calls go to this computer's own voice-live (local-voice-live.ts), its status decides
+   * voice-live's readiness: ready / starting → available, off / failed → hidden with the reason.
+   * Absent (a declared VOICE_LIVE_URL, tickets) → available as before: that failure is loud at connect.
+   */
+  localVoiceLive?: LocalVoiceLiveStatusView;
 }): VoiceCallConfig {
+  const local = input.localVoiceLive;
+  const voiceLive: VoiceProviderReadiness = !local || local.state === 'ready' || local.state === 'starting'
+    ? { available: true }
+    : { available: false, reason: local.reason ?? (local.state === 'failed' ? 'voice-live failed to start' : 'Voice Live is not set up on this computer (voice.json)') };
   const providers: Record<VoiceProvider, VoiceProviderReadiness> = {
     'gpt-live': input.gptLive.available
       ? { available: true }
       : { available: false, reason: input.gptLive.reason ?? 'GPT Live is not configured' },
-    'voice-live': { available: true },
+    'voice-live': voiceLive,
   };
   const active = providers[input.provider];
   return {
@@ -170,5 +200,6 @@ export function composeVoiceCallConfig(input: {
     model: input.gptLive.model,
     voices: input.gptLive.voices,
     providers,
+    ...(local ? { localVoiceLive: { state: local.state, configured: local.configured, owned: local.owned, ...(local.reason ? { reason: local.reason } : {}) } } : {}),
   };
 }

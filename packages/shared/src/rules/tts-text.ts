@@ -284,3 +284,81 @@ export function sanitiseTtsText(raw: string, options?: NarrationOptions): string
   const spoken = segments.filter(segment => segment.kind === 'speech').map(segment => segment.text).join('');
   return spoken.replace(PICTOGRAPH_RE, '').trim();
 }
+
+/* ------------------------------------------------------------------ *
+ * Streaming: the spoken part of a reply as it arrives
+ * ------------------------------------------------------------------ */
+
+/** voice-live's own emotion tag grammar (voice_live/policy.py `_EMO_TAG`): it reads these and never speaks them. */
+const VOICE_EMO_TAG_RE = /\[emo:\s*[a-z]+\s*\]/gi;
+/** Where a streamed reply may be cut: sentence ends and the soft breaks voice-live itself cuts at. */
+const CUT_AFTER = /[。！？!?….\n，、,；;：:]/;
+
+export interface SpokenStream {
+  /** Feed raw model text; returns what may be spoken now ('' while a bracket or `*` is still open). */
+  push(delta: string): string;
+  /** The reply ended: whatever is left, sanitised (an unclosed bracket speaks nothing). */
+  end(): string;
+}
+
+/**
+ * `sanitiseTtsText` for a reply that streams in (a voice call's `character_delta`
+ * frames): text is held only while a （…） (…) […] 【…】 or `*…*` is open, and
+ * released at the first safe cut — a sentence end or a soft break outside every
+ * bracket — so the first sentence leaves as early as voice-live could cut it
+ * anyway. Each released piece is `sanitiseTtsText` of that piece: stage
+ * directions, narration, markup and emoji are dropped, the words stay.
+ *
+ * voice-live's own `[emo: smile]` tags (ASCII word) are kept, moved to the front
+ * of the piece they arrived in: voice-live reads them for the TTS emotion and
+ * strips them itself. Any other `[emo: …]` (`[emo: 微笑]`) is a bracket like any
+ * other and is never spoken.
+ */
+export function createSpokenStream(options?: NarrationOptions): SpokenStream {
+  let held = '';
+  let lineStart = true;
+  const release = (raw: string): string => {
+    const tags = raw.match(VOICE_EMO_TAG_RE) ?? [];
+    const words = sanitiseTtsText(raw.replace(VOICE_EMO_TAG_RE, ''), options);
+    const lead = /^\s*/.exec(raw)?.[0] ?? '';
+    const trail = /\s*$/.exec(raw)?.[0] ?? '';
+    const tag = tags.length ? tags[tags.length - 1] : '';
+    if (!words) return tag || (trail.includes('\n') && !lineStart ? '\n' : '');
+    const out = `${tag}${lineStart ? '' : lead}${words}${trail}`.replace(/ {2,}/g, ' ');
+    lineStart = trail.includes('\n');
+    return out;
+  };
+  /** The last index after which `text` may be cut, or -1. */
+  const lastCut = (text: string): number => {
+    const chars = Array.from(text);
+    let depth = 0;
+    let star = false;
+    let cut = -1;
+    let offset = 0;
+    for (let i = 0; i < chars.length; i++) {
+      const ch = chars[i];
+      offset += ch.length;
+      if (ch === '\n') star = false;
+      if (ch === '*' && chars[i + 1] !== '*' && chars[i - 1] !== '*') star = !star;
+      else if (OPEN_TO_CLOSE[ch] !== undefined) depth++;
+      else if (Object.hasOwn(CLOSERS, ch)) depth = Math.max(0, depth - 1);
+      if (depth === 0 && !star && (CUT_AFTER.test(ch) || Object.hasOwn(CLOSERS, ch))) cut = offset;
+    }
+    return cut;
+  };
+  return {
+    push(delta: string): string {
+      held += delta;
+      const cut = lastCut(held);
+      if (cut <= 0) return '';
+      const piece = held.slice(0, cut);
+      held = held.slice(cut);
+      return release(piece);
+    },
+    end(): string {
+      const piece = held;
+      held = '';
+      return piece ? release(piece).replace(/\s+$/, '') : '';
+    },
+  };
+}

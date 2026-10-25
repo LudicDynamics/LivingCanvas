@@ -170,8 +170,8 @@ test('through the proxy: brain frames stay save-scoped and other data reaches th
   assert.deepEqual(client.json, [{ type: 'hello', session: 's1' }], 'the browser never sees a brain frame');
   assert.equal(client.sent.filter((f) => f.binary).length, 1);
   engines.created[0].open();
-  engines.created[0].emit('message', engineFrame({ type: 'character_delta', characterId: 'vera', savePath: SAVE_A, delta: 'Hi' }), false);
-  assert.deepEqual(upstream.json.at(-1), { type: 'brain', frame: { type: 'character_delta', characterId: 'vera', savePath: SAVE_A, delta: 'Hi' } });
+  engines.created[0].emit('message', engineFrame({ type: 'character_delta', characterId: 'vera', savePath: SAVE_A, delta: 'Hi.' }), false);
+  assert.deepEqual(upstream.json.at(-1), { type: 'brain', frame: { type: 'character_delta', characterId: 'vera', savePath: SAVE_A, delta: 'Hi.' } });
   client.emit('close');
   assert.deepEqual(engines.created[0].json.at(-1), { type: 'character_stop', characterId: 'vera', savePath: SAVE_A, via: 'voice' }, 'hang-up stops her in the captured save');
 });

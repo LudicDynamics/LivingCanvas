@@ -100,6 +100,19 @@ const MAX_RESTART_ATTEMPTS = 5;
 const LIVENESS_PROBE_MS = 5000;
 const DEFAULT_TURN_TIMEOUT_MS = 90000;
 const MAX_TURN_DURATION_MS = 300000;
+/** The status panel's per-agent `get_state` budget: a busy agent reads as starting, not as a 503. */
+const STATUS_STATE_TIMEOUT_MS = 4000;
+
+/** The agent is still starting (a world load, a restart): `/api/agent-settings` answers 503 `agent_starting`. */
+export class AgentStartingError extends Error {
+  readonly code = 'agent_starting';
+}
+
+function withTimeout<T>(promise: Promise<T>, ms: number, what: string): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new Error(`Timeout waiting for ${what}`)), ms); });
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+}
 
 /**
  * Owns pi-rp agent processes: one writer per world (reused), one character per id,
@@ -197,13 +210,30 @@ export class AgentLifecycleManager {
   }
 
   async modelStatus(worldRoot: string, includeModels = true) {
-    const writer = this.switchingModels && this.writer && this.writerWorld === worldRoot
-      ? this.writer
-      : await this.startWriter(worldRoot);
-    const [state, models] = await Promise.all([writer.getState(), includeModels ? writer.getAvailableModels() : Promise.resolve([])]);
+    let writer: RpcClient;
+    let state: Awaited<ReturnType<RpcClient['getState']>>;
+    let models: Awaited<ReturnType<RpcClient['getAvailableModels']>>;
+    try {
+      writer = this.switchingModels && this.writer && this.writerWorld === worldRoot
+        ? this.writer
+        : await this.startWriter(worldRoot);
+      [state, models] = await Promise.all([
+        withTimeout(writer.getState(), STATUS_STATE_TIMEOUT_MS * 2, 'get_state'),
+        includeModels ? writer.getAvailableModels() : Promise.resolve([]),
+      ]);
+    } catch (error) {
+      throw new AgentStartingError(error instanceof Error ? error.message : String(error));
+    }
+    // One busy or restarting character must not take the whole status down (it used to: a
+    // `get_state` that timed out after 30 s turned /api/agent-settings into a 503, and the page
+    // read "disconnected"). It is listed as starting instead.
     const characters = await Promise.all([...this.characterClients].map(async ([id, client]) => {
-      const s = await client.getState();
-      return { id, model: s.model ? { provider: s.model.provider, id: s.model.id } : null, thinking: s.thinkingLevel };
+      try {
+        const s = await withTimeout(client.getState(), STATUS_STATE_TIMEOUT_MS, 'get_state');
+        return { id, model: s.model ? { provider: s.model.provider, id: s.model.id } : null, thinking: s.thinkingLevel };
+      } catch {
+        return { id, model: null, thinking: '', starting: true };
+      }
     }));
     const snapshot = readCatalogSnapshot(this.repoRoot);
     const activeGeneration = Number.parseInt(process.env.AIRP_CUSTOM_OPENAI_GENERATION ?? '', 10);
